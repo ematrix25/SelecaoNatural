@@ -1,11 +1,18 @@
 package gui;
 
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import gui.graphics.TelaDoMenu;
 
 /**
  * @author Emanuel
@@ -17,7 +24,8 @@ public class Menu extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JPanel painel;
+	private JPanel painel, painelDosBotoes;
+	private TelaDoMenu telaDoMenu;
 
 	/**
 	 * Launch the application.
@@ -36,32 +44,58 @@ public class Menu extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * 
+	 * @throws IOException
 	 */
-	public Menu() {
+	public Menu() throws IOException {		
 		setResizable(false);
+		setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Menu.class.getResource("/imagens/icone.ico")));
 		setTitle("Selecao Natural");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		setVisible(true);
+
 		painel = new JPanel();
 		painel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(painel);
 		painel.setLayout(null);
-		
+		setContentPane(painel);
+
+		painelDosBotoes = new JPanel();
+		painelDosBotoes.setBounds(330, 30, 90, 210);
+		painelDosBotoes.setBorder(new EmptyBorder(5, 5, 5, 5));
+		painelDosBotoes.setLayout(null);
+		painelDosBotoes.setOpaque(false);
+		painel.add(painelDosBotoes);
+
 		JButton btnJogar = new JButton("Jogar");
-		btnJogar.setBounds(330, 50, 90, 30);
-		painel.add(btnJogar);
-		
+		btnJogar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Questionario();
+			}
+		});
+		btnJogar.setBounds(0, 0, 90, 30);
+		btnJogar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		painelDosBotoes.add(btnJogar);
+
 		JButton btnContinuar = new JButton("Continuar");
-		btnContinuar.setBounds(330, 150, 90, 30);
-		painel.add(btnContinuar);
-		
+		btnContinuar.setBounds(0, 60, 90, 30);
+		btnContinuar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		painelDosBotoes.add(btnContinuar);
+
 		JButton btnOpcoes = new JButton("Opcoes");
-		btnOpcoes.setBounds(330, 100, 90, 30);
-		painel.add(btnOpcoes);
-		
+		btnOpcoes.setBounds(0, 120, 90, 30);
+		btnOpcoes.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		painelDosBotoes.add(btnOpcoes);
+
 		JButton btnSobre = new JButton("Sobre");
-		btnSobre.setBounds(330, 200, 90, 30);
-		painel.add(btnSobre);
+		btnSobre.setBounds(0, 180, 90, 30);
+		btnSobre.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		painelDosBotoes.add(btnSobre);
+
+		telaDoMenu = new TelaDoMenu();
+		telaDoMenu.setBounds(0, 0, 444, 272);
+		telaDoMenu.setLayout(null);
+		painel.add(telaDoMenu);
 	}
 }

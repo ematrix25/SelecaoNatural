@@ -1,5 +1,7 @@
 package main;
 
+import java.io.IOException;
+
 import gui.Menu;
 
 /**
@@ -8,6 +10,10 @@ import gui.Menu;
  */
 public class Principal {
 	public static void main(String[] args) {
-		new Menu();
+		try {
+			new Menu();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
