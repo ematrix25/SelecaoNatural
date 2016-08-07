@@ -12,20 +12,20 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import gui.graphics.TelaDoMenu;
+import gui.graphics.PainelDoMenu;
 
 /**
  * @author Emanuel
  *
  */
-public class Menu extends JFrame {
+public class TelaDoMenu extends JFrame {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel painel, painelDosBotoes;
-	private TelaDoMenu telaDoMenu;
+	private PainelDoMenu telaDoMenu;
 
 	/**
 	 * Launch the application.
@@ -34,7 +34,7 @@ public class Menu extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new Menu();
+					new TelaDoMenu();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -47,10 +47,10 @@ public class Menu extends JFrame {
 	 * 
 	 * @throws IOException
 	 */
-	public Menu() throws IOException {		
+	public TelaDoMenu() throws IOException {		
 		setResizable(false);
 		setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Menu.class.getResource("/imagens/icone.ico")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(TelaDoMenu.class.getResource("/imagens/icone.ico")));
 		setTitle("Selecao Natural");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -71,7 +71,9 @@ public class Menu extends JFrame {
 		JButton btnJogar = new JButton("Jogar");
 		btnJogar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new Questionario();
+				setVisible(false);
+				new TelaDoQuestionario();
+				dispose();
 			}
 		});
 		btnJogar.setBounds(0, 0, 90, 30);
@@ -93,9 +95,8 @@ public class Menu extends JFrame {
 		btnSobre.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		painelDosBotoes.add(btnSobre);
 
-		telaDoMenu = new TelaDoMenu();
+		telaDoMenu = new PainelDoMenu();
 		telaDoMenu.setBounds(0, 0, 444, 272);
-		telaDoMenu.setLayout(null);
 		painel.add(telaDoMenu);
 	}
 }

@@ -17,7 +17,7 @@ import javax.swing.border.EmptyBorder;
  * @author Emanuel
  *
  */
-public class Questionario extends JFrame {
+public class TelaDoQuestionario extends JFrame {
 
 	/**
 	 * 
@@ -32,7 +32,7 @@ public class Questionario extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new Questionario();
+					new TelaDoQuestionario();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -43,10 +43,10 @@ public class Questionario extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Questionario() {
+	public TelaDoQuestionario() {
 		setResizable(false);
 		setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Menu.class.getResource("/imagens/icone.ico")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(TelaDoMenu.class.getResource("/imagens/icone.ico")));
 		setTitle("Selecao Natural");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -140,7 +140,9 @@ public class Questionario extends JFrame {
 		JButton btnSubmeter = new JButton("Submeter");
 		btnSubmeter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new Jogo();
+				setVisible(false);
+				new TelaDoJogo();
+				dispose();
 			}
 		});
 		btnSubmeter.setBounds(345, 238, 89, 23);

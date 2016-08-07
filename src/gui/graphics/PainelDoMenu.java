@@ -11,7 +11,7 @@ import javax.swing.JPanel;
  * @author Emanuel
  *
  */
-public class TelaDoMenu extends JPanel {
+public class PainelDoMenu extends JPanel {
 
 	/**
 	 * 
@@ -19,7 +19,7 @@ public class TelaDoMenu extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private BufferedImage imagem = null;
 
-	public TelaDoMenu() {
+	public PainelDoMenu() {
 		try {
 			imagem = ImageIO.read(getClass().getResourceAsStream("/imagens/menu.jpg"));
 		} catch (IOException e) {

@@ -2,7 +2,7 @@ package main;
 
 import java.io.IOException;
 
-import gui.Menu;
+import gui.TelaDoMenu;
 
 /**
  * @author Emanuel
@@ -11,7 +11,7 @@ import gui.Menu;
 public class Principal {
 	public static void main(String[] args) {
 		try {
-			new Menu();
+			new TelaDoMenu();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
