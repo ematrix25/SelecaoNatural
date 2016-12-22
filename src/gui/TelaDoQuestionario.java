@@ -48,7 +48,7 @@ public class TelaDoQuestionario extends JFrame {
 		setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		setIconImage(Toolkit.getDefaultToolkit().getImage(TelaDoMenu.class.getResource("/imagens/icone.ico")));
 		setTitle("Selecao Natural");
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		setVisible(true);
 		
@@ -141,7 +141,6 @@ public class TelaDoQuestionario extends JFrame {
 		btnSubmeter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				new TelaDoJogo();
 				dispose();
 			}
 		});

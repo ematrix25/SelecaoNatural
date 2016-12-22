@@ -9,10 +9,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import gui.graphics.CanvasDoJogo;
-import javax.swing.border.LineBorder;
 
 /**
  * @author Emanuel
@@ -25,7 +25,7 @@ public class TelaDoJogo extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel painel, painelDaCelula, painelDaPontuacao, painelDaEspecie;
-	private CanvasDoJogo telaDoJogo;
+	private CanvasDoJogo canvasDoJogo;
 
 	/**
 	 * Launch the application.
@@ -50,7 +50,7 @@ public class TelaDoJogo extends JFrame {
 		setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		setIconImage(Toolkit.getDefaultToolkit().getImage(TelaDoMenu.class.getResource("/imagens/icone.ico")));
 		setTitle("Selecao Natural");
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		setVisible(true);
 
@@ -121,13 +121,9 @@ public class TelaDoJogo extends JFrame {
 		lblValorQtdCelulas.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		painelDaEspecie.add(lblValorQtdCelulas);
 
-		telaDoJogo = new CanvasDoJogo();
-		telaDoJogo.setBounds(0, 30, 444, 242);
-		painel.add(telaDoJogo);
-		telaDoJogo.start();
-	}
-	
-	protected void finalize() {
-		telaDoJogo.stop();
+		canvasDoJogo = new CanvasDoJogo();
+		canvasDoJogo.setBounds(0, 30, 444, 242);
+		painel.add(canvasDoJogo);
+		canvasDoJogo.start(this);
 	}
 }

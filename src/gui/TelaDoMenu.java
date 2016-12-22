@@ -72,7 +72,7 @@ public class TelaDoMenu extends JFrame {
 		btnJogar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				new TelaDoQuestionario();
+				new TelaDoJogo();
 				dispose();
 			}
 		});
