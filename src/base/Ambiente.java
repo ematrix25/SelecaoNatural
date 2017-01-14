@@ -1,0 +1,46 @@
+package base;
+
+import java.util.List;
+
+/**
+ * @author Emanuel
+ *
+ */
+public class Ambiente {
+	private int tempMax, tempMin;
+	private List<Especie> especies;
+
+	public Ambiente(int tempMax, int tempMin, List<Especie> especies) {
+		this.tempMax = tempMax;
+		this.tempMin = tempMin;
+		this.especies = especies;
+	}
+
+	public int getTempMax() {
+		return tempMax;
+	}
+
+	public void setTempMax(int tempMax) {
+		this.tempMax = tempMax;
+	}
+
+	public int getTempMin() {
+		return tempMin;
+	}
+
+	public void setTempMin(int tempMin) {
+		this.tempMin = tempMin;
+	}
+
+	public List<Especie> getEspecies() {
+		return especies;
+	}
+
+	public boolean addEspecies(Especie especie) {
+		return especies.add(especie);
+	}
+
+	public boolean remEspecie(Especie especie) {
+		return especies.remove(especie);
+	}
+}
