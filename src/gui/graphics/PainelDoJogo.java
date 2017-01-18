@@ -1,10 +1,11 @@
 package gui.graphics;
 
-import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.image.BufferStrategy;
+import java.awt.Image;
+
+import javax.swing.JPanel;
 
 import gui.TelaDoJogo;
 import gui.TelaDoQuestionario;
@@ -13,7 +14,7 @@ import gui.TelaDoQuestionario;
  * @author Emanuel
  *
  */
-public class CanvasDoJogo extends Canvas implements Runnable {
+public class PainelDoJogo extends JPanel implements Runnable {
 
 	/**
 	 * 
@@ -21,25 +22,23 @@ public class CanvasDoJogo extends Canvas implements Runnable {
 	private static final long serialVersionUID = 1L;
 	private TelaDoJogo telaDoJogo;
 	private Thread thread;
-	private boolean rodando = false;
+	private volatile boolean rodando = false;
+	private volatile boolean gameOver = false;
 	private int qps, aps;
 	private int x = 100, y = 100, cont = 0;
 	private boolean xdir = true, ydir = false;
+	private Image imageBuffer = null;
 
 	public synchronized void start(TelaDoJogo telaDoJogo) {
 		this.telaDoJogo = telaDoJogo;
-		rodando = true;
-		thread = new Thread(this, "TelaDoJogo");
-		thread.start();
+		if (thread == null || !rodando) {
+			thread = new Thread(this, "TelaDoJogo");
+			thread.start();
+		}
 	}
 
 	public synchronized void stop() {
 		rodando = false;
-		try {
-			thread.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override
@@ -49,8 +48,8 @@ public class CanvasDoJogo extends Canvas implements Runnable {
 		final double nanoSegundos = 1000000000.0 / 60.0;
 		double deltaTempo = 0.0;
 		int quadros = 0, atualizacoes = 0;
-		int textCont = 0;
 		requestFocus();
+		rodando = true;
 		while (rodando) {
 			tempoAntes = tempoAgora;
 			tempoAgora = System.nanoTime();
@@ -62,8 +61,7 @@ public class CanvasDoJogo extends Canvas implements Runnable {
 			}
 			renderizar();
 			quadros++;
-			textCont++;
-			if (textCont % 100 == 0) moveText();
+			moveText();
 			if (System.currentTimeMillis() - temporizador > 1000) {
 				temporizador += 1000;
 				qps = quadros;
@@ -80,21 +78,24 @@ public class CanvasDoJogo extends Canvas implements Runnable {
 					telaDoJogo.dispose();
 				}
 			}
+			repaint();
+
+			try {
+				Thread.sleep(20);
+			} catch (InterruptedException ex) {
+			}
 		}
+		// System.exit(0);
 	}
 
 	private void atualizar() {
-
+		if (!gameOver) {
+		}
 	}
 
 	private void renderizar() {
-		BufferStrategy buffer = getBufferStrategy();
-		if (buffer == null) {
-			createBufferStrategy(3);
-			return;
-		}
-
-		Graphics graficos = buffer.getDrawGraphics();
+		imageBuffer = createImage(getWidth(), getHeight());
+		Graphics graficos = imageBuffer.getGraphics();
 		graficos.setColor(Color.white);
 		graficos.fillRect(0, 0, getWidth(), getHeight());
 		graficos.setColor(Color.green);
@@ -106,7 +107,6 @@ public class CanvasDoJogo extends Canvas implements Runnable {
 		graficos.setColor(Color.black);
 		graficos.drawString("Janela do Jogo", x, y);
 		graficos.dispose();
-		buffer.show();
 	}
 
 	private void moveText() {
@@ -116,5 +116,10 @@ public class CanvasDoJogo extends Canvas implements Runnable {
 		else x--;
 		if (ydir) y++;
 		else y--;
+	}
+
+	public void paintComponent(Graphics graficos) {
+		super.paintComponent(graficos);
+		if (imageBuffer != null) graficos.drawImage(imageBuffer, 0, 0, null);
 	}
 }

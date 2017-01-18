@@ -25,7 +25,7 @@ public class TelaDoMenu extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel painel, painelDosBotoes;
-	private PainelDoMenu telaDoMenu;
+	private PainelDoMenu painelDoMenu;
 
 	/**
 	 * Launch the application.
@@ -95,8 +95,8 @@ public class TelaDoMenu extends JFrame {
 		btnSobre.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		painelDosBotoes.add(btnSobre);
 
-		telaDoMenu = new PainelDoMenu();
-		telaDoMenu.setBounds(0, 0, 444, 272);
-		painel.add(telaDoMenu);
+		painelDoMenu = new PainelDoMenu();
+		painelDoMenu.setBounds(0, 0, 444, 272);
+		painel.add(painelDoMenu);
 	}
 }

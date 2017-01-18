@@ -27,7 +27,7 @@ public class PainelDoMenu extends JPanel {
 		}
 	}
 
-	public void paint(Graphics graficos) {
+	public void paintComponent(Graphics graficos) {
 		graficos.drawImage(imagem, 0, 0, this.getWidth(), this.getHeight(), null);
 	}
 }

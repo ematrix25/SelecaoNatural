@@ -12,7 +12,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import gui.graphics.CanvasDoJogo;
+import gui.graphics.PainelDoJogo;
 
 /**
  * @author Emanuel
@@ -25,7 +25,7 @@ public class TelaDoJogo extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel painel, painelDaCelula, painelDaPontuacao, painelDaEspecie;
-	private CanvasDoJogo canvasDoJogo;
+	private PainelDoJogo painelDoJogo;
 
 	/**
 	 * Launch the application.
@@ -121,9 +121,9 @@ public class TelaDoJogo extends JFrame {
 		lblValorQtdCelulas.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		painelDaEspecie.add(lblValorQtdCelulas);
 
-		canvasDoJogo = new CanvasDoJogo();
-		canvasDoJogo.setBounds(0, 30, 444, 242);
-		painel.add(canvasDoJogo);
-		canvasDoJogo.start(this);
+		painelDoJogo = new PainelDoJogo();
+		painelDoJogo.setBounds(0, 30, 444, 242);
+		painel.add(painelDoJogo);
+		painelDoJogo.start(this);
 	}
 }
