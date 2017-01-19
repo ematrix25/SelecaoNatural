@@ -1,5 +1,6 @@
 package entidade;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,10 +11,10 @@ public class Ambiente {
 	private int tempMax, tempMin;
 	private List<Especie> especies;
 
-	public Ambiente(int tempMax, int tempMin, List<Especie> especies) {
+	public Ambiente(int tempMax, int tempMin) {
 		this.tempMax = tempMax;
 		this.tempMin = tempMin;
-		this.especies = especies;
+		this.especies = new ArrayList<Especie>();
 	}
 
 	public int getTempMax() {

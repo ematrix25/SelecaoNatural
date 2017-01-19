@@ -1,5 +1,6 @@
 package entidade;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import entidade.tipo.Tipo;
@@ -13,11 +14,11 @@ public class Especie {
 	private int tempMaxSup, tempMinSup;
 	private List<Especime> especimes;
 
-	public Especie(Tipo tipo, int tempMaxSup, int tempMinSup, List<Especime> especimes) {
+	public Especie(Tipo tipo, int tempMaxSup, int tempMinSup) {
 		this.tipo = tipo;
 		this.tempMaxSup = tempMaxSup;
 		this.tempMinSup = tempMinSup;
-		this.especimes = especimes;
+		this.especimes = new ArrayList<Especime>();
 	}
 
 	public Tipo getTipo() {
