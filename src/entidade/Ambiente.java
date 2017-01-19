@@ -1,4 +1,4 @@
-package base;
+package entidade;
 
 import java.util.List;
 

@@ -1,14 +1,14 @@
-package main;
+package principal;
 
 import java.io.IOException;
 
-import gui.TelaDoMenu;
+import fronteira.TelaDoMenu;
 
 /**
  * @author Emanuel
  *
  */
-public class Principal {
+public class Jogo {
 	public static void main(String[] args) {
 		try {
 			new TelaDoMenu();

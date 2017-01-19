@@ -1,4 +1,4 @@
-package base.tipo;
+package entidade.tipo;
 
 /**
  * @author Emanuel

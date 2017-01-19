@@ -1,4 +1,4 @@
-package gui.graphics;
+package fronteira.painel;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -7,8 +7,8 @@ import java.awt.Image;
 
 import javax.swing.JPanel;
 
-import gui.TelaDoJogo;
-import gui.TelaDoQuestionario;
+import fronteira.TelaDoJogo;
+import fronteira.TelaDoQuestionario;
 
 /**
  * @author Emanuel

@@ -1,8 +1,8 @@
-package base;
+package entidade;
 
 import java.util.List;
 
-import base.tipo.Tipo;
+import entidade.tipo.Tipo;
 
 /**
  * @author Emanuel

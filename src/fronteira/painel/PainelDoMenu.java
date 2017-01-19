@@ -1,4 +1,4 @@
-package gui.graphics;
+package fronteira.painel;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;

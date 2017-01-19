@@ -1,4 +1,4 @@
-package gui;
+package fronteira;
 
 import java.awt.EventQueue;
 import java.awt.Font;
