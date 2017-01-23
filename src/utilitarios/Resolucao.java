@@ -9,25 +9,25 @@ import java.awt.Toolkit;
  * @author Emanuel
  */
 public class Resolucao {
-	private int larguraDaComp, alturaDaComp;
+	private static int larguraDaComp;
+	private static int alturaDaComp;
 
 	public Resolucao() {
 		Dimension dimensao = Toolkit.getDefaultToolkit().getScreenSize();
 		larguraDaComp = dimensao.width;
 		alturaDaComp = dimensao.height;
 	}
-	
-	public int calcLarguraRelativa(int altura) {
-		return (altura*larguraDaComp)/alturaDaComp;
-	}
-	
-	public int calcAlturaRelativa(int largura) {
-		return (largura*alturaDaComp)/larguraDaComp;
+
+	public Resolucao(int largura, int altura) {
+		larguraDaComp = largura;
+		alturaDaComp = altura;
 	}
 
-	public static void main(String[] args) {
-		Resolucao res = new Resolucao();
-		System.out.println("Altura = " + 450);
-		System.out.println("Largura = " + res.calcLarguraRelativa(450));
+	public static int calcLarguraRelativa(int altura) {
+		return (larguraDaComp * altura) / alturaDaComp;
+	}
+
+	public static int calcAlturaRelativa(int largura) {
+		return (alturaDaComp * largura) / larguraDaComp;
 	}
 }

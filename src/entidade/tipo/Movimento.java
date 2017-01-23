@@ -5,5 +5,5 @@ package entidade.tipo;
  *
  */
 public enum Movimento {
-	Flagelo, Deslizamento, Contracao;
+	Deslizamento, Contracao, Flagelo;
 }

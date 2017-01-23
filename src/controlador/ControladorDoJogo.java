@@ -1,6 +1,8 @@
 package controlador;
 
 import entidade.Ambiente;
+import entidade.Especie;
+import utilitarios.Aleatorio;
 
 /**
  * @author Emanuel
@@ -9,10 +11,11 @@ import entidade.Ambiente;
 public class ControladorDoJogo {
 	private Ambiente ambiente;
 
-	public boolean criarAmbiente(int tempMax, int tempMin) {
-		ambiente = new Ambiente(tempMax, tempMin);
+	// Cria ambiente com temperatura de 400K até 350K
+	public boolean criarAmbiente() {
+		ambiente = new Ambiente(400, 350);
 		for (int i = 0; i < 3; i++) {
-			
+			criarEspecie(450, 300);
 		}
 		return ambiente != null;
 	}
@@ -30,7 +33,9 @@ public class ControladorDoJogo {
 		return false;
 	}
 
-	public boolean criarEspecie() {
+	public boolean criarEspecie(int maxTemp, int minTemp) {
+		int[] temps = Aleatorio.escolherTemps(maxTemp, minTemp);
+		ambiente.addEspecies(new Especie(Aleatorio.escolherTipo(), temps[0], temps[1]));
 		return false;
 	}
 
