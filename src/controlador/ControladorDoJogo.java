@@ -34,20 +34,24 @@ public class ControladorDoJogo {
 	}
 
 	public boolean criarEspecie(int maxTemp, int minTemp) {
+		// TODO Terminar de Implementar
 		int[] temps = Aleatorio.escolherTemps(maxTemp, minTemp);
 		ambiente.addEspecies(new Especie(Aleatorio.escolherTipo(), temps[0], temps[1]));
 		return false;
 	}
 
 	public boolean lerEspecie() {
+		// TODO Terminar de Implementar
 		return false;
 	}
 
 	public boolean atualizarEspecie() {
+		// TODO Terminar de Implementar
 		return false;
 	}
 
 	public boolean removerEspecie() {
+		// TODO Terminar de Implementar
 		return false;
 	}
 }
