@@ -2,6 +2,7 @@ package componente.utilitario;
 
 import java.util.Random;
 
+import componente.Componente;
 import sistema.entidade.tipo.Forma;
 import sistema.entidade.tipo.Movimento;
 import sistema.entidade.tipo.Tipo;
@@ -10,8 +11,7 @@ import sistema.entidade.tipo.Tipo;
  * @author Emanuel
  *
  */
-public class Aleatorio {
-	// TODO Herdar do Componente
+public class Aleatorio extends Componente{
 	private static Random gerador;
 
 	public Aleatorio() {

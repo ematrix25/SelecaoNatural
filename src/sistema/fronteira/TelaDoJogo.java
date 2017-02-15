@@ -19,7 +19,8 @@ import sistema.fronteira.painel.PainelDoJogo;
  *
  */
 public class TelaDoJogo extends JFrame {
-
+	// TODO Implementar o questionario usando paineis renderizaveis
+	
 	/**
 	 * 
 	 */
@@ -58,7 +59,7 @@ public class TelaDoJogo extends JFrame {
 		painel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		painel.setLayout(null);
 		setContentPane(painel);
-		
+
 		JPanel painelDeInfos = new JPanel();
 		painelDeInfos.setBackground(Color.BLACK);
 		painelDeInfos.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -89,7 +90,7 @@ public class TelaDoJogo extends JFrame {
 		painelDaPontuacao.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		painelDaPontuacao.setLayout(null);
 		painelDeInfos.add(painelDaPontuacao);
-		
+
 		JLabel lblPontuacao = new JLabel("Pontuacao:");
 		lblPontuacao.setForeground(Color.LIGHT_GRAY);
 		lblPontuacao.setBounds(10, 0, 60, 20);
@@ -101,7 +102,7 @@ public class TelaDoJogo extends JFrame {
 		lblValorDaPontuacao.setBounds(70, 0, 40, 20);
 		lblValorDaPontuacao.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		painelDaPontuacao.add(lblValorDaPontuacao);
-		
+
 		painelDaEspecie = new JPanel();
 		painelDaEspecie.setBackground(Color.DARK_GRAY);
 		painelDaEspecie.setBounds(315, 6, 120, 20);

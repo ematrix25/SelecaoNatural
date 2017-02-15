@@ -11,9 +11,11 @@ import componente.Componente;
  * @author Emanuel
  */
 public abstract class Entidade {
+	//TODO Melhorar a entidade segundo o Sistema Entidade para Java
+	
 	public int id;
 	private List<Componente> componentes = new ArrayList<Componente>();
-
+	
 	/**
 	 * Adiciona um componente
 	 * 
@@ -22,6 +24,14 @@ public abstract class Entidade {
 	 */
 	public boolean adicionarComponente(Componente componente) {
 		return componentes.add(componente);
+	}
+		
+	/**
+	 * Le um componente e repassa
+	 * @return the componentes
+	 */
+	public <T extends Componente> T lerComponente(Class<T> tipo) {
+		return null;
 	}
 
 	/**

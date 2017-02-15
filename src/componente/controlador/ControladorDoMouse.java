@@ -4,14 +4,15 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+import componente.Componente;
+
 /**
  * Classe responsável pelo controle de resposta do mouse
  * 
  * @author Emanuel
  *
  */
-public class Mouse implements MouseListener, MouseMotionListener {
-	// TODO Herdar do Componente
+public class ControladorDoMouse extends Componente implements MouseListener, MouseMotionListener {
 
 	private static int mouseX = -1;
 	private static int mouseY = -1;
@@ -24,9 +25,9 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	 * @param width
 	 * @param height
 	 */
-	public Mouse(int width, int height) {
-		Mouse.maximoX = width / 2;
-		Mouse.maximoY = height / 2;
+	public ControladorDoMouse(int width, int height) {
+		ControladorDoMouse.maximoX = width / 2;
+		ControladorDoMouse.maximoY = height / 2;
 	}
 	
 	/**
