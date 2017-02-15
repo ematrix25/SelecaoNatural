@@ -1,4 +1,4 @@
-package utilitarios.controladores;
+package componente.controlador;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -11,6 +11,7 @@ import java.awt.event.MouseMotionListener;
  *
  */
 public class Mouse implements MouseListener, MouseMotionListener {
+	// TODO Herdar do Componente
 
 	private static int mouseX = -1;
 	private static int mouseY = -1;

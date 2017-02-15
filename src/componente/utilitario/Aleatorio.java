@@ -1,16 +1,17 @@
-package utilitarios;
+package componente.utilitario;
 
 import java.util.Random;
 
-import entidade.tipo.Forma;
-import entidade.tipo.Movimento;
-import entidade.tipo.Tipo;
+import sistema.entidade.tipo.Forma;
+import sistema.entidade.tipo.Movimento;
+import sistema.entidade.tipo.Tipo;
 
 /**
  * @author Emanuel
  *
  */
 public class Aleatorio {
+	// TODO Herdar do Componente
 	private static Random gerador;
 
 	public Aleatorio() {

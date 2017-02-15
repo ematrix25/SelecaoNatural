@@ -1,4 +1,4 @@
-package fronteira;
+package sistema.fronteira;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -12,7 +12,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import fronteira.painel.PainelDoJogo;
+import sistema.fronteira.painel.PainelDoJogo;
 
 /**
  * @author Emanuel

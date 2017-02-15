@@ -1,8 +1,8 @@
-package controlador;
+package sistema.controlador;
 
-import entidade.Ambiente;
-import entidade.Especie;
-import utilitarios.Aleatorio;
+import componente.utilitario.Aleatorio;
+import sistema.entidade.Ambiente;
+import sistema.entidade.Especie;
 
 /**
  * @author Emanuel

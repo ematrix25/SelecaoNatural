@@ -1,8 +1,8 @@
-package principal;
+package sistema;
 
 import java.io.IOException;
 
-import fronteira.TelaDoMenu;
+import sistema.fronteira.TelaDoMenu;
 
 /**
  * @author Emanuel

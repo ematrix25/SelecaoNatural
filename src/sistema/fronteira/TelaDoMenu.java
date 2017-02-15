@@ -1,4 +1,4 @@
-package fronteira;
+package sistema.fronteira;
 
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -12,7 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import fronteira.painel.PainelDoMenu;
+import sistema.fronteira.painel.PainelDoMenu;
 
 /**
  * @author Emanuel

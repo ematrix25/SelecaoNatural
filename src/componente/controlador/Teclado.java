@@ -1,4 +1,4 @@
-package utilitarios.controladores;
+package componente.controlador;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -8,6 +8,7 @@ import java.awt.event.KeyListener;
  *
  */
 public class Teclado implements KeyListener {
+	// TODO Herdar do Componente
 
 	private boolean teclas[] = new boolean[120];
 	public static boolean cima, baixo, esquerda, direita, shift;

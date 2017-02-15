@@ -1,4 +1,4 @@
-package utilitarios;
+package sistema.utilitario;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;

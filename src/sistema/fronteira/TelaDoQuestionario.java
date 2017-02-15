@@ -1,4 +1,4 @@
-package fronteira;
+package sistema.fronteira;
 
 import java.awt.EventQueue;
 import java.awt.Font;

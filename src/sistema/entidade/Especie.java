@@ -1,9 +1,9 @@
-package entidade;
+package sistema.entidade;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import entidade.tipo.Tipo;
+import sistema.entidade.tipo.Tipo;
 
 /**
  * @author Emanuel
