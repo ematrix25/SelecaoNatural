@@ -11,14 +11,13 @@ import sistema.fronteira.TelaDoJogo;
 import sistema.fronteira.TelaDoQuestionario;
 
 /**
+ * Cria Painel do Jogo.
+ * 
  * @author Emanuel
  *
  */
 public class PainelDoJogo extends JPanel implements Runnable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private TelaDoJogo telaDoJogo;
 	private Thread thread;
@@ -29,6 +28,11 @@ public class PainelDoJogo extends JPanel implements Runnable {
 	private boolean xdir = true, ydir = false;
 	private Image imageBuffer = null;
 
+	/**
+	 * Inicia a thread do painel do jogo.
+	 * 
+	 * @param telaDoJogo
+	 */
 	public synchronized void start(TelaDoJogo telaDoJogo) {
 		this.telaDoJogo = telaDoJogo;
 		if (thread == null || !rodando) {
@@ -37,10 +41,19 @@ public class PainelDoJogo extends JPanel implements Runnable {
 		}
 	}
 
+	/**
+	 * Fecha a thread do painel do jogo.
+	 */
 	public synchronized void stop() {
 		rodando = false;
 	}
 
+	/**
+	 * 
+	 * Executa a thread do painel do jogo.
+	 * 
+	 * @see java.lang.Runnable#run()
+	 */
 	@Override
 	public void run() {
 		long tempoAgora = System.nanoTime(), tempoAntes;
@@ -88,11 +101,17 @@ public class PainelDoJogo extends JPanel implements Runnable {
 		// System.exit(0);
 	}
 
+	/**
+	 * Atualiza todos os dados do jogo.
+	 */
 	private void atualizar() {
 		if (!gameOver) {
 		}
 	}
 
+	/**
+	 * Renderizar o painel na tela.
+	 */
 	private void renderizar() {
 		imageBuffer = createImage(getWidth(), getHeight());
 		Graphics graficos = imageBuffer.getGraphics();
@@ -110,16 +129,27 @@ public class PainelDoJogo extends JPanel implements Runnable {
 	}
 
 	private void moveText() {
-		if (x == this.getWidth() - 183 || x == 0) xdir = !xdir;
-		if (y == this.getHeight() - 5 || y == 19) ydir = !ydir;
-		if (xdir) x++;
-		else x--;
-		if (ydir) y++;
-		else y--;
+		if (x == this.getWidth() - 183 || x == 0)
+			xdir = !xdir;
+		if (y == this.getHeight() - 5 || y == 19)
+			ydir = !ydir;
+		if (xdir)
+			x++;
+		else
+			x--;
+		if (ydir)
+			y++;
+		else
+			y--;
 	}
 
+	/**
+	 * 
+	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+	 */
 	public void paintComponent(Graphics graficos) {
 		super.paintComponent(graficos);
-		if (imageBuffer != null) graficos.drawImage(imageBuffer, 0, 0, null);
+		if (imageBuffer != null)
+			graficos.drawImage(imageBuffer, 0, 0, null);
 	}
 }

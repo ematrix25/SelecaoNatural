@@ -15,20 +15,20 @@ import javax.swing.border.EmptyBorder;
 import sistema.fronteira.painel.PainelDoMenu;
 
 /**
+ * Cria a Tela de Menu
+ * 
  * @author Emanuel
  *
  */
 public class TelaDoMenu extends JFrame {
-
-	/**
-	 * 
-	 */
+	// TODO Implementar o menu usando paineis renderizaveis
+	
 	private static final long serialVersionUID = 1L;
 	private JPanel painel, painelDosBotoes;
 	private PainelDoMenu painelDoMenu;
 
 	/**
-	 * Launch the application.
+	 * Roda a Aplicação.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -43,11 +43,11 @@ public class TelaDoMenu extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Cria a Tela de Menu
 	 * 
 	 * @throws IOException
 	 */
-	public TelaDoMenu() throws IOException {		
+	public TelaDoMenu() throws IOException {
 		setResizable(false);
 		setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		setIconImage(Toolkit.getDefaultToolkit().getImage(TelaDoMenu.class.getResource("/imagens/icone.ico")));

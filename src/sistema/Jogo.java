@@ -5,6 +5,8 @@ import java.io.IOException;
 import sistema.fronteira.TelaDoMenu;
 
 /**
+ * Inicia todo o processo
+ * 
  * @author Emanuel
  *
  */

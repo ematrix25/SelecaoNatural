@@ -15,21 +15,19 @@ import javax.swing.border.TitledBorder;
 import sistema.fronteira.painel.PainelDoJogo;
 
 /**
+ * Cria a Tela de Jogo
+ * 
  * @author Emanuel
  *
  */
 public class TelaDoJogo extends JFrame {
-	// TODO Implementar o questionario usando paineis renderizaveis
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private JPanel painel, painelDaCelula, painelDaPontuacao, painelDaEspecie;
 	private PainelDoJogo painelDoJogo;
 
 	/**
-	 * Launch the application.
+	 * Roda a Aplicação.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -44,7 +42,7 @@ public class TelaDoJogo extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Cria a Tela de Jogo
 	 */
 	public TelaDoJogo() {
 		setResizable(false);
