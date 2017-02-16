@@ -1,4 +1,4 @@
-package sistema.fronteira.painel;
+package sistema.visao.painel;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -7,8 +7,8 @@ import java.awt.Image;
 
 import javax.swing.JPanel;
 
-import sistema.fronteira.TelaDoJogo;
-import sistema.fronteira.TelaDoQuestionario;
+import sistema.visao.TelaDoJogo;
+import sistema.visao.TelaDoQuestionario;
 
 /**
  * @author Emanuel

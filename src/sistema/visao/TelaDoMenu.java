@@ -1,4 +1,4 @@
-package sistema.fronteira;
+package sistema.visao;
 
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -12,7 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import sistema.fronteira.painel.PainelDoMenu;
+import sistema.visao.painel.PainelDoMenu;
 
 /**
  * @author Emanuel

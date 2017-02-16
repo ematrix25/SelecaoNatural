@@ -2,7 +2,7 @@ package sistema;
 
 import java.io.IOException;
 
-import sistema.fronteira.TelaDoMenu;
+import sistema.visao.TelaDoMenu;
 
 /**
  * @author Emanuel
