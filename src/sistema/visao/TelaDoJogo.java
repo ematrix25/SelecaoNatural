@@ -1,4 +1,4 @@
-package sistema.fronteira;
+package sistema.visao;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -12,15 +12,16 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import sistema.fronteira.painel.PainelDoJogo;
+import sistema.visao.painel.PainelDoJogo;
 
 /**
- * Cria a Tela de Jogo
+ * Cria a Tela de Menu
  * 
  * @author Emanuel
  *
  */
 public class TelaDoJogo extends JFrame {
+	// TODO Implementar o questionario usando paineis renderizaveis
 
 	private static final long serialVersionUID = 1L;
 	private JPanel painel, painelDaCelula, painelDaPontuacao, painelDaEspecie;
@@ -42,7 +43,7 @@ public class TelaDoJogo extends JFrame {
 	}
 
 	/**
-	 * Cria a Tela de Jogo
+	 * Cria a tela do jogo.
 	 */
 	public TelaDoJogo() {
 		setResizable(false);

@@ -1,4 +1,4 @@
-package sistema.fronteira;
+package sistema.visao;
 
 import java.awt.EventQueue;
 import java.awt.Font;

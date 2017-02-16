@@ -3,9 +3,9 @@ package componente.utilitario;
 import java.util.Random;
 
 import componente.Componente;
-import sistema.entidade.tipo.Forma;
-import sistema.entidade.tipo.Movimento;
-import sistema.entidade.tipo.Tipo;
+import sistema.modelo.tipo.Forma;
+import sistema.modelo.tipo.Movimento;
+import sistema.modelo.tipo.Tipo;
 
 /**
  * @author Emanuel

@@ -1,4 +1,4 @@
-package sistema.fronteira;
+package sistema.visao;
 
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -12,7 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import sistema.fronteira.painel.PainelDoMenu;
+import sistema.visao.painel.PainelDoMenu;
 
 /**
  * Cria a Tela de Menu
@@ -21,8 +21,7 @@ import sistema.fronteira.painel.PainelDoMenu;
  *
  */
 public class TelaDoMenu extends JFrame {
-	// TODO Implementar o menu usando paineis renderizaveis
-	
+
 	private static final long serialVersionUID = 1L;
 	private JPanel painel, painelDosBotoes;
 	private PainelDoMenu painelDoMenu;

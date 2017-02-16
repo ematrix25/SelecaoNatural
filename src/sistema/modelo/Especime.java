@@ -1,4 +1,4 @@
-package sistema.entidade;
+package sistema.modelo;
 
 /**
  * @author Emanuel
