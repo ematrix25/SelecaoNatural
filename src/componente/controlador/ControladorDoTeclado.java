@@ -6,15 +6,16 @@ import java.awt.event.KeyListener;
 import componente.Componente;
 
 /**
+ * Classe responsável pelo controle de resposta do teclado
+ * 
  * @author Emanuel
  *
  */
-public class ControladorDoTeclado extends Componente  implements KeyListener {
+public class ControladorDoTeclado extends Componente implements KeyListener {
 
 	private boolean teclas[] = new boolean[120];
 	public static boolean cima, baixo, esquerda, direita, shift;
-	
-	
+
 	/**
 	 * Atualiza o valor das variaveis das teclas
 	 */
@@ -25,9 +26,10 @@ public class ControladorDoTeclado extends Componente  implements KeyListener {
 		direita = teclas[KeyEvent.VK_RIGHT] || teclas[KeyEvent.VK_D];
 		shift = teclas[KeyEvent.VK_SHIFT];
 	}
-	
+
 	/**
-	 * Obtem o evento do teclado quando uma tecla é pressionada 
+	 * Obtem o evento do teclado quando uma tecla é pressionada
+	 * 
 	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
 	 */
 	@Override
@@ -37,6 +39,7 @@ public class ControladorDoTeclado extends Componente  implements KeyListener {
 
 	/**
 	 * Obtem o evento do teclado quando uma tecla é soltada
+	 * 
 	 * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
 	 */
 	@Override
@@ -46,6 +49,7 @@ public class ControladorDoTeclado extends Componente  implements KeyListener {
 
 	/**
 	 * Obtem o evento do teclado quando uma tecla é teclada
+	 * 
 	 * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
 	 */
 	@Override

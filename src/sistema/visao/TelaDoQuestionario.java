@@ -14,20 +14,19 @@ import javax.swing.JRadioButton;
 import javax.swing.border.EmptyBorder;
 
 /**
+ * Cria a tela do Questionário
+ * 
  * @author Emanuel
  *
  */
 public class TelaDoQuestionario extends JFrame {
 	// TODO Implementar o questionario usando paineis renderizaveis
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel painel, painelDaP1, painelDaP2, painelDaP3;
 
 	/**
-	 * Launch the application.
+	 * Roda a aplicação
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -42,7 +41,7 @@ public class TelaDoQuestionario extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Cria a tela.
 	 */
 	public TelaDoQuestionario() {
 		setResizable(false);

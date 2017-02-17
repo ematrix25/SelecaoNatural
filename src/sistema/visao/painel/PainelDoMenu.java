@@ -8,17 +8,20 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 /**
+ * Cria o Painel do Menu
+ * 
  * @author Emanuel
  *
  */
 public class PainelDoMenu extends JPanel {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private BufferedImage imagem = null;
 
+	/**
+	 * Adiciona uma imagem ao Menu
+	 * 
+	 */
 	public PainelDoMenu() {
 		try {
 			imagem = ImageIO.read(getClass().getResourceAsStream("/imagens/menu.jpg"));
@@ -27,6 +30,10 @@ public class PainelDoMenu extends JPanel {
 		}
 	}
 
+	/**
+	 * Modela a imagem no menu
+	 * 
+	 */
 	public void paintComponent(Graphics graficos) {
 		graficos.drawImage(imagem, 0, 0, this.getWidth(), this.getHeight(), null);
 	}
