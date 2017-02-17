@@ -1,9 +1,10 @@
 package entidade;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
-import componente.Componente;
+import sistema.controlador.SistemaDaEntidade;
 
 /**
  * Abstrai classes para entidades animadas e inanimadas
@@ -11,36 +12,77 @@ import componente.Componente;
  * @author Emanuel
  */
 public abstract class Entidade {
-	//TODO Melhorar a entidade segundo o Sistema Entidade para Java
-	
+
 	public int id;
-	private List<Componente> componentes = new ArrayList<Componente>();
-	
-	/**
-	 * Adiciona um componente
-	 * 
-	 * @param componente
-	 * @return
-	 */
-	public boolean adicionarComponente(Componente componente) {
-		return componentes.add(componente);
-	}
-		
-	/**
-	 * Le um componente e repassa
-	 * @return the componentes
-	 */
-	public <T extends Componente> T lerComponente(Class<T> tipo) {
-		return null;
-	}
+	public static SistemaDaEntidade sistemaDaEntidade;
 
 	/**
-	 * Remove um componente
+	 * Cria uma entidade com a id
 	 * 
-	 * @param componente
-	 * @return
+	 * @param id
 	 */
-	public boolean removerComponente(Componente componente) {
-		return componentes.remove(componente);
+	public Entidade() {
+		this.id = UUID.randomUUID().hashCode();
+		if (sistemaDaEntidade == null) throw new IllegalArgumentException(
+				"Nao há um sistemaDaEntidade global, então crie um antes de criar uma Entidade");
+		sistemaDaEntidade.registrarEntidade(this);
+	}
+
+	public class SistemaBaseDaEntidade implements SistemaDaEntidade {
+
+		public List<Entidade> entidades = new LinkedList<Entidade>();
+
+		/**
+		 *  Cria um sistemaBaseDaEntidade e associa com a entidade se for nulo
+		 */
+		public SistemaBaseDaEntidade() {
+			if (Entidade.sistemaDaEntidade == null) {
+				Entidade.sistemaDaEntidade = this;
+			}
+		}
+
+		/**
+		 * Obtem a proxima id
+		 * 
+		 * @see sistema.controlador.SistemaDaEntidade#obterProxID()
+		 */
+		@Override
+		public int obterProxID() {
+			return entidades.iterator().next().id;
+		}
+
+		/**
+		 * Registra uma entidade que foi criada
+		 * @return 
+		 * 
+		 * @see sistema.controlador.SistemaDaEntidade#registrarEntidade(entidade.
+		 *      Entidade)
+		 */
+		@Override
+		public boolean registrarEntidade(Entidade entidade) {
+			return entidades.add(entidade);
+		}
+
+		/**
+		 * Obtem a entidade da id especificada
+		 * 
+		 * @see sistema.controlador.SistemaDaEntidade#obterEntidade(int)
+		 */
+		@Override
+		public Entidade obterEntidade(int id) {
+			return entidades.get(id);
+		}
+
+		/**
+		 * Remove uma entidade registrada
+		 * @return 
+		 * 
+		 * @see sistema.controlador.SistemaDaEntidade#matarEntidade(entidade.
+		 *      Entidade)
+		 */
+		@Override
+		public boolean matarEntidade(Entidade entidade) {
+			return entidades.remove(entidade);
+		}
 	}
 }
