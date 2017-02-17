@@ -14,7 +14,7 @@ public interface SistemaDaEntidade {
 	 * 
 	 * @return
 	 */
-	int obterProxID();
+	public int obterProxID();
 
 	/**
 	 * Registra uma entidade que foi criada
@@ -22,7 +22,7 @@ public interface SistemaDaEntidade {
 	 * @param entidade
 	 * @return
 	 */
-	boolean registrarEntidade(Entidade entidade);
+	public boolean registrarEntidade(Entidade entidade);
 
 	/**
 	 * Obtem a entidade da id especificada
@@ -30,7 +30,7 @@ public interface SistemaDaEntidade {
 	 * @param id
 	 * @return
 	 */
-	Entidade obterEntidade(int id);
+	public Entidade obterEntidade(int id);
 
 	/**
 	 * Remove uma entidade registrada
@@ -38,5 +38,5 @@ public interface SistemaDaEntidade {
 	 * @param entidade
 	 * @return
 	 */
-	boolean matarEntidade(Entidade entidade);
+	public boolean matarEntidade(Entidade entidade);
 }
