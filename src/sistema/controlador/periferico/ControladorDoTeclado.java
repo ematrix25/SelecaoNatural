@@ -1,4 +1,4 @@
-package componente.controlador;
+package sistema.controlador.periferico;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

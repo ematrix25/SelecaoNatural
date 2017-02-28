@@ -1,4 +1,4 @@
-package componente.controlador;
+package sistema.controlador.periferico;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;

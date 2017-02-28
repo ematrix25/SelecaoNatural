@@ -14,6 +14,16 @@ public abstract class Componente {
 	 */
 	public static class Posicao extends Componente {
 		public int x, y;
+				
+		/**
+		 * Gera o objeto Posicao com x e y
+		 * @param x
+		 * @param y
+		 */
+		public Posicao(int x, int y) {
+			this.x = x;
+			this.y = y;
+		}
 
 		/**
 		 * Gera texto dos dados da Posicao

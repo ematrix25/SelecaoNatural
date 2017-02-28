@@ -1,8 +1,8 @@
 package sistema.controlador;
 
-import componente.utilitario.Aleatorio;
 import sistema.modelo.Ambiente;
 import sistema.modelo.Especie;
+import sistema.utilitario.Aleatorio;
 
 /**
  * @author Emanuel
