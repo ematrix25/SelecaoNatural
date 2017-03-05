@@ -52,6 +52,15 @@ public class ControladorDaEntidade {
 	}
 
 	/**
+	 * Remove os registros de tipos de Componentes vazios da Base de Componentes
+	 */
+	private void limparBaseDeComponentes() {
+		for (Class<?> Componente : baseDeComponentes.keySet()) {
+			baseDeComponentes.remove(Componente);
+		}
+	}
+
+	/**
 	 * Remove uma Entidade com parametro para remover a chave e não o índice
 	 * 
 	 * @param ID
@@ -63,6 +72,7 @@ public class ControladorDaEntidade {
 			entidades.remove(ID);
 			for (HashMap<Integer, ? extends Componente> base : baseDeComponentes.values()) {
 				base.remove(ID);
+				limparBaseDeComponentes();
 			}
 			menorIDNaoAssociada = ID;
 		}
@@ -77,7 +87,7 @@ public class ControladorDaEntidade {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T extends Componente> boolean adicionarComponente(int ID, T componente) {
-		if(!entidades.contains(ID)) return false;
+		if (!entidades.contains(ID)) return false;
 		HashMap<Integer, ? extends Componente> base = baseDeComponentes.get(componente.getClass());
 		if (base == null) {
 			base = new HashMap<Integer, T>();
@@ -95,7 +105,7 @@ public class ControladorDaEntidade {
 	 * @return
 	 */
 	public <T extends Componente> T obterComponente(int ID, Class<T> tipoDeComponente) {
-		if(!entidades.contains(ID)) return null;
+		if (!entidades.contains(ID)) return null;
 		HashMap<Integer, ? extends Componente> base = baseDeComponentes.get(tipoDeComponente);
 		if (base == null) throw new IllegalArgumentException(
 				"ERRO: Não existem Entidades com essa classe de Componente: " + tipoDeComponente);

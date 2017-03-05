@@ -17,8 +17,8 @@ import sistema.controlador.ControladorDaEntidade;
  */
 public class TesteControladorDeEntidade {
 
-	//TODO Terminar os Testes
-	
+	// TODO Terminar os Testes
+
 	private ControladorDaEntidade controladorDaEntidade;
 	private int ID;
 	private Posicao posicao;
@@ -36,12 +36,19 @@ public class TesteControladorDeEntidade {
 	}
 
 	/**
+	 * Metodo auxiliar para testar a criação de Entidade
+	 */
+	private void criarEntidade() {
+		ID = controladorDaEntidade.criarEntidade();
+	}
+
+	/**
 	 * Testa se o sistema cria Entidade corretamente
 	 */
 	@Test
 	public void testarCriarEntidade() {
 		assertTrue(controladorDaEntidade.entidades.isEmpty());
-		ID = controladorDaEntidade.criarEntidade();
+		criarEntidade();
 		assertFalse(controladorDaEntidade.entidades.isEmpty());
 		assertEquals(new Integer(ID), controladorDaEntidade.entidades.get(0));
 	}
@@ -51,9 +58,20 @@ public class TesteControladorDeEntidade {
 	 */
 	@Test
 	public void testarAdicionarComponente() {
+		criarEntidade();
+
+		// Avaliação em si
 		assertTrue(controladorDaEntidade.baseDeComponentes.isEmpty());
 		assertTrue(controladorDaEntidade.adicionarComponente(ID, posicao));
 		assertFalse(controladorDaEntidade.baseDeComponentes.isEmpty());
+	}
+
+	/**
+	 * Metodo auxiliar para adicionar Componente
+	 */
+	private void adicionarComponente() {
+		criarEntidade();
+		controladorDaEntidade.adicionarComponente(ID, posicao);
 	}
 
 	/**
@@ -61,6 +79,9 @@ public class TesteControladorDeEntidade {
 	 */
 	@Test
 	public void testarObterComponente() {
+		adicionarComponente();
+
+		// Avaliação em si
 		assertFalse(controladorDaEntidade.baseDeComponentes.isEmpty());
 		assertEquals(posicao, controladorDaEntidade.obterComponente(ID, Posicao.class));
 		assertFalse(controladorDaEntidade.baseDeComponentes.isEmpty());
@@ -71,6 +92,9 @@ public class TesteControladorDeEntidade {
 	 */
 	@Test
 	public void testarObterTodasEntidadesComOComponente() {
+		adicionarComponente();
+
+		// Avaliação em si
 		assertFalse(controladorDaEntidade.entidades.isEmpty());
 		assertFalse(controladorDaEntidade.baseDeComponentes.isEmpty());
 		assertTrue(controladorDaEntidade.obterTodasEntidadesComOComponente(Posicao.class).contains(new Integer(ID)));
@@ -81,6 +105,9 @@ public class TesteControladorDeEntidade {
 	 */
 	@Test
 	public void testarObterTodosOsComponentesDoTipo() {
+		adicionarComponente();
+
+		// Avaliação em si
 		assertFalse(controladorDaEntidade.entidades.isEmpty());
 		assertFalse(controladorDaEntidade.baseDeComponentes.isEmpty());
 		assertTrue(controladorDaEntidade.obterTodosOsComponentesDoTipo(Posicao.class).contains(posicao));
@@ -91,24 +118,43 @@ public class TesteControladorDeEntidade {
 	 */
 	@Test
 	public void testarRemoverEntidade() {
+		adicionarComponente();
+
+		// Avaliação em si
 		assertFalse(controladorDaEntidade.entidades.isEmpty());
 		assertTrue(controladorDaEntidade.removerEntidade(ID));
 		assertTrue(controladorDaEntidade.entidades.isEmpty());
 	}
-	
+
+	/**
+	 * Metodo auxiliar para remover Entidade
+	 */
+	private void removerEntidade() {
+		adicionarComponente();
+		controladorDaEntidade.removerEntidade(ID);
+	}
+
 	/**
 	 * Testa se o sistema suporta obter Componente de Entidade removida
 	 */
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testarObterComponenteRemovido() {
-		controladorDaEntidade.obterComponente(ID, Posicao.class);
+		removerEntidade();
+
+		// Avaliação em si
+		assertTrue(controladorDaEntidade.entidades.isEmpty());
+		assertTrue(controladorDaEntidade.baseDeComponentes.isEmpty());
+		assertFalse(posicao.equals(controladorDaEntidade.obterComponente(ID, Posicao.class)));
 	}
-	
+
 	/**
 	 * Testa se o sistema suporta obter Componentes com Entidade removida
 	 */
 	@Test
 	public void testarObterComponentesAposRemover() {
+		removerEntidade();
+
+		// Avaliação em si
 		assertTrue(controladorDaEntidade.entidades.isEmpty());
 		assertTrue(controladorDaEntidade.baseDeComponentes.isEmpty());
 		assertTrue(controladorDaEntidade.obterTodosOsComponentesDoTipo(Posicao.class).isEmpty());
