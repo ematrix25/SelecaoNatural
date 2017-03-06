@@ -11,7 +11,7 @@ public class Especime extends Componente {
 	public Especie especie;
 	public int massa;
 
-	/**	
+	/**
 	 * Gera o objeto Especime com valor padrão de massa
 	 */
 	public Especime(Especie especie) {
@@ -29,7 +29,7 @@ public class Especime extends Componente {
 	}
 
 	/**
-	 * Gera o texto dos dados do Especime
+	 * Gera o texto da massa do Especime
 	 * 
 	 * @see java.lang.Object#toString()
 	 */
@@ -44,6 +44,7 @@ public class Especime extends Componente {
 	 * @author Emanuel
 	 */
 	public static class Especie {
+		public String nome;
 		public Tipo tipo;
 		public int tempMaxSup, tempMinSup;
 
@@ -86,6 +87,28 @@ public class Especime extends Componente {
 				return new Tipo(formaAleatoria, Movimento.Contracao, false);
 			}
 			return null;
+		}
+
+		/**
+		 * Gera o codigo com o nome da Especie
+		 * 
+		 * @see java.lang.Object#hashCode()
+		 */
+		public int obterCodigo() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+			return result;
+		}
+
+		/**
+		 * Gera o texto do nome da Especie
+		 * 
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString() {
+			return "[" + nome + "]";
 		}
 
 		/**
