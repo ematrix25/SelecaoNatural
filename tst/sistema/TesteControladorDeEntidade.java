@@ -17,8 +17,6 @@ import sistema.controlador.ControladorDaEntidade;
  */
 public class TesteControladorDeEntidade {
 
-	// TODO Terminar os Testes
-
 	private ControladorDaEntidade controladorDaEntidade;
 	private int ID;
 	private Posicao posicao;

@@ -1,14 +1,17 @@
 package sistema.controlador;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import sistema.modelo.Ambiente;
-import sistema.modelo.Especie;
 import sistema.utilitario.Aleatorio;
 
 /**
  * @author Emanuel
  *
  */
-public class ControladorDoJogo {
+public class ControladorDoAmbiente {
 	private Ambiente ambiente;
 
 	// Cria ambiente com temperatura de 400K até 350K
@@ -25,18 +28,15 @@ public class ControladorDoJogo {
 	}
 
 	public boolean atualizarAmbiente(int tempMax, int tempMin) {
-		if (ambiente.getTempMax() != tempMax || ambiente.getTempMin() != tempMin) {
-			ambiente.setTempMax(tempMax);
-			ambiente.setTempMin(tempMin);
-			return true;
-		}
-		return false;
+		ambiente.tempMax = tempMax;
+		ambiente.tempMin = tempMin;
+		return true;
 	}
 
 	public boolean criarEspecie(int maxTemp, int minTemp) {
 		// TODO Terminar de Implementar
 		int[] temps = Aleatorio.escolherTemps(maxTemp, minTemp);
-		ambiente.addEspecies(new Especie(Aleatorio.escolherTipo(), temps[0], temps[1]));
+		ambiente.addEspecies(new ControladorDaEspecie(Aleatorio.escolherTipo(), temps[0], temps[1]));
 		return false;
 	}
 
@@ -53,5 +53,20 @@ public class ControladorDoJogo {
 	public boolean removerEspecie() {
 		// TODO Terminar de Implementar
 		return false;
+	}
+	
+	/**
+	 * @author Emanuel
+	 *
+	 */
+	public class Ambiente {
+		public int tempMax, tempMin;
+		public List<HashMap<Integer, List<Integer>>> especies;
+
+		public Ambiente(int tempMax, int tempMin) {
+			this.tempMax = tempMax;
+			this.tempMin = tempMin;
+			this.especies = new ArrayList<HashMap<Integer, List<Integer>>>();
+		}
 	}
 }

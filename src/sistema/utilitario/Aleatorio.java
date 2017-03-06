@@ -2,10 +2,6 @@ package sistema.utilitario;
 
 import java.util.Random;
 
-import sistema.modelo.tipo.Forma;
-import sistema.modelo.tipo.Movimento;
-import sistema.modelo.tipo.Tipo;
-
 /**
  * @author Emanuel
  *
@@ -15,6 +11,10 @@ public class Aleatorio {
 
 	public Aleatorio() {
 		gerador = new Random();
+	}
+
+	public static int escolherNum(int max) {
+		return escolherNum(max, 0);
 	}
 
 	private static int escolherNum(int max, int min) {
@@ -36,18 +36,5 @@ public class Aleatorio {
 				return temps;
 			}
 		}
-	}
-
-	public static Tipo escolherTipo() {
-		Forma formaAleatoria = Forma.escolhaAleatoria();
-		switch (formaAleatoria) {
-		case Coccus:
-			return new Tipo(formaAleatoria, Movimento.Deslizamento, true);
-		case Bacillus:
-			return new Tipo(formaAleatoria, Movimento.Flagelo, false);
-		case Spiral:
-			return new Tipo(formaAleatoria, Movimento.Contracao, false);
-		}
-		return null;
 	}
 }
