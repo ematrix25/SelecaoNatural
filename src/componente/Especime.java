@@ -1,6 +1,6 @@
 package componente;
 
-import sistema.utilitario.Aleatorio;
+import java.util.Random;
 
 /**
  * Componente que caracteriza o Especime da Entidade
@@ -55,7 +55,7 @@ public class Especime extends Componente {
 		 * @param tempMinSup
 		 */
 		public Especie(int tempMaxSup, int tempMinSup) {
-			this(escolherTipoAleatorio(), tempMaxSup, tempMinSup);
+			this(Forma.escolhaAleatoria(), tempMaxSup, tempMinSup);
 		}
 
 		/**
@@ -65,26 +65,26 @@ public class Especime extends Componente {
 		 * @param tempMaxSup
 		 * @param tempMinSup
 		 */
-		public Especie(Tipo tipo, int tempMaxSup, int tempMinSup) {
-			this.tipo = tipo;
+		public Especie(Forma forma, int tempMaxSup, int tempMinSup) {
+			this.tipo = escolherTipo(forma);
 			this.tempMaxSup = tempMaxSup;
 			this.tempMinSup = tempMinSup;
 		}
 
 		/**
-		 * Gera Tipo aleatorio para a Especie
+		 * Escolhe o Tipo da Especie dado a Forma
 		 * 
+		 * @param forma
 		 * @return
 		 */
-		private static Tipo escolherTipoAleatorio() {
-			Forma formaAleatoria = Forma.escolhaAleatoria();
-			switch (formaAleatoria) {
+		private static Tipo escolherTipo(Forma forma) {
+			switch (forma) {
 			case Coccus:
-				return new Tipo(formaAleatoria, Movimento.Deslizamento, true);
+				return new Tipo(forma, Movimento.Deslizamento, true);
 			case Bacillus:
-				return new Tipo(formaAleatoria, Movimento.Flagelo, false);
+				return new Tipo(forma, Movimento.Flagelo, false);
 			case Spiral:
-				return new Tipo(formaAleatoria, Movimento.Contracao, false);
+				return new Tipo(forma, Movimento.Contracao, false);
 			}
 			return null;
 		}
@@ -149,7 +149,7 @@ public class Especime extends Componente {
 			Coccus, Bacillus, Spiral;
 
 			public static Forma escolhaAleatoria() {
-				return values()[Aleatorio.escolherNum(values().length)];
+				return values()[new Random().nextInt(values().length)];
 			}
 		}
 
