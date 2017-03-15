@@ -29,6 +29,33 @@ public class Especime extends Componente {
 	}
 
 	/**
+	 * Verifica a igualdade de Especimes
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof Especime)) {
+			return false;
+		}
+		Especime other = (Especime) obj;
+		if (especie == null) {
+			if (other.especie != null) {
+				return false;
+			}
+		} else if (!especie.equals(other.especie)) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
 	 * Gera o texto da massa do Especime
 	 * 
 	 * @see java.lang.Object#toString()
@@ -102,6 +129,42 @@ public class Especime extends Componente {
 		}
 
 		/**
+		 * Valida a igualdade de Especies
+		 * 
+		 * @see java.lang.Object#equals(java.lang.Object)
+		 */
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+			if (obj == null) {
+				return false;
+			}
+			if (!(obj instanceof Especie)) {
+				return false;
+			}
+			Especie other = (Especie) obj;
+			if (obterCodigo() != other.obterCodigo()) {
+				return false;
+			}
+			if (tempMaxSup != other.tempMaxSup) {
+				return false;
+			}
+			if (tempMinSup != other.tempMinSup) {
+				return false;
+			}
+			if (tipo == null) {
+				if (other.tipo != null) {
+					return false;
+				}
+			} else if (!tipo.equals(other.tipo)) {
+				return false;
+			}
+			return true;
+		}
+
+		/**
 		 * Gera o texto do nome da Especie
 		 * 
 		 * @see java.lang.Object#toString()
@@ -117,26 +180,50 @@ public class Especime extends Componente {
 		 * @author Emanuel
 		 */
 		public static class Tipo {
-			private Forma forma;
-			private Movimento movimento;
-			private boolean ehAutotrofa;
+			public Forma forma;
+			public Movimento movimento;
+			public boolean ehAutotrofa;
 
+			/**
+			 * Cria o objteto Tipo da Especie
+			 * 
+			 * @param forma
+			 * @param movimento
+			 * @param ehAutotrofa
+			 */
 			public Tipo(Forma forma, Movimento movimento, boolean ehAutotrofa) {
 				this.forma = forma;
 				this.movimento = movimento;
 				this.ehAutotrofa = ehAutotrofa;
 			}
 
-			public Forma getForma() {
-				return forma;
-			}
-
-			public Movimento getMovimento() {
-				return movimento;
-			}
-
-			public boolean isEhAutotrofa() {
-				return ehAutotrofa;
+			/** 
+			 * Valida a igualdade de Tipos
+			 *
+			 * @see java.lang.Object#equals(java.lang.Object)
+			 */
+			@Override
+			public boolean equals(Object obj) {
+				if (this == obj) {
+					return true;
+				}
+				if (obj == null) {
+					return false;
+				}
+				if (!(obj instanceof Tipo)) {
+					return false;
+				}
+				Tipo other = (Tipo) obj;
+				if (forma != other.forma) {
+					return false;
+				}
+				if (movimento != other.movimento) {
+					return false;
+				}
+				if (ehAutotrofa != other.ehAutotrofa) {
+					return false;
+				}
+				return true;
 			}
 		}
 

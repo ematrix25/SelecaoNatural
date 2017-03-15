@@ -98,6 +98,34 @@ public class ControladorDaEntidade {
 	}
 
 	/**
+	 * Obtem a Entidade dado um Componente
+	 * 
+	 * @param componente
+	 * @return
+	 */
+	public <T extends Componente> Integer obterEntidadeComOComponente(T componente) {
+		HashMap<Integer, ? extends Componente> base = baseDeComponentes.get(componente.getClass());
+		if (base == null) return null;
+		for(Integer chave : base.keySet()){
+			if(base.get(chave).equals(componente))
+				return chave;
+		}
+		return null;
+	}
+
+	/**
+	 * Obtem todas as Entidades do tipo de Componente
+	 * 
+	 * @param tipoDeComponente
+	 * @return
+	 */
+	public <T extends Componente> Set<Integer> obterTodasEntidadesComOComponente(Class<T> tipoDeComponente) {
+		HashMap<Integer, ? extends Componente> base = baseDeComponentes.get(tipoDeComponente);
+		if (base == null) return new HashSet<Integer>();
+		return base.keySet();
+	}
+
+	/**
 	 * Obtem o Componente da Entidade da ID
 	 * 
 	 * @param ID
@@ -113,18 +141,6 @@ public class ControladorDaEntidade {
 		if (resultado == null)
 			throw new IllegalArgumentException("ERRO: " + ID + " não possui Componente da classe: " + tipoDeComponente);
 		return resultado;
-	}
-
-	/**
-	 * Obtem todas as Entidades do tipo de Componente
-	 * 
-	 * @param tipoDeComponente
-	 * @return
-	 */
-	public <T extends Componente> Set<Integer> obterTodasEntidadesComOComponente(Class<T> tipoDeComponente) {
-		HashMap<Integer, ? extends Componente> base = baseDeComponentes.get(tipoDeComponente);
-		if (base == null) return new HashSet<Integer>();
-		return base.keySet();
 	}
 
 	/**
@@ -144,6 +160,11 @@ public class ControladorDaEntidade {
 		}
 	}
 
+	/**
+	 * Metodo principal para testar o Controlador da Entidade
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		ControladorDaEntidade controladorDaEntidade = new ControladorDaEntidade();
 

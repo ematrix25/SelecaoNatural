@@ -69,11 +69,11 @@ public class ControladorDoAmbiente {
 	}
 
 	/**
-	 * Le o Ambiente
+	 * Obtem o Ambiente
 	 * 
 	 * @return
 	 */
-	public Ambiente lerAmbiente() {
+	public Ambiente obterAmbiente() {
 		return ambiente;
 	}
 
@@ -124,34 +124,49 @@ public class ControladorDoAmbiente {
 	}
 
 	/**
-	 * Le a Especie
+	 * Obtem a Especie dado a ID do Especime
 	 * 
 	 * @return
 	 */
-	public boolean lerEspecie() {
-		// TODO Terminar de Implementar
-		return false;
+	public Especime obterEspecie(int ID) {
+		return controladorDaEntidade.obterComponente(ID, Especime.class);
 	}
 
 	/**
-	 * Atualiza a Especie
+	 * Atualiza a Especie com adição ou remoção de Especimes
 	 * 
 	 * @return
 	 */
-	public boolean atualizarEspecie() {
-		// TODO Terminar de Implementar
-		return false;
+	public void atualizarEspecie(boolean ehAdicao, Especie especie) {
+		int ID;
+		if (ehAdicao) {
+			ID = controladorDaEntidade.criarEntidade();
+			controladorDaEntidade.adicionarComponente(ID, new Especime(especie));
+			List<Integer> especimes = ambiente.especies.get(especie);
+			especimes.add(ID);
+			ambiente.especies.replace(especie.obterCodigo(), especimes);
+		} else {
+			ID = controladorDaEntidade.obterEntidadeComOComponente(new Especime(especie));
+			controladorDaEntidade.removerEntidade(ID);
+			List<Integer> especimes = ambiente.especies.get(especie);
+			especimes.remove(ID);
+			ambiente.especies.replace(especie.obterCodigo(), especimes);
+		}
 	}
 
 	/**
-	 * Remove a Especie
+	 * Remove a Especie e seus especimes
 	 * 
 	 * @return
 	 */
-	public boolean removerEspecie() {
-		// TODO Terminar de Implementar
-		return false;
+	public void removerEspecie(Especie especie) {		
+		for (Integer ID : ambiente.especies.get(especie.obterCodigo())) {
+			controladorDaEntidade.removerEntidade(ID);
+		}
+		ambiente.especies.remove(especie.obterCodigo());
 	}
+	
+	//TODO Testar o Controlado do Ambiente
 
 	/**
 	 * Ambiente do jogo onde as Especies vão habitar
