@@ -137,18 +137,13 @@ public class ControladorDoAmbiente {
 	}
 
 	/**
-	 * Obtem a Especie pela ID de um Especime
+	 * Obtem os Especimes da Especie do Ambiente
 	 * 
 	 * @param ID
 	 * @return
 	 */
-	public int obterEspecie(int ID) {
-		for (int especie : ambiente.especies.keySet()) {
-			for (int especime : ambiente.especies.get(especie)) {
-				if (ID == especime) return especie;
-			}
-		}
-		return -1;
+	public List<Integer> obterEspecie(int especie) {
+		return ambiente.especies.get(especie);
 	}
 
 	/**
@@ -165,7 +160,7 @@ public class ControladorDoAmbiente {
 			especimes.add(ID);
 			ambiente.especies.replace(especie, especimes);
 		} else {
-			especimes.remove(ID);
+			especimes.remove(new Integer(ID));
 		}
 		ambiente.especies.replace(especie, especimes);
 	}
@@ -235,20 +230,28 @@ public class ControladorDoAmbiente {
 		if (controladorDoAmbiente.atualizarTemp(true, 20))
 			System.out.println("Temperatura ambiente é " + controladorDoAmbiente.obterAmbiente().obterTemp() + "K");
 
+		System.out.println();
+		
 		// Atualizar População - Adicionar Especime
+		System.out.println("Adicionando o Especime 8");
 		int entidade = controladorDaEntidade.criarEntidade();
 		controladorDaEntidade.adicionarComponente(entidade, new Especime(especies[5]));
 		controladorDoAmbiente.atualizarEspecie(entidade, true, especies[5].obterCodigo());
+		System.out.println(controladorDoAmbiente.obterAmbiente().especies);
 
 		// Atualizar População - Remover Especime
+		System.out.println("Removendo o Especime 6");
 		entidade = controladorDaEntidade.obterEntidadeComOComponente(new Especime(especies[5]));
 		controladorDaEntidade.removerEntidade(entidade);
 		controladorDoAmbiente.atualizarEspecie(entidade, false, especies[5].obterCodigo());
+		System.out.println(controladorDoAmbiente.obterAmbiente().especies);
 		
 		// Remover Especie
-		for (Integer ID : controladorDoAmbiente.obterAmbiente().especies.get(especies[5])) {
+		System.out.println("Removendo a Especie do Especime 6");
+		for (Integer ID : controladorDoAmbiente.obterEspecie(especies[5].obterCodigo())) {
 			controladorDaEntidade.removerEntidade(ID);
 		}
 		controladorDoAmbiente.removerEspecie(especies[5].obterCodigo());
+		System.out.println(controladorDoAmbiente.obterAmbiente().especies);
 	}
 }
