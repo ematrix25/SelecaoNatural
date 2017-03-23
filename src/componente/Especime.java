@@ -93,6 +93,7 @@ public class Especime extends Componente {
 		 * @param tempMinSup
 		 */
 		public Especie(Forma forma, int tempMaxSup, int tempMinSup) {
+			this.nome = forma.toString() + " " + Integer.toString(tempMaxSup * tempMinSup);
 			this.tipo = escolherTipo(forma);
 			this.tempMaxSup = tempMaxSup;
 			this.tempMinSup = tempMinSup;
@@ -197,7 +198,7 @@ public class Especime extends Componente {
 				this.ehAutotrofa = ehAutotrofa;
 			}
 
-			/** 
+			/**
 			 * Valida a igualdade de Tipos
 			 *
 			 * @see java.lang.Object#equals(java.lang.Object)
