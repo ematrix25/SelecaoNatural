@@ -20,7 +20,7 @@ import javax.swing.border.EmptyBorder;
  *
  */
 public class TelaDoQuestionario extends JFrame {
-	// TODO Implementar o questionario usando paineis renderizaveis
+	// TODO Criar um PainelDoQuestionario renderizado
 
 	private static final long serialVersionUID = 1L;
 	private JPanel painel, painelDaP1, painelDaP2, painelDaP3;

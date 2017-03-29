@@ -21,7 +21,6 @@ import sistema.visao.painel.PainelDoJogo;
  *
  */
 public class TelaDoJogo extends JFrame {
-	// TODO Implementar o questionario usando paineis renderizaveis
 
 	private static final long serialVersionUID = 1L;
 	private JPanel painel, painelDaCelula, painelDaPontuacao, painelDaEspecie;

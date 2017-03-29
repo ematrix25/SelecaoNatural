@@ -11,6 +11,8 @@ import sistema.visao.TelaDoMenu;
  *
  */
 public class Jogo {
+	// TODO Implementar a tela aqui usando paineis renderizados
+
 	public static void main(String[] args) {
 		try {
 			new TelaDoMenu();
