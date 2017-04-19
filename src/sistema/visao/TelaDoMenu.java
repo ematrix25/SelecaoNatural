@@ -21,6 +21,7 @@ import sistema.visao.painel.PainelDoMenu;
  *
  */
 public class TelaDoMenu extends JFrame {
+	// TODO Remover TelaDoMenu quando Tela estiver pronta
 
 	private static final long serialVersionUID = 1L;
 	private JPanel painel, painelDosBotoes;
