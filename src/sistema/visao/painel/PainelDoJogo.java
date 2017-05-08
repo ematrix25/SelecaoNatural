@@ -11,10 +11,9 @@ import sistema.visao.TelaDoJogo;
 import sistema.visao.TelaDoQuestionario;
 
 /**
- * Cria Painel do Jogo.
+ * Cria Painel do Jogo
  * 
  * @author Emanuel
- *
  */
 public class PainelDoJogo extends JPanel implements Runnable {
 
@@ -49,7 +48,6 @@ public class PainelDoJogo extends JPanel implements Runnable {
 	}
 
 	/**
-	 * 
 	 * Executa a thread do painel do jogo.
 	 * 
 	 * @see java.lang.Runnable#run()
@@ -84,7 +82,7 @@ public class PainelDoJogo extends JPanel implements Runnable {
 
 				// Sistema temporário para abrir o questionário
 				cont++;
-				if (cont >= 30) {
+				if (cont >= 300) {
 					telaDoJogo.setVisible(false);
 					new TelaDoQuestionario();
 					stop();
@@ -128,24 +126,25 @@ public class PainelDoJogo extends JPanel implements Runnable {
 		graficos.dispose();
 	}
 
+	/**
+	 * Faz a movimentacao das posicoes de x e y do texto
+	 */
 	private void moveText() {
-		if (x == this.getWidth() - 183 || x == 0)
-			xdir = !xdir;
-		if (y == this.getHeight() - 5 || y == 19)
-			ydir = !ydir;
-		if (xdir)
-			x++;
-		else
-			x--;
-		if (ydir)
-			y++;
-		else
-			y--;
+		if (x == this.getWidth() - 183 || x == 0) xdir = !xdir;
+		if (y == this.getHeight() - 5 || y == 19) ydir = !ydir;
+		if (xdir) x++;
+		else x--;
+		if (ydir) y++;
+		else y--;
 	}
 
+	/**
+	 * Modela a imagem no menu
+	 * 
+	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+	 */
 	public void paintComponent(Graphics graficos) {
 		super.paintComponent(graficos);
-		if (imageBuffer != null)
-			graficos.drawImage(imageBuffer, 0, 0, null);
+		if (imageBuffer != null) graficos.drawImage(imageBuffer, 0, 0, null);
 	}
 }

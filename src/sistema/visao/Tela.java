@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import sistema.utilitario.Resolucao;
+import sistema.visao.painel.*;
 
 /**
  * Cria a Tela do jogo
@@ -17,9 +18,9 @@ import sistema.utilitario.Resolucao;
 public class Tela extends JFrame {
 	// TODO Implementar a tela aqui usando paineis renderizados
 
-	private static final long serialVersionUID = 2297499331609901168L;
+	private static final long serialVersionUID = 1L;
 	private static final int ALTURA = 300;
-	private JPanel painelDoMenu, painelDoJogo, painelDoQuestionario;
+	private JPanel painelDoMenu, painelDoJogo, painelDoQuest;
 
 	/**
 	 * Roda a Aplicação.
@@ -40,18 +41,17 @@ public class Tela extends JFrame {
 	 * Cria a Tela
 	 */
 	public Tela() {
-		iniciar();
-	}
-
-	/**
-	 * Inicia o conteudo do frame.
-	 */
-	private void iniciar() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(TelaDoMenu.class.getResource("/imagens/icone.ico")));
 		setTitle("Selecao Natural");
 		setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		setBounds(100, 100, Resolucao.calcLarguraRelativa(ALTURA), ALTURA);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
+
+		painelDoMenu = new PainelDoMenu();
+		painelDoJogo = new PainelDoJogo();
+		painelDoQuest = new PainelDoQuest();
+
+		add(painelDoMenu);
 	}
 }
