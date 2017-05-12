@@ -1,8 +1,8 @@
 package sistema;
 
-import java.io.IOException;
+import java.awt.EventQueue;
 
-import sistema.visao.TelaDoMenu;
+import sistema.visao.Tela;
 
 /**
  * Inicia todo o processo
@@ -11,13 +11,16 @@ import sistema.visao.TelaDoMenu;
  *
  */
 public class Jogo {
-	// TODO Trocar TelaDoMenu para Tela quando estiver pronta
 
 	public static void main(String[] args) {
-		try {
-			new TelaDoMenu();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					new Tela();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 }

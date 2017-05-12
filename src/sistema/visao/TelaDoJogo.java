@@ -48,7 +48,7 @@ public class TelaDoJogo extends JFrame {
 	public TelaDoJogo() {
 		setResizable(false);
 		setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		setIconImage(Toolkit.getDefaultToolkit().getImage(TelaDoMenu.class.getResource("/imagens/icone.ico")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imagens/icone.ico")));
 		setTitle("Selecao Natural");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -121,9 +121,8 @@ public class TelaDoJogo extends JFrame {
 		lblValorQtdCelulas.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		painelDaEspecie.add(lblValorQtdCelulas);
 
-		painelDoJogo = new PainelDoJogo();
+		//painelDoJogo = new PainelDoJogo(this);
 		painelDoJogo.setBounds(0, 30, 444, 242);
 		painel.add(painelDoJogo);
-		painelDoJogo.start(this);
 	}
 }

@@ -46,7 +46,7 @@ public class TelaDoQuestionario extends JFrame {
 	public TelaDoQuestionario() {
 		setResizable(false);
 		setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		setIconImage(Toolkit.getDefaultToolkit().getImage(TelaDoMenu.class.getResource("/imagens/icone.ico")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imagens/icone.ico")));
 		setTitle("Selecao Natural");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);

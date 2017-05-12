@@ -7,8 +7,7 @@ import java.awt.Image;
 
 import javax.swing.JPanel;
 
-import sistema.visao.TelaDoJogo;
-import sistema.visao.TelaDoQuestionario;
+import sistema.visao.Tela;
 
 /**
  * Cria Painel do Jogo
@@ -16,9 +15,10 @@ import sistema.visao.TelaDoQuestionario;
  * @author Emanuel
  */
 public class PainelDoJogo extends JPanel implements Runnable {
-
+	// TODO Fazer o painel do jogo funcionar
+	
 	private static final long serialVersionUID = 1L;
-	private TelaDoJogo telaDoJogo;
+	private Tela tela;
 	private Thread thread;
 	private volatile boolean rodando = false;
 	private volatile boolean gameOver = false;
@@ -28,27 +28,33 @@ public class PainelDoJogo extends JPanel implements Runnable {
 	private Image imageBuffer = null;
 
 	/**
-	 * Inicia a thread do painel do jogo.
-	 * 
-	 * @param telaDoJogo
+	 * Inicializa o painel do jogo
 	 */
-	public synchronized void start(TelaDoJogo telaDoJogo) {
-		this.telaDoJogo = telaDoJogo;
-		if (thread == null || !rodando) {
-			thread = new Thread(this, "TelaDoJogo");
-			thread.start();
-		}
+	public PainelDoJogo(Tela tela) {
+		this.tela = tela;
+		thread = new Thread(this, "Jogo");
+		imageBuffer = createImage(getWidth(), getHeight());
 	}
 
 	/**
-	 * Fecha a thread do painel do jogo.
+	 * Inicia a thread do painel do jogo
+	 * 
+	 * @param telaDoJogo
+	 */
+	public synchronized void start() {
+		rodando = true;
+		thread.start();
+	}
+
+	/**
+	 * Fecha a thread do painel do jogo
 	 */
 	public synchronized void stop() {
 		rodando = false;
 	}
 
 	/**
-	 * Executa a thread do painel do jogo.
+	 * Executa a thread do painel do jogo
 	 * 
 	 * @see java.lang.Runnable#run()
 	 */
@@ -56,15 +62,14 @@ public class PainelDoJogo extends JPanel implements Runnable {
 	public void run() {
 		long tempoAgora = System.nanoTime(), tempoAntes;
 		long temporizador = System.currentTimeMillis();
-		final double nanoSegundos = 1000000000.0 / 60.0;
+		final double NANOSEGUNDOS = 1000000000.0 / 60.0;
 		double deltaTempo = 0.0;
 		int quadros = 0, atualizacoes = 0;
 		requestFocus();
-		rodando = true;
 		while (rodando) {
 			tempoAntes = tempoAgora;
 			tempoAgora = System.nanoTime();
-			deltaTempo += (tempoAgora - tempoAntes) / nanoSegundos;
+			deltaTempo += (tempoAgora - tempoAntes) / NANOSEGUNDOS;
 			while (deltaTempo >= 1) {
 				atualizar();
 				atualizacoes++;
@@ -75,18 +80,19 @@ public class PainelDoJogo extends JPanel implements Runnable {
 			moveText();
 			if (System.currentTimeMillis() - temporizador > 1000) {
 				temporizador += 1000;
+				tela.setTitle(tela.TITULO + " | " + atualizacoes + " aps" + quadros + " qps");
 				qps = quadros;
 				quadros = 0;
 				aps = atualizacoes;
 				atualizacoes = 0;
 
-				// Sistema temporário para abrir o questionário
+				// Sistema temporário para abrir o painel do questionário
 				cont++;
 				if (cont >= 300) {
-					telaDoJogo.setVisible(false);
-					new TelaDoQuestionario();
-					stop();
-					telaDoJogo.dispose();
+					tela.remove(tela.painelDoJogo);
+					((PainelDoJogo) tela.painelDoJogo).stop();
+					tela.add(tela.painelDoQuest);
+					//((PainelDoQuest) tela.painelDoQuest).start();
 				}
 			}
 			repaint();
@@ -100,7 +106,7 @@ public class PainelDoJogo extends JPanel implements Runnable {
 	}
 
 	/**
-	 * Atualiza todos os dados do jogo.
+	 * Atualiza todos os dados do jogo
 	 */
 	private void atualizar() {
 		if (!gameOver) {
@@ -108,10 +114,9 @@ public class PainelDoJogo extends JPanel implements Runnable {
 	}
 
 	/**
-	 * Renderizar o painel na tela.
+	 * Renderizar o painel na tela
 	 */
 	private void renderizar() {
-		imageBuffer = createImage(getWidth(), getHeight());
 		Graphics graficos = imageBuffer.getGraphics();
 		graficos.setColor(Color.white);
 		graficos.fillRect(0, 0, getWidth(), getHeight());
