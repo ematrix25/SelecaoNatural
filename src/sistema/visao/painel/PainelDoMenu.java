@@ -81,24 +81,17 @@ public class PainelDoMenu extends JPanel implements Runnable {
 	}
 
 	/**
-	 * Verifica se o mouse esta no botao
-	 * 
-	 * @return
+	 * Modela a imagem na tela do menu
 	 */
-	private boolean mouseEstaNoBotao(int x, int y) {
-		int mouseX = Mouse.getX(), mouseY = Mouse.getY();
-		if (mouseX >= x && mouseX <= x + 90) if (mouseY >= y && mouseY <= y + 60) return true;
-		return false;
-	}
+	public void paintComponent(Graphics graficos) {
+		graficos.drawImage(imagem, 0, 0, this.getWidth(), this.getHeight(), null);
 
-	/**
-	 * Verifica se o mouse clicou no botao em x e y
-	 * 
-	 * @return
-	 */
-	private boolean mouseClicouNoBotao(int x, int y) {
-		if (mouseEstaNoBotao(x, y) && Mouse.getButton() > -1) return true;
-		return false;
+		renderizarBotao(graficos, "Sobre", 100, 50);
+		renderizarBotao(graficos, "Opcoes", 100, 100);
+		renderizarBotao(graficos, "Continuar", 100, 150);
+		renderizarBotao(graficos, "Jogar", 100, 200);
+		
+		graficos.dispose();
 	}
 
 	/**
@@ -122,31 +115,56 @@ public class PainelDoMenu extends JPanel implements Runnable {
 		graficos.setFont(new Font("Verdana", 0, 12));
 		graficos.drawString(texto, x + 10, y + 20);
 
-		if (mouseClicouNoBotao(x, y)) {
-			graficos.setColor(Color.green);
-			graficos.setFont(new Font("Verdana", 0, 25));
-			graficos.drawString("Mouse clicou no botao", 50, 80);
-
-		}
+		if (mouseClicouNoBotao(x, y)) acaoDoBotao(texto.charAt(0));
 	}
 
 	/**
-	 * Modela a imagem na tela do menu
+	 * Verifica se o mouse clicou no botao em x e y
+	 * 
+	 * @return
 	 */
-	public void paintComponent(Graphics graficos) {
-		graficos.drawImage(imagem, 0, 0, this.getWidth(), this.getHeight(), null);
+	private boolean mouseClicouNoBotao(int x, int y) {
+		if (mouseEstaNoBotao(x, y) && Mouse.getButton() > -1) return true;
+		return false;
+	}
 
-		renderizarBotao(graficos, "Sobre", 100, 50);
-		renderizarBotao(graficos, "Opcoes", 100, 100);
-		renderizarBotao(graficos, "Continuar", 100, 150);
-		renderizarBotao(graficos, "Jogar", 100, 200);
+	/**
+	 * Verifica se o mouse esta no botao
+	 * 
+	 * @return
+	 */
+	private boolean mouseEstaNoBotao(int x, int y) {
+		int mouseX = Mouse.getX(), mouseY = Mouse.getY();
+		if (mouseX >= x && mouseX <= x + 90) if (mouseY >= y && mouseY <= y + 60) return true;
+		return false;
+	}
 
-		if (Mouse.getButton() > -1) {
-			graficos.setColor(Color.green);
-			graficos.setFont(new Font("Verdana", 0, 25));
-			graficos.drawString("X: " + Mouse.getX() + ", Y: " + Mouse.getY(), 50, 40);
+	/**
+	 * Realiza a ação do botao quando clicado
+	 * 
+	 * @return
+	 */
+	private void acaoDoBotao(char inicial) {
+		switch (inicial) {
+		case 'J':
+			tela.remove(tela.painelDoMenu);
+			((PainelDoMenu) tela.painelDoMenu).stop();
+			tela.add(tela.painelDoJogo);
+			((PainelDoJogo) tela.painelDoJogo).start();
+			break;
+		case 'C':
+			// TODO Criar uma acao para o botao continuar
+			break;
+		case 'O':
+			// TODO Criar uma acao para o botao opcoes
+			break;
+		case 'S':
+			// TODO Criar uma acao para o botão sobre
+			break;
+		default:
+			System.out.println("Botao clicado nao reconhecido");
+			break;
 		}
 
-		graficos.dispose();
 	}
 }

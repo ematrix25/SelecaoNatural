@@ -3,7 +3,7 @@ package sistema.visao.painel;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
@@ -22,10 +22,9 @@ public class PainelDoJogo extends JPanel implements Runnable {
 	private Thread thread;
 	private volatile boolean rodando = false;
 	private volatile boolean gameOver = false;
-	private int qps, aps;
 	private int x = 100, y = 100, cont = 0;
 	private boolean xdir = true, ydir = false;
-	private Image imageBuffer = null;
+	private BufferedImage imagem;
 
 	/**
 	 * Inicializa o painel do jogo
@@ -33,7 +32,6 @@ public class PainelDoJogo extends JPanel implements Runnable {
 	public PainelDoJogo(Tela tela) {
 		this.tela = tela;
 		thread = new Thread(this, "Jogo");
-		imageBuffer = createImage(getWidth(), getHeight());
 	}
 
 	/**
@@ -80,19 +78,16 @@ public class PainelDoJogo extends JPanel implements Runnable {
 			moveText();
 			if (System.currentTimeMillis() - temporizador > 1000) {
 				temporizador += 1000;
-				tela.setTitle(tela.TITULO + " | " + atualizacoes + " aps" + quadros + " qps");
-				qps = quadros;
-				quadros = 0;
-				aps = atualizacoes;
+				tela.setTitle(tela.TITULO + " | " + atualizacoes + " aps e " + quadros + " qps");
 				atualizacoes = 0;
-
-				// Sistema temporário para abrir o painel do questionário
+				quadros = 0;				
+				
 				cont++;
 				if (cont >= 300) {
 					tela.remove(tela.painelDoJogo);
 					((PainelDoJogo) tela.painelDoJogo).stop();
-					tela.add(tela.painelDoQuest);
-					//((PainelDoQuest) tela.painelDoQuest).start();
+					// tela.add(tela.painelDoQuest);
+					// ((PainelDoQuest) tela.painelDoQuest).start();
 				}
 			}
 			repaint();
@@ -117,16 +112,12 @@ public class PainelDoJogo extends JPanel implements Runnable {
 	 * Renderizar o painel na tela
 	 */
 	private void renderizar() {
-		Graphics graficos = imageBuffer.getGraphics();
+		imagem = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
+		Graphics graficos = imagem.getGraphics();
 		graficos.setColor(Color.white);
 		graficos.fillRect(0, 0, getWidth(), getHeight());
-		graficos.setColor(Color.green);
-		graficos.setFont(new Font("Verdana", 0, 12));
-		graficos.drawString("QPS: " + qps, 10, 10);
-		graficos.setColor(Color.red);
-		graficos.drawString("APS: " + aps, 10, 30);
-		graficos.setFont(new Font("Verdana", 0, 25));
 		graficos.setColor(Color.black);
+		graficos.setFont(new Font("Verdana", 0, 25));
 		graficos.drawString("Janela do Jogo", x, y);
 		graficos.dispose();
 	}
@@ -150,6 +141,6 @@ public class PainelDoJogo extends JPanel implements Runnable {
 	 */
 	public void paintComponent(Graphics graficos) {
 		super.paintComponent(graficos);
-		if (imageBuffer != null) graficos.drawImage(imageBuffer, 0, 0, null);
+		if (imagem != null) graficos.drawImage(imagem, 0, 0, null);
 	}
 }
