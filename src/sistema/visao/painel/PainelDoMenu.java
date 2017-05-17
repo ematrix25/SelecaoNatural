@@ -18,17 +18,20 @@ import sistema.visao.Tela;
  * @author Emanuel
  */
 public class PainelDoMenu extends JPanel implements Runnable {
-	// TODO Fazer o painel do menu funcionar
 
 	private static final long serialVersionUID = 1L;
+	
 	private Tela tela;
 	private Thread thread;
-	private volatile boolean rodando = false;
 	private Mouse mouse;
 	private Image imagem;
 
+	private volatile boolean rodando = false;
+
 	/**
 	 * Inicializa o painel do menu
+	 *
+	 * @param tela
 	 */
 	public PainelDoMenu(Tela tela) {
 		this.tela = tela;
@@ -82,27 +85,29 @@ public class PainelDoMenu extends JPanel implements Runnable {
 
 	/**
 	 * Modela a imagem na tela do menu
+	 * 
+	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
 	 */
 	public void paintComponent(Graphics graficos) {
 		graficos.drawImage(imagem, 0, 0, this.getWidth(), this.getHeight(), null);
 
-		renderizarBotao(graficos, "Sobre", 100, 50);
-		renderizarBotao(graficos, "Opcoes", 100, 100);
-		renderizarBotao(graficos, "Continuar", 100, 150);
-		renderizarBotao(graficos, "Jogar", 100, 200);
-		
+		renderizarBotao(graficos, "Sobre", 50);
+		renderizarBotao(graficos, "Opcoes", 100);
+		renderizarBotao(graficos, "Continuar", 150);
+		renderizarBotao(graficos, "Jogar", 200);
+
 		graficos.dispose();
 	}
 
 	/**
 	 * Renderiza um botao com o texto em x e y saindo do canto inferior direito
 	 * 
+	 * @param graficos
 	 * @param texto
-	 * @param x
-	 * @param y
+	 * @param desvioY
 	 */
-	private void renderizarBotao(Graphics graficos, String texto, int desvioX, int desvioY) {
-		int x = this.getWidth() - desvioX, y = this.getHeight() - desvioY;
+	private void renderizarBotao(Graphics graficos, String texto, int desvioY) {
+		int x = this.getWidth() - 100, y = this.getHeight() - desvioY;
 
 		// Retangulo do botao
 		graficos.setColor(Color.white);
@@ -121,6 +126,8 @@ public class PainelDoMenu extends JPanel implements Runnable {
 	/**
 	 * Verifica se o mouse clicou no botao em x e y
 	 * 
+	 * @param x
+	 * @param y
 	 * @return
 	 */
 	private boolean mouseClicouNoBotao(int x, int y) {
@@ -131,6 +138,8 @@ public class PainelDoMenu extends JPanel implements Runnable {
 	/**
 	 * Verifica se o mouse esta no botao
 	 * 
+	 * @param x
+	 * @param y
 	 * @return
 	 */
 	private boolean mouseEstaNoBotao(int x, int y) {
@@ -142,7 +151,7 @@ public class PainelDoMenu extends JPanel implements Runnable {
 	/**
 	 * Realiza a ação do botao quando clicado
 	 * 
-	 * @return
+	 * @param inicial
 	 */
 	private void acaoDoBotao(char inicial) {
 		switch (inicial) {
