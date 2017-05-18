@@ -3,12 +3,10 @@ package sistema.visao.painel;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import sistema.utilitario.periferico.Mouse;
 import sistema.visao.Tela;
 
 /**
@@ -16,16 +14,9 @@ import sistema.visao.Tela;
  * 
  * @author Emanuel
  */
-public class PainelDoMenu extends Painel implements Runnable {
+public class PainelDoMenu extends Painel {
 
 	private static final long serialVersionUID = 1L;
-
-	private Tela tela;
-	private Thread thread;
-	private Mouse mouse;
-	private Image imagem;
-
-	private volatile boolean rodando = false;
 
 	/**
 	 * Inicializa o painel do menu
@@ -33,36 +24,19 @@ public class PainelDoMenu extends Painel implements Runnable {
 	 * @param tela
 	 */
 	public PainelDoMenu(Tela tela) {
-		this.tela = tela;
-		thread = new Thread(this, "Menu");
-		mouse = new Mouse(this.getWidth(), this.getHeight());
+		super(tela, "Menu");
 		try {
 			imagem = ImageIO.read(getClass().getResourceAsStream("/imagens/menu.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		addMouseListener(mouse);
-		addMouseMotionListener(mouse);
 	}
 
 	/**
 	 * Inicia a thread da painel do menu
 	 */
 	public synchronized void start() {
-		rodando = true;
-		thread.start();
-	}
-
-	/**
-	 * Finaliza a thread da painel do menu
-	 */
-	public synchronized void stop() {
-		rodando = false;
-		try {
-			thread.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		super.start(1);
 	}
 
 	/**
@@ -83,19 +57,15 @@ public class PainelDoMenu extends Painel implements Runnable {
 	}
 
 	/**
-	 * Modela a imagem na tela do menu
+	 * Renderiza o painel do menu
 	 * 
-	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+	 * @see sistema.visao.painel.Painel#renderizar(java.awt.Graphics)
 	 */
-	public void paintComponent(Graphics graficos) {
-		graficos.drawImage(imagem, 0, 0, this.getWidth(), this.getHeight(), null);
-
+	public void renderizar(Graphics graficos) {
 		renderizarBotao(graficos, "Sobre", 50);
 		renderizarBotao(graficos, "Opcoes", 100);
 		renderizarBotao(graficos, "Continuar", 150);
 		renderizarBotao(graficos, "Jogar", 200);
-
-		graficos.dispose();
 	}
 
 	/**

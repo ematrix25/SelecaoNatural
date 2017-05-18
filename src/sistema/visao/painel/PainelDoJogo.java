@@ -15,7 +15,7 @@ import sistema.visao.Tela;
  * @author Emanuel
  */
 public class PainelDoJogo extends JPanel implements Runnable {
-	// TODO Integrar o Jogo com esse painel
+	// TODO Implementar o Jogo nesse painel
 
 	private static final long serialVersionUID = 1L;
 
@@ -47,6 +47,7 @@ public class PainelDoJogo extends JPanel implements Runnable {
 	 * @param telaDoJogo
 	 */
 	public synchronized void start() {
+		tela.redimensionar((int) (tela.ALTURA_PADRAO * 1.1));
 		rodando = true;
 		thread.start();
 	}
@@ -99,7 +100,7 @@ public class PainelDoJogo extends JPanel implements Runnable {
 
 				// Conta os segundos para abrir o painel do questionarios
 				cont++;
-				abrirQuest(1);
+				abrirQuest(30);
 			}
 			repaint();
 
@@ -167,8 +168,7 @@ public class PainelDoJogo extends JPanel implements Runnable {
 		renderizarRotulo(graficos, Color.lightGray, "Massa Celular: " + percentualMassa + "%", this.getWidth() - 10);
 		if (pontuacao < MIL)
 			renderizarRotulo(graficos, Color.gray, "Pontuacao: " + pontuacao, (this.getWidth() / 2) + 70);
-		else renderizarRotulo(graficos, Color.gray, "Pontuacao: " + pontuacao / MIL + "K",
-				(this.getWidth() / 2) + 70);
+		else renderizarRotulo(graficos, Color.gray, "Pontuacao: " + pontuacao / MIL + "K", (this.getWidth() / 2) + 70);
 		if (qtdCelulas < MIL) renderizarRotulo(graficos, Color.darkGray, "Qtd Celulas: " + qtdCelulas, 150);
 		else renderizarRotulo(graficos, Color.darkGray, "Qtd Celulas: " + qtdCelulas / MIL + "K", 150);
 	}
