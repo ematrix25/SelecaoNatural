@@ -13,6 +13,7 @@ import sistema.visao.Tela;
  *
  */
 public abstract class Painel extends JPanel implements Runnable {
+	//TODO Abstrair o PainelDoJogo para o Painel
 
 	private static final long serialVersionUID = 1L;
 

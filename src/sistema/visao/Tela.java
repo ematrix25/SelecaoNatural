@@ -18,7 +18,6 @@ import sistema.visao.painel.PainelDoQuest;
  * @author Emanuel
  */
 public class Tela extends JFrame {
-	// TODO Implementar a tela aqui usando paineis renderizados
 
 	private static final long serialVersionUID = 1L;
 	public final int ALTURA_PADRAO = 300;
@@ -61,12 +60,6 @@ public class Tela extends JFrame {
 
 		 getContentPane().add(painelDoMenu);
 		 ((PainelDoMenu) painelDoMenu).start();
-
-		// TODO Remover depois
-		// getContentPane().add(painelDoJogo);
-		// ((PainelDoJogo) painelDoJogo).start();
-		// getContentPane().add(painelDoQuest);
-		// ((PainelDoQuest) painelDoQuest).start();
 	}
 
 	/**
