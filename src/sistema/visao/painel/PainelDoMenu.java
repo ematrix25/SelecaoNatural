@@ -7,7 +7,6 @@ import java.awt.Image;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.JPanel;
 
 import sistema.utilitario.periferico.Mouse;
 import sistema.visao.Tela;
@@ -17,10 +16,10 @@ import sistema.visao.Tela;
  * 
  * @author Emanuel
  */
-public class PainelDoMenu extends JPanel implements Runnable {
+public class PainelDoMenu extends Painel implements Runnable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private Tela tela;
 	private Thread thread;
 	private Mouse mouse;
@@ -124,36 +123,11 @@ public class PainelDoMenu extends JPanel implements Runnable {
 	}
 
 	/**
-	 * Verifica se o mouse clicou no botao em x e y
-	 * 
-	 * @param x
-	 * @param y
-	 * @return
-	 */
-	private boolean mouseClicouNoBotao(int x, int y) {
-		if (mouseEstaNoBotao(x, y) && Mouse.getButton() > -1) return true;
-		return false;
-	}
-
-	/**
-	 * Verifica se o mouse esta no botao
-	 * 
-	 * @param x
-	 * @param y
-	 * @return
-	 */
-	private boolean mouseEstaNoBotao(int x, int y) {
-		int mouseX = Mouse.getX(), mouseY = Mouse.getY();
-		if (mouseX >= x && mouseX <= x + 90) if (mouseY >= y && mouseY <= y + 60) return true;
-		return false;
-	}
-
-	/**
 	 * Realiza a ação do botao quando clicado
 	 * 
-	 * @param inicial
+	 * @see sistema.visao.painel.Painel#acaoDoBotao(char)
 	 */
-	private void acaoDoBotao(char inicial) {
+	protected void acaoDoBotao(char inicial) {
 		switch (inicial) {
 		case 'J':
 			tela.remove(tela.painelDoMenu);
@@ -174,6 +148,5 @@ public class PainelDoMenu extends JPanel implements Runnable {
 			System.out.println("Botao clicado nao reconhecido");
 			break;
 		}
-
 	}
 }

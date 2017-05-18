@@ -21,8 +21,8 @@ public class Tela extends JFrame {
 	// TODO Implementar a tela aqui usando paineis renderizados
 
 	private static final long serialVersionUID = 1L;
-	private static final int ALTURA = 300;
-	public final String TITULO = "Selecao Natural";
+	public final int ALTURA_PADRAO = 300;
+	public String TITULO = "Selecao Natural";
 	public JPanel painelDoMenu, painelDoJogo, painelDoQuest;
 
 	/**
@@ -47,7 +47,7 @@ public class Tela extends JFrame {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imagens/icone.ico")));
 		setTitle(TITULO);
 		setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		setBounds(100, 100, Resolucao.calcLarguraRelativa(ALTURA), ALTURA);
+		setBounds(100, 100, Resolucao.calcLarguraRelativa(ALTURA_PADRAO), ALTURA_PADRAO);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 
@@ -63,7 +63,18 @@ public class Tela extends JFrame {
 		// ((PainelDoMenu) painelDoMenu).start();
 
 		// TODO Remover depois
-		getContentPane().add(painelDoJogo);
-		((PainelDoJogo) painelDoJogo).start();
+		// getContentPane().add(painelDoJogo);
+		// ((PainelDoJogo) painelDoJogo).start();
+		getContentPane().add(painelDoQuest);
+		((PainelDoQuest) painelDoQuest).start();
+	}
+
+	/**
+	 * Redimensiona o tamanho da tela trocando a altura
+	 * 
+	 * @param altura
+	 */
+	public void redimensionar(int altura) {
+		setSize(Resolucao.calcLarguraRelativa(altura), altura);
 	}
 }

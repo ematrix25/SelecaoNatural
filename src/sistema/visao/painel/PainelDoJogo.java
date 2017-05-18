@@ -15,7 +15,7 @@ import sistema.visao.Tela;
  * @author Emanuel
  */
 public class PainelDoJogo extends JPanel implements Runnable {
-	// TODO Fazer o painel do jogo funcionar baseado na TelaDoJogo
+	// TODO Integrar o Jogo com esse painel
 
 	private static final long serialVersionUID = 1L;
 
@@ -99,7 +99,7 @@ public class PainelDoJogo extends JPanel implements Runnable {
 
 				// Conta os segundos para abrir o painel do questionarios
 				cont++;
-				abrirQuest(3600);
+				abrirQuest(1);
 			}
 			repaint();
 
@@ -177,8 +177,7 @@ public class PainelDoJogo extends JPanel implements Runnable {
 	 * Renderiza um rotulo com o texto em x e y
 	 * 
 	 * @param graficos
-	 * @param corRotulo
-	 * @param corTexto
+	 * @param cor
 	 * @param texto
 	 * @param desvioX
 	 */
