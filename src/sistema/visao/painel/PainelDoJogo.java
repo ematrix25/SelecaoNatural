@@ -227,6 +227,6 @@ public class PainelDoJogo extends JPanel implements Runnable {
 	 */
 	public void paintComponent(Graphics graficos) {
 		super.paintComponent(graficos);
-		if (imagem != null) graficos.drawImage(imagem, 0, 0, null);
+		if (imagem != null) graficos.drawImage(imagem, 0, 0, this.getWidth(), this.getHeight(), null);
 	}
 }

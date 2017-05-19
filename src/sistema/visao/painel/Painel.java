@@ -13,7 +13,7 @@ import sistema.visao.Tela;
  *
  */
 public abstract class Painel extends JPanel implements Runnable {
-	//TODO Abstrair o PainelDoJogo para o Painel
+	// TODO Abstrair o PainelDoJogo para o Painel
 
 	private static final long serialVersionUID = 1L;
 
@@ -72,11 +72,13 @@ public abstract class Painel extends JPanel implements Runnable {
 	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
 	 */
 	public void paintComponent(Graphics graficos) {
-		graficos.drawImage(imagem, 0, 0, this.getWidth(), this.getHeight(), null);
-
-		renderizar(graficos);
-
-		graficos.dispose();
+		super.paintComponent(graficos);
+		
+		// Desenha a imagem
+		if (imagem != null) {
+			graficos.drawImage(imagem, 0, 0, this.getWidth(), this.getHeight(), null);
+		}
+		renderizar(graficos);		
 	}
 
 	/**
