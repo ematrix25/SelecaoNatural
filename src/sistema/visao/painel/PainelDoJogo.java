@@ -5,8 +5,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-import javax.swing.JPanel;
-
 import sistema.visao.Tela;
 
 /**
@@ -14,16 +12,11 @@ import sistema.visao.Tela;
  * 
  * @author Emanuel
  */
-public class PainelDoJogo extends JPanel implements Runnable {
+public class PainelDoJogo extends Painel {
 	// TODO Implementar o Jogo nesse painel
 
 	private static final long serialVersionUID = 1L;
 
-	private Tela tela;
-	private Thread thread;
-	private BufferedImage imagem;
-
-	private volatile boolean rodando = false;
 	private volatile boolean gameOver = false;
 
 	private int qtdCelulas = 1000, pontuacao = qtdCelulas * 10 + 110;
@@ -37,8 +30,7 @@ public class PainelDoJogo extends JPanel implements Runnable {
 	 * Inicializa o painel do jogo
 	 */
 	public PainelDoJogo(Tela tela) {
-		this.tela = tela;
-		thread = new Thread(this, "Jogo");
+		super(tela, "Jogo");
 	}
 
 	/**
@@ -47,22 +39,13 @@ public class PainelDoJogo extends JPanel implements Runnable {
 	 * @param telaDoJogo
 	 */
 	public synchronized void start() {
-		tela.redimensionar((int) (tela.ALTURA_PADRAO * 1.1));
-		rodando = true;
-		thread.start();
-	}
-
-	/**
-	 * Fecha a thread do painel do jogo
-	 */
-	public synchronized void stop() {
-		rodando = false;
+		super.start(1.1f);
 	}
 
 	/**
 	 * Executa a thread do painel do jogo
 	 * 
-	 * @see java.lang.Runnable#run()
+	 * @see sistema.visao.painel.Painel#run()
 	 */
 	@Override
 	public void run() {
@@ -84,7 +67,7 @@ public class PainelDoJogo extends JPanel implements Runnable {
 				deltaTempo--;
 			}
 
-			// Taxa de quadros varia conforme o desempenho da maquina
+			// Renderiza um quadro
 			renderizar();
 			quadros++;
 
@@ -100,7 +83,7 @@ public class PainelDoJogo extends JPanel implements Runnable {
 
 				// Conta os segundos para abrir o painel do questionarios
 				cont++;
-				abrirQuest(30);
+				abrirQuest(5);
 			}
 			repaint();
 
@@ -149,8 +132,10 @@ public class PainelDoJogo extends JPanel implements Runnable {
 	private void renderizar() {
 		imagem = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_RGB);
 		Graphics graficos = imagem.getGraphics();
+
 		renderizarInfo(graficos);
 		renderizarJogo(graficos);
+
 		graficos.dispose();
 	}
 
@@ -221,12 +206,12 @@ public class PainelDoJogo extends JPanel implements Runnable {
 	}
 
 	/**
-	 * Modela a imagem no menu
+	 * Realiza a ação do botão quando clicado
 	 * 
-	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+	 * @see sistema.visao.painel.Painel#acaoDoBotao(char)
 	 */
-	public void paintComponent(Graphics graficos) {
-		super.paintComponent(graficos);
-		if (imagem != null) graficos.drawImage(imagem, 0, 0, this.getWidth(), this.getHeight(), null);
+	@Override
+	protected void acaoDoBotao(char inicial) {
+		// TODO Implementar as acoes dos botoes aqui
 	}
 }

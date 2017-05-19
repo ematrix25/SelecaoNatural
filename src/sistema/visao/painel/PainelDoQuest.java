@@ -27,6 +27,7 @@ public class PainelDoQuest extends Painel {
 	public PainelDoQuest(Tela tela) {
 		super(tela, "Quest");
 		try {
+			// TODO Criar alguma imagem para o questionario
 			imagem = ImageIO.read(getClass().getResourceAsStream("/imagens/menu.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -53,18 +54,27 @@ public class PainelDoQuest extends Painel {
 				Thread.sleep(20);
 			} catch (InterruptedException ex) {
 			}
+			
 			repaint();
 		}
+	}
+	
+	/**
+	 * Pinta o painel que é usado no repaint
+	 * 
+	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+	 */
+	public void paintComponent(Graphics graficos) {
+		super.paintComponent(graficos);		
+		renderizar(graficos);
 	}
 
 	/**
 	 * Renderiza o painel do questionario
-	 * 
-	 * @see sistema.visao.painel.Painel#renderizar(java.awt.Graphics)
 	 */
-	@Override
 	protected void renderizar(Graphics graficos) {
 		String opcoes[] = new String[5];
+
 		for (int i = 0; i < opcoes.length; i++) {
 			for (int j = 0; j < opcoes.length; j++) {
 				opcoes[j] = "Opção " + (i + 1) + "." + (j + 1);

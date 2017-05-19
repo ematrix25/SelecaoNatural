@@ -42,7 +42,7 @@ public class PainelDoMenu extends Painel {
 	/**
 	 * Executa a tread do painel do menu
 	 * 
-	 * @see java.lang.Runnable#run()
+	 * @see sistema.visao.painel.Painel#run()
 	 */
 	@Override
 	public void run() {
@@ -52,14 +52,25 @@ public class PainelDoMenu extends Painel {
 				Thread.sleep(20);
 			} catch (InterruptedException ex) {
 			}
+			
 			repaint();
 		}
+	}
+	
+	/**
+	 * Pinta o painel que é usado no repaint
+	 * 
+	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+	 */
+	public void paintComponent(Graphics graficos) {
+		super.paintComponent(graficos);
+		renderizar(graficos);
 	}
 
 	/**
 	 * Renderiza o painel do menu
-	 * 
-	 * @see sistema.visao.painel.Painel#renderizar(java.awt.Graphics)
+	 *
+	 * @param graficos
 	 */
 	public void renderizar(Graphics graficos) {
 		renderizarBotao(graficos, "Sobre", 50);

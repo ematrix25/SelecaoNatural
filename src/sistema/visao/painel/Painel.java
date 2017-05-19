@@ -51,11 +51,6 @@ public abstract class Painel extends JPanel implements Runnable {
 	 */
 	public synchronized void stop() {
 		rodando = false;
-		try {
-			thread.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -73,20 +68,12 @@ public abstract class Painel extends JPanel implements Runnable {
 	 */
 	public void paintComponent(Graphics graficos) {
 		super.paintComponent(graficos);
-		
+
 		// Desenha a imagem
 		if (imagem != null) {
 			graficos.drawImage(imagem, 0, 0, this.getWidth(), this.getHeight(), null);
 		}
-		renderizar(graficos);		
 	}
-
-	/**
-	 * Renderiza o painel
-	 * 
-	 * @param graficos
-	 */
-	protected abstract void renderizar(Graphics graficos);
 
 	/**
 	 * Verifica se o mouse clicou no botao em x e y
