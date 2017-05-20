@@ -13,7 +13,6 @@ import sistema.visao.Tela;
  *
  */
 public abstract class Painel extends JPanel implements Runnable {
-	// TODO Abstrair o PainelDoJogo para o Painel
 
 	private static final long serialVersionUID = 1L;
 
@@ -51,6 +50,7 @@ public abstract class Painel extends JPanel implements Runnable {
 	 */
 	public synchronized void stop() {
 		rodando = false;
+		thread.interrupt();
 	}
 
 	/**
@@ -82,8 +82,8 @@ public abstract class Painel extends JPanel implements Runnable {
 	 * @param y
 	 * @return
 	 */
-	protected boolean mouseClicouNoBotao(int x, int y) {
-		if (mouseEstaNoBotao(x, y) && Mouse.getButton() > -1) return true;
+	protected boolean mouseClicouNoBotao(int x, int y, int largura, int altura) {
+		if (mouseEstaNoBotao(x, y, largura, altura) && Mouse.getButton() > -1) return true;
 		return false;
 	}
 
@@ -94,9 +94,9 @@ public abstract class Painel extends JPanel implements Runnable {
 	 * @param y
 	 * @return
 	 */
-	protected boolean mouseEstaNoBotao(int x, int y) {
+	protected boolean mouseEstaNoBotao(int x, int y, int largura, int altura) {
 		int mouseX = Mouse.getX(), mouseY = Mouse.getY();
-		if (mouseX >= x && mouseX <= x + 90) if (mouseY >= y && mouseY <= y + 60) return true;
+		if (mouseX >= x && mouseX <= x + largura) if (mouseY >= y && mouseY <= y + altura) return true;
 		return false;
 	}
 

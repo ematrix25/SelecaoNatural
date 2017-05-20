@@ -58,8 +58,8 @@ public class Tela extends JFrame {
 		painelDoJogo.setSize(getWidth(), getHeight());
 		painelDoQuest.setSize(getWidth(), getHeight());
 
-		 getContentPane().add(painelDoMenu);
-		 ((PainelDoMenu) painelDoMenu).start();
+		getContentPane().add(painelDoMenu);
+		((PainelDoMenu) painelDoMenu).start();
 	}
 
 	/**

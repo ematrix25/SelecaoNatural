@@ -52,11 +52,11 @@ public class PainelDoMenu extends Painel {
 				Thread.sleep(20);
 			} catch (InterruptedException ex) {
 			}
-			
+
 			repaint();
 		}
 	}
-	
+
 	/**
 	 * Pinta o painel que é usado no repaint
 	 * 
@@ -88,19 +88,20 @@ public class PainelDoMenu extends Painel {
 	 */
 	private void renderizarBotao(Graphics graficos, String texto, int desvioY) {
 		int x = this.getWidth() - 100, y = this.getHeight() - desvioY;
+		int largura = 90, altura = 30;
 
 		// Retangulo do botao
 		graficos.setColor(Color.white);
-		if (mouseEstaNoBotao(x, y)) graficos.setColor(Color.gray);
-		graficos.fillRect(x, y, 90, 30);
+		if (mouseEstaNoBotao(x, y, largura, altura)) graficos.setColor(Color.gray);
+		graficos.fillRect(x, y, largura, altura);
 
 		// Texto do botao
 		graficos.setColor(Color.black);
-		if (mouseEstaNoBotao(x, y)) graficos.setColor(Color.white);
+		if (mouseEstaNoBotao(x, y, largura, altura)) graficos.setColor(Color.white);
 		graficos.setFont(new Font("Verdana", 0, 12));
 		graficos.drawString(texto, x + 10, y + 20);
 
-		if (mouseClicouNoBotao(x, y)) acaoDoBotao(texto.charAt(0));
+		if (mouseClicouNoBotao(x, y, largura, altura)) acaoDoBotao(texto.charAt(0));
 	}
 
 	/**
