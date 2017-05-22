@@ -3,49 +3,51 @@ package sistema.visao.painel;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.event.WindowEvent;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import sistema.utilitario.Opcoes;
+import sistema.utilitario.Resolucao;
 import sistema.visao.Tela;
 
 /**
- * Cria o Painel do Questionario
- * 
  * @author Emanuel
+ *
  */
-public class PainelDoQuest extends Painel {
-	// TODO Salvar as escolhas do questionário num arquivo
+public class PainelDeOpcoes extends Painel {
+	// TODO Implementar o painel para mudar as configurações
+	// TODO Salvar as configurações em arquivo
 
 	private static final long serialVersionUID = 1L;
-	private int respostas[];
+	private int configuracoes[];
 
 	/**
-	 * Inicializa o painel do questionário
-	 *
+	 * Inicializa o painel de opções
+	 * 
 	 * @param tela
+	 * @param nome
 	 */
-	public PainelDoQuest(Tela tela) {
-		super(tela, "Quest");
+	public PainelDeOpcoes(Tela tela) {
+		super(tela, "Opcoes");
 		try {
-			// TODO Criar alguma imagem para o questionario
+			// TODO Criar alguma imagem para as opções
 			imagem = ImageIO.read(getClass().getResourceAsStream("/imagens/menu.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		respostas = new int[5];
+		configuracoes = Opcoes.configuracoes;
 	}
 
 	/**
-	 * Inicia a thread da painel do questionário
+	 * Inicia a thread da painel de opções
 	 */
-	public void start() {
-		super.start(1.7f);
+	public synchronized void start() {
+		super.start(1.1f);
 	}
 
 	/**
-	 * Executa a thread do painel do questionário
+	 * Executa a thread do painel de opções
 	 * 
 	 * @see sistema.visao.painel.Painel#run()
 	 */
@@ -73,55 +75,61 @@ public class PainelDoQuest extends Painel {
 	}
 
 	/**
-	 * Renderiza o painel do questionário
+	 * Renderiza o painel do menu
+	 *
+	 * @param graficos
 	 */
-	protected void renderizar(Graphics graficos) {
-		String opcoes[] = new String[5];
-		int resposta;
+	public void renderizar(Graphics graficos) {
+		String opcoes[] = { "Teclado", "Mouse" };
+		int configuracao;
 
-		// TODO Escrever as perguntas e opções de respostas aqui
-		for (int i = 0; i < respostas.length; i++) {
-			for (int j = 0; j < opcoes.length; j++) {
-				opcoes[j] = "Opção " + (i + 1) + "." + (j + 1);
-			}
-			resposta = renderizarPergunta(graficos, "Pergunta " + (i + 1), opcoes, 40 + 80 * i, i);
-			if (resposta != -1) respostas[i] = resposta;
+		// Renderiza a configuração do controle de jogo
+		configuracao = renderizarConfig(graficos, "Controlar o Jogo por:", opcoes, 40, 0);
+		if (configuracao != -1) configuracoes[0] = configuracao;
+
+		// Renderiza a configuração de tamanho da janela
+		opcoes = new String[3];
+		for (int i = 0; i < opcoes.length; i++) {
+			opcoes[i] = Resolucao.larguras[i] + "x" + Resolucao.alturas[i];
 		}
+		configuracao = renderizarConfig(graficos, "Tamanho da janela:", opcoes, 120, 1);
+		if (configuracao != -1) configuracoes[1] = configuracao;
 
-		// Renderiza o botão para submeter as respostas
-		renderizarBotao(graficos, "Submeter", 40);
+		// Renderiza os botões
+		renderizarBotao(graficos, "Cancelar", 100);
+		renderizarBotao(graficos, "Salvar", 200);
 	}
 
 	/**
-	 * Renderiza a pergunta com suas opções de respostas
+	 * Renderiza a configuração com suas opções
 	 *
 	 * @param graficos
 	 * @param texto
 	 * @param opcoes
 	 * @param desvioY
-	 * @param pergunta
+	 * @param configuracao
 	 * @return
 	 */
-	private int renderizarPergunta(Graphics graficos, String texto, String[] opcoes, int desvioY, int pergunta) {
+	private int renderizarConfig(Graphics graficos, String texto, String[] opcoes, int desvioY, int configuracao) {
 		int x = 20, y = desvioY;
-		int resposta = -1;
+		int opcao = -1;
 
-		// Texto da Pergunta
+		// Texto da Configuração
 		graficos.setColor(Color.lightGray);
 		graficos.setFont(new Font("Verdana", 1, 18));
 		graficos.drawString(texto, x, y);
 
-		// Renderiza as Opções de respostas da Pergunta
+		// Renderiza as Opções de configuração
 		for (int i = 0; i < opcoes.length; i++) {
-			if (respostas[pergunta] == i + 1) {
-				if (renderizarOpcao(graficos, opcoes[i], x + 150 * i, y + 20, true)) resposta = i + 1;
-			} else if (renderizarOpcao(graficos, opcoes[i], x + 150 * i, y + 20, false)) resposta = i + 1;
+			if (configuracoes[configuracao] == i + 1) {
+				if (renderizarOpcao(graficos, opcoes[i], x + 150 * i, y + 20, true)) opcao = i + 1;
+			} else if (renderizarOpcao(graficos, opcoes[i], x + 150 * i, y + 20, false)) opcao = i + 1;
 		}
-		return resposta;
+		return opcao;
 	}
 
 	/**
-	 * Renderiza uma opção de resposta com o texto em x e y
+	 * Renderiza uma opção de configuração com o texto em x e y
 	 *
 	 * @param graficos
 	 * @param texto
@@ -152,7 +160,7 @@ public class PainelDoQuest extends Painel {
 	}
 
 	/**
-	 * Renderiza a marcação da opção da resposta em x e y
+	 * Renderiza a marcação da opção da configuração em x e y
 	 * 
 	 * @param graficos
 	 * @param x
@@ -169,10 +177,10 @@ public class PainelDoQuest extends Painel {
 	 * 
 	 * @param graficos
 	 * @param texto
-	 * @param desvioY
+	 * @param desvioX
 	 */
-	private void renderizarBotao(Graphics graficos, String texto, int desvioY) {
-		int x = this.getWidth() - 100, y = this.getHeight() - desvioY;
+	private void renderizarBotao(Graphics graficos, String texto, int desvioX) {
+		int x = this.getWidth() - desvioX, y = this.getHeight() - 40;
 		int largura = 90, altura = 30;
 
 		// Retangulo do botao
@@ -190,7 +198,7 @@ public class PainelDoQuest extends Painel {
 	}
 
 	/**
-	 * Realiza a ação do botão quando clicado
+	 * Realiza a ação do botao quando clicado
 	 * 
 	 * @see sistema.visao.painel.Painel#acaoDoBotao(char)
 	 */
@@ -198,15 +206,26 @@ public class PainelDoQuest extends Painel {
 	protected void acaoDoBotao(char inicial) {
 		switch (inicial) {
 		case 'S':
-			System.out.println("Perguntas\t|\tRespostas");
-			for (int i = 0; i < respostas.length; i++) {
-				System.out.println((i + 1) + "\t\t|\t\t" + respostas[i]);
-			}
-			tela.dispatchEvent(new WindowEvent(tela, WindowEvent.WINDOW_CLOSING));
+			Opcoes.carregarConfig(configuracoes);
+			voltarParaMenu();
+			break;
+		case 'C':
+			voltarParaMenu();
 			break;
 		default:
 			System.out.println("Botao clicado nao reconhecido");
 			break;
 		}
+	}
+
+	/**
+	 * Volta para o painel do menu
+	 */
+	private void voltarParaMenu() {
+		// TODO Resolver o problema de reiniciar a thread
+		tela.add(tela.painelDeOpcoes);
+		tela.painelDeOpcoes.stop();
+		tela.remove(tela.painelDoMenu);
+		((PainelDoMenu) tela.painelDoMenu).start();
 	}
 }

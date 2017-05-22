@@ -5,9 +5,11 @@ import java.awt.Font;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
+import sistema.utilitario.Opcoes;
 import sistema.utilitario.Resolucao;
+import sistema.visao.painel.Painel;
+import sistema.visao.painel.PainelDeOpcoes;
 import sistema.visao.painel.PainelDoJogo;
 import sistema.visao.painel.PainelDoMenu;
 import sistema.visao.painel.PainelDoQuest;
@@ -22,7 +24,7 @@ public class Tela extends JFrame {
 	private static final long serialVersionUID = 1L;
 	public final int ALTURA_PADRAO = 300;
 	public String TITULO = "Selecao Natural";
-	public JPanel painelDoMenu, painelDoJogo, painelDoQuest;
+	public Painel painelDoMenu, painelDoJogo, painelDoQuest, painelDeOpcoes;
 
 	/**
 	 * Roda a Aplicação.
@@ -46,17 +48,19 @@ public class Tela extends JFrame {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imagens/icone.ico")));
 		setTitle(TITULO);
 		setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		setBounds(100, 100, Resolucao.calcLarguraRelativa(ALTURA_PADRAO), ALTURA_PADRAO);
+		setBounds(100, 100, Opcoes.larguraPadrao, Opcoes.alturaPadrao);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 
 		painelDoMenu = new PainelDoMenu(this);
 		painelDoJogo = new PainelDoJogo(this);
 		painelDoQuest = new PainelDoQuest(this);
+		painelDeOpcoes = new PainelDeOpcoes(this);
 
 		painelDoMenu.setSize(getWidth(), getHeight());
 		painelDoJogo.setSize(getWidth(), getHeight());
 		painelDoQuest.setSize(getWidth(), getHeight());
+		painelDeOpcoes.setSize(getWidth(), getHeight());
 
 		getContentPane().add(painelDoMenu);
 		((PainelDoMenu) painelDoMenu).start();

@@ -40,7 +40,7 @@ public class PainelDoMenu extends Painel {
 	}
 
 	/**
-	 * Executa a tread do painel do menu
+	 * Executa a thread do painel do menu
 	 * 
 	 * @see sistema.visao.painel.Painel#run()
 	 */
@@ -109,11 +109,12 @@ public class PainelDoMenu extends Painel {
 	 * 
 	 * @see sistema.visao.painel.Painel#acaoDoBotao(char)
 	 */
+	@Override
 	protected void acaoDoBotao(char inicial) {
 		switch (inicial) {
 		case 'J':
 			tela.remove(tela.painelDoMenu);
-			((PainelDoMenu) tela.painelDoMenu).stop();
+			tela.painelDoMenu.stop();
 			tela.add(tela.painelDoJogo);
 			((PainelDoJogo) tela.painelDoJogo).start();
 			break;
@@ -121,7 +122,10 @@ public class PainelDoMenu extends Painel {
 			// TODO Criar uma acao para o botao continuar
 			break;
 		case 'O':
-			// TODO Criar uma acao para o botao opcoes
+			tela.remove(tela.painelDoMenu);
+			tela.painelDoMenu.stop();
+			tela.add(tela.painelDeOpcoes);
+			((PainelDeOpcoes) tela.painelDeOpcoes).start();
 			break;
 		case 'S':
 			// TODO Criar uma acao para o botão sobre

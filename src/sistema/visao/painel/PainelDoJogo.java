@@ -103,7 +103,7 @@ public class PainelDoJogo extends Painel {
 	private void abrirQuest(int tempo) {
 		if (cont >= tempo) {
 			tela.remove(tela.painelDoJogo);
-			((PainelDoJogo) tela.painelDoJogo).stop();
+			tela.painelDoJogo.stop();
 			tela.add(tela.painelDoQuest);
 			((PainelDoQuest) tela.painelDoQuest).start();
 		}
