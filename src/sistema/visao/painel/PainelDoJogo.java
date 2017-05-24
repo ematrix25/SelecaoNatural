@@ -28,6 +28,8 @@ public class PainelDoJogo extends Painel {
 
 	/**
 	 * Inicializa o painel do jogo
+	 * 
+	 * @param tela
 	 */
 	public PainelDoJogo(Tela tela) {
 		super(tela, "Jogo");
@@ -35,11 +37,16 @@ public class PainelDoJogo extends Painel {
 
 	/**
 	 * Inicia a thread do painel do jogo
-	 * 
-	 * @param telaDoJogo
 	 */
-	public synchronized void start() {
-		super.start(1.1f);
+	public synchronized void iniciar() {
+		super.iniciar(1.1f);
+	}
+	
+	/**
+	 * Retoma a thread do painel do jogo
+	 */
+	public synchronized void retomar() {
+		super.retomar(1.1f);
 	}
 
 	/**
@@ -55,7 +62,7 @@ public class PainelDoJogo extends Painel {
 		double deltaTempo = 0.0;
 		int quadros = 0, atualizacoes = 0;
 		requestFocus();
-		while (rodando) {
+		while (executando) {
 			tempoAntes = tempoAgora;
 			tempoAgora = System.nanoTime();
 
@@ -90,6 +97,11 @@ public class PainelDoJogo extends Painel {
 			// Espera 20 milissegundos para continuar a execução da thread
 			try {
 				Thread.sleep(20);
+				synchronized (thread) {
+					while (pausado) {
+						thread.wait();
+					}
+				}
 			} catch (InterruptedException ex) {
 			}
 		}
@@ -102,10 +114,12 @@ public class PainelDoJogo extends Painel {
 	 */
 	private void abrirQuest(int tempo) {
 		if (cont >= tempo) {
+			tela.painelDoMenu.parar();
+			tela.painelDeOpcoes.parar();
 			tela.remove(tela.painelDoJogo);
-			tela.painelDoJogo.stop();
+			tela.painelDoJogo.parar();
 			tela.add(tela.painelDoQuest);
-			((PainelDoQuest) tela.painelDoQuest).start();
+			((PainelDoQuest) tela.painelDoQuest).iniciar();
 		}
 	}
 

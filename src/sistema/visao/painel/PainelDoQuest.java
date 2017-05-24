@@ -40,8 +40,8 @@ public class PainelDoQuest extends Painel {
 	/**
 	 * Inicia a thread da painel do questionário
 	 */
-	public void start() {
-		super.start(1.7f);
+	public void iniciar() {
+		super.iniciar(1.7f);
 	}
 
 	/**
@@ -52,9 +52,14 @@ public class PainelDoQuest extends Painel {
 	@Override
 	public void run() {
 		requestFocus();
-		while (rodando) {
+		while (executando) {
 			try {
 				Thread.sleep(20);
+				synchronized (this) {
+					while (pausado) {
+						thread.wait();
+					}
+				}
 			} catch (InterruptedException ex) {
 			}
 

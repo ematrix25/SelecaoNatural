@@ -21,7 +21,8 @@ public abstract class Painel extends JPanel implements Runnable {
 	protected Mouse mouse;
 	protected Image imagem;
 
-	protected volatile boolean rodando = false;
+	protected volatile boolean executando = false;
+	protected volatile boolean pausado = false;
 
 	/**
 	 * Inicializa o painel
@@ -39,17 +40,35 @@ public abstract class Painel extends JPanel implements Runnable {
 	/**
 	 * Inicia a thread do painel
 	 */
-	public synchronized void start(float valor) {
+	public synchronized void iniciar(float valor) {
 		tela.redimensionar((int) (tela.ALTURA_PADRAO * valor));
-		rodando = true;
+		executando = true;
 		thread.start();
 	}
 
 	/**
-	 * Finaliza a thread do painel
+	 * Pausa a thread do painel
 	 */
-	public synchronized void stop() {
-		rodando = false;
+	public synchronized void pausar() {
+		pausado = true;
+	}
+
+	/**
+	 * Retoma a thread do painel
+	 */
+	public synchronized void retomar(float valor) {
+		tela.redimensionar((int) (tela.ALTURA_PADRAO * valor));
+		pausado = false;
+		synchronized (thread) {
+			thread.notify();
+		}
+	}
+
+	/**
+	 * Para a thread do painel
+	 */
+	public synchronized void parar() {
+		executando = false;
 		thread.interrupt();
 	}
 

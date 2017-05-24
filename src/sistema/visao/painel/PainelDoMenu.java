@@ -35,8 +35,15 @@ public class PainelDoMenu extends Painel {
 	/**
 	 * Inicia a thread da painel do menu
 	 */
-	public synchronized void start() {
-		super.start(1);
+	public synchronized void iniciar() {
+		super.iniciar(1);
+	}
+	
+	/**
+	 * Retoma a thread do painel do jogo
+	 */
+	public synchronized void retomar() {
+		super.retomar(1);
 	}
 
 	/**
@@ -47,12 +54,18 @@ public class PainelDoMenu extends Painel {
 	@Override
 	public void run() {
 		requestFocus();
-		while (rodando) {
+		while (executando) {
+			System.out.println(thread.getName() + " está executando (" + executando + ")");
 			try {
 				Thread.sleep(20);
+				synchronized (thread) {
+					while (pausado) {
+						System.out.println(thread.getName() + " está pausado (" + pausado + ")");
+						thread.wait();
+					}
+				}
 			} catch (InterruptedException ex) {
 			}
-
 			repaint();
 		}
 	}
@@ -114,18 +127,22 @@ public class PainelDoMenu extends Painel {
 		switch (inicial) {
 		case 'J':
 			tela.remove(tela.painelDoMenu);
-			tela.painelDoMenu.stop();
+			tela.painelDoMenu.pausar();
 			tela.add(tela.painelDoJogo);
-			((PainelDoJogo) tela.painelDoJogo).start();
+			((PainelDoJogo) tela.painelDoJogo).iniciar();
 			break;
 		case 'C':
-			// TODO Criar uma acao para o botao continuar
+			tela.remove(tela.painelDoMenu);
+			tela.painelDoMenu.pausar();
+			tela.add(tela.painelDoJogo);
+			((PainelDoJogo) tela.painelDoJogo).retomar();
 			break;
 		case 'O':
 			tela.remove(tela.painelDoMenu);
-			tela.painelDoMenu.stop();
+			tela.painelDoMenu.pausar();
 			tela.add(tela.painelDeOpcoes);
-			((PainelDeOpcoes) tela.painelDeOpcoes).start();
+			if (tela.painelDeOpcoes.executando) ((PainelDeOpcoes) tela.painelDeOpcoes).retomar();
+			else((PainelDeOpcoes) tela.painelDeOpcoes).iniciar();
 			break;
 		case 'S':
 			// TODO Criar uma acao para o botão sobre

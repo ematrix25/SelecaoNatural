@@ -16,7 +16,6 @@ import sistema.visao.Tela;
  *
  */
 public class PainelDeOpcoes extends Painel {
-	// TODO Implementar o painel para mudar as configurações
 	// TODO Salvar as configurações em arquivo
 
 	private static final long serialVersionUID = 1L;
@@ -42,8 +41,15 @@ public class PainelDeOpcoes extends Painel {
 	/**
 	 * Inicia a thread da painel de opções
 	 */
-	public synchronized void start() {
-		super.start(1.1f);
+	public synchronized void iniciar() {
+		super.iniciar(1.1f);
+	}
+	
+	/**
+	 * Retoma a thread do painel do jogo
+	 */
+	public synchronized void retomar() {
+		super.retomar(1.1f);
 	}
 
 	/**
@@ -54,9 +60,14 @@ public class PainelDeOpcoes extends Painel {
 	@Override
 	public void run() {
 		requestFocus();
-		while (rodando) {
+		while (executando) {
 			try {
 				Thread.sleep(20);
+				synchronized (thread) {
+					while (pausado) {
+						thread.wait();
+					}
+				}
 			} catch (InterruptedException ex) {
 			}
 
@@ -222,10 +233,9 @@ public class PainelDeOpcoes extends Painel {
 	 * Volta para o painel do menu
 	 */
 	private void voltarParaMenu() {
-		// TODO Resolver o problema de reiniciar a thread
-		tela.add(tela.painelDeOpcoes);
-		tela.painelDeOpcoes.stop();
-		tela.remove(tela.painelDoMenu);
-		((PainelDoMenu) tela.painelDoMenu).start();
+		tela.remove(tela.painelDeOpcoes);
+		tela.painelDeOpcoes.pausar();
+		tela.add(tela.painelDoMenu);
+		((PainelDoMenu) tela.painelDoMenu).retomar();
 	}
 }
