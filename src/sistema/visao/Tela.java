@@ -1,6 +1,5 @@
 package sistema.visao;
 
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Toolkit;
 
@@ -25,21 +24,6 @@ public class Tela extends JFrame {
 	public final int ALTURA_PADRAO = 300;
 	public String TITULO = "Selecao Natural";
 	public Painel painelDoMenu, painelDoJogo, painelDoQuest, painelDeOpcoes;
-
-	/**
-	 * Roda a Aplicação.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					new Tela();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Cria a Tela

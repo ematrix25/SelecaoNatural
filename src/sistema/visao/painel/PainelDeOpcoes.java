@@ -23,9 +23,8 @@ public class PainelDeOpcoes extends Painel {
 
 	/**
 	 * Inicializa o painel de opções
-	 * 
+	 *
 	 * @param tela
-	 * @param nome
 	 */
 	public PainelDeOpcoes(Tela tela) {
 		super(tela, "Opcoes");
@@ -69,6 +68,7 @@ public class PainelDeOpcoes extends Painel {
 					}
 				}
 			} catch (InterruptedException ex) {
+				ex.printStackTrace();
 			}
 
 			repaint();
@@ -184,7 +184,7 @@ public class PainelDeOpcoes extends Painel {
 	}
 
 	/**
-	 * Renderiza um botao com o texto em x e y saindo do canto inferior direito
+	 * Renderiza um botão com o texto em x e y saindo do canto inferior direito
 	 * 
 	 * @param graficos
 	 * @param texto
@@ -209,7 +209,7 @@ public class PainelDeOpcoes extends Painel {
 	}
 
 	/**
-	 * Realiza a ação do botao quando clicado
+	 * Realiza a ação do botão quando clicado
 	 * 
 	 * @see sistema.visao.painel.Painel#acaoDoBotao(char)
 	 */

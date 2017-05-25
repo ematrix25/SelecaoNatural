@@ -28,6 +28,7 @@ public abstract class Painel extends JPanel implements Runnable {
 	 * Inicializa o painel
 	 *
 	 * @param tela
+	 * @param nome
 	 */
 	public Painel(Tela tela, String nome) {
 		this.tela = tela;
@@ -39,6 +40,8 @@ public abstract class Painel extends JPanel implements Runnable {
 
 	/**
 	 * Inicia a thread do painel
+	 *
+	 * @param valor
 	 */
 	public synchronized void iniciar(float valor) {
 		tela.redimensionar((int) (tela.ALTURA_PADRAO * valor));
@@ -55,6 +58,8 @@ public abstract class Painel extends JPanel implements Runnable {
 
 	/**
 	 * Retoma a thread do painel
+	 *
+	 * @param valor
 	 */
 	public synchronized void retomar(float valor) {
 		tela.redimensionar((int) (tela.ALTURA_PADRAO * valor));
@@ -73,7 +78,7 @@ public abstract class Painel extends JPanel implements Runnable {
 	}
 
 	/**
-	 * Executa a thread do painel do questionario
+	 * Executa a thread do painel do questionário
 	 * 
 	 * @see java.lang.Runnable#run()
 	 */
@@ -95,22 +100,29 @@ public abstract class Painel extends JPanel implements Runnable {
 	}
 
 	/**
-	 * Verifica se o mouse clicou no botao em x e y
-	 * 
+	 * Verifica se o mouse clicou no botão em x e y
+	 *
 	 * @param x
 	 * @param y
+	 * @param largura
+	 * @param altura
 	 * @return
 	 */
 	protected boolean mouseClicouNoBotao(int x, int y, int largura, int altura) {
-		if (mouseEstaNoBotao(x, y, largura, altura) && Mouse.getButton() > -1) return true;
+		if (mouseEstaNoBotao(x, y, largura, altura) && Mouse.getBotao() > -1) {
+			Mouse.setBotao(-1);
+			return true;
+		}
 		return false;
 	}
 
 	/**
-	 * Verifica se o mouse esta no botao
-	 * 
+	 * Verifica se o mouse está no botão
+	 *
 	 * @param x
 	 * @param y
+	 * @param largura
+	 * @param altura
 	 * @return
 	 */
 	protected boolean mouseEstaNoBotao(int x, int y, int largura, int altura) {
@@ -120,7 +132,7 @@ public abstract class Painel extends JPanel implements Runnable {
 	}
 
 	/**
-	 * Realiza a ação do botao quando clicado
+	 * Realiza a ação do botão quando clicado
 	 * 
 	 * @param inicial
 	 */

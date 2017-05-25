@@ -15,8 +15,10 @@ import sistema.visao.Tela;
  * @author Emanuel
  */
 public class PainelDoMenu extends Painel {
+	// TODO Resolver o problema dos botões quando retoma o painel do menu
 
 	private static final long serialVersionUID = 1L;
+	private boolean sobreAtivado = false;
 
 	/**
 	 * Inicializa o painel do menu
@@ -38,7 +40,7 @@ public class PainelDoMenu extends Painel {
 	public synchronized void iniciar() {
 		super.iniciar(1);
 	}
-	
+
 	/**
 	 * Retoma a thread do painel do jogo
 	 */
@@ -55,16 +57,15 @@ public class PainelDoMenu extends Painel {
 	public void run() {
 		requestFocus();
 		while (executando) {
-			System.out.println(thread.getName() + " está executando (" + executando + ")");
 			try {
 				Thread.sleep(20);
 				synchronized (thread) {
 					while (pausado) {
-						System.out.println(thread.getName() + " está pausado (" + pausado + ")");
 						thread.wait();
 					}
 				}
 			} catch (InterruptedException ex) {
+				ex.printStackTrace();
 			}
 			repaint();
 		}
@@ -72,8 +73,8 @@ public class PainelDoMenu extends Painel {
 
 	/**
 	 * Pinta o painel que é usado no repaint
-	 * 
-	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+	 *
+	 * @see sistema.visao.painel.Painel#paintComponent(java.awt.Graphics)
 	 */
 	public void paintComponent(Graphics graficos) {
 		super.paintComponent(graficos);
@@ -86,14 +87,22 @@ public class PainelDoMenu extends Painel {
 	 * @param graficos
 	 */
 	public void renderizar(Graphics graficos) {
+		// Renderizar texto do botão sobre
+		if (sobreAtivado) {
+			graficos.setColor(Color.white);
+			graficos.setFont(new Font("Verdana", 0, 12));
+			graficos.drawString("Jogo desenvolvido por Emanuel Torres", 10, this.getHeight() - 20);
+		}
+
+		// Renderizar Botões
 		renderizarBotao(graficos, "Sobre", 50);
-		renderizarBotao(graficos, "Opcoes", 100);
+		renderizarBotao(graficos, "Opções", 100);
 		renderizarBotao(graficos, "Continuar", 150);
 		renderizarBotao(graficos, "Jogar", 200);
 	}
 
 	/**
-	 * Renderiza um botao com o texto em x e y saindo do canto inferior direito
+	 * Renderiza um botão com o texto em x e y saindo do canto inferior direito
 	 * 
 	 * @param graficos
 	 * @param texto
@@ -105,12 +114,12 @@ public class PainelDoMenu extends Painel {
 
 		// Retangulo do botao
 		graficos.setColor(Color.white);
-		if (mouseEstaNoBotao(x, y, largura, altura)) graficos.setColor(Color.gray);
+		if (mouseEstaNoBotao(x, y, largura, altura) && continuavel(texto.charAt(0))) graficos.setColor(Color.gray);
 		graficos.fillRect(x, y, largura, altura);
 
 		// Texto do botao
 		graficos.setColor(Color.black);
-		if (mouseEstaNoBotao(x, y, largura, altura)) graficos.setColor(Color.white);
+		if (mouseEstaNoBotao(x, y, largura, altura) && continuavel(texto.charAt(0))) graficos.setColor(Color.white);
 		graficos.setFont(new Font("Verdana", 0, 12));
 		graficos.drawString(texto, x + 10, y + 20);
 
@@ -118,7 +127,7 @@ public class PainelDoMenu extends Painel {
 	}
 
 	/**
-	 * Realiza a ação do botao quando clicado
+	 * Realiza a ação do botão quando clicado
 	 * 
 	 * @see sistema.visao.painel.Painel#acaoDoBotao(char)
 	 */
@@ -132,24 +141,37 @@ public class PainelDoMenu extends Painel {
 			((PainelDoJogo) tela.painelDoJogo).iniciar();
 			break;
 		case 'C':
-			tela.remove(tela.painelDoMenu);
-			tela.painelDoMenu.pausar();
-			tela.add(tela.painelDoJogo);
-			((PainelDoJogo) tela.painelDoJogo).retomar();
+			if (continuavel(inicial)) {
+				tela.remove(tela.painelDoMenu);
+				tela.painelDoMenu.pausar();
+				tela.add(tela.painelDoJogo);
+				((PainelDoJogo) tela.painelDoJogo).retomar();
+			}
 			break;
 		case 'O':
 			tela.remove(tela.painelDoMenu);
 			tela.painelDoMenu.pausar();
 			tela.add(tela.painelDeOpcoes);
-			if (tela.painelDeOpcoes.executando) ((PainelDeOpcoes) tela.painelDeOpcoes).retomar();
+			if (tela.painelDeOpcoes.pausado) ((PainelDeOpcoes) tela.painelDeOpcoes).retomar();
 			else((PainelDeOpcoes) tela.painelDeOpcoes).iniciar();
 			break;
 		case 'S':
-			// TODO Criar uma acao para o botão sobre
+			sobreAtivado = true;
 			break;
 		default:
 			System.out.println("Botao clicado nao reconhecido");
 			break;
 		}
+	}
+
+	/**
+	 * Verifica se é possível retomar o painel do jogo
+	 * 
+	 * @param inicial
+	 * @return
+	 */
+	private boolean continuavel(char inicial) {
+		if (inicial == 'C') return tela.painelDoJogo.pausado;
+		return true;
 	}
 }

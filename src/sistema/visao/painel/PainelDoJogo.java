@@ -103,12 +103,13 @@ public class PainelDoJogo extends Painel {
 					}
 				}
 			} catch (InterruptedException ex) {
+				ex.printStackTrace();
 			}
 		}
 	}
 
 	/**
-	 * Abre o questionario quando os segundos do contator chegarem ao tempo
+	 * Abre o questionário quando os segundos do contator chegarem ao tempo
 	 * 
 	 * @param tempo
 	 */
@@ -154,7 +155,7 @@ public class PainelDoJogo extends Painel {
 	}
 
 	/**
-	 * Renderizar a janela do informacoes
+	 * Renderizar a janela do informações
 	 * 
 	 * @param graficos
 	 */
@@ -173,7 +174,7 @@ public class PainelDoJogo extends Painel {
 	}
 
 	/**
-	 * Renderiza um rotulo com o texto em x e y
+	 * Renderiza um rótulo com o texto em x e y
 	 * 
 	 * @param graficos
 	 * @param cor
@@ -208,7 +209,7 @@ public class PainelDoJogo extends Painel {
 	}
 
 	/**
-	 * Faz a movimentacao das posicoes de x e y do texto
+	 * Faz a movimentação das posições de x e y do texto
 	 */
 	private void moveText() {
 		if (x == this.getWidth() - 183 || x == 0) xdir = !xdir;

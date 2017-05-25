@@ -11,11 +11,11 @@ import java.awt.event.MouseMotionListener;
  */
 public class Mouse implements MouseListener, MouseMotionListener {
 
-	private static int mouseX = -1;
-	private static int mouseY = -1;
-	private static int mouseB = -1;
-	public static int maximoX;
-	public static int maximoY;
+	private static int xMouse = -1;
+	private static int yMouse = -1;
+	private static int botaoDoMouse = -1;
+	public static int xMaximo;
+	public static int yMaximo;
 
 	/**
 	 * Cria o objeto Mouse com maximos de metade dos limites da tela
@@ -24,17 +24,17 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	 * @param height
 	 */
 	public Mouse(int width, int height) {
-		Mouse.maximoX = width / 2;
-		Mouse.maximoY = height / 2;
+		Mouse.xMaximo = width / 2;
+		Mouse.yMaximo = height / 2;
 	}
-
+	
 	/**
 	 * Retorna o valor de X
 	 * 
 	 * @return X
 	 */
 	public static int getX() {
-		return mouseX - maximoX;
+		return xMouse - xMaximo;
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	 * @return Y
 	 */
 	public static int getY() {
-		return mouseY - maximoY;
+		return yMouse - yMaximo;
 	}
 
 	/**
@@ -51,8 +51,17 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	 * 
 	 * @return Mouse button
 	 */
-	public static int getButton() {
-		return mouseB;
+	public static int getBotao() {
+		return botaoDoMouse;
+	}
+	
+	/**
+	 * Modifica o valor do botão do mouse
+	 * 
+	 * @param botao
+	 */
+	public static void setBotao(int botao){
+		botaoDoMouse = botao;
 	}
 
 	/**
@@ -72,8 +81,8 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	 */
 	@Override
 	public void mouseMoved(MouseEvent evento) {
-		mouseX = evento.getX();
-		mouseY = evento.getY();
+		xMouse = evento.getX();
+		yMouse = evento.getY();
 	}
 
 	/**
@@ -113,7 +122,7 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	 */
 	@Override
 	public void mousePressed(MouseEvent evento) {
-		mouseB = evento.getButton();
+		botaoDoMouse = evento.getButton();
 	}
 
 	/**
@@ -123,7 +132,7 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	 */
 	@Override
 	public void mouseReleased(MouseEvent evento) {
-		mouseB = -1;
+		botaoDoMouse = -1;
 	}
 
 }

@@ -61,6 +61,7 @@ public class PainelDoQuest extends Painel {
 					}
 				}
 			} catch (InterruptedException ex) {
+				ex.printStackTrace();
 			}
 
 			repaint();
@@ -79,6 +80,8 @@ public class PainelDoQuest extends Painel {
 
 	/**
 	 * Renderiza o painel do questionário
+	 *
+	 * @param graficos
 	 */
 	protected void renderizar(Graphics graficos) {
 		String opcoes[] = new String[5];
@@ -170,7 +173,7 @@ public class PainelDoQuest extends Painel {
 	}
 
 	/**
-	 * Renderiza um botao com o texto em x e y saindo do canto inferior direito
+	 * Renderiza um botão com o texto em x e y saindo do canto inferior direito
 	 * 
 	 * @param graficos
 	 * @param texto
