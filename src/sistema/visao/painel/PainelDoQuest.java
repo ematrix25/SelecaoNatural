@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import sistema.utilitario.arquivo.Recurso;
 import sistema.visao.Tela;
 
 /**
@@ -28,9 +29,10 @@ public class PainelDoQuest extends Painel {
 	 */
 	public PainelDoQuest(Tela tela) {
 		super(tela, "Quest");
+		Recurso recurso = new Recurso();
 		try {
-			// TODO Criar alguma imagem para o questionario
-			imagem = ImageIO.read(getClass().getResourceAsStream("/imagens/menu.jpg"));
+			// TODO Criar alguma imagem diferente
+			imagem = ImageIO.read(recurso.getEnderecoEmFluxo("/imagens/menu.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

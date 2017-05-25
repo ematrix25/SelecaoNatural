@@ -11,7 +11,8 @@ public class Resolucao {
 
 	public static final int LARGURA_DA_RESOLUCAO = Toolkit.getDefaultToolkit().getScreenSize().width;
 	public static final int ALTURA_DA_RESOLUCAO = Toolkit.getDefaultToolkit().getScreenSize().height;
-
+	public static final int QTD_DE_MEDIDAS = 3;
+	
 	public static int[] larguras;
 	public static int[] alturas;
 	
@@ -20,12 +21,12 @@ public class Resolucao {
 	 * 
 	 * @return
 	 */
-	public static void iniciar(int qtd) {
-		larguras = new int[qtd];
-		alturas = new int[qtd];
+	public static void iniciar() {
+		larguras = new int[QTD_DE_MEDIDAS];
+		alturas = new int[QTD_DE_MEDIDAS];
 		
-		for (int i = 0; i < qtd; i++) {
-			alturas[i] = Resolucao.ALTURA_DA_RESOLUCAO / (qtd - i);
+		for (int i = 0; i < QTD_DE_MEDIDAS; i++) {
+			alturas[i] = Resolucao.ALTURA_DA_RESOLUCAO / (QTD_DE_MEDIDAS - i);
 			larguras[i] = calcLarguraRelativa(alturas[i]);
 		}
 	}

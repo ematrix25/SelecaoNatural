@@ -14,11 +14,11 @@ import sistema.visao.Tela;
  */
 public class Jogo {
 
-	public static void main(String[] args) {
-		// Prepara antes de iniciar o jogo
-		Resolucao.iniciar(3);
-		int[] config = { 2, 1 };
-		Opcoes.carregarConfig(config);
+	public static void main(String[] args) {		
+		// Inicializa as possiveis resoluções para a configuração
+		Resolucao.iniciar();
+		// Carrega as configurações de opções
+		Opcoes.carregarConfig();
 
 		// Inicia a tela do jogo
 		EventQueue.invokeLater(new Runnable() {

@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import sistema.utilitario.arquivo.Recurso;
 import sistema.visao.Tela;
 
 /**
@@ -15,7 +16,6 @@ import sistema.visao.Tela;
  * @author Emanuel
  */
 public class PainelDoMenu extends Painel {
-	// TODO Resolver o problema dos botões quando retoma o painel do menu
 
 	private static final long serialVersionUID = 1L;
 	private boolean sobreAtivado = false;
@@ -27,8 +27,9 @@ public class PainelDoMenu extends Painel {
 	 */
 	public PainelDoMenu(Tela tela) {
 		super(tela, "Menu");
+		Recurso recurso = new Recurso();
 		try {
-			imagem = ImageIO.read(getClass().getResourceAsStream("/imagens/menu.jpg"));
+			imagem = ImageIO.read(recurso.getEnderecoEmFluxo("/imagens/menu.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

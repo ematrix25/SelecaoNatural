@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 
 import sistema.utilitario.Opcoes;
 import sistema.utilitario.Resolucao;
+import sistema.utilitario.arquivo.Recurso;
 import sistema.visao.Tela;
 
 /**
@@ -28,9 +29,10 @@ public class PainelDeOpcoes extends Painel {
 	 */
 	public PainelDeOpcoes(Tela tela) {
 		super(tela, "Opcoes");
+		Recurso recurso = new Recurso();
 		try {
-			// TODO Criar alguma imagem para as opções
-			imagem = ImageIO.read(getClass().getResourceAsStream("/imagens/menu.jpg"));
+			// TODO Criar alguma imagem diferente
+			imagem = ImageIO.read(recurso.getEnderecoEmFluxo("/imagens/menu.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -43,7 +45,7 @@ public class PainelDeOpcoes extends Painel {
 	public synchronized void iniciar() {
 		super.iniciar(1.1f);
 	}
-	
+
 	/**
 	 * Retoma a thread do painel do jogo
 	 */
