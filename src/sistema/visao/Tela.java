@@ -7,7 +7,6 @@ import java.net.URL;
 import javax.swing.JFrame;
 
 import sistema.utilitario.Opcoes;
-import sistema.utilitario.Resolucao;
 import sistema.utilitario.arquivo.Recurso;
 import sistema.visao.painel.Painel;
 import sistema.visao.painel.PainelDeOpcoes;
@@ -23,8 +22,8 @@ import sistema.visao.painel.PainelDoQuest;
 public class Tela extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	public final int ALTURA_PADRAO = 300;
 	public String TITULO = "Selecao Natural";
+	public final int LARGURA_PADRAO, ALTURA_PADRAO;
 	public Painel painelDoMenu, painelDoJogo, painelDoQuest, painelDeOpcoes;
 
 	/**
@@ -38,7 +37,9 @@ public class Tela extends JFrame {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(endereco));
 		setTitle(TITULO);
 		setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		setBounds(100, 100, Opcoes.larguraPadrao, Opcoes.alturaPadrao);
+		LARGURA_PADRAO = Opcoes.larguraPadrao;
+		ALTURA_PADRAO = Opcoes.alturaPadrao;
+		setBounds(100, 100, LARGURA_PADRAO, ALTURA_PADRAO);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 
@@ -55,8 +56,12 @@ public class Tela extends JFrame {
 		painelDeOpcoes.setSize(getWidth(), getHeight());
 
 		// Inicia o painel do menu
-		getContentPane().add(painelDoMenu);
-		((PainelDoMenu) painelDoMenu).iniciar();
+		// getContentPane().add(painelDoMenu);
+		// ((PainelDoMenu) painelDoMenu).iniciar();
+
+		// TODO Remover depois
+		getContentPane().add(painelDoQuest);
+		((PainelDoQuest) painelDoQuest).iniciar();
 	}
 
 	/**
@@ -64,7 +69,7 @@ public class Tela extends JFrame {
 	 * 
 	 * @param altura
 	 */
-	public void redimensionar(int altura) {
-		setSize(Resolucao.calcLarguraRelativa(altura), altura);
+	public void redimensionar(float valor) {
+		setSize((int) (LARGURA_PADRAO * valor), (int) (ALTURA_PADRAO * valor));
 	}
 }

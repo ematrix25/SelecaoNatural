@@ -17,7 +17,6 @@ import sistema.visao.Tela;
  *
  */
 public class PainelDeOpcoes extends Painel {
-	// TODO Salvar as configurações em arquivo
 
 	private static final long serialVersionUID = 1L;
 	private int configuracoes[];
@@ -219,7 +218,7 @@ public class PainelDeOpcoes extends Painel {
 	protected void acaoDoBotao(char inicial) {
 		switch (inicial) {
 		case 'S':
-			Opcoes.carregarConfig(configuracoes);
+			Opcoes.carregarConfig(true, configuracoes);
 			voltarParaMenu();
 			break;
 		case 'C':

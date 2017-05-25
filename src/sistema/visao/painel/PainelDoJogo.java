@@ -89,7 +89,7 @@ public class PainelDoJogo extends Painel {
 				quadros = 0;
 
 				// Conta os segundos para abrir o painel do questionarios
-				cont++;
+				cont++;				
 				abrirQuest(5);
 			}
 			repaint();
@@ -114,6 +114,7 @@ public class PainelDoJogo extends Painel {
 	 * @param tempo
 	 */
 	private void abrirQuest(int tempo) {
+		//TODO Resolver: Problema com as threads, que dormem, pararem
 		if (cont >= tempo) {
 			tela.painelDoMenu.parar();
 			tela.painelDeOpcoes.parar();

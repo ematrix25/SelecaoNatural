@@ -44,7 +44,7 @@ public abstract class Painel extends JPanel implements Runnable {
 	 * @param valor
 	 */
 	public synchronized void iniciar(float valor) {
-		tela.redimensionar((int) (tela.ALTURA_PADRAO * valor));
+		tela.redimensionar(valor);
 		executando = true;
 		thread.start();
 	}
@@ -62,7 +62,7 @@ public abstract class Painel extends JPanel implements Runnable {
 	 * @param valor
 	 */
 	public synchronized void retomar(float valor) {
-		tela.redimensionar((int) (tela.ALTURA_PADRAO * valor));
+		tela.redimensionar(valor);
 		pausado = false;
 		synchronized (thread) {
 			thread.notify();
@@ -73,6 +73,12 @@ public abstract class Painel extends JPanel implements Runnable {
 	 * Para a thread do painel
 	 */
 	public synchronized void parar() {
+		if (pausado) {
+			pausado = false;
+			synchronized (thread) {
+				thread.notify();
+			}
+		}
 		executando = false;
 		thread.interrupt();
 	}

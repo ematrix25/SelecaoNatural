@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import sistema.utilitario.arquivo.Arquivo.ArquivoDoQuest;
 import sistema.utilitario.arquivo.Recurso;
 import sistema.visao.Tela;
 
@@ -17,7 +18,6 @@ import sistema.visao.Tela;
  * @author Emanuel
  */
 public class PainelDoQuest extends Painel {
-	// TODO Salvar as escolhas do questionário num arquivo
 
 	private static final long serialVersionUID = 1L;
 	private int respostas[];
@@ -208,10 +208,7 @@ public class PainelDoQuest extends Painel {
 	protected void acaoDoBotao(char inicial) {
 		switch (inicial) {
 		case 'S':
-			System.out.println("Perguntas\t|\tRespostas");
-			for (int i = 0; i < respostas.length; i++) {
-				System.out.println((i + 1) + "\t\t|\t\t" + respostas[i]);
-			}
+			ArquivoDoQuest.escrever(respostas);
 			tela.dispatchEvent(new WindowEvent(tela, WindowEvent.WINDOW_CLOSING));
 			break;
 		default:

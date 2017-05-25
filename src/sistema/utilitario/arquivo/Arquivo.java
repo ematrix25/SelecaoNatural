@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -15,8 +16,6 @@ import java.util.List;
  * @author Emanuel
  */
 public abstract class Arquivo {
-	// TODO Resolver: Não estar escrevendo ao criar o arquivo
-	
 	/**
 	 * Lê as linhas do arquivo
 	 * 
@@ -25,15 +24,14 @@ public abstract class Arquivo {
 	 */
 	public static List<String> ler(File arquivo) {
 		List<String> texto = new ArrayList<String>();
-		FileReader leitor;
-		BufferedReader buffer;
+		BufferedReader leitor;
 		String linha;
 		try {
-			leitor = new FileReader(arquivo);
-			buffer = new BufferedReader(leitor);
-			while ((linha = buffer.readLine()) != null) {
+			leitor = new BufferedReader(new FileReader(arquivo));
+			while ((linha = leitor.readLine()) != null) {
 				texto.add(linha);
 			}
+			leitor.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -48,15 +46,14 @@ public abstract class Arquivo {
 	 * @param texto
 	 */
 	public static void escrever(boolean substitui, File arquivo, List<String> texto) {
-		FileWriter escritor;
-		BufferedWriter buffer;
+		BufferedWriter escritor;
 		try {
-			escritor = new FileWriter(arquivo);
-			buffer = new BufferedWriter(escritor);
+			escritor = new BufferedWriter(new FileWriter(arquivo, !substitui));
 			for (String linha : texto) {
-				if (substitui) buffer.write(linha);
-				else buffer.append(linha);
+				escritor.write(linha);
+				escritor.newLine();
 			}
+			escritor.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -131,6 +128,29 @@ public abstract class Arquivo {
 			texto.add("Controle = " + config[0]);
 			texto.add("Resolução = " + config[1]);
 			escrever(true, arquivo, texto);
+		}
+	}
+
+	/**
+	 * Escreve o arquivo do questionário
+	 *
+	 * @author Emanuel
+	 */
+	public static class ArquivoDoQuest extends Arquivo {
+		private static Recurso recurso = new Recurso();
+		private static final String NOME = "questionario.dat";
+
+		/**
+		 * Escreve as respostas do questionario no arquivo
+		 * 
+		 * @param config
+		 */
+		public static void escrever(int[] respostas) {
+			File arquivo = new File(recurso.getArquivoDoEndereco("/dados") + "/" + NOME);
+			List<String> texto = new ArrayList<String>();
+			if (!arquivo.exists()) criar(arquivo);
+			texto.add(Arrays.toString(respostas));
+			escrever(false, arquivo, texto);
 		}
 	}
 }
