@@ -63,6 +63,18 @@ public class PainelDoJogo extends Painel {
 		int quadros = 0, atualizacoes = 0;
 		requestFocus();
 		while (executando) {
+			// Espera 20 milissegundos para continuar a execução da thread
+			try {
+				Thread.sleep(20);
+				synchronized (thread) {
+					while (pausado) {
+						thread.wait();
+					}
+				}
+			} catch (InterruptedException ex) {
+				ex.printStackTrace();
+			}
+			
 			tempoAntes = tempoAgora;
 			tempoAgora = System.nanoTime();
 
@@ -93,18 +105,6 @@ public class PainelDoJogo extends Painel {
 				abrirQuest(5);
 			}
 			repaint();
-
-			// Espera 20 milissegundos para continuar a execução da thread
-			try {
-				Thread.sleep(20);
-				synchronized (thread) {
-					while (pausado) {
-						thread.wait();
-					}
-				}
-			} catch (InterruptedException ex) {
-				ex.printStackTrace();
-			}
 		}
 	}
 
@@ -114,7 +114,6 @@ public class PainelDoJogo extends Painel {
 	 * @param tempo
 	 */
 	private void abrirQuest(int tempo) {
-		//TODO Resolver: Problema com as threads, que dormem, pararem
 		if (cont >= tempo) {
 			tela.painelDoMenu.parar();
 			tela.painelDeOpcoes.parar();

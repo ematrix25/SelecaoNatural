@@ -56,12 +56,8 @@ public class Tela extends JFrame {
 		painelDeOpcoes.setSize(getWidth(), getHeight());
 
 		// Inicia o painel do menu
-		// getContentPane().add(painelDoMenu);
-		// ((PainelDoMenu) painelDoMenu).iniciar();
-
-		// TODO Remover depois
-		getContentPane().add(painelDoQuest);
-		((PainelDoQuest) painelDoQuest).iniciar();
+		getContentPane().add(painelDoMenu);
+		((PainelDoMenu) painelDoMenu).iniciar();
 	}
 
 	/**
