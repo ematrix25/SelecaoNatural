@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import sistema.utilitario.periferico.Teclado;
 import sistema.visao.Tela;
 
 /**
@@ -20,8 +21,8 @@ public class PainelDoJogo extends Painel {
 	private volatile boolean gameOver = false;
 
 	private int qtdCelulas = 1000, pontuacao = qtdCelulas * 10 + 110;
+	private final float MASSA_CELULAR_MAX = 100.0f;
 	private float massaCelular = 10.0f;
-	final float MASSA_CELULAR_MAX = 100.0f;
 
 	private int x = 100, y = 100, cont = 0, contAntes = 0;
 	private boolean xdir = true, ydir = false;
@@ -41,7 +42,7 @@ public class PainelDoJogo extends Painel {
 	public synchronized void iniciar() {
 		super.iniciar(1.1f);
 	}
-	
+
 	/**
 	 * Retoma a thread do painel do jogo
 	 */
@@ -74,11 +75,10 @@ public class PainelDoJogo extends Painel {
 			} catch (InterruptedException ex) {
 				ex.printStackTrace();
 			}
-			
-			tempoAntes = tempoAgora;
-			tempoAgora = System.nanoTime();
 
 			// Passado 1 segundo o jogo faz 60 atualizações
+			tempoAntes = tempoAgora;
+			tempoAgora = System.nanoTime();
 			deltaTempo += (tempoAgora - tempoAntes) / (NANOSEGUNDOS / 60.0);
 			while (deltaTempo >= 1) {
 				atualizar();
@@ -101,8 +101,8 @@ public class PainelDoJogo extends Painel {
 				quadros = 0;
 
 				// Conta os segundos para abrir o painel do questionarios
-				cont++;				
-				abrirQuest(5);
+				cont++;
+				abrirQuest(60);
 			}
 			repaint();
 		}
@@ -115,12 +115,18 @@ public class PainelDoJogo extends Painel {
 	 */
 	private void abrirQuest(int tempo) {
 		if (cont >= tempo) {
+			// Para outros paineis
 			tela.painelDoMenu.parar();
 			tela.painelDeOpcoes.parar();
+
+			// Para o painel do jogo
 			tela.remove(tela.painelDoJogo);
 			tela.painelDoJogo.parar();
+			tela.setTitle(tela.TITULO);
+
+			// Inicia o painel do questionário
 			tela.add(tela.painelDoQuest);
-			((PainelDoQuest) tela.painelDoQuest).iniciar();
+			tela.painelDoQuest.iniciar();
 		}
 	}
 
@@ -128,6 +134,7 @@ public class PainelDoJogo extends Painel {
 	 * Atualiza todos os dados do jogo
 	 */
 	private void atualizar() {
+		Teclado.atualizar();
 		if (!gameOver) {
 			// TODO Remover depois
 			if (cont != contAntes) {
@@ -206,6 +213,9 @@ public class PainelDoJogo extends Painel {
 		graficos.setColor(Color.black);
 		graficos.setFont(new Font("Verdana", 0, 25));
 		graficos.drawString("Janela do Jogo", x, y);
+
+		// Ações conforme as teclas são pressionadas
+		if (Teclado.sair) acaoDoBotao('S');
 	}
 
 	/**
@@ -227,6 +237,28 @@ public class PainelDoJogo extends Painel {
 	 */
 	@Override
 	protected void acaoDoBotao(char inicial) {
-		// TODO Implementar as acoes dos botoes aqui
+		// TODO Implementar as ações dos botões aqui
+		switch (inicial) {
+		case 'S':
+			voltarParaMenu();
+			break;
+		default:
+			System.out.println("Botao clicado nao reconhecido");
+			break;
+		}
+	}
+
+	/**
+	 * Volta para o painel do menu
+	 */
+	private void voltarParaMenu() {
+		// Pausa o painel do jogo
+		tela.remove(tela.painelDoJogo);
+		tela.painelDoJogo.pausar();
+//		tela.setTitle(tela.TITULO);
+
+		// Retoma o painel do menu
+		tela.add(tela.painelDoMenu);
+		tela.painelDoMenu.retomar();
 	}
 }

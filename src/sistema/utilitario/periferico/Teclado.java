@@ -9,20 +9,20 @@ import java.awt.event.KeyListener;
  * @author Emanuel
  *
  */
-public class Teclado implements KeyListener {
-
-	private boolean teclas[] = new boolean[120];
-	public static boolean cima, baixo, esquerda, direita, shift;
+public class Teclado implements KeyListener {	
+	private static boolean teclas[] = new boolean[120];
+	public static boolean cima, baixo, esquerda, direita, correr, sair;
 
 	/**
 	 * Atualiza o valor das variaveis das teclas
 	 */
-	public void update() {
+	public static void atualizar() {
 		cima = teclas[KeyEvent.VK_UP] || teclas[KeyEvent.VK_W];
 		baixo = teclas[KeyEvent.VK_DOWN] || teclas[KeyEvent.VK_S];
 		esquerda = teclas[KeyEvent.VK_LEFT] || teclas[KeyEvent.VK_A];
 		direita = teclas[KeyEvent.VK_RIGHT] || teclas[KeyEvent.VK_D];
-		shift = teclas[KeyEvent.VK_SHIFT];
+		correr = teclas[KeyEvent.VK_SHIFT];
+		sair = teclas[KeyEvent.VK_ESCAPE];
 	}
 
 	/**
@@ -30,6 +30,7 @@ public class Teclado implements KeyListener {
 	 * 
 	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
 	 */
+
 	@Override
 	public void keyPressed(KeyEvent evento) {
 		teclas[evento.getKeyCode()] = true;
@@ -52,6 +53,5 @@ public class Teclado implements KeyListener {
 	 */
 	@Override
 	public void keyTyped(KeyEvent evento) {
-
 	}
 }

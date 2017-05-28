@@ -138,23 +138,26 @@ public class PainelDoMenu extends Painel {
 		case 'J':
 			tela.remove(tela.painelDoMenu);
 			tela.painelDoMenu.pausar();
-			tela.add(tela.painelDoJogo);
-			((PainelDoJogo) tela.painelDoJogo).iniciar();
+			if (tela.painelDoJogo.pausado) {
+				tela.painelDoJogo = new PainelDoJogo(tela);
+			}
+			tela.add(tela.painelDoJogo);			
+			tela.painelDoJogo.iniciar();
 			break;
 		case 'C':
-			if (continuavel(inicial)) {
+			if (tela.painelDoJogo.pausado) {
 				tela.remove(tela.painelDoMenu);
 				tela.painelDoMenu.pausar();
 				tela.add(tela.painelDoJogo);
-				((PainelDoJogo) tela.painelDoJogo).retomar();
+				tela.painelDoJogo.retomar();
 			}
 			break;
 		case 'O':
 			tela.remove(tela.painelDoMenu);
 			tela.painelDoMenu.pausar();
 			tela.add(tela.painelDeOpcoes);
-			if (tela.painelDeOpcoes.pausado) ((PainelDeOpcoes) tela.painelDeOpcoes).retomar();
-			else((PainelDeOpcoes) tela.painelDeOpcoes).iniciar();
+			if (tela.painelDeOpcoes.pausado) tela.painelDeOpcoes.retomar();
+			else tela.painelDeOpcoes.iniciar();
 			break;
 		case 'S':
 			sobreAtivado = true;

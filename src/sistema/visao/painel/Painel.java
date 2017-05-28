@@ -6,11 +6,13 @@ import java.awt.Image;
 import javax.swing.JPanel;
 
 import sistema.utilitario.periferico.Mouse;
+import sistema.utilitario.periferico.Teclado;
 import sistema.visao.Tela;
 
 /**
+ * Classe generica do Painel com thread
+ * 
  * @author Emanuel
- *
  */
 public abstract class Painel extends JPanel implements Runnable {
 
@@ -18,6 +20,7 @@ public abstract class Painel extends JPanel implements Runnable {
 
 	protected Tela tela;
 	protected Thread thread;
+	protected Teclado teclado;
 	protected Mouse mouse;
 	protected Image imagem;
 
@@ -33,7 +36,12 @@ public abstract class Painel extends JPanel implements Runnable {
 	public Painel(Tela tela, String nome) {
 		this.tela = tela;
 		thread = new Thread(this, nome);
+		teclado = new Teclado();
 		mouse = new Mouse(this.getWidth(), this.getHeight());
+		setSize(tela.getWidth(),tela.getHeight());
+
+		//TODO Trocar Listeners por algo melhor
+		addKeyListener(teclado);
 		addMouseListener(mouse);
 		addMouseMotionListener(mouse);
 	}

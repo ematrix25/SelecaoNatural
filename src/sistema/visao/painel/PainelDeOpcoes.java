@@ -237,6 +237,6 @@ public class PainelDeOpcoes extends Painel {
 		tela.remove(tela.painelDeOpcoes);
 		tela.painelDeOpcoes.pausar();
 		tela.add(tela.painelDoMenu);
-		((PainelDoMenu) tela.painelDoMenu).retomar();
+		tela.painelDoMenu.retomar();
 	}
 }
