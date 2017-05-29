@@ -38,9 +38,9 @@ public abstract class Painel extends JPanel implements Runnable {
 		thread = new Thread(this, nome);
 		teclado = new Teclado();
 		mouse = new Mouse(this.getWidth(), this.getHeight());
-		setSize(tela.getWidth(),tela.getHeight());
+		setSize(tela.getWidth(), tela.getHeight());
 
-		//TODO Trocar Listeners por algo melhor
+		// Adiciona os escutadores dos perifericos
 		addKeyListener(teclado);
 		addMouseListener(mouse);
 		addMouseMotionListener(mouse);

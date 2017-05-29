@@ -53,8 +53,8 @@ public class PainelDoQuest extends Painel {
 	 */
 	@Override
 	public void run() {
-		requestFocus();
 		while (executando) {
+			requestFocusInWindow();
 			try {
 				Thread.sleep(20);
 				synchronized (this) {

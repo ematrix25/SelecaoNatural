@@ -62,8 +62,8 @@ public class PainelDoJogo extends Painel {
 		final double NANOSEGUNDOS = 1000000000.0;
 		double deltaTempo = 0.0;
 		int quadros = 0, atualizacoes = 0;
-		requestFocus();
 		while (executando) {
+			requestFocusInWindow();
 			// Espera 20 milissegundos para continuar a execução da thread
 			try {
 				Thread.sleep(20);
@@ -255,7 +255,7 @@ public class PainelDoJogo extends Painel {
 		// Pausa o painel do jogo
 		tela.remove(tela.painelDoJogo);
 		tela.painelDoJogo.pausar();
-//		tela.setTitle(tela.TITULO);
+		// tela.setTitle(tela.TITULO);
 
 		// Retoma o painel do menu
 		tela.add(tela.painelDoMenu);

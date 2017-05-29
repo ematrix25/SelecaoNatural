@@ -9,9 +9,16 @@ import java.awt.event.KeyListener;
  * @author Emanuel
  *
  */
-public class Teclado implements KeyListener {	
+public class Teclado implements KeyListener {
 	private static boolean teclas[] = new boolean[120];
 	public static boolean cima, baixo, esquerda, direita, correr, sair;
+
+	/**
+	 * Inicializa o teclado
+	 */
+	public Teclado() {
+		super();
+	}
 
 	/**
 	 * Atualiza o valor das variaveis das teclas
