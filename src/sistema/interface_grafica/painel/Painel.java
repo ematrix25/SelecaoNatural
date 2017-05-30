@@ -124,7 +124,7 @@ public abstract class Painel extends JPanel implements Runnable {
 	 * @param y
 	 * @param largura
 	 * @param altura
-	 * @return
+	 * @return boolean
 	 */
 	protected boolean mouseClicouNoBotao(int x, int y, int largura, int altura) {
 		if (mouseEstaNoBotao(x, y, largura, altura) && Mouse.getBotao() > -1) {
@@ -141,7 +141,7 @@ public abstract class Painel extends JPanel implements Runnable {
 	 * @param y
 	 * @param largura
 	 * @param altura
-	 * @return
+	 * @return boolean
 	 */
 	protected boolean mouseEstaNoBotao(int x, int y, int largura, int altura) {
 		int mouseX = Mouse.getX(), mouseY = Mouse.getY();

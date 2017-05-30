@@ -110,7 +110,7 @@ public class PainelDoQuest extends Painel {
 	 * @param opcoes
 	 * @param desvioY
 	 * @param pergunta
-	 * @return
+	 * @return int
 	 */
 	private int renderizarPergunta(Graphics graficos, String texto, String[] opcoes, int desvioY, int pergunta) {
 		int x = 20, y = desvioY;
@@ -123,9 +123,8 @@ public class PainelDoQuest extends Painel {
 
 		// Renderiza as Opções de respostas da Pergunta
 		for (int i = 0; i < opcoes.length; i++) {
-			if (respostas[pergunta] == i + 1) {
-				if (renderizarOpcao(graficos, opcoes[i], x + 150 * i, y + 20, true)) resposta = i + 1;
-			} else if (renderizarOpcao(graficos, opcoes[i], x + 150 * i, y + 20, false)) resposta = i + 1;
+			if (renderizarOpcao(graficos, opcoes[i], x + 150 * i, y + 20, respostas[pergunta] == i + 1))
+				resposta = i + 1;
 		}
 		return resposta;
 	}
@@ -138,7 +137,7 @@ public class PainelDoQuest extends Painel {
 	 * @param desvioX
 	 * @param desvioY
 	 * @param selecionado
-	 * @return
+	 * @return boolean
 	 */
 	private boolean renderizarOpcao(Graphics graficos, String texto, int desvioX, int desvioY, boolean selecionado) {
 		int x = desvioX, y = desvioY;

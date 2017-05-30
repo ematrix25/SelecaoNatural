@@ -14,6 +14,7 @@ import sistema.utilitario.periferico.Teclado;
  * @author Emanuel
  */
 public class PainelDoJogo extends Painel {
+	// TODO Integrar o RendDaSelecao e abstrair esse Painel para RendDoJogo
 	// TODO Implementar o Jogo nesse painel
 
 	private static final long serialVersionUID = 1L;
