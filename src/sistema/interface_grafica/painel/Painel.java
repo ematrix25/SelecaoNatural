@@ -1,13 +1,13 @@
-package sistema.visao.painel;
+package sistema.interface_grafica.painel;
 
 import java.awt.Graphics;
 import java.awt.Image;
 
 import javax.swing.JPanel;
 
+import sistema.interface_grafica.Tela;
 import sistema.utilitario.periferico.Mouse;
 import sistema.utilitario.periferico.Teclado;
-import sistema.visao.Tela;
 
 /**
  * Classe generica do Painel com thread
@@ -15,7 +15,11 @@ import sistema.visao.Tela;
  * @author Emanuel
  */
 public abstract class Painel extends JPanel implements Runnable {
-
+	/*
+	 * TODO Dica: Renderização de tudo no run desse Painel com 4 classes de
+	 * renderização ao invés de outros 4 paineis. Renderização das classes é
+	 * chamada em alternância no run de uma só thread.
+	 */
 	private static final long serialVersionUID = 1L;
 
 	protected Tela tela;

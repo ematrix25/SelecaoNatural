@@ -1,4 +1,4 @@
-package sistema.visao.painel;
+package sistema.interface_grafica.painel;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -7,10 +7,10 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import sistema.interface_grafica.Tela;
 import sistema.utilitario.Opcoes;
 import sistema.utilitario.Resolucao;
 import sistema.utilitario.arquivo.Recurso;
-import sistema.visao.Tela;
 
 /**
  * @author Emanuel
@@ -55,7 +55,7 @@ public class PainelDeOpcoes extends Painel {
 	/**
 	 * Executa a thread do painel de opções
 	 * 
-	 * @see sistema.visao.painel.Painel#run()
+	 * @see sistema.interface_grafica.painel.Painel#run()
 	 */
 	@Override
 	public void run() {
@@ -212,7 +212,7 @@ public class PainelDeOpcoes extends Painel {
 	/**
 	 * Realiza a ação do botão quando clicado
 	 * 
-	 * @see sistema.visao.painel.Painel#acaoDoBotao(char)
+	 * @see sistema.interface_grafica.painel.Painel#acaoDoBotao(char)
 	 */
 	@Override
 	protected void acaoDoBotao(char inicial) {

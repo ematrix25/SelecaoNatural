@@ -2,9 +2,9 @@ package sistema;
 
 import java.awt.EventQueue;
 
+import sistema.interface_grafica.Tela;
 import sistema.utilitario.Opcoes;
 import sistema.utilitario.Resolucao;
-import sistema.visao.Tela;
 
 /**
  * Inicia todo o processo

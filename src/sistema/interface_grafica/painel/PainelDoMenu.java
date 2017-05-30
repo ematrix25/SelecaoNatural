@@ -1,4 +1,4 @@
-package sistema.visao.painel;
+package sistema.interface_grafica.painel;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -7,8 +7,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import sistema.interface_grafica.Tela;
 import sistema.utilitario.arquivo.Recurso;
-import sistema.visao.Tela;
 
 /**
  * Cria o Painel do Menu
@@ -52,7 +52,7 @@ public class PainelDoMenu extends Painel {
 	/**
 	 * Executa a thread do painel do menu
 	 * 
-	 * @see sistema.visao.painel.Painel#run()
+	 * @see sistema.interface_grafica.painel.Painel#run()
 	 */
 	@Override
 	public void run() {
@@ -75,7 +75,7 @@ public class PainelDoMenu extends Painel {
 	/**
 	 * Pinta o painel que é usado no repaint
 	 *
-	 * @see sistema.visao.painel.Painel#paintComponent(java.awt.Graphics)
+	 * @see sistema.interface_grafica.painel.Painel#paintComponent(java.awt.Graphics)
 	 */
 	public void paintComponent(Graphics graficos) {
 		super.paintComponent(graficos);
@@ -130,7 +130,7 @@ public class PainelDoMenu extends Painel {
 	/**
 	 * Realiza a ação do botão quando clicado
 	 * 
-	 * @see sistema.visao.painel.Painel#acaoDoBotao(char)
+	 * @see sistema.interface_grafica.painel.Painel#acaoDoBotao(char)
 	 */
 	@Override
 	protected void acaoDoBotao(char inicial) {

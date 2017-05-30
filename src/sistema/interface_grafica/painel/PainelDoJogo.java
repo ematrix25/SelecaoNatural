@@ -1,12 +1,12 @@
-package sistema.visao.painel;
+package sistema.interface_grafica.painel;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import sistema.interface_grafica.Tela;
 import sistema.utilitario.periferico.Teclado;
-import sistema.visao.Tela;
 
 /**
  * Cria Painel do Jogo
@@ -53,7 +53,7 @@ public class PainelDoJogo extends Painel {
 	/**
 	 * Executa a thread do painel do jogo
 	 * 
-	 * @see sistema.visao.painel.Painel#run()
+	 * @see sistema.interface_grafica.painel.Painel#run()
 	 */
 	@Override
 	public void run() {
@@ -233,7 +233,7 @@ public class PainelDoJogo extends Painel {
 	/**
 	 * Realiza a ação do botão quando clicado
 	 * 
-	 * @see sistema.visao.painel.Painel#acaoDoBotao(char)
+	 * @see sistema.interface_grafica.painel.Painel#acaoDoBotao(char)
 	 */
 	@Override
 	protected void acaoDoBotao(char inicial) {

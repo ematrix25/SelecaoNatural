@@ -1,4 +1,4 @@
-package sistema.visao;
+package sistema.interface_grafica;
 
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -6,12 +6,12 @@ import java.net.URL;
 
 import javax.swing.JFrame;
 
+import sistema.interface_grafica.painel.PainelDeOpcoes;
+import sistema.interface_grafica.painel.PainelDoJogo;
+import sistema.interface_grafica.painel.PainelDoMenu;
+import sistema.interface_grafica.painel.PainelDoQuest;
 import sistema.utilitario.Opcoes;
 import sistema.utilitario.arquivo.Recurso;
-import sistema.visao.painel.PainelDeOpcoes;
-import sistema.visao.painel.PainelDoJogo;
-import sistema.visao.painel.PainelDoMenu;
-import sistema.visao.painel.PainelDoQuest;
 
 /**
  * Cria a Tela do jogo
