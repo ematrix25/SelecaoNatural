@@ -6,8 +6,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
-import sistema.interface_grafica.painel.Painel;
-import sistema.utilitario.periferico.Mouse;
+import sistema.interface_grafica.painel.PainelDoJogo;
 
 /**
  * Classe para renderizar a tela de seleção das espécies
@@ -15,47 +14,52 @@ import sistema.utilitario.periferico.Mouse;
  * @author Emanuel
  */
 public class RendDaSelecao {
-	// TODO Integrar ao PainelDoJogo
+	private PainelDoJogo painel;
 	private Image imagem;
-	private int selecao, larguraDaTela, alturaDaTela;
+	private int selecao;
 
 	/**
 	 * Cria o objeto de renderizador da seleção
 	 * 
-	 * @param imagem
-	 * @param graficos
+	 * @param painel
 	 */
-	public RendDaSelecao(Painel painel) {
-		larguraDaTela = painel.getWidth();
-		alturaDaTela = painel.getHeight();
-		imagem = new BufferedImage(larguraDaTela, alturaDaTela, BufferedImage.TYPE_INT_RGB);
+	public RendDaSelecao(PainelDoJogo painel) {
+		this.painel = painel;
 	}
-
+			
 	/**
-	 * Repassa a imagem renderizados
+	 * Repassa o resultado da selecao
 	 * 
-	 * @return Image
+	 * @return int
 	 */
-	public Image getImagem() {
-		return imagem;
+	public int getSelecao() {
+		return selecao;
 	}
 
 	/**
 	 * Renderiza a tela de seleção
+	 *
+	 * @return Image
 	 */
-	public void renderizar() {
+	public Image renderizar() {
+		imagem = new BufferedImage(painel.getWidth(), painel.getHeight(), BufferedImage.TYPE_INT_RGB);
 		Graphics graficos = imagem.getGraphics();
 
-		String dados[] = new String[2];
+		//TODO Dados devem ser fornecidos pelo ControleDoAmbiente
+		String dados[] = { "TempMax = 30", "TempMin = 10" };
 		renderizarDados(graficos, "Ambiente", dados, 40);
 
-		String opcoes[] = new String[4];
-		int selecao = renderizarSelecao(graficos, "Selecione uma espécie: ", opcoes, 80);
-		if(selecao!=-1) this.selecao = selecao;
-		
+		//TODO Opções devem ser fornecidos pelo ControleDoAmbiente
+		String opcoes[] = { "Nome = nunsei:Tipo = chaves:TempMax = 30:TempMin = 10",
+				"Nome = vixe:Tipo = o+:TempMax = 32:TempMin = 12",
+				"Nome = jadisse:Tipo = tipado:TempMax = 34:TempMin = 14" };
+		int selecao = renderizarSelecao(graficos, "Selecione uma espécie: ", opcoes, 100);
+		if (selecao != -1) this.selecao = selecao;
+
 		renderizarBotao(graficos, "Selecionar", 40);
 
 		graficos.dispose();
+		return imagem;
 	}
 
 	/**
@@ -64,7 +68,7 @@ public class RendDaSelecao {
 	 * @param graficos
 	 * @param texto
 	 * @param dados
-	 * @param i
+	 * @param desvioY
 	 */
 	private void renderizarDados(Graphics graficos, String texto, String[] dados, int desvioY) {
 		int x = 20, y = desvioY;
@@ -76,7 +80,7 @@ public class RendDaSelecao {
 
 		// Renderiza os dados
 		renderizarDado(graficos, dados[0], x + 0, y + 20);
-		renderizarDado(graficos, dados[1], x + 20, y + 20);
+		renderizarDado(graficos, dados[1], x + 100, y + 20);
 	}
 
 	/**
@@ -116,7 +120,7 @@ public class RendDaSelecao {
 
 		// Renderiza as Opções de respostas da Pergunta
 		for (int i = 0; i < opcoes.length; i++) {
-			if (renderizarOpcao(graficos, opcoes[i], x + 150 * i, y + 20, this.selecao == i + 1)) selecao = i + 1;
+			if (renderizarOpcao(graficos, opcoes[i], x, y + (20 * i + 20), this.selecao == i + 1)) selecao = i + 1;
 		}
 		return selecao;
 	}
@@ -142,10 +146,13 @@ public class RendDaSelecao {
 		// Texto da opção
 		graficos.setColor(Color.lightGray);
 		graficos.setFont(new Font("Verdana", 0, 12));
-		graficos.drawString(texto, x + 15, y + tamanho);
+		String dados[] = texto.split(":");
+		for (int i = 0; i < dados.length; i++) {
+			graficos.drawString(dados[i], x + 15 + 120 * i, y + tamanho);
+		}
 
 		// Marcação de seleção da opção
-		if (mouseClicouNoBotao(x, y, tamanho, tamanho)) {
+		if (painel.mouseClicouNoBotao(x, y, tamanho, tamanho)) {
 			renderizarMarcacao(graficos, x, y, tamanho / 2);
 			return true;
 		} else if (selecionado) renderizarMarcacao(graficos, x, y, tamanho / 2);
@@ -173,68 +180,20 @@ public class RendDaSelecao {
 	 * @param desvioY
 	 */
 	private void renderizarBotao(Graphics graficos, String texto, int desvioY) {
-		int x = larguraDaTela - 100, y = alturaDaTela - desvioY;
+		int x = painel.getWidth() - 100, y = painel.getHeight() - desvioY;
 		int largura = 90, altura = 30;
 
 		// Retangulo do botao
 		graficos.setColor(Color.white);
-		if (mouseEstaNoBotao(x, y, largura, altura)) graficos.setColor(Color.gray);
+		if (painel.mouseEstaNoBotao(x, y, largura, altura)) graficos.setColor(Color.gray);
 		graficos.fillRect(x, y, largura, altura);
 
 		// Texto do botao
 		graficos.setColor(Color.black);
-		if (mouseEstaNoBotao(x, y, largura, altura)) graficos.setColor(Color.white);
+		if (painel.mouseEstaNoBotao(x, y, largura, altura)) graficos.setColor(Color.white);
 		graficos.setFont(new Font("Verdana", 0, 12));
 		graficos.drawString(texto, x + 10, y + 20);
 
-		if (mouseClicouNoBotao(x, y, largura, altura)) acaoDoBotao(texto.charAt(0));
-	}
-
-	/**
-	 * Verifica se o mouse clicou no botão em x e y
-	 *
-	 * @param x
-	 * @param y
-	 * @param largura
-	 * @param altura
-	 * @return boolean
-	 */
-	protected boolean mouseClicouNoBotao(int x, int y, int largura, int altura) {
-		if (mouseEstaNoBotao(x, y, largura, altura) && Mouse.getBotao() > -1) {
-			Mouse.setBotao(-1);
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Verifica se o mouse está no botão
-	 *
-	 * @param x
-	 * @param y
-	 * @param largura
-	 * @param altura
-	 * @return boolean
-	 */
-	protected boolean mouseEstaNoBotao(int x, int y, int largura, int altura) {
-		int mouseX = Mouse.getX(), mouseY = Mouse.getY();
-		if (mouseX >= x && mouseX <= x + largura) if (mouseY >= y && mouseY <= y + altura) return true;
-		return false;
-	}
-
-	/**
-	 * Realiza a ação do botão quando clicado
-	 * 
-	 * @param inicial
-	 */
-	protected void acaoDoBotao(char inicial) {
-		// TODO Implementar as ações dos botões aqui
-		switch (inicial) {
-		case 'S':
-			break;
-		default:
-			System.out.println("Botao clicado nao reconhecido");
-			break;
-		}
+		if (painel.mouseClicouNoBotao(x, y, largura, altura)) painel.acaoDoBotao('S', texto.charAt(0));
 	}
 }

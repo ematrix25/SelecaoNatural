@@ -1,11 +1,8 @@
 package sistema.interface_grafica.painel;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-
 import sistema.interface_grafica.Tela;
+import sistema.interface_grafica.renderizador.RendDaSelecao;
+import sistema.interface_grafica.renderizador.RendDoJogo;
 import sistema.utilitario.periferico.Teclado;
 
 /**
@@ -14,19 +11,21 @@ import sistema.utilitario.periferico.Teclado;
  * @author Emanuel
  */
 public class PainelDoJogo extends Painel {
-	// TODO Integrar o RendDaSelecao e abstrair esse Painel para RendDoJogo
 	// TODO Implementar o Jogo nesse painel
-
 	private static final long serialVersionUID = 1L;
+	
+	private RendDaSelecao rendDaSelecao;
+	private RendDoJogo rendDoJogo;
 
 	private volatile boolean gameOver = false;
 
-	private int qtdCelulas = 1000, pontuacao = qtdCelulas * 10 + 110;
-	private final float MASSA_CELULAR_MAX = 100.0f;
-	private float massaCelular = 10.0f;
+	public char telaAtiva = 'M';
 
-	private int x = 100, y = 100, cont = 0, contAntes = 0;
-	private boolean xdir = true, ydir = false;
+	public int qtdCelulas = 1000, pontuacao = qtdCelulas * 10 + 110;
+	public final float MASSA_CELULAR_MAX = 100.0f;
+	public float massaCelular = 10.0f;
+
+	private int cont = 0, contAntes = 0;
 
 	/**
 	 * Inicializa o painel do jogo
@@ -35,6 +34,9 @@ public class PainelDoJogo extends Painel {
 	 */
 	public PainelDoJogo(Tela tela) {
 		super(tela, "Jogo");
+		rendDaSelecao = new RendDaSelecao(this);
+		rendDoJogo = new RendDoJogo(this);
+		telaAtiva = 'S';
 	}
 
 	/**
@@ -88,11 +90,21 @@ public class PainelDoJogo extends Painel {
 			}
 
 			// Renderiza um quadro
-			renderizar();
+			switch (telaAtiva) {
+			case 'S':
+				imagem = rendDaSelecao.renderizar();
+				break;
+			case 'J':
+				imagem = rendDoJogo.renderizar();
+				break;
+			default:
+				System.out.println("Tela desconhecida");
+				break;
+			}
 			quadros++;
 
 			// TODO Remover depois
-			moveText();
+			// moveText();
 
 			// Mostra APS e QPS a cada segundo
 			if (System.currentTimeMillis() - temporizador > 1000) {
@@ -150,98 +162,19 @@ public class PainelDoJogo extends Painel {
 	}
 
 	/**
-	 * Renderizar o painel na tela
-	 */
-	private void renderizar() {
-		imagem = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_RGB);
-		Graphics graficos = imagem.getGraphics();
-
-		renderizarInfo(graficos);
-		renderizarJogo(graficos);
-
-		graficos.dispose();
-	}
-
-	/**
-	 * Renderizar a janela do informações
-	 * 
-	 * @param graficos
-	 */
-	private void renderizarInfo(Graphics graficos) {
-		int percentualMassa = (int) ((massaCelular / MASSA_CELULAR_MAX) * 100);
-		final int MIL = (int) Math.pow(10, 3);
-		graficos.setColor(Color.black);
-		graficos.fillRect(0, 0, getWidth(), 30);
-
-		renderizarRotulo(graficos, Color.lightGray, "Massa Celular: " + percentualMassa + "%", this.getWidth() - 10);
-		if (pontuacao < MIL)
-			renderizarRotulo(graficos, Color.gray, "Pontuacao: " + pontuacao, (this.getWidth() / 2) + 70);
-		else renderizarRotulo(graficos, Color.gray, "Pontuacao: " + pontuacao / MIL + "K", (this.getWidth() / 2) + 70);
-		if (qtdCelulas < MIL) renderizarRotulo(graficos, Color.darkGray, "Qtd Celulas: " + qtdCelulas, 150);
-		else renderizarRotulo(graficos, Color.darkGray, "Qtd Celulas: " + qtdCelulas / MIL + "K", 150);
-	}
-
-	/**
-	 * Renderiza um rótulo com o texto em x e y
-	 * 
-	 * @param graficos
-	 * @param cor
-	 * @param texto
-	 * @param desvioX
-	 */
-	private void renderizarRotulo(Graphics graficos, Color cor, String texto, int desvioX) {
-		int x = this.getWidth() - desvioX, y = 5;
-
-		// Retangulo do rotulo
-		graficos.setColor(cor);
-		graficos.fillRect(x, y, 140, 20);
-
-		// Texto do rotulo
-		if (cor == Color.lightGray) graficos.setColor(Color.black);
-		else graficos.setColor(Color.white);
-		graficos.setFont(new Font("Verdana", 0, 12));
-		graficos.drawString(texto, x + 5, y + 15);
-	}
-
-	/**
-	 * Renderizar a janela do jogo
-	 * 
-	 * @param graficos
-	 */
-	private void renderizarJogo(Graphics graficos) {
-		graficos.setColor(Color.white);
-		graficos.fillRect(0, 30, this.getWidth(), this.getHeight());
-		graficos.setColor(Color.black);
-		graficos.setFont(new Font("Verdana", 0, 25));
-		graficos.drawString("Janela do Jogo", x, y);
-
-		// Ações conforme as teclas são pressionadas
-		if (Teclado.sair) acaoDoBotao('S');
-	}
-
-	/**
-	 * Faz a movimentação das posições de x e y do texto
-	 */
-	private void moveText() {
-		if (x == this.getWidth() - 183 || x == 0) xdir = !xdir;
-		if (y == this.getHeight() - 5 || y == 49) ydir = !ydir;
-		if (xdir) x++;
-		else x--;
-		if (ydir) y++;
-		else y--;
-	}
-
-	/**
 	 * Realiza a ação do botão quando clicado
 	 * 
-	 * @see sistema.interface_grafica.painel.Painel#acaoDoBotao(char)
+	 * @see sistema.interface_grafica.painel.Painel#acaoDoBotao(char, char)
 	 */
-	@Override
-	protected void acaoDoBotao(char inicial) {
+	public void acaoDoBotao(char telaDoBotao, char inicial) {
 		// TODO Implementar as ações dos botões aqui
 		switch (inicial) {
 		case 'S':
-			voltarParaMenu();
+			if (telaDoBotao == 'J') voltarParaMenu();
+			else {
+				System.out.println("Seleção de " + rendDaSelecao.getSelecao());
+				telaAtiva = 'J';
+			}
 			break;
 		default:
 			System.out.println("Botao clicado nao reconhecido");
