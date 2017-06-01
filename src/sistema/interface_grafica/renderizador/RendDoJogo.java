@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
+import sistema.controlador.ControladorDaEntidade;
+import sistema.controlador.ControladorDoAmbiente;
 import sistema.interface_grafica.painel.PainelDoJogo;
 import sistema.utilitario.periferico.Teclado;
 
@@ -15,8 +17,12 @@ import sistema.utilitario.periferico.Teclado;
  * @author Emanuel
  */
 public class RendDoJogo {
+	//TODO Implementar o Jogo aqui
 	private PainelDoJogo painel;
 	private Image imagem;
+
+	private ControladorDaEntidade controladorDaEntidade;
+	private ControladorDoAmbiente controladorDoAmbiente;
 
 	private int x = 100, y = 100;
 	private boolean xdir = true, ydir = false;
@@ -25,18 +31,14 @@ public class RendDoJogo {
 	 * Cria o objeto para renderização do jogo
 	 * 
 	 * @param painel
+	 * @param contDaEntidade
+	 * @param contDoAmbiente
 	 */
-	public RendDoJogo(PainelDoJogo painel) {
+	public RendDoJogo(PainelDoJogo painel, ControladorDaEntidade contDaEntidade, ControladorDoAmbiente contDoAmbiente) {
 		this.painel = painel;
-	}
+		controladorDaEntidade = contDaEntidade;
+		controladorDoAmbiente = contDoAmbiente;
 
-	/**
-	 * Repassa a imagem renderizada
-	 * 
-	 * @return Image
-	 */
-	public Image getImagem() {
-		return imagem;
 	}
 
 	/**

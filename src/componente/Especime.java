@@ -88,22 +88,22 @@ public class Especime extends Componente {
 		/**
 		 * Gera o objeto Especie com valores de Tipo e temperaturas suportadas
 		 * 
-		 * @param tipo
+		 * @param forma
 		 * @param tempMaxSup
 		 * @param tempMinSup
 		 */
 		public Especie(Forma forma, int tempMaxSup, int tempMinSup) {
-			this.nome = forma.toString() + " " + Integer.toString(tempMaxSup * tempMinSup);
 			this.tipo = escolherTipo(forma);
 			this.tempMaxSup = tempMaxSup;
 			this.tempMinSup = tempMinSup;
+			this.nome = forma.toString() + " " + hashCode() % 1031;
 		}
 
 		/**
 		 * Escolhe o Tipo da Especie dado a Forma
 		 * 
 		 * @param forma
-		 * @return
+		 * @return Tipo
 		 */
 		private static Tipo escolherTipo(Forma forma) {
 			switch (forma) {
@@ -118,7 +118,7 @@ public class Especime extends Componente {
 		}
 
 		/**
-		 * Gera o codigo com o nome da Especie
+		 * Gera o código com o nome da Especie
 		 * 
 		 * @see java.lang.Object#hashCode()
 		 */
@@ -126,11 +126,27 @@ public class Especime extends Componente {
 			final int prime = 31;
 			int result = 1;
 			result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+			result = prime * result + hashCode();
 			return result;
 		}
 
 		/**
-		 * Valida a igualdade de Especies
+		 * Gera código da Especie
+		 * 
+		 * @see java.lang.Object#hashCode()
+		 */
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((tipo == null) ? 0 : tipo.hashCode());
+			result = prime * result + tempMaxSup;
+			result = prime * result + tempMinSup;
+			return result;
+		}
+
+		/**
+		 * Valida a igualdade de duas Especies
 		 * 
 		 * @see java.lang.Object#equals(java.lang.Object)
 		 */
@@ -145,21 +161,7 @@ public class Especime extends Componente {
 			if (!(obj instanceof Especie)) {
 				return false;
 			}
-			Especie other = (Especie) obj;
-			if (obterCodigo() != other.obterCodigo()) {
-				return false;
-			}
-			if (tempMaxSup != other.tempMaxSup) {
-				return false;
-			}
-			if (tempMinSup != other.tempMinSup) {
-				return false;
-			}
-			if (tipo == null) {
-				if (other.tipo != null) {
-					return false;
-				}
-			} else if (!tipo.equals(other.tipo)) {
+			if (((Especie) obj).obterCodigo() != obterCodigo()) {
 				return false;
 			}
 			return true;
@@ -199,6 +201,21 @@ public class Especime extends Componente {
 			}
 
 			/**
+			 * Gera o código do Tipo
+			 * 
+			 * @see java.lang.Object#hashCode()
+			 */
+			@Override
+			public int hashCode() {
+				final int prime = 31;
+				int result = 1;
+				result = prime * result + (ehAutotrofa ? 1231 : 1237);
+				result = prime * result + ((forma == null) ? 0 : forma.hashCode());
+				result = prime * result + ((movimento == null) ? 0 : movimento.hashCode());
+				return result;
+			}
+
+			/**
 			 * Valida a igualdade de Tipos
 			 *
 			 * @see java.lang.Object#equals(java.lang.Object)
@@ -214,17 +231,21 @@ public class Especime extends Componente {
 				if (!(obj instanceof Tipo)) {
 					return false;
 				}
-				Tipo other = (Tipo) obj;
-				if (forma != other.forma) {
-					return false;
-				}
-				if (movimento != other.movimento) {
-					return false;
-				}
-				if (ehAutotrofa != other.ehAutotrofa) {
+				if (((Tipo) obj).hashCode() != hashCode()) {
 					return false;
 				}
 				return true;
+			}
+
+			/**
+			 * Gera o texto do tipo da Especie
+			 * 
+			 * @see java.lang.Object#toString()
+			 */
+			@Override
+			public String toString() {
+				if (ehAutotrofa) return " Autotrofo que se move por " + movimento;
+				else return " Heterotrofo que se move por " + movimento;
 			}
 		}
 

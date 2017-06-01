@@ -200,7 +200,7 @@ public class ControladorDoAmbiente {
 		/**
 		 * Obtem a Temperatura Máxima do Ambiente
 		 * 
-		 * @return
+		 * @return int
 		 */
 		public int obterTempMax() {
 			return tempMax;
@@ -209,7 +209,7 @@ public class ControladorDoAmbiente {
 		/**
 		 * Obtem a Temperatura Mínima do Ambiente
 		 * 
-		 * @return
+		 * @return int
 		 */
 		public int obterTempMin() {
 			return tempMin;
@@ -218,16 +218,29 @@ public class ControladorDoAmbiente {
 		/**
 		 * Obtem a Temperatura do Ambiente
 		 * 
-		 * @return
+		 * @return int
 		 */
 		public int obterTemp() {
 			return temp;
 		}
 
 		/**
+		 * Obtem a IDs da Especie
+		 * 
+		 * @param especime
+		 * @return int
+		 */
+		public int obterEspecieID(int especime) {
+			for (Integer especie : especies.keySet()) {
+				if (especies.get(especie).get(0) == especime) return especie;
+			}
+			return -1;
+		}
+
+		/**
 		 * Obtem a QTD de Especies
 		 * 
-		 * @return
+		 * @return int
 		 */
 		public int obterQTD() {
 			return especies.size();
@@ -251,15 +264,19 @@ public class ControladorDoAmbiente {
 	public static void main(String[] args) {
 		ControladorDaEntidade controladorDaEntidade = new ControladorDaEntidade();
 		ControladorDoAmbiente controladorDoAmbiente = new ControladorDoAmbiente();
-		System.out.println(controladorDoAmbiente.obterAmbiente());
+		System.out.println("Ambiente:\n" + controladorDoAmbiente.obterAmbiente());
+		System.out.println();
 
 		// Atualizar Ambiente
 		controladorDoAmbiente.atualizarAmbiente(450, 400);
-		System.out.println(controladorDoAmbiente.obterAmbiente());
+		System.out.println("Ambiente atualizado:\n" + controladorDoAmbiente.obterAmbiente());
+		System.out.println();
 
 		// Atualizar Temperatura
 		if (controladorDoAmbiente.atualizarTemp(true, 20))
 			System.out.println("Temperatura ambiente é " + controladorDoAmbiente.obterAmbiente().obterTemp() + "K");
+		else System.out.println("Temperatura não foi atualizada");
+		System.out.println();
 
 		// Popular Ambiente
 		int entidades[] = new int[7];
@@ -270,7 +287,8 @@ public class ControladorDoAmbiente {
 		for (int i = 0; i < 7; i++) {
 			controladorDaEntidade.adicionarComponente(entidades[i], (Componente) new Especime(especies[i]));
 		}
-		System.out.println(controladorDoAmbiente.obterAmbiente().especies);
+		System.out.println("Ambiente populado:\n" + controladorDoAmbiente.obterAmbiente().especies);
+		System.out.println();
 
 		// Atualizar População - Adicionar Especime
 		System.out.println("Adicionando o Especime 8");
@@ -278,6 +296,7 @@ public class ControladorDoAmbiente {
 		controladorDaEntidade.adicionarComponente(entidade, new Especime(especies[5]));
 		controladorDoAmbiente.atualizarEspecie(entidade, true, especies[5].obterCodigo());
 		System.out.println(controladorDoAmbiente.obterAmbiente().especies);
+		System.out.println();
 
 		// Atualizar População - Remover Especime
 		System.out.println("Removendo o Especime 6");
@@ -285,6 +304,7 @@ public class ControladorDoAmbiente {
 		controladorDaEntidade.removerEntidade(entidade);
 		controladorDoAmbiente.atualizarEspecie(entidade, false, especies[5].obterCodigo());
 		System.out.println(controladorDoAmbiente.obterAmbiente().especies);
+		System.out.println();
 
 		// Remover Especie
 		System.out.println("Removendo a Especie do Especime 6");
@@ -293,5 +313,6 @@ public class ControladorDoAmbiente {
 		}
 		controladorDoAmbiente.removerEspecie(especies[5].obterCodigo());
 		System.out.println(controladorDoAmbiente.obterAmbiente().especies);
+		System.out.println();
 	}
 }

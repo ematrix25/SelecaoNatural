@@ -14,7 +14,6 @@ import componente.Componente.Posicao;
  * Gerencia as Entidades e seus Componentes
  * 
  * @author Emanuel
- *
  */
 public class ControladorDaEntidade {
 	public int menorIDNaoAssociada = 1;
@@ -32,7 +31,7 @@ public class ControladorDaEntidade {
 	/**
 	 * Cria uma Entidade de ID única
 	 * 
-	 * @return
+	 * @return int
 	 */
 	public int criarEntidade() {
 		int novaID;
@@ -64,7 +63,7 @@ public class ControladorDaEntidade {
 	 * Remove uma Entidade com parametro para remover a chave e não o índice
 	 * 
 	 * @param ID
-	 * @return
+	 * @return boolean
 	 */
 	public boolean removerEntidade(Integer ID) {
 		// Previne a remoção ao mesmo tempo da mesma Entidade
@@ -84,6 +83,7 @@ public class ControladorDaEntidade {
 	 * 
 	 * @param ID
 	 * @param componente
+	 * @return boolean
 	 */
 	@SuppressWarnings("unchecked")
 	public <T extends Componente> boolean adicionarComponente(int ID, T componente) {
@@ -101,14 +101,13 @@ public class ControladorDaEntidade {
 	 * Obtem a Entidade dado um Componente
 	 * 
 	 * @param componente
-	 * @return
+	 * @return Integer
 	 */
 	public <T extends Componente> Integer obterEntidadeComOComponente(T componente) {
 		HashMap<Integer, ? extends Componente> base = baseDeComponentes.get(componente.getClass());
 		if (base == null) return null;
-		for(Integer chave : base.keySet()){
-			if(base.get(chave).equals(componente))
-				return chave;
+		for (Integer chave : base.keySet()) {
+			if (base.get(chave).equals(componente)) return chave;
 		}
 		return null;
 	}
@@ -117,7 +116,7 @@ public class ControladorDaEntidade {
 	 * Obtem todas as Entidades do tipo de Componente
 	 * 
 	 * @param tipoDeComponente
-	 * @return
+	 * @return Set<Integer>
 	 */
 	public <T extends Componente> Set<Integer> obterTodasEntidadesComOComponente(Class<T> tipoDeComponente) {
 		HashMap<Integer, ? extends Componente> base = baseDeComponentes.get(tipoDeComponente);
@@ -130,7 +129,7 @@ public class ControladorDaEntidade {
 	 * 
 	 * @param ID
 	 * @param tipoDeComponente
-	 * @return
+	 * @return T
 	 */
 	public <T extends Componente> T obterComponente(int ID, Class<T> tipoDeComponente) {
 		if (!entidades.contains(ID)) return null;
@@ -147,7 +146,7 @@ public class ControladorDaEntidade {
 	 * Obtem todos os Componentes do tipo de Componente
 	 * 
 	 * @param tipoDeComponente
-	 * @return
+	 * @return List<T>
 	 */
 	@SuppressWarnings("unchecked")
 	public <T extends Componente> List<T> obterTodosOsComponentesDoTipo(Class<T> tipoDeComponente) {

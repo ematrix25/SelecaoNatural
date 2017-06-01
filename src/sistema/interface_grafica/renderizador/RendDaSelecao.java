@@ -6,6 +6,11 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
+import componente.Especime;
+import componente.Especime.Especie;
+import sistema.controlador.ControladorDaEntidade;
+import sistema.controlador.ControladorDoAmbiente;
+import sistema.controlador.ControladorDoAmbiente.Ambiente;
 import sistema.interface_grafica.painel.PainelDoJogo;
 
 /**
@@ -16,17 +21,27 @@ import sistema.interface_grafica.painel.PainelDoJogo;
 public class RendDaSelecao {
 	private PainelDoJogo painel;
 	private Image imagem;
+
+	private ControladorDaEntidade controladorDaEntidade;
+	private ControladorDoAmbiente controladorDoAmbiente;
+
 	private int selecao;
 
 	/**
 	 * Cria o objeto de renderizador da seleção
 	 * 
 	 * @param painel
+	 * @param contDaEntidade
+	 * @param contDoAmbiente
 	 */
-	public RendDaSelecao(PainelDoJogo painel) {
+	public RendDaSelecao(PainelDoJogo painel, ControladorDaEntidade contDaEntidade,
+			ControladorDoAmbiente contDoAmbiente) {
 		this.painel = painel;
+		controladorDaEntidade = contDaEntidade;
+		controladorDoAmbiente = contDoAmbiente;
+
 	}
-			
+
 	/**
 	 * Repassa o resultado da selecao
 	 * 
@@ -45,14 +60,19 @@ public class RendDaSelecao {
 		imagem = new BufferedImage(painel.getWidth(), painel.getHeight(), BufferedImage.TYPE_INT_RGB);
 		Graphics graficos = imagem.getGraphics();
 
-		//TODO Dados devem ser fornecidos pelo ControleDoAmbiente
-		String dados[] = { "TempMax = 30", "TempMin = 10" };
+		Ambiente ambiente = controladorDoAmbiente.obterAmbiente();
+		String dados[] = { "TempMax = " + ambiente.obterTempMax(), "TempMin = " + ambiente.obterTempMin() };
 		renderizarDados(graficos, "Ambiente", dados, 40);
 
-		//TODO Opções devem ser fornecidos pelo ControleDoAmbiente
-		String opcoes[] = { "Nome = nunsei:Tipo = chaves:TempMax = 30:TempMin = 10",
-				"Nome = vixe:Tipo = o+:TempMax = 32:TempMin = 12",
-				"Nome = jadisse:Tipo = tipado:TempMax = 34:TempMin = 14" };
+		String opcoes[] = new String[3];
+		Integer especime;
+		Especie especie;
+		for (int i = 1; i <= 3; i++) {
+			especime = controladorDoAmbiente.obterEspecie(ambiente.obterEspecieID(i)).get(0);
+			especie = controladorDaEntidade.obterComponente(especime, Especime.class).especie;
+			opcoes[i - 1] = "Nome = " + especie.nome + ":Tipo = " + especie.tipo + ":TempMax = " + especie.tempMaxSup
+					+ ":TempMin = " + especie.tempMinSup;
+		}
 		int selecao = renderizarSelecao(graficos, "Selecione uma espécie: ", opcoes, 100);
 		if (selecao != -1) this.selecao = selecao;
 
@@ -80,7 +100,7 @@ public class RendDaSelecao {
 
 		// Renderiza os dados
 		renderizarDado(graficos, dados[0], x + 0, y + 20);
-		renderizarDado(graficos, dados[1], x + 100, y + 20);
+		renderizarDado(graficos, dados[1], x + 150, y + 20);
 	}
 
 	/**
@@ -120,7 +140,7 @@ public class RendDaSelecao {
 
 		// Renderiza as Opções de respostas da Pergunta
 		for (int i = 0; i < opcoes.length; i++) {
-			if (renderizarOpcao(graficos, opcoes[i], x, y + (20 * i + 20), this.selecao == i + 1)) selecao = i + 1;
+			if (renderizarOpcao(graficos, opcoes[i], x, y + (50 * i + 20), this.selecao == i + 1)) selecao = i + 1;
 		}
 		return selecao;
 	}
@@ -147,8 +167,9 @@ public class RendDaSelecao {
 		graficos.setColor(Color.lightGray);
 		graficos.setFont(new Font("Verdana", 0, 12));
 		String dados[] = texto.split(":");
-		for (int i = 0; i < dados.length; i++) {
-			graficos.drawString(dados[i], x + 15 + 120 * i, y + tamanho);
+		for (int i = 0; i < (dados.length / 2); i++) {
+			graficos.drawString(dados[i], x + 15 + 160 * i, y + tamanho);
+			graficos.drawString(dados[i + 2], x + 15 + 160 * i, y + 20 + tamanho);
 		}
 
 		// Marcação de seleção da opção

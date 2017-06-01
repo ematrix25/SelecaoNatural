@@ -16,9 +16,9 @@ import sistema.utilitario.periferico.Teclado;
  */
 public abstract class Painel extends JPanel implements Runnable {
 	/*
-	 * TODO Dica: Renderização de tudo no run desse Painel com 4 classes de
-	 * renderização ao invés de outros 4 paineis. Renderização das classes é
-	 * chamada em alternância no run de uma só thread.
+	 * TODO Dica: Renderização de tudo no run desse Painel com várias classes de
+	 * renderização ao invés de 4 paineis. Renderização das classes é chamada em
+	 * alternância no run de uma só thread.
 	 */
 	private static final long serialVersionUID = 1L;
 

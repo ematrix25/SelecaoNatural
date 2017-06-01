@@ -1,5 +1,10 @@
 package sistema.interface_grafica.painel;
 
+import componente.Componente;
+import componente.Especime;
+import componente.Especime.Especie;
+import sistema.controlador.ControladorDaEntidade;
+import sistema.controlador.ControladorDoAmbiente;
 import sistema.interface_grafica.Tela;
 import sistema.interface_grafica.renderizador.RendDaSelecao;
 import sistema.interface_grafica.renderizador.RendDoJogo;
@@ -11,9 +16,12 @@ import sistema.utilitario.periferico.Teclado;
  * @author Emanuel
  */
 public class PainelDoJogo extends Painel {
-	// TODO Implementar o Jogo nesse painel
+	// TODO Implementar o Jogo aqui
 	private static final long serialVersionUID = 1L;
-	
+
+	private ControladorDaEntidade controladorDaEntidade;
+	private ControladorDoAmbiente controladorDoAmbiente;
+
 	private RendDaSelecao rendDaSelecao;
 	private RendDoJogo rendDoJogo;
 
@@ -34,9 +42,28 @@ public class PainelDoJogo extends Painel {
 	 */
 	public PainelDoJogo(Tela tela) {
 		super(tela, "Jogo");
-		rendDaSelecao = new RendDaSelecao(this);
-		rendDoJogo = new RendDoJogo(this);
+
+		controladorDaEntidade = new ControladorDaEntidade();
+		controladorDoAmbiente = new ControladorDoAmbiente();
+		gerarAmbiente();
+
+		rendDaSelecao = new RendDaSelecao(this, controladorDaEntidade, controladorDoAmbiente);
+		rendDoJogo = new RendDoJogo(this, controladorDaEntidade, controladorDoAmbiente);
 		telaAtiva = 'S';
+	}
+
+	/**
+	 * Gera ambiente
+	 */
+	private void gerarAmbiente() {
+		int entidades[] = new int[7];
+		for (int i = 0; i < 7; i++) {
+			entidades[i] = controladorDaEntidade.criarEntidade();
+		}
+		Especie[] especies = controladorDoAmbiente.criarEspecies(entidades);
+		for (int i = 0; i < 7; i++) {
+			controladorDaEntidade.adicionarComponente(entidades[i], (Componente) new Especime(especies[i]));
+		}
 	}
 
 	/**
