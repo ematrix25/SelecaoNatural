@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 
 import sistema.controlador.ControladorDaEntidade;
 import sistema.controlador.ControladorDoAmbiente;
-import sistema.interface_grafica.painel.PainelDoJogo;
+import sistema.interface_grafica.painel.PainelDeTeste;
 import sistema.utilitario.periferico.Teclado;
 
 /**
@@ -16,9 +16,10 @@ import sistema.utilitario.periferico.Teclado;
  * 
  * @author Emanuel
  */
+@SuppressWarnings("unused")
 public class RendDoJogo {
-	//TODO Implementar o Jogo aqui
-	private PainelDoJogo painel;
+	// TODO Implementar o Jogo aqui
+	private PainelDeTeste painel;
 	private Image imagem;
 
 	private ControladorDaEntidade controladorDaEntidade;
@@ -34,11 +35,10 @@ public class RendDoJogo {
 	 * @param contDaEntidade
 	 * @param contDoAmbiente
 	 */
-	public RendDoJogo(PainelDoJogo painel, ControladorDaEntidade contDaEntidade, ControladorDoAmbiente contDoAmbiente) {
+	public RendDoJogo(PainelDeTeste painel, ControladorDaEntidade contDaEntidade, ControladorDoAmbiente contDoAmbiente) {
 		this.painel = painel;
 		controladorDaEntidade = contDaEntidade;
 		controladorDoAmbiente = contDoAmbiente;
-
 	}
 
 	/**
@@ -57,6 +57,9 @@ public class RendDoJogo {
 
 		// TODO Remover depois
 		moveText();
+
+		// Ações conforme as teclas são pressionadas
+		if (Teclado.sair) painel.acaoDoBotao('s');
 
 		return imagem;
 	}
@@ -115,9 +118,6 @@ public class RendDoJogo {
 		graficos.setColor(Color.black);
 		graficos.setFont(new Font("Verdana", 0, 25));
 		graficos.drawString("Janela do Jogo", x, y);
-
-		// Ações conforme as teclas são pressionadas
-		if (Teclado.sair) painel.acaoDoBotao('J', 'S');
 	}
 
 	/**

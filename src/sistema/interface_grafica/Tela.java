@@ -7,6 +7,7 @@ import java.net.URL;
 import javax.swing.JFrame;
 
 import sistema.interface_grafica.painel.PainelDeOpcoes;
+import sistema.interface_grafica.painel.PainelDeTeste;
 import sistema.interface_grafica.painel.PainelDoJogo;
 import sistema.interface_grafica.painel.PainelDoMenu;
 import sistema.interface_grafica.painel.PainelDoQuest;
@@ -27,6 +28,7 @@ public class Tela extends JFrame {
 	public PainelDoJogo painelDoJogo;
 	public PainelDoQuest painelDoQuest;
 	public PainelDeOpcoes painelDeOpcoes;
+	public PainelDeTeste painel;
 
 	/**
 	 * Cria a Tela
@@ -52,8 +54,11 @@ public class Tela extends JFrame {
 		painelDeOpcoes = new PainelDeOpcoes(this);		
 		
 		// Inicia o painel do menu
-		add(painelDoMenu);
-		((PainelDoMenu) painelDoMenu).iniciar();
+//		add(painelDoMenu);
+//		((PainelDoMenu) painelDoMenu).iniciar();
+		
+		painel = new PainelDeTeste(this);
+		add(painel);
 	}
 
 	/**

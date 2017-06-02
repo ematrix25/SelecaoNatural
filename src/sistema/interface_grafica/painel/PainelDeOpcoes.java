@@ -206,16 +206,16 @@ public class PainelDeOpcoes extends Painel {
 		graficos.setFont(new Font("Verdana", 0, 12));
 		graficos.drawString(texto, x + 10, y + 20);
 
-		if (mouseClicouNoBotao(x, y, largura, altura)) acaoDoBotao('O', texto.charAt(0));
+		if (mouseClicouNoBotao(x, y, largura, altura)) acaoDoBotao(texto.charAt(0));
 	}
 
 	/**
 	 * Realiza a ação do botão quando clicado
 	 * 
-	 * @see sistema.interface_grafica.painel.Painel#acaoDoBotao(char, char)
+	 * @see sistema.interface_grafica.painel.Painel#acaoDoBotao(char)
 	 */
 	@Override
-	protected void acaoDoBotao(char telaDoMenu, char inicial) {
+	protected void acaoDoBotao(char inicial) {
 		switch (inicial) {
 		case 'S':
 			Opcoes.carregarConfig(true, configuracoes);

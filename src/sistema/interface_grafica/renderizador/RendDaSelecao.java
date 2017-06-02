@@ -11,7 +11,8 @@ import componente.Especime.Especie;
 import sistema.controlador.ControladorDaEntidade;
 import sistema.controlador.ControladorDoAmbiente;
 import sistema.controlador.ControladorDoAmbiente.Ambiente;
-import sistema.interface_grafica.painel.PainelDoJogo;
+import sistema.interface_grafica.painel.PainelDeTeste;
+import sistema.utilitario.periferico.Teclado;
 
 /**
  * Classe para renderizar a tela de seleção das espécies
@@ -19,13 +20,13 @@ import sistema.interface_grafica.painel.PainelDoJogo;
  * @author Emanuel
  */
 public class RendDaSelecao {
-	private PainelDoJogo painel;
+	private PainelDeTeste painel;
 	private Image imagem;
 
 	private ControladorDaEntidade controladorDaEntidade;
 	private ControladorDoAmbiente controladorDoAmbiente;
 
-	private int selecao;
+	private int selecao = -1;
 
 	/**
 	 * Cria o objeto de renderizador da seleção
@@ -34,7 +35,7 @@ public class RendDaSelecao {
 	 * @param contDaEntidade
 	 * @param contDoAmbiente
 	 */
-	public RendDaSelecao(PainelDoJogo painel, ControladorDaEntidade contDaEntidade,
+	public RendDaSelecao(PainelDeTeste painel, ControladorDaEntidade contDaEntidade,
 			ControladorDoAmbiente contDoAmbiente) {
 		this.painel = painel;
 		controladorDaEntidade = contDaEntidade;
@@ -77,6 +78,9 @@ public class RendDaSelecao {
 		if (selecao != -1) this.selecao = selecao;
 
 		renderizarBotao(graficos, "Selecionar", 40);
+
+		// Ações conforme as teclas são pressionadas
+		if (Teclado.sair) painel.acaoDoBotao('s');
 
 		graficos.dispose();
 		return imagem;
@@ -206,15 +210,15 @@ public class RendDaSelecao {
 
 		// Retangulo do botao
 		graficos.setColor(Color.white);
-		if (painel.mouseEstaNoBotao(x, y, largura, altura)) graficos.setColor(Color.gray);
+		if (painel.mouseEstaNoBotao(x, y, largura, altura) && selecao != -1) graficos.setColor(Color.gray);
 		graficos.fillRect(x, y, largura, altura);
 
 		// Texto do botao
 		graficos.setColor(Color.black);
-		if (painel.mouseEstaNoBotao(x, y, largura, altura)) graficos.setColor(Color.white);
+		if (painel.mouseEstaNoBotao(x, y, largura, altura) && selecao != -1) graficos.setColor(Color.white);
 		graficos.setFont(new Font("Verdana", 0, 12));
 		graficos.drawString(texto, x + 10, y + 20);
 
-		if (painel.mouseClicouNoBotao(x, y, largura, altura)) painel.acaoDoBotao('S', texto.charAt(0));
+		if (painel.mouseClicouNoBotao(x, y, largura, altura) && selecao != -1) painel.acaoDoBotao(texto.charAt(0));
 	}
 }

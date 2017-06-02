@@ -96,7 +96,7 @@ public abstract class Painel extends JPanel implements Runnable {
 	}
 
 	/**
-	 * Executa a thread do painel do questionário
+	 * Executa a thread do painel
 	 * 
 	 * @see java.lang.Runnable#run()
 	 */
@@ -152,8 +152,7 @@ public abstract class Painel extends JPanel implements Runnable {
 	/**
 	 * Realiza a ação do botão quando clicado
 	 * 
-	 * @param telaDobotao
 	 * @param inicial
 	 */
-	protected abstract void acaoDoBotao(char telaDobotao, char inicial);
+	protected abstract void acaoDoBotao(char inicial);
 }

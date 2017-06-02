@@ -27,7 +27,7 @@ public class PainelDoJogo extends Painel {
 
 	private volatile boolean gameOver = false;
 
-	public char telaAtiva = 'M';
+	private char telaAtiva = 'M';
 
 	public int qtdCelulas = 1000, pontuacao = qtdCelulas * 10 + 110;
 	public final float MASSA_CELULAR_MAX = 100.0f;
@@ -47,8 +47,8 @@ public class PainelDoJogo extends Painel {
 		controladorDoAmbiente = new ControladorDoAmbiente();
 		gerarAmbiente();
 
-		rendDaSelecao = new RendDaSelecao(this, controladorDaEntidade, controladorDoAmbiente);
-		rendDoJogo = new RendDoJogo(this, controladorDaEntidade, controladorDoAmbiente);
+//		rendDaSelecao = new RendDaSelecao(this, controladorDaEntidade, controladorDoAmbiente);
+//		rendDoJogo = new RendDoJogo(this, controladorDaEntidade, controladorDoAmbiente);
 		telaAtiva = 'S';
 	}
 
@@ -130,9 +130,6 @@ public class PainelDoJogo extends Painel {
 			}
 			quadros++;
 
-			// TODO Remover depois
-			// moveText();
-
 			// Mostra APS e QPS a cada segundo
 			if (System.currentTimeMillis() - temporizador > 1000) {
 				temporizador += 1000;
@@ -191,17 +188,21 @@ public class PainelDoJogo extends Painel {
 	/**
 	 * Realiza a ação do botão quando clicado
 	 * 
-	 * @see sistema.interface_grafica.painel.Painel#acaoDoBotao(char, char)
+	 * @see sistema.interface_grafica.painel.Painel#acaoDoBotao(char)
 	 */
-	public void acaoDoBotao(char telaDoBotao, char inicial) {
+	public void acaoDoBotao(char inicial) {
 		// TODO Implementar as ações dos botões aqui
 		switch (inicial) {
 		case 'S':
-			if (telaDoBotao == 'J') voltarParaMenu();
-			else {
-				System.out.println("Seleção de " + rendDaSelecao.getSelecao());
-				telaAtiva = 'J';
-			}
+			int selecao = rendDaSelecao.getSelecao();
+			Integer especime = controladorDoAmbiente
+					.obterEspecie(controladorDoAmbiente.obterAmbiente().obterEspecieID(selecao)).get(0);
+			Especie especie = controladorDaEntidade.obterComponente(especime, Especime.class).especie;
+			System.out.println("Seleção do especime " + especime + " da especie " + especie);
+			telaAtiva = 'J';
+			break;
+		case 's':
+			voltarParaMenu();
 			break;
 		default:
 			System.out.println("Botao clicado nao reconhecido");

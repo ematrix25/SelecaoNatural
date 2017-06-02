@@ -124,16 +124,16 @@ public class PainelDoMenu extends Painel {
 		graficos.setFont(new Font("Verdana", 0, 12));
 		graficos.drawString(texto, x + 10, y + 20);
 
-		if (mouseClicouNoBotao(x, y, largura, altura)) acaoDoBotao('M', texto.charAt(0));
+		if (mouseClicouNoBotao(x, y, largura, altura)) acaoDoBotao(texto.charAt(0));
 	}
 
 	/**
 	 * Realiza a ação do botão quando clicado
 	 * 
-	 * @see sistema.interface_grafica.painel.Painel#acaoDoBotao(char, char)
+	 * @see sistema.interface_grafica.painel.Painel#acaoDoBotao(char)
 	 */
 	@Override
-	protected void acaoDoBotao(char telaDoBotao, char inicial) {
+	protected void acaoDoBotao(char inicial) {
 		switch (inicial) {
 		case 'J':
 			tela.remove(tela.painelDoMenu);
