@@ -23,14 +23,20 @@ import sistema.utilitario.periferico.Teclado;
  * @author Emanuel
  */
 public class PainelDeTeste extends JPanel implements Runnable {
-	// TODO Integrar todos os paineis nesse painel
+	/*
+	 * TODO FOCO: Renderização de tudo no run desse Painel com várias classes de
+	 * renderização ao invés de 4 paineis. Renderização das classes é chamada em
+	 * alternância no run de uma só thread. -Integrar todos os paineis nesse
+	 * painel e remove-los depois
+	 */
 	private static final long serialVersionUID = 1L;
 
 	private Tela tela;
+	private Image imagem;
+
 	private Thread thread;
 	private Teclado teclado;
 	private Mouse mouse;
-	private Image imagem;
 
 	private ControladorDaEntidade controladorDaEntidade;
 	private ControladorDoAmbiente controladorDoAmbiente;
@@ -55,11 +61,12 @@ public class PainelDeTeste extends JPanel implements Runnable {
 	 */
 	public PainelDeTeste(Tela tela) {
 		this.tela = tela;
-		thread = new Thread(this, "Jogo");
+		tela.redimensionar(1);
+		setSize(tela.getWidth(), tela.getHeight());
 
+		thread = new Thread(this, "Jogo");
 		teclado = new Teclado();
 		mouse = new Mouse(this.getWidth(), this.getHeight());
-		setSize(tela.getWidth(), tela.getHeight());
 
 		// Adiciona os escutadores dos periféricos
 		addKeyListener(teclado);
@@ -129,7 +136,10 @@ public class PainelDeTeste extends JPanel implements Runnable {
 				// Conta os segundos para abrir o painel do questionarios
 				if (telaAtiva == 'S' || telaAtiva == 'J') {
 					cont++;
-					if (cont > 60) telaAtiva = 'Q';
+					if (cont > 60) {
+						tela.redimensionar(1.7f);
+						telaAtiva = 'Q';
+					}
 				}
 			}
 			repaint();
@@ -207,7 +217,8 @@ public class PainelDeTeste extends JPanel implements Runnable {
 	public void acaoDoBotao(char inicial) {
 		switch (inicial) {
 		case 's':
-			if (telaAtiva == 'J') telaAtiva = 'M';
+			tela.redimensionar(1);
+			telaAtiva = 'M';
 			break;
 		case 'S':
 			int selecao = rendDaSelecao.getSelecao();
@@ -215,17 +226,22 @@ public class PainelDeTeste extends JPanel implements Runnable {
 					.obterEspecie(controladorDoAmbiente.obterAmbiente().obterEspecieID(selecao)).get(0);
 			Especie especie = controladorDaEntidade.obterComponente(especime, Especime.class).especie;
 			System.out.println("Seleção do especime " + especime + " da especie " + especie);
+
+			tela.redimensionar(1.1f);
 			telaAtiva = 'J';
 			break;
 		case 'N':
+			tela.redimensionar(1.1f);
 			telaAtiva = 'S';
 			iniciarJogo();
 			ehContinuavel = true;
 			break;
 		case 'C':
+			tela.redimensionar(1.1f);
 			telaAtiva = 'J';
 			break;
 		case 'O':
+			tela.redimensionar(1.1f);
 			telaAtiva = 'O';
 			break;
 		default:

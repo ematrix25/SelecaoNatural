@@ -27,14 +27,14 @@ public class Mouse implements MouseListener, MouseMotionListener {
 		Mouse.xMaximo = width / 2;
 		Mouse.yMaximo = height / 2;
 	}
-	
+
 	/**
 	 * Retorna o valor de X
 	 * 
 	 * @return X
 	 */
 	public static int getX() {
-		return xMouse - xMaximo;
+		return xMouse;// - xMaximo;
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	 * @return Y
 	 */
 	public static int getY() {
-		return yMouse - yMaximo;
+		return yMouse;// - yMaximo;
 	}
 
 	/**
@@ -54,13 +54,13 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	public static int getBotao() {
 		return botaoDoMouse;
 	}
-	
+
 	/**
 	 * Modifica o valor do botão do mouse
 	 * 
 	 * @param botao
 	 */
-	public static void setBotao(int botao){
+	public static void setBotao(int botao) {
 		botaoDoMouse = botao;
 	}
 

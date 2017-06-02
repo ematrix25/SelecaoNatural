@@ -63,7 +63,7 @@ public class RendDaSelecao {
 
 		Ambiente ambiente = controladorDoAmbiente.obterAmbiente();
 		String dados[] = { "TempMax = " + ambiente.obterTempMax(), "TempMin = " + ambiente.obterTempMin() };
-		renderizarDados(graficos, "Ambiente", dados, 40);
+		renderizarDados(graficos, "Ambiente", dados, 50);
 
 		String opcoes[] = new String[3];
 		Integer especime;
@@ -77,7 +77,9 @@ public class RendDaSelecao {
 		int selecao = renderizarSelecao(graficos, "Selecione uma espécie: ", opcoes, 100);
 		if (selecao != -1) this.selecao = selecao;
 
-		renderizarBotao(graficos, "Selecionar", 40);
+		int desvio = 20;
+
+		renderizarBotao(graficos, "Selecionar", desvio);
 
 		// Ações conforme as teclas são pressionadas
 		if (Teclado.sair) painel.acaoDoBotao('s');
@@ -205,8 +207,8 @@ public class RendDaSelecao {
 	 * @param desvioY
 	 */
 	private void renderizarBotao(Graphics graficos, String texto, int desvioY) {
-		int x = painel.getWidth() - 100, y = painel.getHeight() - desvioY;
 		int largura = 90, altura = 30;
+		int x = painel.getWidth() - (largura + 10), y = painel.getHeight() - (altura + desvioY);
 
 		// Retangulo do botao
 		graficos.setColor(Color.white);
