@@ -6,11 +6,6 @@ import java.net.URL;
 
 import javax.swing.JFrame;
 
-import sistema.interface_grafica.painel.PainelDeOpcoes;
-import sistema.interface_grafica.painel.PainelDeTeste;
-import sistema.interface_grafica.painel.PainelDoJogo;
-import sistema.interface_grafica.painel.PainelDoMenu;
-import sistema.interface_grafica.painel.PainelDoQuest;
 import sistema.utilitario.Opcoes;
 import sistema.utilitario.arquivo.Recurso;
 
@@ -24,11 +19,7 @@ public class Tela extends JFrame {
 	private static final long serialVersionUID = 1L;
 	public String TITULO = "Selecao Natural";
 	public final int LARGURA_PADRAO, ALTURA_PADRAO;
-	public PainelDoMenu painelDoMenu;
-	public PainelDoJogo painelDoJogo;
-	public PainelDoQuest painelDoQuest;
-	public PainelDeOpcoes painelDeOpcoes;
-	public PainelDeTeste painel;
+	public Painel painel;
 
 	/**
 	 * Cria a Tela
@@ -46,18 +37,8 @@ public class Tela extends JFrame {
 		setBounds(100, 100, LARGURA_PADRAO, ALTURA_PADRAO);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
-
-		// Inicia os paineis
-		painelDoMenu = new PainelDoMenu(this);
-		painelDoJogo = new PainelDoJogo(this);
-		painelDoQuest = new PainelDoQuest(this);
-		painelDeOpcoes = new PainelDeOpcoes(this);		
 		
-		// Inicia o painel do menu
-//		add(painelDoMenu);
-//		((PainelDoMenu) painelDoMenu).iniciar();
-		
-		painel = new PainelDeTeste(this);
+		painel = new Painel(this);
 		add(painel);
 	}
 

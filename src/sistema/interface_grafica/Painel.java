@@ -1,7 +1,8 @@
-package sistema.interface_grafica.painel;
+package sistema.interface_grafica;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JPanel;
 
@@ -10,10 +11,13 @@ import componente.Especime;
 import componente.Especime.Especie;
 import sistema.controlador.ControladorDaEntidade;
 import sistema.controlador.ControladorDoAmbiente;
-import sistema.interface_grafica.Tela;
 import sistema.interface_grafica.renderizador.RendDaSelecao;
+import sistema.interface_grafica.renderizador.RendDeOpcoes;
 import sistema.interface_grafica.renderizador.RendDoJogo;
 import sistema.interface_grafica.renderizador.RendDoMenu;
+import sistema.interface_grafica.renderizador.RendDoQuest;
+import sistema.utilitario.Opcoes;
+import sistema.utilitario.arquivo.Arquivo.ArquivoDoQuest;
 import sistema.utilitario.periferico.Mouse;
 import sistema.utilitario.periferico.Teclado;
 
@@ -22,13 +26,8 @@ import sistema.utilitario.periferico.Teclado;
  * 
  * @author Emanuel
  */
-public class PainelDeTeste extends JPanel implements Runnable {
-	/*
-	 * TODO FOCO: Renderização de tudo no run desse Painel com várias classes de
-	 * renderização ao invés de 4 paineis. Renderização das classes é chamada em
-	 * alternância no run de uma só thread. -Integrar todos os paineis nesse
-	 * painel e remove-los depois
-	 */
+public class Painel extends JPanel implements Runnable {
+	// TODO Implementar o Jogo aqui e renderizar no RendDoJogo
 	private static final long serialVersionUID = 1L;
 
 	private Tela tela;
@@ -42,8 +41,10 @@ public class PainelDeTeste extends JPanel implements Runnable {
 	private ControladorDoAmbiente controladorDoAmbiente;
 
 	private RendDoMenu rendDoMenu;
+	private RendDeOpcoes rendDeOpcoes;
 	private RendDaSelecao rendDaSelecao;
 	private RendDoJogo rendDoJogo;
+	private RendDoQuest rendDoQuest;
 
 	private char telaAtiva = 'M';
 	public boolean ehContinuavel = false;
@@ -59,7 +60,7 @@ public class PainelDeTeste extends JPanel implements Runnable {
 	 *
 	 * @param tela
 	 */
-	public PainelDeTeste(Tela tela) {
+	public Painel(Tela tela) {
 		this.tela = tela;
 		tela.redimensionar(1);
 		setSize(tela.getWidth(), tela.getHeight());
@@ -74,6 +75,7 @@ public class PainelDeTeste extends JPanel implements Runnable {
 		addMouseMotionListener(mouse);
 
 		rendDoMenu = new RendDoMenu(this);
+		rendDeOpcoes = new RendDeOpcoes(this);
 		thread.start();
 	}
 
@@ -114,11 +116,17 @@ public class PainelDeTeste extends JPanel implements Runnable {
 			case 'M':
 				imagem = rendDoMenu.renderizar();
 				break;
+			case 'O':
+				imagem = rendDeOpcoes.renderizar();
+				break;
 			case 'S':
 				imagem = rendDaSelecao.renderizar();
 				break;
 			case 'J':
 				imagem = rendDoJogo.renderizar();
+				break;
+			case 'Q':
+				imagem = rendDoQuest.renderizar();
 				break;
 			default:
 				System.out.println("Tela desconhecida");
@@ -138,6 +146,7 @@ public class PainelDeTeste extends JPanel implements Runnable {
 					cont++;
 					if (cont > 60) {
 						tela.redimensionar(1.7f);
+						rendDoQuest = new RendDoQuest(this);
 						telaAtiva = 'Q';
 					}
 				}
@@ -215,20 +224,27 @@ public class PainelDeTeste extends JPanel implements Runnable {
 	 * @param inicial
 	 */
 	public void acaoDoBotao(char inicial) {
+		// TODO Implementar as ações das teclas do jogo aqui
 		switch (inicial) {
 		case 's':
-			tela.redimensionar(1);
-			telaAtiva = 'M';
+			voltarParaMenu();
 			break;
 		case 'S':
-			int selecao = rendDaSelecao.getSelecao();
-			Integer especime = controladorDoAmbiente
-					.obterEspecie(controladorDoAmbiente.obterAmbiente().obterEspecieID(selecao)).get(0);
-			Especie especie = controladorDaEntidade.obterComponente(especime, Especime.class).especie;
-			System.out.println("Seleção do especime " + especime + " da especie " + especie);
+			if (telaAtiva == 'S') {
+				int selecao = rendDaSelecao.obtemSelecao();
+				Integer especime = controladorDoAmbiente
+						.obterEspecie(controladorDoAmbiente.obterAmbiente().obterEspecieID(selecao)).get(0);
+				Especie especie = controladorDaEntidade.obterComponente(especime, Especime.class).especie;
+				System.out.println("Seleção do especime " + especime + " da especie " + especie);
 
-			tela.redimensionar(1.1f);
-			telaAtiva = 'J';
+				voltarParaJogo();
+			} else if (telaAtiva == 'O') {
+				Opcoes.carregarConfig(true, rendDeOpcoes.obterConfiguracoes());
+				voltarParaMenu();
+			}else if(telaAtiva == 'Q') {
+				ArquivoDoQuest.escrever(rendDoQuest.obterRespostas());
+				tela.dispatchEvent(new WindowEvent(tela, WindowEvent.WINDOW_CLOSING));				
+			}
 			break;
 		case 'N':
 			tela.redimensionar(1.1f);
@@ -237,17 +253,33 @@ public class PainelDeTeste extends JPanel implements Runnable {
 			ehContinuavel = true;
 			break;
 		case 'C':
-			tela.redimensionar(1.1f);
-			telaAtiva = 'J';
+			if (telaAtiva == 'M') voltarParaJogo();
+			else if (telaAtiva == 'O') voltarParaMenu();
 			break;
 		case 'O':
 			tela.redimensionar(1.1f);
 			telaAtiva = 'O';
 			break;
 		default:
-			System.out.println("Botao clicado nao reconhecido");
+			System.out.println("Botao clicado não reconhecido");
 			break;
 		}
+	}
+
+	/**
+	 * Volta para a tela do menu
+	 */
+	private void voltarParaMenu() {
+		tela.redimensionar(1);
+		telaAtiva = 'M';
+	}
+
+	/**
+	 * Volta para a tela do jogo
+	 */
+	private void voltarParaJogo() {
+		tela.redimensionar(1.1f);
+		telaAtiva = 'J';
 	}
 
 	/**

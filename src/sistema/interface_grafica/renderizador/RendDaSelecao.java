@@ -5,14 +5,17 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import componente.Especime;
 import componente.Especime.Especie;
 import sistema.controlador.ControladorDaEntidade;
 import sistema.controlador.ControladorDoAmbiente;
 import sistema.controlador.ControladorDoAmbiente.Ambiente;
-import sistema.interface_grafica.painel.PainelDeTeste;
-import sistema.utilitario.periferico.Teclado;
+import sistema.interface_grafica.Painel;
+import sistema.utilitario.arquivo.Recurso;
 
 /**
  * Classe para renderizar a tela de seleção das espécies
@@ -20,7 +23,7 @@ import sistema.utilitario.periferico.Teclado;
  * @author Emanuel
  */
 public class RendDaSelecao {
-	private PainelDeTeste painel;
+	private Painel painel;
 	private Image imagem;
 
 	private ControladorDaEntidade controladorDaEntidade;
@@ -35,7 +38,7 @@ public class RendDaSelecao {
 	 * @param contDaEntidade
 	 * @param contDoAmbiente
 	 */
-	public RendDaSelecao(PainelDeTeste painel, ControladorDaEntidade contDaEntidade,
+	public RendDaSelecao(Painel painel, ControladorDaEntidade contDaEntidade,
 			ControladorDoAmbiente contDoAmbiente) {
 		this.painel = painel;
 		controladorDaEntidade = contDaEntidade;
@@ -44,11 +47,11 @@ public class RendDaSelecao {
 	}
 
 	/**
-	 * Repassa o resultado da selecao
+	 * Obtem o resultado da selecao
 	 * 
 	 * @return int
 	 */
-	public int getSelecao() {
+	public int obtemSelecao() {
 		return selecao;
 	}
 
@@ -58,6 +61,8 @@ public class RendDaSelecao {
 	 * @return Image
 	 */
 	public Image renderizar() {
+		// TODO Arrumar uma maneira de desenhar a imagem do arquivo
+		// carregarImagem();
 		imagem = new BufferedImage(painel.getWidth(), painel.getHeight(), BufferedImage.TYPE_INT_RGB);
 		Graphics graficos = imagem.getGraphics();
 
@@ -81,11 +86,21 @@ public class RendDaSelecao {
 
 		renderizarBotao(graficos, "Selecionar", desvio);
 
-		// Ações conforme as teclas são pressionadas
-		if (Teclado.sair) painel.acaoDoBotao('s');
-
 		graficos.dispose();
 		return imagem;
+	}
+
+	/**
+	 * Carrega a imagem do arquivo dos recursos
+	 */
+	@SuppressWarnings("unused")
+	private void carregarImagem() {
+		try {
+			// TODO Criar alguma imagem diferente
+			imagem = ImageIO.read(new Recurso().getEnderecoEmFluxo("/imagens/menu.jpg"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**

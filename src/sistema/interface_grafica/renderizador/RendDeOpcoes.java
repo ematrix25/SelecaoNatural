@@ -1,97 +1,61 @@
-package sistema.interface_grafica.painel;
+package sistema.interface_grafica.renderizador;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import sistema.interface_grafica.Tela;
+import sistema.interface_grafica.Painel;
 import sistema.utilitario.Opcoes;
 import sistema.utilitario.Resolucao;
 import sistema.utilitario.arquivo.Recurso;
 
 /**
+ * Classe para renderizar a tela de opções
+ * 
  * @author Emanuel
- *
  */
-public class PainelDeOpcoes extends Painel {
+public class RendDeOpcoes {
+	// TODO Integrar ao painel
+	private Painel painel;
+	private Image imagem;	
 
-	private static final long serialVersionUID = 1L;
 	private int configuracoes[];
 
 	/**
-	 * Inicializa o painel de opções
-	 *
-	 * @param tela
+	 * Cria o objeto de renderizador de opções
+	 * 
+	 * @param painel
 	 */
-	public PainelDeOpcoes(Tela tela) {
-		super(tela, "Opcoes");
-		Recurso recurso = new Recurso();
-		try {
-			// TODO Criar alguma imagem diferente
-			imagem = ImageIO.read(recurso.getEnderecoEmFluxo("/imagens/menu.jpg"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public RendDeOpcoes(Painel painel) {
+		this.painel = painel;
 		configuracoes = Opcoes.configuracoes;
 	}
 
 	/**
-	 * Inicia a thread da painel de opções
-	 */
-	public synchronized void iniciar() {
-		super.iniciar(1.1f);
-	}
-
-	/**
-	 * Retoma a thread do painel do jogo
-	 */
-	public synchronized void retomar() {
-		super.retomar(1.1f);
-	}
-
-	/**
-	 * Executa a thread do painel de opções
+	 * Obtem as configuracoes
 	 * 
-	 * @see sistema.interface_grafica.painel.Painel#run()
+	 * @return int[]
 	 */
-	@Override
-	public void run() {
-		while (executando) {
-			requestFocusInWindow();
-			try {
-				Thread.sleep(20);
-				synchronized (thread) {
-					while (pausado) {
-						thread.wait();
-					}
-				}
-			} catch (InterruptedException ex) {
-				ex.printStackTrace();
-			}
-
-			repaint();
-		}
+	public int[] obterConfiguracoes() {
+		return configuracoes;
 	}
 
 	/**
-	 * Pinta o painel que é usado no repaint
+	 * Renderiza a tela de opcoes
 	 * 
-	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+	 * @return Image
 	 */
-	public void paintComponent(Graphics graficos) {
-		super.paintComponent(graficos);
-		renderizar(graficos);
-	}
-
-	/**
-	 * Renderiza o painel do menu
-	 *
-	 * @param graficos
-	 */
-	public void renderizar(Graphics graficos) {
+	public Image renderizar() {
+		// TODO Arrumar uma maneira de desenhar a imagem do arquivo
+		// carregarImagem();
+		imagem = new BufferedImage(painel.getWidth(), painel.getHeight(), BufferedImage.TYPE_INT_RGB);
+		Graphics graficos = imagem.getGraphics();
+		
 		String opcoes[] = { "Teclado", "Mouse" };
 		int configuracao;
 
@@ -110,6 +74,21 @@ public class PainelDeOpcoes extends Painel {
 		// Renderiza os botões
 		renderizarBotao(graficos, "Cancelar", 100);
 		renderizarBotao(graficos, "Salvar", 200);
+
+		return imagem;
+	}
+
+	/**
+	 * Carrega a imagem do arquivo dos recursos
+	 */
+	@SuppressWarnings("unused")
+	private void carregarImagem() {
+		try {
+			// TODO Criar alguma imagem diferente
+			imagem = ImageIO.read(new Recurso().getEnderecoEmFluxo("/imagens/menu.jpg"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -164,7 +143,7 @@ public class PainelDeOpcoes extends Painel {
 		graficos.drawString(texto, x + 15, y + tamanho);
 
 		// Marcação de seleção da opção
-		if (mouseClicouNoBotao(x, y, tamanho, tamanho)) {
+		if (painel.mouseClicouNoBotao(x, y, tamanho, tamanho)) {
 			renderizarMarcacao(graficos, x, y, tamanho / 2);
 			return true;
 		} else if (selecionado) renderizarMarcacao(graficos, x, y, tamanho / 2);
@@ -192,51 +171,20 @@ public class PainelDeOpcoes extends Painel {
 	 * @param desvioX
 	 */
 	private void renderizarBotao(Graphics graficos, String texto, int desvioX) {
-		int x = this.getWidth() - desvioX, y = this.getHeight() - 40;
+		int x = painel.getWidth() - desvioX, y = painel.getHeight() - 40;
 		int largura = 90, altura = 30;
 
 		// Retangulo do botao
 		graficos.setColor(Color.white);
-		if (mouseEstaNoBotao(x, y, largura, altura)) graficos.setColor(Color.gray);
+		if (painel.mouseEstaNoBotao(x, y, largura, altura)) graficos.setColor(Color.gray);
 		graficos.fillRect(x, y, largura, altura);
 
 		// Texto do botao
 		graficos.setColor(Color.black);
-		if (mouseEstaNoBotao(x, y, largura, altura)) graficos.setColor(Color.white);
+		if (painel.mouseEstaNoBotao(x, y, largura, altura)) graficos.setColor(Color.white);
 		graficos.setFont(new Font("Verdana", 0, 12));
 		graficos.drawString(texto, x + 10, y + 20);
 
-		if (mouseClicouNoBotao(x, y, largura, altura)) acaoDoBotao(texto.charAt(0));
-	}
-
-	/**
-	 * Realiza a ação do botão quando clicado
-	 * 
-	 * @see sistema.interface_grafica.painel.Painel#acaoDoBotao(char)
-	 */
-	@Override
-	protected void acaoDoBotao(char inicial) {
-		switch (inicial) {
-		case 'S':
-			Opcoes.carregarConfig(true, configuracoes);
-			voltarParaMenu();
-			break;
-		case 'C':
-			voltarParaMenu();
-			break;
-		default:
-			System.out.println("Botao clicado nao reconhecido");
-			break;
-		}
-	}
-
-	/**
-	 * Volta para o painel do menu
-	 */
-	private void voltarParaMenu() {
-		tela.remove(tela.painelDeOpcoes);
-		tela.painelDeOpcoes.pausar();
-		tela.add(tela.painelDoMenu);
-		tela.painelDoMenu.retomar();
+		if (painel.mouseClicouNoBotao(x, y, largura, altura)) painel.acaoDoBotao(texto.charAt(0));
 	}
 }

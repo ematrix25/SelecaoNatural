@@ -4,11 +4,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import sistema.interface_grafica.painel.PainelDeTeste;
+import sistema.interface_grafica.Painel;
 import sistema.utilitario.arquivo.Recurso;
 
 /**
@@ -17,35 +18,27 @@ import sistema.utilitario.arquivo.Recurso;
  * @author Emanuel
  */
 public class RendDoMenu {
-	// TODO Integrar ao painel
-	private PainelDeTeste painel;
+	private Painel painel;
 	private Image imagem;
 
 	/**
 	 * Cria o objeto de renderizador da seleção
 	 * 
 	 * @param painel
-	 * @param contDaEntidade
-	 * @param contDoAmbiente
 	 */
-	public RendDoMenu(PainelDeTeste painel) {
+	public RendDoMenu(Painel painel) {
 		this.painel = painel;
 	}
 
 	/**
-	 * Renderiza o painel do menu
+	 * Renderiza a tela do menu
 	 * 
 	 * @return
 	 */
 	public Image renderizar() {
 		// TODO Arrumar uma maneira de desenhar a imagem do arquivo
-		try {
-			imagem = ImageIO.read(new Recurso().getEnderecoEmFluxo("/imagens/menu.jpg"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		// imagem = new BufferedImage(painel.getWidth(), painel.getHeight(),
-		// BufferedImage.TYPE_INT_RGB);
+		// carregarImagem();
+		imagem = new BufferedImage(painel.getWidth(), painel.getHeight(), BufferedImage.TYPE_INT_RGB);
 		Graphics graficos = imagem.getGraphics();
 
 		int desvio = 20;
@@ -61,6 +54,18 @@ public class RendDoMenu {
 		renderizarBotao(graficos, "Novo Jogo", desvio * 5);
 
 		return imagem;
+	}
+
+	/**
+	 * Carrega a imagem do arquivo dos recursos
+	 */
+	@SuppressWarnings("unused")
+	private void carregarImagem() {
+		try {
+			imagem = ImageIO.read(new Recurso().getEnderecoEmFluxo("/imagens/menu.jpg"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**

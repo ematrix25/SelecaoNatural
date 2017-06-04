@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 
 import sistema.controlador.ControladorDaEntidade;
 import sistema.controlador.ControladorDoAmbiente;
-import sistema.interface_grafica.painel.PainelDeTeste;
+import sistema.interface_grafica.Painel;
 import sistema.utilitario.periferico.Teclado;
 
 /**
@@ -19,7 +19,7 @@ import sistema.utilitario.periferico.Teclado;
 @SuppressWarnings("unused")
 public class RendDoJogo {
 	// TODO Implementar o Jogo aqui
-	private PainelDeTeste painel;
+	private Painel painel;
 	private Image imagem;
 
 	private ControladorDaEntidade controladorDaEntidade;
@@ -35,7 +35,7 @@ public class RendDoJogo {
 	 * @param contDaEntidade
 	 * @param contDoAmbiente
 	 */
-	public RendDoJogo(PainelDeTeste painel, ControladorDaEntidade contDaEntidade, ControladorDoAmbiente contDoAmbiente) {
+	public RendDoJogo(Painel painel, ControladorDaEntidade contDaEntidade, ControladorDoAmbiente contDoAmbiente) {
 		this.painel = painel;
 		controladorDaEntidade = contDaEntidade;
 		controladorDoAmbiente = contDoAmbiente;
