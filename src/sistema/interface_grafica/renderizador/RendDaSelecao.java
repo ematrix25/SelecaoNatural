@@ -5,9 +5,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import componente.Especime;
 import componente.Especime.Especie;
@@ -15,17 +12,13 @@ import sistema.controlador.ControladorDaEntidade;
 import sistema.controlador.ControladorDoAmbiente;
 import sistema.controlador.ControladorDoAmbiente.Ambiente;
 import sistema.interface_grafica.Painel;
-import sistema.utilitario.arquivo.Recurso;
 
 /**
  * Classe para renderizar a tela de seleção das espécies
  * 
  * @author Emanuel
  */
-public class RendDaSelecao {
-	private Painel painel;
-	private Image imagem;
-
+public class RendDaSelecao extends Renderizador {
 	private ControladorDaEntidade controladorDaEntidade;
 	private ControladorDoAmbiente controladorDoAmbiente;
 
@@ -38,9 +31,8 @@ public class RendDaSelecao {
 	 * @param contDaEntidade
 	 * @param contDoAmbiente
 	 */
-	public RendDaSelecao(Painel painel, ControladorDaEntidade contDaEntidade,
-			ControladorDoAmbiente contDoAmbiente) {
-		this.painel = painel;
+	public RendDaSelecao(Painel painel, ControladorDaEntidade contDaEntidade, ControladorDoAmbiente contDoAmbiente) {
+		super(painel);
 		controladorDaEntidade = contDaEntidade;
 		controladorDoAmbiente = contDoAmbiente;
 
@@ -58,11 +50,12 @@ public class RendDaSelecao {
 	/**
 	 * Renderiza a tela de seleção
 	 *
-	 * @return Image
+	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizar()
 	 */
 	public Image renderizar() {
 		// TODO Arrumar uma maneira de desenhar a imagem do arquivo
-		// carregarImagem();
+		// TODO Criar alguma imagem diferente
+		// carregarImagem("/imagens/menu.jpg");
 		imagem = new BufferedImage(painel.getWidth(), painel.getHeight(), BufferedImage.TYPE_INT_RGB);
 		Graphics graficos = imagem.getGraphics();
 
@@ -88,19 +81,6 @@ public class RendDaSelecao {
 
 		graficos.dispose();
 		return imagem;
-	}
-
-	/**
-	 * Carrega a imagem do arquivo dos recursos
-	 */
-	@SuppressWarnings("unused")
-	private void carregarImagem() {
-		try {
-			// TODO Criar alguma imagem diferente
-			imagem = ImageIO.read(new Recurso().getEnderecoEmFluxo("/imagens/menu.jpg"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -144,13 +124,10 @@ public class RendDaSelecao {
 	/**
 	 * Renderiza a seleção com suas opções
 	 *
-	 * @param graficos
-	 * @param texto
-	 * @param opcoes
-	 * @param desvioY
-	 * @return int
+	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarSelecao(java.awt.Graphics,
+	 *      java.lang.String, java.lang.String[], int)
 	 */
-	private int renderizarSelecao(Graphics graficos, String texto, String[] opcoes, int desvioY) {
+	protected int renderizarSelecao(Graphics graficos, String texto, String[] opcoes, int desvioY) {
 		int x = 20, y = desvioY;
 		int selecao = -1;
 
@@ -167,16 +144,12 @@ public class RendDaSelecao {
 	}
 
 	/**
-	 * Renderiza uma opção de resposta com o texto em x e y
+	 * Renderiza uma opção com o texto em x e y
 	 *
-	 * @param graficos
-	 * @param texto
-	 * @param desvioX
-	 * @param desvioY
-	 * @param selecionado
-	 * @return boolean
+	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarOpcao(java.awt.Graphics,
+	 *      java.lang.String, int, int, boolean)
 	 */
-	private boolean renderizarOpcao(Graphics graficos, String texto, int desvioX, int desvioY, boolean selecionado) {
+	protected boolean renderizarOpcao(Graphics graficos, String texto, int desvioX, int desvioY, boolean selecionado) {
 		int x = desvioX, y = desvioY;
 		int tamanho = 8;
 
@@ -202,26 +175,12 @@ public class RendDaSelecao {
 	}
 
 	/**
-	 * Renderiza a marcação da opção da resposta em x e y
-	 * 
-	 * @param graficos
-	 * @param x
-	 * @param y
-	 * @param tamanho
-	 */
-	private void renderizarMarcacao(Graphics graficos, int x, int y, int tamanho) {
-		graficos.setColor(Color.black);
-		graficos.fillOval(x + (tamanho / 2), y + (tamanho / 2), tamanho, tamanho);
-	}
-
-	/**
 	 * Renderiza um botão com o texto em x e y saindo do canto inferior direito
 	 * 
-	 * @param graficos
-	 * @param texto
-	 * @param desvioY
+	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarBotao(java.awt.Graphics,
+	 *      java.lang.String, int)
 	 */
-	private void renderizarBotao(Graphics graficos, String texto, int desvioY) {
+	protected void renderizarBotao(Graphics graficos, String texto, int desvioY) {
 		int largura = 90, altura = 30;
 		int x = painel.getWidth() - (largura + 10), y = painel.getHeight() - (altura + desvioY);
 

@@ -5,19 +5,15 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import sistema.interface_grafica.Painel;
-import sistema.utilitario.arquivo.Recurso;
 
 /**
  * Classe para renderizar a tela do questionário
  * 
  * @author Emanuel
  */
-public class RendDoQuest {
+public class RendDoQuest extends Renderizador {
 	private Painel painel;
 	private Image imagem;
 
@@ -29,7 +25,7 @@ public class RendDoQuest {
 	 * @param painel
 	 */
 	public RendDoQuest(Painel painel) {
-		this.painel = painel;
+		super(painel);
 		respostas = new int[5];
 	}
 
@@ -47,7 +43,8 @@ public class RendDoQuest {
 	 */
 	public Image renderizar() {
 		// TODO Arrumar uma maneira de desenhar a imagem do arquivo
-		// carregarImagem();
+		// TODO Criar alguma imagem diferente
+		// carregarImagem("/imagens/menu.jpg");
 		imagem = new BufferedImage(painel.getWidth(), painel.getHeight(), BufferedImage.TYPE_INT_RGB);
 		Graphics graficos = imagem.getGraphics();
 
@@ -59,7 +56,7 @@ public class RendDoQuest {
 			for (int j = 0; j < opcoes.length; j++) {
 				opcoes[j] = "Opção " + (i + 1) + "." + (j + 1);
 			}
-			resposta = renderizarPergunta(graficos, "Pergunta " + (i + 1), opcoes, 40 + 80 * i, i);
+			resposta = renderizarSelecao(graficos, "Pergunta " + (i + 1), opcoes, 40 + 80 * i, i);
 			if (resposta != -1) respostas[i] = resposta;
 		}
 
@@ -70,29 +67,12 @@ public class RendDoQuest {
 	}
 
 	/**
-	 * Carrega a imagem do arquivo dos recursos
-	 */
-	@SuppressWarnings("unused")
-	private void carregarImagem() {
-		try {
-			// TODO Criar alguma imagem diferente
-			imagem = ImageIO.read(new Recurso().getEnderecoEmFluxo("/imagens/menu.jpg"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
 	 * Renderiza a pergunta com suas opções de respostas
-	 *
-	 * @param graficos
-	 * @param texto
-	 * @param opcoes
-	 * @param desvioY
-	 * @param pergunta
-	 * @return int
+	 * 
+	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarSelecao(java.awt.Graphics,
+	 *      java.lang.String, java.lang.String[], int, int)
 	 */
-	private int renderizarPergunta(Graphics graficos, String texto, String[] opcoes, int desvioY, int pergunta) {
+	protected int renderizarSelecao(Graphics graficos, String texto, String[] opcoes, int desvioY, int selecao) {
 		int x = 20, y = desvioY;
 		int resposta = -1;
 
@@ -103,7 +83,7 @@ public class RendDoQuest {
 
 		// Renderiza as Opções de respostas da Pergunta
 		for (int i = 0; i < opcoes.length; i++) {
-			if (renderizarOpcao(graficos, opcoes[i], x + 150 * i, y + 20, respostas[pergunta] == i + 1))
+			if (renderizarOpcao(graficos, opcoes[i], x + 150 * i, y + 20, respostas[selecao] == i + 1))
 				resposta = i + 1;
 		}
 		return resposta;
@@ -112,14 +92,10 @@ public class RendDoQuest {
 	/**
 	 * Renderiza uma opção de resposta com o texto em x e y
 	 *
-	 * @param graficos
-	 * @param texto
-	 * @param desvioX
-	 * @param desvioY
-	 * @param selecionado
-	 * @return boolean
+	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarOpcao(java.awt.Graphics,
+	 *      java.lang.String, int, int, boolean)
 	 */
-	private boolean renderizarOpcao(Graphics graficos, String texto, int desvioX, int desvioY, boolean selecionado) {
+	protected boolean renderizarOpcao(Graphics graficos, String texto, int desvioX, int desvioY, boolean selecionado) {
 		int x = desvioX, y = desvioY;
 		int tamanho = 8;
 
@@ -141,26 +117,12 @@ public class RendDoQuest {
 	}
 
 	/**
-	 * Renderiza a marcação da opção da resposta em x e y
-	 * 
-	 * @param graficos
-	 * @param x
-	 * @param y
-	 * @param tamanho
-	 */
-	private void renderizarMarcacao(Graphics graficos, int x, int y, int tamanho) {
-		graficos.setColor(Color.black);
-		graficos.fillOval(x + (tamanho / 2), y + (tamanho / 2), tamanho, tamanho);
-	}
-
-	/**
 	 * Renderiza um botão com o texto em x e y saindo do canto inferior direito
 	 * 
-	 * @param graficos
-	 * @param texto
-	 * @param desvioY
+	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarBotao(java.awt.Graphics,
+	 *      java.lang.String, int)
 	 */
-	private void renderizarBotao(Graphics graficos, String texto, int desvioY) {
+	protected void renderizarBotao(Graphics graficos, String texto, int desvioY) {
 		int x = painel.getWidth() - 100, y = painel.getHeight() - desvioY;
 		int largura = 90, altura = 30;
 

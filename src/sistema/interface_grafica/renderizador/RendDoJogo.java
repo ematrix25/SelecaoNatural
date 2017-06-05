@@ -17,11 +17,9 @@ import sistema.utilitario.periferico.Teclado;
  * @author Emanuel
  */
 @SuppressWarnings("unused")
-public class RendDoJogo {
+public class RendDoJogo extends Renderizador {
 	// TODO Implementar o Jogo aqui
-	private Painel painel;
-	private Image imagem;
-
+	// TODO Integrar os dados dos controladores aqui
 	private ControladorDaEntidade controladorDaEntidade;
 	private ControladorDoAmbiente controladorDoAmbiente;
 
@@ -36,7 +34,7 @@ public class RendDoJogo {
 	 * @param contDoAmbiente
 	 */
 	public RendDoJogo(Painel painel, ControladorDaEntidade contDaEntidade, ControladorDoAmbiente contDoAmbiente) {
-		this.painel = painel;
+		super(painel);
 		controladorDaEntidade = contDaEntidade;
 		controladorDoAmbiente = contDoAmbiente;
 	}
@@ -44,7 +42,7 @@ public class RendDoJogo {
 	/**
 	 * Renderiza a tela do jogo
 	 *
-	 * @return Image
+	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizar()
 	 */
 	public Image renderizar() {
 		imagem = new BufferedImage(painel.getWidth(), painel.getHeight(), BufferedImage.TYPE_INT_RGB);
@@ -108,7 +106,7 @@ public class RendDoJogo {
 	}
 
 	/**
-	 * Renderizar a janela do jogo
+	 * Renderizar a tela do jogo
 	 * 
 	 * @param graficos
 	 */

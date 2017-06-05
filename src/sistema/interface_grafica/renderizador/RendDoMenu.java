@@ -5,21 +5,15 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import sistema.interface_grafica.Painel;
-import sistema.utilitario.arquivo.Recurso;
 
 /**
  * Classe para renderizar a tela do menu
  * 
  * @author Emanuel
  */
-public class RendDoMenu {
-	private Painel painel;
-	private Image imagem;
+public class RendDoMenu extends Renderizador {
 
 	/**
 	 * Cria o objeto de renderizador da seleção
@@ -27,17 +21,17 @@ public class RendDoMenu {
 	 * @param painel
 	 */
 	public RendDoMenu(Painel painel) {
-		this.painel = painel;
+		super(painel);
 	}
 
 	/**
 	 * Renderiza a tela do menu
 	 * 
-	 * @return
+	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizar()
 	 */
 	public Image renderizar() {
 		// TODO Arrumar uma maneira de desenhar a imagem do arquivo
-		// carregarImagem();
+		// carregarImagem("/imagens/menu.jpg");
 		imagem = new BufferedImage(painel.getWidth(), painel.getHeight(), BufferedImage.TYPE_INT_RGB);
 		Graphics graficos = imagem.getGraphics();
 
@@ -57,25 +51,11 @@ public class RendDoMenu {
 	}
 
 	/**
-	 * Carrega a imagem do arquivo dos recursos
-	 */
-	@SuppressWarnings("unused")
-	private void carregarImagem() {
-		try {
-			imagem = ImageIO.read(new Recurso().getEnderecoEmFluxo("/imagens/menu.jpg"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
 	 * Renderiza um botão com o texto em x e y saindo do canto inferior direito
 	 * 
-	 * @param graficos
-	 * @param texto
-	 * @param desvioY
+	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarBotao(java.awt.Graphics, java.lang.String, int)
 	 */
-	private void renderizarBotao(Graphics graficos, String texto, int desvioY) {
+	protected void renderizarBotao(Graphics graficos, String texto, int desvioY) {
 		int largura = 90, altura = 30;
 		int x = painel.getWidth() - (largura + 10), y = painel.getHeight() - (altura + desvioY);
 

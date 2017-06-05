@@ -5,25 +5,17 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import sistema.interface_grafica.Painel;
 import sistema.utilitario.Opcoes;
 import sistema.utilitario.Resolucao;
-import sistema.utilitario.arquivo.Recurso;
 
 /**
  * Classe para renderizar a tela de opções
  * 
  * @author Emanuel
  */
-public class RendDeOpcoes {
-	// TODO Integrar ao painel
-	private Painel painel;
-	private Image imagem;	
-
+public class RendDeOpcoes extends Renderizador {
 	private int configuracoes[];
 
 	/**
@@ -32,7 +24,7 @@ public class RendDeOpcoes {
 	 * @param painel
 	 */
 	public RendDeOpcoes(Painel painel) {
-		this.painel = painel;
+		super(painel);
 		configuracoes = Opcoes.configuracoes;
 	}
 
@@ -52,15 +44,16 @@ public class RendDeOpcoes {
 	 */
 	public Image renderizar() {
 		// TODO Arrumar uma maneira de desenhar a imagem do arquivo
-		// carregarImagem();
+		// TODO Criar alguma imagem diferente
+		// carregarImagem("/imagens/menu.jpg");
 		imagem = new BufferedImage(painel.getWidth(), painel.getHeight(), BufferedImage.TYPE_INT_RGB);
 		Graphics graficos = imagem.getGraphics();
-		
+
 		String opcoes[] = { "Teclado", "Mouse" };
 		int configuracao;
 
 		// Renderiza a configuração do controle de jogo
-		configuracao = renderizarConfig(graficos, "Controlar o Jogo por:", opcoes, 40, 0);
+		configuracao = renderizarSelecao(graficos, "Controlar o Jogo por:", opcoes, 40, 0);
 		if (configuracao != -1) configuracoes[0] = configuracao;
 
 		// Renderiza a configuração de tamanho da janela
@@ -68,7 +61,7 @@ public class RendDeOpcoes {
 		for (int i = 0; i < opcoes.length; i++) {
 			opcoes[i] = Resolucao.larguras[i] + "x" + Resolucao.alturas[i];
 		}
-		configuracao = renderizarConfig(graficos, "Tamanho da janela:", opcoes, 120, 1);
+		configuracao = renderizarSelecao(graficos, "Tamanho da janela:", opcoes, 120, 1);
 		if (configuracao != -1) configuracoes[1] = configuracao;
 
 		// Renderiza os botões
@@ -79,29 +72,12 @@ public class RendDeOpcoes {
 	}
 
 	/**
-	 * Carrega a imagem do arquivo dos recursos
-	 */
-	@SuppressWarnings("unused")
-	private void carregarImagem() {
-		try {
-			// TODO Criar alguma imagem diferente
-			imagem = ImageIO.read(new Recurso().getEnderecoEmFluxo("/imagens/menu.jpg"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Renderiza a configuração com suas opções
+	 * Renderiza a selecao de configuração com suas opções
 	 *
-	 * @param graficos
-	 * @param texto
-	 * @param opcoes
-	 * @param desvioY
-	 * @param configuracao
-	 * @return
+	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarSelecao(java.awt.Graphics,
+	 *      java.lang.String, java.lang.String[], int, int)
 	 */
-	private int renderizarConfig(Graphics graficos, String texto, String[] opcoes, int desvioY, int configuracao) {
+	protected int renderizarSelecao(Graphics graficos, String texto, String[] opcoes, int desvioY, int selecao) {
 		int x = 20, y = desvioY;
 		int opcao = -1;
 
@@ -112,7 +88,7 @@ public class RendDeOpcoes {
 
 		// Renderiza as Opções de configuração
 		for (int i = 0; i < opcoes.length; i++) {
-			if (configuracoes[configuracao] == i + 1) {
+			if (configuracoes[selecao] == i + 1) {
 				if (renderizarOpcao(graficos, opcoes[i], x + 150 * i, y + 20, true)) opcao = i + 1;
 			} else if (renderizarOpcao(graficos, opcoes[i], x + 150 * i, y + 20, false)) opcao = i + 1;
 		}
@@ -122,14 +98,10 @@ public class RendDeOpcoes {
 	/**
 	 * Renderiza uma opção de configuração com o texto em x e y
 	 *
-	 * @param graficos
-	 * @param texto
-	 * @param desvioX
-	 * @param desvioY
-	 * @param selecionado
-	 * @return
+	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarOpcao(java.awt.Graphics,
+	 *      java.lang.String, int, int, boolean)
 	 */
-	private boolean renderizarOpcao(Graphics graficos, String texto, int desvioX, int desvioY, boolean selecionado) {
+	protected boolean renderizarOpcao(Graphics graficos, String texto, int desvioX, int desvioY, boolean selecionado) {
 		int x = desvioX, y = desvioY;
 		int tamanho = 8;
 
@@ -151,26 +123,12 @@ public class RendDeOpcoes {
 	}
 
 	/**
-	 * Renderiza a marcação da opção da configuração em x e y
-	 * 
-	 * @param graficos
-	 * @param x
-	 * @param y
-	 * @param tamanho
-	 */
-	private void renderizarMarcacao(Graphics graficos, int x, int y, int tamanho) {
-		graficos.setColor(Color.black);
-		graficos.fillOval(x + (tamanho / 2), y + (tamanho / 2), tamanho, tamanho);
-	}
-
-	/**
 	 * Renderiza um botão com o texto em x e y saindo do canto inferior direito
 	 * 
-	 * @param graficos
-	 * @param texto
-	 * @param desvioX
+	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarBotao(java.awt.Graphics,
+	 *      java.lang.String, int)
 	 */
-	private void renderizarBotao(Graphics graficos, String texto, int desvioX) {
+	protected void renderizarBotao(Graphics graficos, String texto, int desvioX) {
 		int x = painel.getWidth() - desvioX, y = painel.getHeight() - 40;
 		int largura = 90, altura = 30;
 
