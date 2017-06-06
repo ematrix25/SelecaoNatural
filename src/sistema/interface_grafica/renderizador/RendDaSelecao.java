@@ -3,7 +3,6 @@ package sistema.interface_grafica.renderizador;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 import componente.Especime;
@@ -52,11 +51,9 @@ public class RendDaSelecao extends Renderizador {
 	 *
 	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizar()
 	 */
-	public Image renderizar() {
-		// TODO Arrumar uma maneira de desenhar a imagem do arquivo
+	public BufferedImage renderizar() {
 		// TODO Criar alguma imagem diferente
-		// carregarImagem("/imagens/menu.jpg");
-		imagem = new BufferedImage(painel.getWidth(), painel.getHeight(), BufferedImage.TYPE_INT_RGB);
+		carregarImagem("/imagens/menu.jpg");
 		Graphics graficos = imagem.getGraphics();
 
 		Ambiente ambiente = controladorDoAmbiente.obterAmbiente();

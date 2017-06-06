@@ -14,7 +14,7 @@ import sistema.utilitario.arquivo.Recurso;
  * 
  * @author Emanuel
  */
-public class Tela extends JFrame {
+public class Janela extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	public String TITULO = "Selecao Natural";
@@ -24,7 +24,7 @@ public class Tela extends JFrame {
 	/**
 	 * Cria a Tela
 	 */
-	public Tela() {
+	public Janela() {
 		// Obtem o endereco da imagem do icone
 		Recurso recurso = new Recurso();
 		URL endereco = recurso.getEndereco("/imagens/icone.ico");

@@ -3,7 +3,6 @@ package sistema.interface_grafica.renderizador;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 import sistema.interface_grafica.Painel;
@@ -29,10 +28,8 @@ public class RendDoMenu extends Renderizador {
 	 * 
 	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizar()
 	 */
-	public Image renderizar() {
-		// TODO Arrumar uma maneira de desenhar a imagem do arquivo
-		// carregarImagem("/imagens/menu.jpg");
-		imagem = new BufferedImage(painel.getWidth(), painel.getHeight(), BufferedImage.TYPE_INT_RGB);
+	public BufferedImage renderizar() {
+		carregarImagem("/imagens/menu.jpg");
 		Graphics graficos = imagem.getGraphics();
 
 		int desvio = 20;
@@ -53,7 +50,8 @@ public class RendDoMenu extends Renderizador {
 	/**
 	 * Renderiza um botão com o texto em x e y saindo do canto inferior direito
 	 * 
-	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarBotao(java.awt.Graphics, java.lang.String, int)
+	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarBotao(java.awt.Graphics,
+	 *      java.lang.String, int)
 	 */
 	protected void renderizarBotao(Graphics graficos, String texto, int desvioY) {
 		int largura = 90, altura = 30;

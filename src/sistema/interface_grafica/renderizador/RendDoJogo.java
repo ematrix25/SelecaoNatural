@@ -3,7 +3,6 @@ package sistema.interface_grafica.renderizador;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 import sistema.controlador.ControladorDaEntidade;
@@ -44,7 +43,7 @@ public class RendDoJogo extends Renderizador {
 	 *
 	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizar()
 	 */
-	public Image renderizar() {
+	public BufferedImage renderizar() {
 		imagem = new BufferedImage(painel.getWidth(), painel.getHeight(), BufferedImage.TYPE_INT_RGB);
 		Graphics graficos = imagem.getGraphics();
 

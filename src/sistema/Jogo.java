@@ -2,7 +2,7 @@ package sistema;
 
 import java.awt.EventQueue;
 
-import sistema.interface_grafica.Tela;
+import sistema.interface_grafica.Janela;
 import sistema.utilitario.Opcoes;
 import sistema.utilitario.Resolucao;
 
@@ -24,7 +24,7 @@ public class Jogo {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new Tela();
+					new Janela();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

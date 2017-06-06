@@ -1,10 +1,10 @@
 package sistema.interface_grafica;
 
+import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.WindowEvent;
-
-import javax.swing.JPanel;
+import java.awt.image.BufferStrategy;
 
 import componente.Componente;
 import componente.Especime;
@@ -26,11 +26,11 @@ import sistema.utilitario.periferico.Teclado;
  * 
  * @author Emanuel
  */
-public class Painel extends JPanel implements Runnable {
+public class Painel extends Canvas implements Runnable {
 	// TODO Implementar o Jogo aqui e renderizar no RendDoJogo
 	private static final long serialVersionUID = 1L;
 
-	private Tela tela;
+	private Janela tela;
 	private Image imagem;
 
 	private Thread thread;
@@ -60,7 +60,7 @@ public class Painel extends JPanel implements Runnable {
 	 *
 	 * @param tela
 	 */
-	public Painel(Tela tela) {
+	public Painel(Janela tela) {
 		this.tela = tela;
 		tela.redimensionar(1);
 		setSize(tela.getWidth(), tela.getHeight());
@@ -94,9 +94,12 @@ public class Painel extends JPanel implements Runnable {
 		while (true) {
 			requestFocusInWindow();
 			try {
-				Thread.sleep(20);
-			} catch (InterruptedException ex) {
-				ex.printStackTrace();
+				if(telaAtiva=='J')
+					Thread.sleep(20);
+				else
+					Thread.sleep(60);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 
 			// Atualiza os dados do jogo
@@ -112,26 +115,7 @@ public class Painel extends JPanel implements Runnable {
 			}
 
 			// Renderiza um quadro
-			switch (telaAtiva) {
-			case 'M':
-				imagem = rendDoMenu.renderizar();
-				break;
-			case 'O':
-				imagem = rendDeOpcoes.renderizar();
-				break;
-			case 'S':
-				imagem = rendDaSelecao.renderizar();
-				break;
-			case 'J':
-				imagem = rendDoJogo.renderizar();
-				break;
-			case 'Q':
-				imagem = rendDoQuest.renderizar();
-				break;
-			default:
-				System.out.println("Tela desconhecida");
-				break;
-			}
+			renderizar();
 			quadros++;
 
 			// Mostra APS e QPS a cada segundo
@@ -151,8 +135,43 @@ public class Painel extends JPanel implements Runnable {
 					}
 				}
 			}
-			repaint();
 		}
+	}
+
+	/**
+	 * Renderiza a tela do painel
+	 */
+	private void renderizar() {
+		BufferStrategy estrategiaDeBuffer = getBufferStrategy();
+		if (estrategiaDeBuffer == null) {
+			createBufferStrategy(3);
+			return;
+		}
+
+		Graphics graficos = estrategiaDeBuffer.getDrawGraphics();
+		switch (telaAtiva) {
+		case 'M':
+			imagem = rendDoMenu.renderizar();
+			break;
+		case 'O':
+			imagem = rendDeOpcoes.renderizar();
+			break;
+		case 'S':
+			imagem = rendDaSelecao.renderizar();
+			break;
+		case 'J':
+			imagem = rendDoJogo.renderizar();
+			break;
+		case 'Q':
+			imagem = rendDoQuest.renderizar();
+			break;
+		default:
+			System.out.println("Tela desconhecida");
+			break;
+		}
+		graficos.drawImage(imagem, 0, 0, getWidth(), getHeight(), null);
+		graficos.dispose();
+		estrategiaDeBuffer.show();		
 	}
 
 	/**
@@ -169,20 +188,6 @@ public class Painel extends JPanel implements Runnable {
 				pontuacao = qtdCelulas * 10 + (int) (Math.random() * 999999);
 			}
 
-		}
-	}
-
-	/**
-	 * Pinta o painel que é usado no repaint
-	 * 
-	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
-	 */
-	public void paintComponent(Graphics graficos) {
-		super.paintComponent(graficos);
-
-		// Desenha a imagem
-		if (imagem != null) {
-			graficos.drawImage(imagem, 0, 0, this.getWidth(), this.getHeight(), null);
 		}
 	}
 
@@ -241,9 +246,9 @@ public class Painel extends JPanel implements Runnable {
 			} else if (telaAtiva == 'O') {
 				Opcoes.carregarConfig(true, rendDeOpcoes.obterConfiguracoes());
 				voltarParaMenu();
-			}else if(telaAtiva == 'Q') {
+			} else if (telaAtiva == 'Q') {
 				ArquivoDoQuest.escrever(rendDoQuest.obterRespostas());
-				tela.dispatchEvent(new WindowEvent(tela, WindowEvent.WINDOW_CLOSING));				
+				tela.dispatchEvent(new WindowEvent(tela, WindowEvent.WINDOW_CLOSING));
 			}
 			break;
 		case 'N':

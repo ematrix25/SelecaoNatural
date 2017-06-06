@@ -2,13 +2,9 @@ package sistema.interface_grafica.renderizador;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 
 import sistema.interface_grafica.Painel;
-import sistema.utilitario.arquivo.Recurso;
 
 /**
  * Classe base dos renderizadores
@@ -17,7 +13,7 @@ import sistema.utilitario.arquivo.Recurso;
  */
 public abstract class Renderizador {
 	protected Painel painel;
-	protected Image imagem;
+	protected BufferedImage imagem;
 
 	/**
 	 * Cria o objeto de renderizador
@@ -31,9 +27,9 @@ public abstract class Renderizador {
 	/**
 	 * Renderiza a tela
 	 * 
-	 * @return Image
+	 * @return BufferedImage
 	 */
-	public abstract Image renderizar();
+	public abstract BufferedImage renderizar();
 
 	/**
 	 * Carrega a imagem do arquivo no endereco dos recursos
@@ -41,11 +37,10 @@ public abstract class Renderizador {
 	 * @param endereco
 	 */
 	protected void carregarImagem(String endereco) {
-		try {
-			imagem = ImageIO.read(new Recurso().getEnderecoEmFluxo(endereco));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		imagem = new BufferedImage(painel.getWidth(), painel.getHeight(), BufferedImage.TYPE_INT_RGB);
+		// TODO Arrumar uma maneira de desenhar a imagem do arquivo
+		// imagem = ImageIO.read(new
+		// Recurso().getEnderecoEmFluxo(endereco));
 	}
 
 	/**
