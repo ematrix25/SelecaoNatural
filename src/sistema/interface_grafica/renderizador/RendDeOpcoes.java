@@ -2,7 +2,6 @@ package sistema.interface_grafica.renderizador;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import sistema.interface_grafica.Painel;
@@ -43,14 +42,13 @@ public class RendDeOpcoes extends Renderizador {
 	 */
 	public BufferedImage renderizar() {
 		// TODO Criar alguma imagem diferente
-		carregarImagem("/imagens/menu.jpg");
-		Graphics graficos = imagem.getGraphics();
+		carregarGraficos("/imagens/menu.jpg");
 
 		String opcoes[] = { "Teclado", "Mouse" };
 		int configuracao;
 
 		// Renderiza a configuração do controle de jogo
-		configuracao = renderizarSelecao(graficos, "Controlar o Jogo por:", opcoes, 40, 0);
+		configuracao = renderizarSelecao("Controlar o Jogo por:", opcoes, 40, 0);
 		if (configuracao != -1) configuracoes[0] = configuracao;
 
 		// Renderiza a configuração de tamanho da janela
@@ -58,13 +56,14 @@ public class RendDeOpcoes extends Renderizador {
 		for (int i = 0; i < opcoes.length; i++) {
 			opcoes[i] = Resolucao.larguras[i] + "x" + Resolucao.alturas[i];
 		}
-		configuracao = renderizarSelecao(graficos, "Tamanho da janela:", opcoes, 120, 1);
+		configuracao = renderizarSelecao("Tamanho da janela:", opcoes, 120, 1);
 		if (configuracao != -1) configuracoes[1] = configuracao;
 
 		// Renderiza os botões
-		renderizarBotao(graficos, "Cancelar", 100);
-		renderizarBotao(graficos, "Salvar", 200);
+		renderizarBotao("Cancelar", 100);
+		renderizarBotao("Salvar", 200);
 
+		descarregarGraficos();
 		return imagem;
 	}
 
@@ -74,7 +73,7 @@ public class RendDeOpcoes extends Renderizador {
 	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarSelecao(java.awt.Graphics,
 	 *      java.lang.String, java.lang.String[], int, int)
 	 */
-	protected int renderizarSelecao(Graphics graficos, String texto, String[] opcoes, int desvioY, int selecao) {
+	protected int renderizarSelecao(String texto, String[] opcoes, int desvioY, int selecao) {
 		int x = 20, y = desvioY;
 		int opcao = -1;
 
@@ -86,8 +85,8 @@ public class RendDeOpcoes extends Renderizador {
 		// Renderiza as Opções de configuração
 		for (int i = 0; i < opcoes.length; i++) {
 			if (configuracoes[selecao] == i + 1) {
-				if (renderizarOpcao(graficos, opcoes[i], x + 150 * i, y + 20, true)) opcao = i + 1;
-			} else if (renderizarOpcao(graficos, opcoes[i], x + 150 * i, y + 20, false)) opcao = i + 1;
+				if (renderizarOpcao(opcoes[i], x + 150 * i, y + 20, true)) opcao = i + 1;
+			} else if (renderizarOpcao(opcoes[i], x + 150 * i, y + 20, false)) opcao = i + 1;
 		}
 		return opcao;
 	}
@@ -95,10 +94,10 @@ public class RendDeOpcoes extends Renderizador {
 	/**
 	 * Renderiza uma opção de configuração com o texto em x e y
 	 *
-	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarOpcao(java.awt.Graphics,
-	 *      java.lang.String, int, int, boolean)
+	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarOpcao(java.lang.String,
+	 *      int, int, boolean)
 	 */
-	protected boolean renderizarOpcao(Graphics graficos, String texto, int desvioX, int desvioY, boolean selecionado) {
+	protected boolean renderizarOpcao(String texto, int desvioX, int desvioY, boolean selecionado) {
 		int x = desvioX, y = desvioY;
 		int tamanho = 8;
 
@@ -113,19 +112,18 @@ public class RendDeOpcoes extends Renderizador {
 
 		// Marcação de seleção da opção
 		if (painel.mouseClicouNoBotao(x, y, tamanho, tamanho)) {
-			renderizarMarcacao(graficos, x, y, tamanho / 2);
+			renderizarMarcacao(x, y, tamanho / 2);
 			return true;
-		} else if (selecionado) renderizarMarcacao(graficos, x, y, tamanho / 2);
+		} else if (selecionado) renderizarMarcacao(x, y, tamanho / 2);
 		return false;
 	}
 
 	/**
 	 * Renderiza um botão com o texto em x e y saindo do canto inferior direito
 	 * 
-	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarBotao(java.awt.Graphics,
-	 *      java.lang.String, int)
+	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarBotao(java.lang.String, int)
 	 */
-	protected void renderizarBotao(Graphics graficos, String texto, int desvioX) {
+	protected void renderizarBotao(String texto, int desvioX) {
 		int x = painel.getWidth() - desvioX, y = painel.getHeight() - 40;
 		int largura = 90, altura = 30;
 

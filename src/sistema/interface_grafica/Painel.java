@@ -147,7 +147,6 @@ public class Painel extends Canvas implements Runnable {
 			createBufferStrategy(3);
 			return;
 		}
-
 		Graphics graficos = estrategiaDeBuffer.getDrawGraphics();
 		switch (telaAtiva) {
 		case 'M':

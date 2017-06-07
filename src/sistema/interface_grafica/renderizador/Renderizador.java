@@ -3,8 +3,12 @@ package sistema.interface_grafica.renderizador;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import sistema.interface_grafica.Painel;
+import sistema.utilitario.arquivo.Recurso;
 
 /**
  * Classe base dos renderizadores
@@ -14,6 +18,7 @@ import sistema.interface_grafica.Painel;
 public abstract class Renderizador {
 	protected Painel painel;
 	protected BufferedImage imagem;
+	protected Graphics graficos;
 
 	/**
 	 * Cria o objeto de renderizador
@@ -32,67 +37,81 @@ public abstract class Renderizador {
 	public abstract BufferedImage renderizar();
 
 	/**
-	 * Carrega a imagem do arquivo no endereco dos recursos
+	 * Carrega a classe gráfica de uma imagem generica
+	 */
+	protected void carregarGraficos() {
+		imagem = new BufferedImage(painel.getWidth(), painel.getHeight(), BufferedImage.TYPE_INT_RGB);
+		graficos = imagem.getGraphics();
+	}
+
+	/**
+	 * Carrega a classe gráfica do arquivo no endereco dos recursos
 	 * 
 	 * @param endereco
 	 */
-	protected void carregarImagem(String endereco) {
-		imagem = new BufferedImage(painel.getWidth(), painel.getHeight(), BufferedImage.TYPE_INT_RGB);
+	protected void carregarGraficos(String endereco) {
 		// TODO Arrumar uma maneira de desenhar a imagem do arquivo
-		// imagem = ImageIO.read(new
-		// Recurso().getEnderecoEmFluxo(endereco));
+		try {
+			imagem = ImageIO.read(new Recurso().getEnderecoEmFluxo(endereco));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		graficos = imagem.getGraphics();
+	}
+
+	/**
+	 * Descarrega a classe gráfica
+	 */
+	protected void descarregarGraficos() {
+		graficos.dispose();
 	}
 
 	/**
 	 * Renderiza a seleção com suas opções
 	 *
-	 * @param graficos
 	 * @param texto
 	 * @param opcoes
 	 * @param desvioY
 	 * @param selecao
 	 * @return int
 	 */
-	protected int renderizarSelecao(Graphics graficos, String texto, String[] opcoes, int desvioY, int selecao) {
+	protected int renderizarSelecao(String texto, String[] opcoes, int desvioY, int selecao) {
 		return -1;
 	}
 
 	/**
 	 * Renderiza a seleção com suas opções
 	 *
-	 * @param graficos
 	 * @param texto
 	 * @param opcoes
 	 * @param desvioY
 	 * @return int
 	 */
-	protected int renderizarSelecao(Graphics graficos, String texto, String[] opcoes, int desvioY) {
+	protected int renderizarSelecao(String texto, String[] opcoes, int desvioY) {
 		return -1;
 	}
 
 	/**
 	 * Renderiza uma opção com o texto em x e y
 	 *
-	 * @param graficos
 	 * @param texto
 	 * @param desvioX
 	 * @param desvioY
 	 * @param selecionado
 	 * @return boolean
 	 */
-	protected boolean renderizarOpcao(Graphics graficos, String texto, int desvioX, int desvioY, boolean selecionado) {
+	protected boolean renderizarOpcao(String texto, int desvioX, int desvioY, boolean selecionado) {
 		return false;
 	}
 
 	/**
 	 * Renderiza a marcação da opção em x e y
 	 * 
-	 * @param graficos
 	 * @param x
 	 * @param y
 	 * @param tamanho
 	 */
-	protected void renderizarMarcacao(Graphics graficos, int x, int y, int tamanho) {
+	protected void renderizarMarcacao(int x, int y, int tamanho) {
 		graficos.setColor(Color.black);
 		graficos.fillOval(x + (tamanho / 2), y + (tamanho / 2), tamanho, tamanho);
 	}
@@ -100,10 +119,9 @@ public abstract class Renderizador {
 	/**
 	 * Renderiza um botão com texto em x e y saindo do canto inferior direito
 	 * 
-	 * @param graficos
 	 * @param texto
 	 * @param desvioY
 	 */
-	protected void renderizarBotao(Graphics graficos, String texto, int desvio) {
+	protected void renderizarBotao(String texto, int desvio) {
 	}
 }

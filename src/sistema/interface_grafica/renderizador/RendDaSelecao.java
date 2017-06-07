@@ -2,7 +2,6 @@ package sistema.interface_grafica.renderizador;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import componente.Especime;
@@ -53,12 +52,11 @@ public class RendDaSelecao extends Renderizador {
 	 */
 	public BufferedImage renderizar() {
 		// TODO Criar alguma imagem diferente
-		carregarImagem("/imagens/menu.jpg");
-		Graphics graficos = imagem.getGraphics();
+		carregarGraficos("/imagens/menu.jpg");
 
 		Ambiente ambiente = controladorDoAmbiente.obterAmbiente();
 		String dados[] = { "TempMax = " + ambiente.obterTempMax(), "TempMin = " + ambiente.obterTempMin() };
-		renderizarDados(graficos, "Ambiente", dados, 50);
+		renderizarDados("Ambiente", dados, 50);
 
 		String opcoes[] = new String[3];
 		Integer especime;
@@ -69,26 +67,25 @@ public class RendDaSelecao extends Renderizador {
 			opcoes[i - 1] = "Nome = " + especie.nome + ":Tipo = " + especie.tipo + ":TempMax = " + especie.tempMaxSup
 					+ ":TempMin = " + especie.tempMinSup;
 		}
-		int selecao = renderizarSelecao(graficos, "Selecione uma espécie: ", opcoes, 100);
+		int selecao = renderizarSelecao("Selecione uma espécie: ", opcoes, 100);
 		if (selecao != -1) this.selecao = selecao;
 
 		int desvio = 20;
 
-		renderizarBotao(graficos, "Selecionar", desvio);
+		renderizarBotao("Selecionar", desvio);
 
-		graficos.dispose();
+		descarregarGraficos();
 		return imagem;
 	}
 
 	/**
 	 * Renderiza os dados da seleção
 	 * 
-	 * @param graficos
 	 * @param texto
 	 * @param dados
 	 * @param desvioY
 	 */
-	private void renderizarDados(Graphics graficos, String texto, String[] dados, int desvioY) {
+	private void renderizarDados(String texto, String[] dados, int desvioY) {
 		int x = 20, y = desvioY;
 
 		// Texto dos dados
@@ -97,19 +94,18 @@ public class RendDaSelecao extends Renderizador {
 		graficos.drawString(texto, x, y);
 
 		// Renderiza os dados
-		renderizarDado(graficos, dados[0], x + 0, y + 20);
-		renderizarDado(graficos, dados[1], x + 150, y + 20);
+		renderizarDado(dados[0], x + 0, y + 20);
+		renderizarDado(dados[1], x + 150, y + 20);
 	}
 
 	/**
 	 * Renderiza um dado em String
 	 * 
-	 * @param graficos
 	 * @param texto
 	 * @param desvioX
 	 * @param desvioY
 	 */
-	private void renderizarDado(Graphics graficos, String texto, int desvioX, int desvioY) {
+	private void renderizarDado(String texto, int desvioX, int desvioY) {
 		int x = desvioX, y = desvioY;
 
 		// Texto da opção
@@ -121,10 +117,10 @@ public class RendDaSelecao extends Renderizador {
 	/**
 	 * Renderiza a seleção com suas opções
 	 *
-	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarSelecao(java.awt.Graphics,
-	 *      java.lang.String, java.lang.String[], int)
+	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarSelecao(java.lang.String,
+	 *      java.lang.String[], int)
 	 */
-	protected int renderizarSelecao(Graphics graficos, String texto, String[] opcoes, int desvioY) {
+	protected int renderizarSelecao(String texto, String[] opcoes, int desvioY) {
 		int x = 20, y = desvioY;
 		int selecao = -1;
 
@@ -135,7 +131,7 @@ public class RendDaSelecao extends Renderizador {
 
 		// Renderiza as Opções de respostas da Pergunta
 		for (int i = 0; i < opcoes.length; i++) {
-			if (renderizarOpcao(graficos, opcoes[i], x, y + (50 * i + 20), this.selecao == i + 1)) selecao = i + 1;
+			if (renderizarOpcao(opcoes[i], x, y + (50 * i + 20), this.selecao == i + 1)) selecao = i + 1;
 		}
 		return selecao;
 	}
@@ -143,10 +139,10 @@ public class RendDaSelecao extends Renderizador {
 	/**
 	 * Renderiza uma opção com o texto em x e y
 	 *
-	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarOpcao(java.awt.Graphics,
-	 *      java.lang.String, int, int, boolean)
+	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarOpcao(java.lang.String,
+	 *      int, int, boolean)
 	 */
-	protected boolean renderizarOpcao(Graphics graficos, String texto, int desvioX, int desvioY, boolean selecionado) {
+	protected boolean renderizarOpcao(String texto, int desvioX, int desvioY, boolean selecionado) {
 		int x = desvioX, y = desvioY;
 		int tamanho = 8;
 
@@ -165,19 +161,19 @@ public class RendDaSelecao extends Renderizador {
 
 		// Marcação de seleção da opção
 		if (painel.mouseClicouNoBotao(x, y, tamanho, tamanho)) {
-			renderizarMarcacao(graficos, x, y, tamanho / 2);
+			renderizarMarcacao(x, y, tamanho / 2);
 			return true;
-		} else if (selecionado) renderizarMarcacao(graficos, x, y, tamanho / 2);
+		} else if (selecionado) renderizarMarcacao(x, y, tamanho / 2);
 		return false;
 	}
 
 	/**
 	 * Renderiza um botão com o texto em x e y saindo do canto inferior direito
 	 * 
-	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarBotao(java.awt.Graphics,
-	 *      java.lang.String, int)
+	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarBotao(java.lang.String,
+	 *      int)
 	 */
-	protected void renderizarBotao(Graphics graficos, String texto, int desvioY) {
+	protected void renderizarBotao(String texto, int desvioY) {
 		int largura = 90, altura = 30;
 		int x = painel.getWidth() - (largura + 10), y = painel.getHeight() - (altura + desvioY);
 

@@ -2,7 +2,6 @@ package sistema.interface_grafica.renderizador;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import sistema.interface_grafica.Painel;
@@ -29,8 +28,7 @@ public class RendDoMenu extends Renderizador {
 	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizar()
 	 */
 	public BufferedImage renderizar() {
-		carregarImagem("/imagens/menu.jpg");
-		Graphics graficos = imagem.getGraphics();
+		carregarGraficos("/imagens/menu.jpg");
 
 		int desvio = 20;
 
@@ -40,20 +38,21 @@ public class RendDoMenu extends Renderizador {
 		graficos.drawString("Jogo desenvolvido por Emanuel Torres", 10, painel.getHeight() - 20);
 
 		// Renderizar Botões
-		renderizarBotao(graficos, "Opções", desvio);
-		renderizarBotao(graficos, "Continuar", desvio * 3);
-		renderizarBotao(graficos, "Novo Jogo", desvio * 5);
+		renderizarBotao("Opções", desvio);
+		renderizarBotao("Continuar", desvio * 3);
+		renderizarBotao("Novo Jogo", desvio * 5);
 
+		descarregarGraficos();
 		return imagem;
 	}
 
 	/**
 	 * Renderiza um botão com o texto em x e y saindo do canto inferior direito
 	 * 
-	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarBotao(java.awt.Graphics,
-	 *      java.lang.String, int)
+	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarBotao(java.lang.String,
+	 *      int)
 	 */
-	protected void renderizarBotao(Graphics graficos, String texto, int desvioY) {
+	protected void renderizarBotao(String texto, int desvioY) {
 		int largura = 90, altura = 30;
 		int x = painel.getWidth() - (largura + 10), y = painel.getHeight() - (altura + desvioY);
 

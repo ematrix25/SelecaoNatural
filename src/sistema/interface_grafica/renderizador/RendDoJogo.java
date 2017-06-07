@@ -2,7 +2,6 @@ package sistema.interface_grafica.renderizador;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import sistema.controlador.ControladorDaEntidade;
@@ -44,13 +43,10 @@ public class RendDoJogo extends Renderizador {
 	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizar()
 	 */
 	public BufferedImage renderizar() {
-		imagem = new BufferedImage(painel.getWidth(), painel.getHeight(), BufferedImage.TYPE_INT_RGB);
-		Graphics graficos = imagem.getGraphics();
+		carregarGraficos();
 
-		renderizarInfo(graficos);
-		renderizarJogo(graficos);
-
-		graficos.dispose();
+		renderizarInfo();
+		renderizarJogo();
 
 		// TODO Remover depois
 		moveText();
@@ -58,39 +54,37 @@ public class RendDoJogo extends Renderizador {
 		// Ações conforme as teclas são pressionadas
 		if (Teclado.sair) painel.acaoDoBotao('s');
 
+		descarregarGraficos();
 		return imagem;
 	}
 
 	/**
 	 * Renderizar a janela do informações
-	 * 
-	 * @param graficos
 	 */
-	private void renderizarInfo(Graphics graficos) {
+	private void renderizarInfo() {
 		int percentualMassa = (int) ((painel.massaCelular / painel.MASSA_CELULAR_MAX) * 100);
 		final int MIL = (int) Math.pow(10, 3);
 		graficos.setColor(Color.black);
 		graficos.fillRect(0, 0, painel.getWidth(), 30);
 
-		renderizarRotulo(graficos, Color.lightGray, "Massa Celular: " + percentualMassa + "%", painel.getWidth() - 10);
+		renderizarRotulo(Color.lightGray, "Massa Celular: " + percentualMassa + "%", painel.getWidth() - 10);
 		if (painel.pontuacao < MIL)
-			renderizarRotulo(graficos, Color.gray, "Pontuacao: " + painel.pontuacao, (painel.getWidth() / 2) + 70);
-		else renderizarRotulo(graficos, Color.gray, "Pontuacao: " + painel.pontuacao / MIL + "K",
+			renderizarRotulo(Color.gray, "Pontuacao: " + painel.pontuacao, (painel.getWidth() / 2) + 70);
+		else renderizarRotulo(Color.gray, "Pontuacao: " + painel.pontuacao / MIL + "K",
 				(painel.getWidth() / 2) + 70);
 		if (painel.qtdCelulas < MIL)
-			renderizarRotulo(graficos, Color.darkGray, "Qtd Celulas: " + painel.qtdCelulas, 150);
-		else renderizarRotulo(graficos, Color.darkGray, "Qtd Celulas: " + painel.qtdCelulas / MIL + "K", 150);
+			renderizarRotulo(Color.darkGray, "Qtd Celulas: " + painel.qtdCelulas, 150);
+		else renderizarRotulo(Color.darkGray, "Qtd Celulas: " + painel.qtdCelulas / MIL + "K", 150);
 	}
 
 	/**
 	 * Renderiza um rótulo com o texto em x e y
 	 * 
-	 * @param graficos
 	 * @param cor
 	 * @param texto
 	 * @param desvioX
 	 */
-	private void renderizarRotulo(Graphics graficos, Color cor, String texto, int desvioX) {
+	private void renderizarRotulo(Color cor, String texto, int desvioX) {
 		int x = painel.getWidth() - desvioX, y = 5;
 
 		// Retangulo do rotulo
@@ -106,10 +100,8 @@ public class RendDoJogo extends Renderizador {
 
 	/**
 	 * Renderizar a tela do jogo
-	 * 
-	 * @param graficos
 	 */
-	private void renderizarJogo(Graphics graficos) {
+	private void renderizarJogo() {
 		graficos.setColor(Color.white);
 		graficos.fillRect(0, 30, painel.getWidth(), painel.getHeight());
 		graficos.setColor(Color.black);
