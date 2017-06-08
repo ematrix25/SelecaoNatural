@@ -41,8 +41,7 @@ public class RendDeOpcoes extends Renderizador {
 	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizar()
 	 */
 	public BufferedImage renderizar() {
-		// TODO Criar alguma imagem diferente
-		carregarGraficos("/imagens/menu.jpg");
+		carregarGraficos("/imagens/opcoes.jpg");
 
 		String opcoes[] = { "Teclado", "Mouse" };
 		int configuracao;

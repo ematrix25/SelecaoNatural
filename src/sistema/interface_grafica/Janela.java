@@ -7,6 +7,7 @@ import java.net.URL;
 import javax.swing.JFrame;
 
 import sistema.utilitario.Opcoes;
+import sistema.utilitario.Resolucao;
 import sistema.utilitario.arquivo.Recurso;
 
 /**
@@ -35,9 +36,9 @@ public class Janela extends JFrame {
 		LARGURA_PADRAO = Opcoes.larguraPadrao;
 		ALTURA_PADRAO = Opcoes.alturaPadrao;
 		setBounds(100, 100, LARGURA_PADRAO, ALTURA_PADRAO);
+		if (getHeight() == Resolucao.alturas[2]) setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
-		
 		painel = new Painel(this);
 		add(painel);
 	}
@@ -48,6 +49,6 @@ public class Janela extends JFrame {
 	 * @param altura
 	 */
 	public void redimensionar(float valor) {
-		setSize((int) (LARGURA_PADRAO * valor), (int) (ALTURA_PADRAO * valor));
+		if (getHeight() < Resolucao.alturas[1]) setSize((int) (getWidth() * valor), (int) (getHeight() * valor));
 	}
 }

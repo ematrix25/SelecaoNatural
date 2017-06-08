@@ -51,8 +51,7 @@ public class RendDaSelecao extends Renderizador {
 	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizar()
 	 */
 	public BufferedImage renderizar() {
-		// TODO Criar alguma imagem diferente
-		carregarGraficos("/imagens/menu.jpg");
+		carregarGraficos("/imagens/selecao.jpg");
 
 		Ambiente ambiente = controladorDoAmbiente.obterAmbiente();
 		String dados[] = { "TempMax = " + ambiente.obterTempMax(), "TempMin = " + ambiente.obterTempMin() };
@@ -89,7 +88,7 @@ public class RendDaSelecao extends Renderizador {
 		int x = 20, y = desvioY;
 
 		// Texto dos dados
-		graficos.setColor(Color.lightGray);
+		graficos.setColor(Color.white);
 		graficos.setFont(new Font("Verdana", 1, 18));
 		graficos.drawString(texto, x, y);
 
@@ -109,7 +108,7 @@ public class RendDaSelecao extends Renderizador {
 		int x = desvioX, y = desvioY;
 
 		// Texto da opção
-		graficos.setColor(Color.lightGray);
+		graficos.setColor(Color.white);
 		graficos.setFont(new Font("Verdana", 0, 12));
 		graficos.drawString(texto, x, y);
 	}
@@ -125,7 +124,7 @@ public class RendDaSelecao extends Renderizador {
 		int selecao = -1;
 
 		// Texto da Pergunta
-		graficos.setColor(Color.lightGray);
+		graficos.setColor(Color.white);
 		graficos.setFont(new Font("Verdana", 1, 18));
 		graficos.drawString(texto, x, y);
 
@@ -151,7 +150,7 @@ public class RendDaSelecao extends Renderizador {
 		graficos.fillOval(x, y, tamanho, tamanho);
 
 		// Texto da opção
-		graficos.setColor(Color.lightGray);
+		graficos.setColor(Color.white);
 		graficos.setFont(new Font("Verdana", 0, 12));
 		String dados[] = texto.split(":");
 		for (int i = 0; i < (dados.length / 2); i++) {
