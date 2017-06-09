@@ -9,6 +9,7 @@ import java.awt.image.BufferStrategy;
 import componente.Componente;
 import componente.Especime;
 import componente.Especime.Especie;
+import sistema.Jogo.Janela;
 import sistema.controlador.ControladorDaEntidade;
 import sistema.controlador.ControladorDoAmbiente;
 import sistema.interface_grafica.renderizador.RendDaSelecao;
@@ -30,7 +31,7 @@ public class Painel extends Canvas implements Runnable {
 	// TODO Implementar o Jogo aqui e renderizar no RendDoJogo
 	private static final long serialVersionUID = 1L;
 
-	private Janela tela;
+	private Janela janela;
 	private Image imagem;
 
 	private Thread thread;
@@ -58,12 +59,12 @@ public class Painel extends Canvas implements Runnable {
 	/**
 	 * Inicializa o painel
 	 *
-	 * @param tela
+	 * @param janela
 	 */
-	public Painel(Janela tela) {
-		this.tela = tela;
-		tela.redimensionar(1);
-		setSize(tela.getWidth(), tela.getHeight());
+	public Painel(Janela janela) {
+		this.janela = janela;
+		janela.redimensionar(1);
+		setSize(janela.getWidth(), janela.getHeight());
 
 		thread = new Thread(this, "Jogo");
 		teclado = new Teclado();
@@ -121,7 +122,7 @@ public class Painel extends Canvas implements Runnable {
 			// Mostra APS e QPS a cada segundo
 			if (System.currentTimeMillis() - temporizador > 1000) {
 				temporizador += 1000;
-				tela.setTitle(tela.TITULO + " | " + atualizacoes + " aps com " + quadros + " qps");
+				janela.setTitle(janela.TITULO + " | " + atualizacoes + " aps com " + quadros + " qps");
 				atualizacoes = 0;
 				quadros = 0;
 
@@ -129,7 +130,7 @@ public class Painel extends Canvas implements Runnable {
 				if (telaAtiva == 'S' || telaAtiva == 'J') {
 					cont++;
 					if (cont > 60) {
-						tela.redimensionar(1.7f);
+						janela.redimensionar(1.7f);
 						rendDoQuest = new RendDoQuest(this);
 						telaAtiva = 'Q';
 					}
@@ -247,11 +248,11 @@ public class Painel extends Canvas implements Runnable {
 				voltarParaMenu();
 			} else if (telaAtiva == 'Q') {
 				ArquivoDoQuest.escrever(rendDoQuest.obterRespostas());
-				tela.dispatchEvent(new WindowEvent(tela, WindowEvent.WINDOW_CLOSING));
+				janela.dispatchEvent(new WindowEvent(janela, WindowEvent.WINDOW_CLOSING));
 			}
 			break;
 		case 'N':
-			tela.redimensionar(1.1f);
+			janela.redimensionar(1.1f);
 			telaAtiva = 'S';
 			iniciarJogo();
 			ehContinuavel = true;
@@ -261,7 +262,7 @@ public class Painel extends Canvas implements Runnable {
 			else if (telaAtiva == 'O') voltarParaMenu();
 			break;
 		case 'O':
-			tela.redimensionar(1.1f);
+			janela.redimensionar(1.1f);
 			telaAtiva = 'O';
 			break;
 		default:
@@ -274,7 +275,7 @@ public class Painel extends Canvas implements Runnable {
 	 * Volta para a tela do menu
 	 */
 	private void voltarParaMenu() {
-		tela.redimensionar(1);
+		janela.redimensionar(1);
 		telaAtiva = 'M';
 	}
 
@@ -282,7 +283,7 @@ public class Painel extends Canvas implements Runnable {
 	 * Volta para a tela do jogo
 	 */
 	private void voltarParaJogo() {
-		tela.redimensionar(1.1f);
+		janela.redimensionar(1.1f);
 		telaAtiva = 'J';
 	}
 

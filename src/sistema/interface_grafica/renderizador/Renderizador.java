@@ -51,8 +51,10 @@ public abstract class Renderizador {
 	 */
 	protected void carregarGraficos(String endereco) {
 		carregarGraficos();
+		BufferedImage imagem;
 		try {
-			graficos.drawImage(ImageIO.read(new Recurso().getEnderecoEmFluxo(endereco)), 0, 0, painel.getWidth(),
+			imagem = ImageIO.read(new Recurso().getEnderecoEmFluxo(endereco));
+			graficos.drawImage(imagem, 0, 0, painel.getWidth(),
 					painel.getHeight(), null);
 		} catch (IOException e) {
 			e.printStackTrace();
