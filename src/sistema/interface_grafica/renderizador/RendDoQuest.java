@@ -22,6 +22,16 @@ public class RendDoQuest extends Renderizador {
 	public RendDoQuest(Painel painel) {
 		super(painel);
 		respostas = new int[5];
+		inicializarRespostas();
+	}
+
+	/**
+	 * Inicializa as respostas
+	 */
+	private void inicializarRespostas() {
+		for (int i = 0; i < respostas.length; i++) {
+			respostas[i] = -1;
+		}
 	}
 
 	/**
@@ -37,7 +47,6 @@ public class RendDoQuest extends Renderizador {
 	 * Renderiza a tela do questionário
 	 */
 	public BufferedImage renderizar() {
-		// TODO Criar alguma imagem diferente
 		carregarGraficos("/imagens/menu.jpg");
 
 		String opcoes[] = new String[5];
@@ -120,15 +129,28 @@ public class RendDoQuest extends Renderizador {
 
 		// Retangulo do botao
 		graficos.setColor(Color.white);
-		if (painel.mouseEstaNoBotao(x, y, largura, altura)) graficos.setColor(Color.gray);
+		if (painel.mouseEstaNoBotao(x, y, largura, altura) && estaSelecionado()) graficos.setColor(Color.gray);
 		graficos.fillRect(x, y, largura, altura);
 
 		// Texto do botao
 		graficos.setColor(Color.black);
-		if (painel.mouseEstaNoBotao(x, y, largura, altura)) graficos.setColor(Color.white);
+		if (painel.mouseEstaNoBotao(x, y, largura, altura) && estaSelecionado()) graficos.setColor(Color.white);
 		graficos.setFont(new Font("Verdana", 0, 12));
 		graficos.drawString(texto, x + 10, y + 20);
 
-		if (painel.mouseClicouNoBotao(x, y, largura, altura)) painel.acaoDoBotao(texto.charAt(0));
+		if (painel.mouseClicouNoBotao(x, y, largura, altura) && estaSelecionado()) painel.acaoDoBotao(texto.charAt(0));
+	}
+
+	/**
+	 * Verifica se as opcoes foram selecionadas
+	 * 
+	 * @return boolean
+	 */
+	private boolean estaSelecionado() {
+		int qtdSelecionado = 0;
+		for (int i = 0; i < respostas.length; i++) {
+			if (respostas[i] != -1) qtdSelecionado++;
+		}
+		return qtdSelecionado == respostas.length;
 	}
 }
