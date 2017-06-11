@@ -67,25 +67,25 @@ public class Tela {
 	}
 
 	/**
-	 * Renderiza o jogador na tela
+	 * Renderiza o especime na tela
 	 *
 	 * @param posX
 	 * @param posY
 	 * @param sprite
-	 * @param direcao
+	 * @param invertido
 	 */
-	public void renderizarJogador(int posX, int posY, Sprite sprite, int direcao) {
+	public void renderizarEspecime(int posX, int posY, Sprite sprite, int invertido) {
 		int xAux = 0, yAux = 0, xRes, yRes, cor;
 		posX -= desvioX;
 		posY -= desvioY;
 		for (int y = 0; y < sprite.TAMANHO; y++) {
 			yAux = y + posY;
 			yRes = y;
-			if (direcao == 2 || direcao == 3) yRes = 15 - y;
+			if (invertido == 2 || invertido == 3) yRes = 15 - y;
 			for (int x = 0; x < sprite.TAMANHO; x++) {
 				xAux = x + posX;
 				xRes = x;
-				if (direcao == 1 || direcao == 3) xRes = 15 - x;
+				if (invertido == 1 || invertido == 3) xRes = 15 - x;
 				if (xAux < -sprite.TAMANHO || xAux >= largura || yAux < 0 || yAux >= altura) break;
 				if (xAux < 0) xAux = 0;
 				cor = sprite.pixeis[xRes + yRes * sprite.TAMANHO];
