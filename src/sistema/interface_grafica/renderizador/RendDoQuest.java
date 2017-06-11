@@ -52,7 +52,6 @@ public class RendDoQuest extends Renderizador {
 		String opcoes[] = new String[5];
 		int resposta;
 
-		// TODO Escrever as perguntas e opções de respostas aqui
 		for (int i = 0; i < respostas.length; i++) {
 			for (int j = 0; j < opcoes.length; j++) {
 				opcoes[j] = "Opção " + (i + 1) + "." + (j + 1);
