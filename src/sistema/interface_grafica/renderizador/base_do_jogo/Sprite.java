@@ -13,10 +13,10 @@ import sistema.utilitario.arquivo.Recurso;
  * @author Emanuel
  */
 public class Sprite {
-	public final int TAMANHO;
-
 	private int x, y;
 	private FolhaDeSprites folhaDeSprites;
+
+	public static final int TAMANHO = (int) Math.sqrt(FolhaDeSprites.TAMANHO);
 
 	public int pixeis[];
 
@@ -41,7 +41,6 @@ public class Sprite {
 	 * @param folhaDeSprites
 	 */
 	public Sprite(int x, int y, FolhaDeSprites folhaDeSprites) {
-		TAMANHO = (int) Math.sqrt(folhaDeSprites.TAMANHO);
 		pixeis = new int[TAMANHO * TAMANHO];
 		this.x = x;
 		this.y = y;
@@ -55,7 +54,7 @@ public class Sprite {
 	private void carregar() {
 		for (int y = 0; y < TAMANHO; y++) {
 			for (int x = 0; x < TAMANHO; x++) {
-				pixeis[x + y * TAMANHO] = folhaDeSprites.pixeis[(this.x + x) + (this.y + y) * folhaDeSprites.TAMANHO];
+				pixeis[x + y * TAMANHO] = folhaDeSprites.pixeis[(this.x + x) + (this.y + y) * FolhaDeSprites.TAMANHO];
 			}
 		}
 	}
@@ -66,10 +65,11 @@ public class Sprite {
 	 * @author Emanuel
 	 */
 	public static class FolhaDeSprites {
-		public final int TAMANHO;
 		public int pixeis[];
 
-		public static final FolhaDeSprites SPRITES = new FolhaDeSprites("/imagens/texturas/sprites.png", 256);
+		public static final int TAMANHO = 256;
+
+		public static final FolhaDeSprites SPRITES = new FolhaDeSprites("/imagens/texturas/sprites.png");
 
 		/**
 		 * Cria o objeto da FolhaDeSprites
@@ -77,9 +77,8 @@ public class Sprite {
 		 * @param endereco
 		 * @param tamanho
 		 */
-		public FolhaDeSprites(String endereco, int tamanho) {
+		public FolhaDeSprites(String endereco) {
 			carregar(endereco);
-			TAMANHO = tamanho;
 			pixeis = new int[TAMANHO * TAMANHO];
 		}
 

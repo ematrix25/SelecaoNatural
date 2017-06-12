@@ -13,13 +13,15 @@ public class Bloco {
 	public Sprite sprite;
 	public boolean solido;
 
+	public final static int TAMANHO = Sprite.TAMANHO;
+	
 	public static Bloco blocoDeAgua = new Bloco(Sprite.spriteDeAgua, false);
 	public static Bloco blocoOrganico = new Bloco(Sprite.spriteDePolimeroOrganico, false);
 	public static Bloco blocoInorganico = new Bloco(Sprite.spriteDePolimeroInorganico, true);
 	public static Bloco blocoDeAgua1 = new Bloco(Sprite.spriteDeAgua1, false);
 	public static Bloco blocoOrganico1 = new Bloco(Sprite.spriteDePolimeroOrganico1, false);
 	public static Bloco blocoOrganico2 = new Bloco(Sprite.spriteDePolimeroOrganico2, false);
-
+	
 	/**
 	 * Cria um objeto do bloco
 	 * 
