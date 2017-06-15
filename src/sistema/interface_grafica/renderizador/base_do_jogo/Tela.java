@@ -55,13 +55,13 @@ public class Tela {
 		int xAux = 0, yAux = 0;
 		posX -= desvioX;
 		posY -= desvioY;
-		for (int y = 0; y < bloco.sprite.TAMANHO; y++) {
+		for (int y = 0; y < Bloco.TAMANHO; y++) {
 			yAux = y + posY;
-			for (int x = 0; x < bloco.sprite.TAMANHO; x++) {
+			for (int x = 0; x < Bloco.TAMANHO; x++) {
 				xAux = x + posY;
-				if (xAux < -bloco.sprite.TAMANHO || xAux >= largura || yAux < 0 || yAux >= altura) break;
+				if (xAux < -Bloco.TAMANHO || xAux >= largura || yAux < 0 || yAux >= altura) break;
 				if (xAux < 0) xAux = 0;
-				pixeis[xAux + yAux * largura] = bloco.sprite.pixeis[x + y * bloco.sprite.TAMANHO];
+				pixeis[xAux + yAux * largura] = bloco.sprite.pixeis[x + y * Bloco.TAMANHO];
 			}
 		}
 	}
@@ -78,17 +78,17 @@ public class Tela {
 		int xAux = 0, yAux = 0, xRes, yRes, cor;
 		posX -= desvioX;
 		posY -= desvioY;
-		for (int y = 0; y < sprite.TAMANHO; y++) {
+		for (int y = 0; y < Sprite.TAMANHO; y++) {
 			yAux = y + posY;
 			yRes = y;
 			if (invertido == 2 || invertido == 3) yRes = 15 - y;
-			for (int x = 0; x < sprite.TAMANHO; x++) {
+			for (int x = 0; x < Sprite.TAMANHO; x++) {
 				xAux = x + posX;
 				xRes = x;
 				if (invertido == 1 || invertido == 3) xRes = 15 - x;
-				if (xAux < -sprite.TAMANHO || xAux >= largura || yAux < 0 || yAux >= altura) break;
+				if (xAux < -Sprite.TAMANHO || xAux >= largura || yAux < 0 || yAux >= altura) break;
 				if (xAux < 0) xAux = 0;
-				cor = sprite.pixeis[xRes + yRes * sprite.TAMANHO];
+				cor = sprite.pixeis[xRes + yRes * Sprite.TAMANHO];
 				if (cor != COR_TRANSPARENTE) pixeis[xAux + yAux * largura] = cor;
 			}
 		}

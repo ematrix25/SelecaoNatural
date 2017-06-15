@@ -93,7 +93,7 @@ public class Mapa {
 	 * @param y
 	 * @return Bloco
 	 */
-	private Bloco obterBloco(int x, int y) {
+	public Bloco obterBloco(int x, int y) {
 		if (x < 0 || y < 0 || x >= largura || y >= altura) return Bloco.blocoDeAgua1;
 		else switch (blocos[x + y * largura]) {
 		case COR_DE_AGUA:

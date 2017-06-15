@@ -53,8 +53,7 @@ public abstract class Componente {
 	 */
 	public static class Velocidade extends Componente {
 		public boolean movendo;
-		// Direção = 0 (cima) | 1 (direita) | 2 (baixo) | 3 (esquerda)
-		public int velocidade, direcao;
+		public int valor, direcao;
 
 		/**
 		 * Gera o objeto Velocidade com valores de movendo e direcao de
@@ -65,7 +64,7 @@ public abstract class Componente {
 		 */
 		public Velocidade(boolean movendo, int velocidade, int direcao) {
 			this.movendo = movendo;
-			this.velocidade = velocidade;
+			this.valor = velocidade;
 			this.direcao = direcao;
 		}
 	}

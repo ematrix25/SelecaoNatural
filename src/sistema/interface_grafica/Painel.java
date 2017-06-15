@@ -201,8 +201,8 @@ public class Painel extends Canvas implements Runnable {
 	 * @return boolean
 	 */
 	public boolean mouseClicouNoBotao(int x, int y, int largura, int altura) {
-		if (mouseEstaNoBotao(x, y, largura, altura) && Mouse.getBotao() > -1) {
-			Mouse.setBotao(-1);
+		if (mouseEstaNoBotao(x, y, largura, altura) && Mouse.obterBotao() > -1) {
+			Mouse.configurarBotao(-1);
 			return true;
 		}
 		return false;
@@ -218,7 +218,7 @@ public class Painel extends Canvas implements Runnable {
 	 * @return boolean
 	 */
 	public boolean mouseEstaNoBotao(int x, int y, int largura, int altura) {
-		int mouseX = Mouse.getX(), mouseY = Mouse.getY();
+		int mouseX = Mouse.obterX(), mouseY = Mouse.obterY();
 		if (mouseX >= x && mouseX <= x + largura) if (mouseY >= y && mouseY <= y + altura) return true;
 		return false;
 	}

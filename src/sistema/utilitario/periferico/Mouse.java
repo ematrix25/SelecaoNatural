@@ -29,29 +29,29 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	}
 
 	/**
-	 * Retorna o valor de X
+	 * Obtem o valor de X
 	 * 
 	 * @return X
 	 */
-	public static int getX() {
+	public static int obterX() {
 		return xMouse;// - xMaximo;
 	}
 
 	/**
-	 * Retorna o valor de Y
+	 * Obtem o valor de Y
 	 * 
 	 * @return Y
 	 */
-	public static int getY() {
+	public static int obterY() {
 		return yMouse;// - yMaximo;
 	}
 
 	/**
-	 * Retorna o valor do botão do mouse
+	 * Obtem o valor do botão do mouse
 	 * 
 	 * @return Mouse button
 	 */
-	public static int getBotao() {
+	public static int obterBotao() {
 		return botaoDoMouse;
 	}
 
@@ -60,7 +60,7 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	 * 
 	 * @param botao
 	 */
-	public static void setBotao(int botao) {
+	public static void configurarBotao(int botao) {
 		botaoDoMouse = botao;
 	}
 
