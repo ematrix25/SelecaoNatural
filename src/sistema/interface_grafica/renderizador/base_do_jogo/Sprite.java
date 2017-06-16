@@ -60,6 +60,16 @@ public class Sprite {
 	}
 
 	/**
+	 * Gera um texto com a posição da sprite na folha de sprites
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Sprite = [" + x + ", " + y + "]";
+	}
+
+	/**
 	 * Classe com os dados da FolhaDeSprites
 	 * 
 	 * @author Emanuel

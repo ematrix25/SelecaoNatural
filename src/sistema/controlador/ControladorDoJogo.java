@@ -1,7 +1,11 @@
 package sistema.controlador;
 
+import componente.Componente;
 import componente.Componente.Posicao;
+import componente.Componente.Sprites;
 import componente.Componente.Velocidade;
+import sistema.interface_grafica.renderizador.base_do_jogo.Sprite;
+import sistema.interface_grafica.renderizador.base_do_jogo.mapa.Coordenada;
 import sistema.interface_grafica.renderizador.base_do_jogo.mapa.Mapa;
 import sistema.utilitario.Opcoes;
 import sistema.utilitario.periferico.Mouse;
@@ -13,7 +17,6 @@ import sistema.utilitario.periferico.Teclado;
  * @author Emanuel
  */
 public class ControladorDoJogo {
-	// TODO Testar o controlador do jogo
 	private Mapa mapa;
 
 	/**
@@ -122,9 +125,9 @@ public class ControladorDoJogo {
 		Velocidade novaVelocidade = velocidade;
 		// Direção = 0 (cima) | 1 (direita) | 2 (baixo) | 3 (esquerda)
 		if (novaPosicao.y < 0) novaVelocidade.direcao = 0;
-		if (novaPosicao.x < 0) novaVelocidade.direcao = 1;
+		if (novaPosicao.x > 0) novaVelocidade.direcao = 1;
 		if (novaPosicao.y > 0) novaVelocidade.direcao = 2;
-		if (novaPosicao.x > 0) novaVelocidade.direcao = 3;
+		if (novaPosicao.x < 0) novaVelocidade.direcao = 3;
 		if (!colide(posicao, novaPosicao)) {
 			posicao.x += novaPosicao.x;
 			posicao.y += novaPosicao.y;
@@ -140,6 +143,7 @@ public class ControladorDoJogo {
 	 * @return boolean
 	 */
 	private boolean colide(Posicao posicao, Posicao novaPosicao) {
+		// TODO Verificar porque não está colidindo
 		int xAux, yAux;
 		boolean colidiu = false;
 		for (int lado = 0; lado < 4; lado++) {
@@ -148,5 +152,51 @@ public class ControladorDoJogo {
 			if (mapa.obterBloco(xAux, yAux).solido) colidiu = true;
 		}
 		return colidiu;
+	}
+
+	/**
+	 * Método principal para testar o Controlador do Jogo
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		ControladorDaEntidade controladorDaEntidade = new ControladorDaEntidade();
+		// TODO Testar a geração do mapa
+		Mapa mapa = new Mapa("/mapas/caverna.png");
+		ControladorDoJogo controladorDoJogo = new ControladorDoJogo(mapa);
+
+		// Gera a entidade na coordenada referente ao mapa
+		int entidade = controladorDaEntidade.criarEntidade();
+		Coordenada coordenada = new Coordenada(8, 7);
+		controladorDaEntidade.adicionarComponente(entidade, (Componente) new Posicao(coordenada));
+		controladorDaEntidade.adicionarComponente(entidade, (Componente) new Velocidade());
+		Sprite arrayDeSprites[] = { Sprite.jogadorMovendoY, Sprite.jogadorMovendoX, Sprite.jogadorParadoY,
+				Sprite.jogadorParadoX };
+		controladorDaEntidade.adicionarComponente(entidade, (Componente) new Sprites(arrayDeSprites));
+
+		// Obtem os dados iniciais
+		Posicao posicao = controladorDaEntidade.obterComponente(entidade, Posicao.class);
+		Velocidade velocidade = controladorDaEntidade.obterComponente(entidade, Velocidade.class);
+		Sprites sprites = controladorDaEntidade.obterComponente(entidade, Sprites.class);
+		System.out.println(posicao + "\n" + velocidade + "\n" + sprites.obterSpriteY(velocidade.movendo));
+		System.out.println("Mapa " + mapa.obterBloco(posicao.x, posicao.y).sprite + "\n");
+
+		// Move a entidade
+		int cont = 40;
+		Opcoes.controlePorMouse = false;
+		while (cont > 0) {
+			Teclado.atualizar();
+			if (cont % 2 == 0) Teclado.direita = true;
+			if (cont % 3 == 0) Teclado.baixo = true;
+			controladorDoJogo.moverJogador(posicao, velocidade);
+			posicao = controladorDaEntidade.obterComponente(entidade, Posicao.class);
+			velocidade = controladorDaEntidade.obterComponente(entidade, Velocidade.class);
+			System.out.println(posicao + "\n" + velocidade);
+			if (velocidade.direcao == 0 || velocidade.direcao == 2)
+				System.out.println(sprites.obterSpriteY(velocidade.movendo));
+			else System.out.println(sprites.obterSpriteX(velocidade.movendo));
+			System.out.println("Mapa " + mapa.obterBloco(posicao.x, posicao.y).sprite + "\n");
+			cont--;
+		}
 	}
 }

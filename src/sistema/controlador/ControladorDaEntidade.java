@@ -160,7 +160,7 @@ public class ControladorDaEntidade {
 	}
 
 	/**
-	 * Metodo principal para testar o Controlador da Entidade
+	 * Método principal para testar o Controlador da Entidade
 	 * 
 	 * @param args
 	 */

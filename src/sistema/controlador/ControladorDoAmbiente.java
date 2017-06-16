@@ -257,7 +257,7 @@ public class ControladorDoAmbiente {
 	}
 
 	/**
-	 * Metodo principal para testar o Controlador do Ambiente
+	 * Método principal para testar o Controlador do Ambiente
 	 * 
 	 * @param args
 	 */

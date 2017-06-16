@@ -1,6 +1,7 @@
 package componente;
 
 import sistema.interface_grafica.renderizador.base_do_jogo.Sprite;
+import sistema.interface_grafica.renderizador.base_do_jogo.mapa.Coordenada;
 
 /**
  * Abstrai classes de componentes que vão adicionar funcionalidades à entidade
@@ -25,6 +26,15 @@ public abstract class Componente {
 		}
 
 		/**
+		 * Gera o objeto Posicao com uma Coordenada
+		 * 
+		 * @param coordenada
+		 */
+		public Posicao(Coordenada coordenada) {
+			this(coordenada.obterX(), coordenada.obterY());
+		}
+
+		/**
 		 * Gera o objeto Posicao com x e y
 		 * 
 		 * @param x
@@ -42,7 +52,7 @@ public abstract class Componente {
 		 */
 		@Override
 		public String toString() {
-			return "(" + x + "," + y + ")";
+			return "Posicao = [" + x + ", " + y + "]";
 		}
 	}
 
@@ -56,6 +66,13 @@ public abstract class Componente {
 		public int valor, direcao;
 
 		/**
+		 * Gera o objeto Velocidade
+		 */
+		public Velocidade() {
+			this(false, 0, -1);
+		}
+
+		/**
 		 * Gera o objeto Velocidade com valores de movendo e direcao de
 		 * movimento
 		 * 
@@ -66,6 +83,17 @@ public abstract class Componente {
 			this.movendo = movendo;
 			this.valor = velocidade;
 			this.direcao = direcao;
+		}
+
+		/**
+		 * Gera o texto com os dados da Velocidade
+		 * 
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString() {
+			if(movendo)return "Velocidade = " + valor + " e Direcao = " + direcao;
+			else return "Velocidade = 0 e Direcao = " + direcao;
 		}
 	}
 
@@ -92,17 +120,17 @@ public abstract class Componente {
 		 * @return Sprite
 		 */
 		public Sprite obterSpriteX(boolean movendo) {
-			if(movendo) return sprites[1];
+			if (movendo) return sprites[1];
 			else return sprites[3];
 		}
-		
+
 		/**
 		 * Obtem a sprite para o eixo Y
 		 * 
 		 * @return Sprite
 		 */
 		public Sprite obterSpriteY(boolean movendo) {
-			if(movendo) return sprites[0];
+			if (movendo) return sprites[0];
 			else return sprites[2];
 		}
 	}
