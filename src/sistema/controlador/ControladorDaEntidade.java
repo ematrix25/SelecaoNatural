@@ -136,10 +136,31 @@ public class ControladorDaEntidade {
 		HashMap<Integer, ? extends Componente> base = baseDeComponentes.get(tipoDeComponente);
 		if (base == null) throw new IllegalArgumentException(
 				"ERRO: Não existem Entidades com essa classe de Componente: " + tipoDeComponente);
-		T resultado = tipoDeComponente.cast(base.get(ID));
-		if (resultado == null)
+		T componente = tipoDeComponente.cast(base.get(ID));
+		if (componente == null)
 			throw new IllegalArgumentException("ERRO: " + ID + " não possui Componente da classe: " + tipoDeComponente);
-		return resultado;
+		return componente;
+	}
+
+	/**
+	 * Obtem todos os Componentes da Entidade da ID
+	 * 
+	 * @param ID
+	 * @return List<T>
+	 */
+	@SuppressWarnings("unchecked")
+	public <T extends Componente> List<T> obterComponentes(int ID) {
+		if (!entidades.contains(ID)) return null;
+		List<T> componentes = new ArrayList<T>();
+		for (Class<?> tipoDeComponente : baseDeComponentes.keySet()) {
+			HashMap<Integer, ? extends Componente> base = baseDeComponentes.get(tipoDeComponente);
+			if (base == null) continue;
+			T componente = (T) tipoDeComponente.cast(base.get(ID));
+			if (componente == null) throw new IllegalArgumentException(
+					"ERRO: " + ID + " não possui Componente da classe: " + tipoDeComponente);
+			componentes.add(componente);
+		}
+		return componentes;
 	}
 
 	/**

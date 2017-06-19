@@ -30,7 +30,7 @@ public class Bloco {
 	 */
 	public Bloco(Sprite sprite, boolean solido) {
 		this.sprite = sprite;
-
+		this.solido = solido;
 	}
 
 	/**

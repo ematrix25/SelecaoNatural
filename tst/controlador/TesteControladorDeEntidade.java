@@ -1,4 +1,4 @@
-package sistema;
+package controlador;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -16,13 +16,12 @@ import sistema.controlador.ControladorDaEntidade;
  * @author Emanuel
  */
 public class TesteControladorDeEntidade {
-
 	private ControladorDaEntidade controladorDaEntidade;
 	private int ID;
 	private Posicao posicao;
 
 	/**
-	 * Instancia o Controlador Da Entidade para iniciar os testes
+	 * Instância o Controlador Da Entidade para iniciar os testes
 	 * 
 	 * @throws Exception
 	 */
@@ -34,7 +33,7 @@ public class TesteControladorDeEntidade {
 	}
 
 	/**
-	 * Metodo auxiliar para testar a criação de Entidade
+	 * Método auxiliar para testar a criação de Entidade
 	 */
 	private void criarEntidade() {
 		ID = controladorDaEntidade.criarEntidade();
@@ -65,7 +64,7 @@ public class TesteControladorDeEntidade {
 	}
 
 	/**
-	 * Metodo auxiliar para adicionar Componente
+	 * Método auxiliar para adicionar Componente
 	 */
 	private void adicionarComponente() {
 		criarEntidade();

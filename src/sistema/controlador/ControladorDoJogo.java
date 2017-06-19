@@ -33,7 +33,6 @@ public class ControladorDoJogo {
 	 * 
 	 * @param posicao
 	 * @param velocidade
-	 * @param novaPosicao
 	 * @return Velocidade
 	 */
 	public Velocidade moverJogador(Posicao posicao, Velocidade velocidade) {
@@ -143,7 +142,7 @@ public class ControladorDoJogo {
 	 * @return boolean
 	 */
 	private boolean colide(Posicao posicao, Posicao novaPosicao) {
-		// TODO Verificar porque não está colidindo
+		// TODO Testar porque não colide
 		int xAux, yAux;
 		boolean colidiu = false;
 		for (int lado = 0; lado < 4; lado++) {
@@ -161,7 +160,6 @@ public class ControladorDoJogo {
 	 */
 	public static void main(String[] args) {
 		ControladorDaEntidade controladorDaEntidade = new ControladorDaEntidade();
-		// TODO Testar a geração do mapa
 		Mapa mapa = new Mapa("/mapas/caverna.png");
 		ControladorDoJogo controladorDoJogo = new ControladorDoJogo(mapa);
 
@@ -186,8 +184,8 @@ public class ControladorDoJogo {
 		Opcoes.controlePorMouse = false;
 		while (cont > 0) {
 			Teclado.atualizar();
-			if (cont % 2 == 0) Teclado.direita = true;
-			if (cont % 3 == 0) Teclado.baixo = true;
+			Teclado.direita = true;
+			// if (cont % 3 == 0) Teclado.baixo = true;
 			controladorDoJogo.moverJogador(posicao, velocidade);
 			posicao = controladorDaEntidade.obterComponente(entidade, Posicao.class);
 			velocidade = controladorDaEntidade.obterComponente(entidade, Velocidade.class);

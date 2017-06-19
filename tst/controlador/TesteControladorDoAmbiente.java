@@ -1,4 +1,4 @@
-package sistema;
+package controlador;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -72,7 +72,7 @@ public class TesteControladorDoAmbiente {
 	}
 
 	/**
-	 * Metodo auxiliar para criar as Especies
+	 * Método auxiliar para criar as Especies
 	 */
 	private void criarEspecies() {
 		int entidades[] = new int[7];

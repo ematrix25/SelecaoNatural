@@ -42,6 +42,12 @@ public class Mapa {
 		}
 	}
 
+	/**
+	 * Cria um objeto do mapa dada largura e altura
+	 * 
+	 * @param largura
+	 * @param altura
+	 */
 	public Mapa(int largura, int altura) {
 		this.largura = largura;
 		this.altura = altura;

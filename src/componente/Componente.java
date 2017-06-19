@@ -1,5 +1,7 @@
 package componente;
 
+import java.util.Arrays;
+
 import sistema.interface_grafica.renderizador.base_do_jogo.Sprite;
 import sistema.interface_grafica.renderizador.base_do_jogo.mapa.Coordenada;
 
@@ -46,6 +48,43 @@ public abstract class Componente {
 		}
 
 		/**
+		 * Gera o código com os valores de x e y
+		 * 
+		 * @see java.lang.Object#hashCode()
+		 */
+		@Override
+		public int hashCode() {
+			final int primo = 31;
+			int resultado = 1;
+			resultado = primo * resultado + x;
+			resultado = primo * resultado + y;
+			return resultado;
+		}
+
+		/**
+		 * Verifica a igualdade de duas Posições
+		 * 
+		 * @see java.lang.Object#equals(java.lang.Object)
+		 */
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+			if (obj == null) {
+				return false;
+			}
+			if (!(obj instanceof Posicao)) {
+				return false;
+			}
+			Posicao other = (Posicao) obj;
+			if (hashCode() != other.hashCode()) {
+				return false;
+			}
+			return true;
+		}
+
+		/**
 		 * Gera texto dos dados da Posicao
 		 * 
 		 * @see java.lang.Object#toString()
@@ -77,12 +116,51 @@ public abstract class Componente {
 		 * movimento
 		 * 
 		 * @param movendo
+		 * @param valor
 		 * @param direcao
 		 */
-		public Velocidade(boolean movendo, int velocidade, int direcao) {
+		public Velocidade(boolean movendo, int valor, int direcao) {
 			this.movendo = movendo;
-			this.valor = velocidade;
+			this.valor = valor;
 			this.direcao = direcao;
+		}
+
+		/**
+		 * Gera o código com os valores da velocidade
+		 * 
+		 * @see java.lang.Object#hashCode()
+		 */
+		@Override
+		public int hashCode() {
+			final int primo = 31;
+			int resultado = 1;
+			resultado = primo * resultado + direcao;
+			resultado = primo * resultado + (movendo ? 1231 : 1237);
+			resultado = primo * resultado + valor;
+			return resultado;
+		}
+
+		/**
+		 * Verifica a igualdade de duas Velocidades
+		 * 
+		 * @see java.lang.Object#equals(java.lang.Object)
+		 */
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+			if (obj == null) {
+				return false;
+			}
+			if (!(obj instanceof Velocidade)) {
+				return false;
+			}
+			Velocidade other = (Velocidade) obj;
+			if (hashCode() != other.hashCode()) {
+				return false;
+			}
+			return true;
 		}
 
 		/**
@@ -92,7 +170,7 @@ public abstract class Componente {
 		 */
 		@Override
 		public String toString() {
-			if(movendo)return "Velocidade = " + valor + " e Direcao = " + direcao;
+			if (movendo) return "Velocidade = " + valor + " e Direcao = " + direcao;
 			else return "Velocidade = 0 e Direcao = " + direcao;
 		}
 	}
@@ -133,5 +211,42 @@ public abstract class Componente {
 			if (movendo) return sprites[0];
 			else return sprites[2];
 		}
+
+		/**
+		 * Gera o código dos Sprites
+		 * 
+		 * @see java.lang.Object#hashCode()
+		 */
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + Arrays.hashCode(sprites);
+			return result;
+		}
+
+		/**
+		 * Verifica a igualdade dos objetos Sprites
+		 * 
+		 * @see java.lang.Object#equals(java.lang.Object)
+		 */
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+			if (obj == null) {
+				return false;
+			}
+			if (!(obj instanceof Sprites)) {
+				return false;
+			}
+			Sprites other = (Sprites) obj;
+			if (hashCode() != other.hashCode()) {
+				return false;
+			}
+			return true;
+		}
+
 	}
 }
