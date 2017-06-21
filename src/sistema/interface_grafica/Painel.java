@@ -12,11 +12,13 @@ import componente.Especime.Especie;
 import sistema.Jogo.Janela;
 import sistema.controlador.ControladorDaEntidade;
 import sistema.controlador.ControladorDoAmbiente;
+import sistema.controlador.ControladorDoJogo;
 import sistema.interface_grafica.renderizador.RendDaSelecao;
 import sistema.interface_grafica.renderizador.RendDeOpcoes;
 import sistema.interface_grafica.renderizador.RendDoJogo;
 import sistema.interface_grafica.renderizador.RendDoMenu;
 import sistema.interface_grafica.renderizador.RendDoQuest;
+import sistema.interface_grafica.renderizador.base_do_jogo.mapa.Mapa;
 import sistema.utilitario.Opcoes;
 import sistema.utilitario.arquivo.Arquivo.ArquivoDoQuest;
 import sistema.utilitario.periferico.Mouse;
@@ -38,8 +40,11 @@ public class Painel extends Canvas implements Runnable {
 	private Teclado teclado;
 	private Mouse mouse;
 
+	private Mapa mapa;
+
 	private ControladorDaEntidade controladorDaEntidade;
 	private ControladorDoAmbiente controladorDoAmbiente;
+	private ControladorDoJogo controladorDoJogo;
 
 	private RendDoMenu rendDoMenu;
 	private RendDeOpcoes rendDeOpcoes;
@@ -95,10 +100,8 @@ public class Painel extends Canvas implements Runnable {
 		while (true) {
 			requestFocusInWindow();
 			try {
-				if(telaAtiva=='J')
-					Thread.sleep(20);
-				else
-					Thread.sleep(60);
+				if (telaAtiva == 'J') Thread.sleep(20);
+				else Thread.sleep(60);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -171,7 +174,7 @@ public class Painel extends Canvas implements Runnable {
 		}
 		graficos.drawImage(imagem, 0, 0, getWidth(), getHeight(), null);
 		graficos.dispose();
-		estrategiaDeBuffer.show();		
+		estrategiaDeBuffer.show();
 	}
 
 	/**
@@ -294,9 +297,11 @@ public class Painel extends Canvas implements Runnable {
 		controladorDaEntidade = new ControladorDaEntidade();
 		controladorDoAmbiente = new ControladorDoAmbiente();
 		gerarAmbiente();
+		mapa = new Mapa("/mapas/caverna.png");
+		controladorDoJogo = new ControladorDoJogo(mapa);
 
 		rendDaSelecao = new RendDaSelecao(this, controladorDaEntidade, controladorDoAmbiente);
-		rendDoJogo = new RendDoJogo(this, controladorDaEntidade, controladorDoAmbiente);
+		rendDoJogo = new RendDoJogo(this, controladorDaEntidade, controladorDoAmbiente, controladorDoJogo);
 	}
 
 	/**

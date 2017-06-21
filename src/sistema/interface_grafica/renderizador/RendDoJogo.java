@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 
 import sistema.controlador.ControladorDaEntidade;
 import sistema.controlador.ControladorDoAmbiente;
+import sistema.controlador.ControladorDoJogo;
 import sistema.interface_grafica.Painel;
 import sistema.utilitario.periferico.Teclado;
 
@@ -20,6 +21,7 @@ public class RendDoJogo extends Renderizador {
 	// TODO Integrar os dados dos controladores aqui
 	private ControladorDaEntidade controladorDaEntidade;
 	private ControladorDoAmbiente controladorDoAmbiente;
+	private ControladorDoJogo controladorDoJogo;
 
 	private int x = 100, y = 100;
 	private boolean xdir = true, ydir = false;
@@ -31,10 +33,11 @@ public class RendDoJogo extends Renderizador {
 	 * @param contDaEntidade
 	 * @param contDoAmbiente
 	 */
-	public RendDoJogo(Painel painel, ControladorDaEntidade contDaEntidade, ControladorDoAmbiente contDoAmbiente) {
+	public RendDoJogo(Painel painel, ControladorDaEntidade contDaEntidade, ControladorDoAmbiente contDoAmbiente,ControladorDoJogo contDoJogo) {
 		super(painel);
 		controladorDaEntidade = contDaEntidade;
 		controladorDoAmbiente = contDoAmbiente;
+		controladorDoJogo = contDoJogo;
 	}
 
 	/**

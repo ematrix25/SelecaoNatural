@@ -18,6 +18,7 @@ import sistema.utilitario.periferico.Teclado;
  */
 public class ControladorDoJogo {
 	private Mapa mapa;
+	private int jogador;
 
 	/**
 	 * Cria o objeto controlador do jogo dado o mapa
@@ -142,7 +143,6 @@ public class ControladorDoJogo {
 	 * @return boolean
 	 */
 	private boolean colide(Posicao posicao, Posicao novaPosicao) {
-		// TODO Testar porque não colide
 		int xAux, yAux;
 		boolean colidiu = false;
 		for (int lado = 0; lado < 4; lado++) {

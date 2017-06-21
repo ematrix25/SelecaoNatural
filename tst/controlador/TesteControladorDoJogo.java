@@ -105,7 +105,6 @@ public class TesteControladorDoJogo {
 		velocidade = new Velocidade(velocidade.movendo,velocidade.valor,velocidade.direcao);
 		assertEquals(controladorDaEntidade.obterComponentes(ID).size(), 3);
 		moverEntidade(ID);
-		// TODO Verificar porque está igual
 		assertNotEquals(controladorDaEntidade.obterComponente(ID, Posicao.class), posicao);
 		assertNotEquals(controladorDaEntidade.obterComponente(ID, Velocidade.class), velocidade);
 	}
