@@ -19,6 +19,7 @@ import sistema.utilitario.periferico.Teclado;
 public class ControladorDoJogo {
 	private Mapa mapa;
 	private int jogador;
+	private int pontuacao;
 
 	/**
 	 * Cria o objeto controlador do jogo dado o mapa
@@ -27,6 +28,42 @@ public class ControladorDoJogo {
 	 */
 	public ControladorDoJogo(Mapa mapa) {
 		this.mapa = mapa;
+	}
+
+	/**
+	 * Obtem o mapa do Jogo
+	 * 
+	 * @return Mapa
+	 */
+	public Mapa obterMapa() {
+		return mapa;
+	}
+
+	/**
+	 * Obtem a ID da especime do Jogador
+	 * 
+	 * @return int
+	 */
+	public int obterJogador() {
+		return jogador;
+	}
+
+	/**
+	 * Obtem a pontuacao do jogo
+	 * 
+	 * @return int
+	 */
+	public int obterPontuacao() {
+		return pontuacao;
+	}
+
+	/**
+	 * Configura qual especime está associado ao Jogador
+	 * 
+	 * @param jogador
+	 */
+	public void configurarJogador(int jogador) {
+		this.jogador = jogador;
 	}
 
 	/**

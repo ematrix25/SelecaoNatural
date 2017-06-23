@@ -7,6 +7,9 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 
 import componente.Componente;
+import componente.Componente.Posicao;
+import componente.Componente.Sprites;
+import componente.Componente.Velocidade;
 import componente.Especime;
 import componente.Especime.Especie;
 import sistema.Jogo.Janela;
@@ -18,6 +21,8 @@ import sistema.interface_grafica.renderizador.RendDeOpcoes;
 import sistema.interface_grafica.renderizador.RendDoJogo;
 import sistema.interface_grafica.renderizador.RendDoMenu;
 import sistema.interface_grafica.renderizador.RendDoQuest;
+import sistema.interface_grafica.renderizador.base_do_jogo.Sprite;
+import sistema.interface_grafica.renderizador.base_do_jogo.mapa.Coordenada;
 import sistema.interface_grafica.renderizador.base_do_jogo.mapa.Mapa;
 import sistema.utilitario.Opcoes;
 import sistema.utilitario.arquivo.Arquivo.ArquivoDoQuest;
@@ -30,7 +35,6 @@ import sistema.utilitario.periferico.Teclado;
  * @author Emanuel
  */
 public class Painel extends Canvas implements Runnable {
-	// TODO Implementar o Jogo aqui e renderizar no RendDoJogo
 	private static final long serialVersionUID = 1L;
 
 	private Janela janela;
@@ -55,11 +59,10 @@ public class Painel extends Canvas implements Runnable {
 	private char telaAtiva = 'M';
 	public boolean ehContinuavel = false;
 
-	public int qtdCelulas = 1000, pontuacao = qtdCelulas * 10 + 110;
+	public int massaCelular = 0, qtdCelulas = 0, pontuacao = 0;
 	public final float MASSA_CELULAR_MAX = 100.0f;
-	public float massaCelular = 10.0f;
 
-	private int cont = 0, contAntes = 0;
+	private int contDeSegundos = 0;
 
 	/**
 	 * Inicializa o painel
@@ -107,7 +110,7 @@ public class Painel extends Canvas implements Runnable {
 			}
 
 			// Atualiza os dados do jogo
-			if (telaAtiva == 'S' || telaAtiva == 'J') {
+			if (telaAtiva == 'J') {
 				tempoAntes = tempoAgora;
 				tempoAgora = System.nanoTime();
 				deltaTempo += (tempoAgora - tempoAntes) / (NANOSEGUNDOS / 60.0);
@@ -131,8 +134,8 @@ public class Painel extends Canvas implements Runnable {
 
 				// Conta os segundos para abrir o painel do questionarios
 				if (telaAtiva == 'S' || telaAtiva == 'J') {
-					cont++;
-					if (cont > 60) {
+					contDeSegundos++;
+					if (contDeSegundos > 60) {
 						janela.redimensionar(1.7f);
 						rendDoQuest = new RendDoQuest(this);
 						telaAtiva = 'Q';
@@ -182,15 +185,26 @@ public class Painel extends Canvas implements Runnable {
 	 */
 	private void atualizar() {
 		Teclado.atualizar();
-		// TODO Remover depois
-		if (cont != contAntes) {
-			contAntes = cont;
-			massaCelular = 1 + (float) (Math.random() * 99);
-			if (cont % 5 == 0) {
-				qtdCelulas = 1 + (int) (Math.random() * 999999);
-				pontuacao = qtdCelulas * 10 + (int) (Math.random() * 999999);
-			}
+		massaCelular = controladorDaEntidade.obterComponente(controladorDoJogo.obterJogador(), Especime.class).massa;
+		qtdCelulas = controladorDoAmbiente.obterEspecimesPorEspecime(controladorDoJogo.obterJogador()).size();
+		pontuacao = controladorDoJogo.obterPontuacao();
 
+		moverEntidades();
+	}
+
+	/**
+	 * Move as entidades no mapa
+	 */
+	private void moverEntidades() {
+		// TODO Implementar movimentos da inteligência artificial
+		Posicao posicao;
+		Velocidade velocidade;
+		for (int entidade : controladorDaEntidade.obterTodasEntidadesComOComponente(Especime.class)) {
+			posicao = controladorDaEntidade.obterComponente(entidade, Posicao.class);
+			velocidade = controladorDaEntidade.obterComponente(entidade, Velocidade.class);
+			if (entidade == controladorDoJogo.obterJogador()) {
+				controladorDoJogo.moverJogador(posicao, velocidade);
+			}
 		}
 	}
 
@@ -239,12 +253,9 @@ public class Painel extends Canvas implements Runnable {
 			break;
 		case 'S':
 			if (telaAtiva == 'S') {
-				int selecao = rendDaSelecao.obtemSelecao();
-				Integer especime = controladorDoAmbiente
-						.obterEspecie(controladorDoAmbiente.obterAmbiente().obterEspecieID(selecao)).get(0);
-				Especie especie = controladorDaEntidade.obterComponente(especime, Especime.class).especie;
-				System.out.println("Seleção do especime " + especime + " da especie " + especie);
-
+				int selecao = rendDaSelecao.obterSelecao();
+				controladorDoJogo.configurarJogador(selecao);
+				mapearEntidades();
 				voltarParaJogo();
 			} else if (telaAtiva == 'O') {
 				Opcoes.carregarConfig(true, rendDeOpcoes.obterConfiguracoes());
@@ -315,6 +326,22 @@ public class Painel extends Canvas implements Runnable {
 		Especie[] especies = controladorDoAmbiente.criarEspecies(entidades);
 		for (int i = 0; i < 7; i++) {
 			controladorDaEntidade.adicionarComponente(entidades[i], (Componente) new Especime(especies[i]));
+		}
+	}
+
+	/**
+	 * Coloca as entidades no mapa
+	 */
+	private void mapearEntidades() {
+		Coordenada coordenada = new Coordenada();
+		// TODO Melhorar o sistema de associação das sprites à entidade
+		Sprite arrayDeSprites[] = { Sprite.jogadorMovendoY, Sprite.jogadorMovendoX, Sprite.jogadorParadoY,
+				Sprite.jogadorParadoX };
+		for (int entidade : controladorDaEntidade.obterTodasEntidadesComOComponente(Especime.class)) {
+			if (entidade == controladorDoJogo.obterJogador()) coordenada.configurarCoordenada(8, 7);
+			controladorDaEntidade.adicionarComponente(entidade, (Componente) new Posicao(coordenada));
+			controladorDaEntidade.adicionarComponente(entidade, (Componente) new Velocidade());
+			controladorDaEntidade.adicionarComponente(entidade, (Componente) new Sprites(arrayDeSprites));
 		}
 	}
 }

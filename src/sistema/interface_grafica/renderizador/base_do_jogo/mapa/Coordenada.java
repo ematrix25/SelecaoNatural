@@ -10,14 +10,20 @@ public class Coordenada {
 	private final int TAMANHO_DO_BLOCO = Bloco.TAMANHO;
 
 	/**
+	 * Cria o objeto coordenada
+	 */
+	public Coordenada() {
+		this(0, 0);
+	}
+
+	/**
 	 * Cria o objeto coordenada com x e y
 	 * 
 	 * @param x
 	 * @param y
 	 */
 	public Coordenada(int x, int y) {
-		this.x = x * TAMANHO_DO_BLOCO;
-		this.y = y * TAMANHO_DO_BLOCO;
+		configurarCoordenada(x, y);
 	}
 
 	/**
@@ -38,8 +44,24 @@ public class Coordenada {
 		return y;
 	}
 
+	/**
+	 * Obtem a coordenada x e y
+	 * 
+	 * @return int[]
+	 */
 	public int[] obterCoordenada() {
 		int coordenada[] = { x, y };
 		return coordenada;
+	}
+
+	/**
+	 * Muda a coordenada x e y
+	 * 
+	 * @param x
+	 * @param y
+	 */
+	public void configurarCoordenada(int x, int y) {
+		this.x = x * TAMANHO_DO_BLOCO;
+		this.y = y * TAMANHO_DO_BLOCO;
 	}
 }

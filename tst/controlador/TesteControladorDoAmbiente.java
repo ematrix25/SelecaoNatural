@@ -102,14 +102,14 @@ public class TesteControladorDoAmbiente {
 	@Test
 	public void testarAtualizarEspecie() {
 		criarEspecies();
-		assertEquals(controladorDoAmbiente.obterEspecie(especies[5].obterCodigo()).size(), 1);
+		assertEquals(controladorDoAmbiente.obterEspecimesPorEspecie(especies[5].obterCodigo()).size(), 1);
 		int entidade = controladorDaEntidade.criarEntidade();
 		controladorDaEntidade.adicionarComponente(entidade, new Especime(especies[5]));
 		controladorDoAmbiente.atualizarEspecie(entidade, true, especies[5].obterCodigo());
-		assertEquals(controladorDoAmbiente.obterEspecie(especies[5].obterCodigo()).size(), 2);
+		assertEquals(controladorDoAmbiente.obterEspecimesPorEspecie(especies[5].obterCodigo()).size(), 2);
 		controladorDaEntidade.removerEntidade(entidade);
 		controladorDoAmbiente.atualizarEspecie(entidade, false, especies[5].obterCodigo());
-		assertEquals(controladorDoAmbiente.obterEspecie(especies[5].obterCodigo()).size(), 1);
+		assertEquals(controladorDoAmbiente.obterEspecimesPorEspecie(especies[5].obterCodigo()).size(), 1);
 	}
 
 	/**
@@ -119,11 +119,11 @@ public class TesteControladorDoAmbiente {
 	public void testarRemoverEspecie() {
 		criarEspecies();
 		assertEquals(controladorDoAmbiente.obterAmbiente().obterQTD(), 7);
-		for (Integer ID : controladorDoAmbiente.obterEspecie(especies[5].obterCodigo())) {
+		for (Integer ID : controladorDoAmbiente.obterEspecimesPorEspecie(especies[5].obterCodigo())) {
 			controladorDaEntidade.removerEntidade(ID);
 		}
 		controladorDoAmbiente.removerEspecie(especies[5].obterCodigo());
-		assertFalse(controladorDoAmbiente.obterEspecie(especies[5].obterCodigo()) != null);
+		assertFalse(controladorDoAmbiente.obterEspecimesPorEspecie(especies[5].obterCodigo()) != null);
 		assertEquals(controladorDoAmbiente.obterAmbiente().obterQTD(), 6);
 	}
 }

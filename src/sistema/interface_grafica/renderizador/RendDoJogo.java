@@ -3,11 +3,18 @@ package sistema.interface_grafica.renderizador;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 
+import componente.Componente.Posicao;
+import componente.Componente.Sprites;
+import componente.Componente.Velocidade;
 import sistema.controlador.ControladorDaEntidade;
 import sistema.controlador.ControladorDoAmbiente;
 import sistema.controlador.ControladorDoJogo;
 import sistema.interface_grafica.Painel;
+import sistema.interface_grafica.renderizador.base_do_jogo.Tela;
+import sistema.interface_grafica.renderizador.base_do_jogo.mapa.Mapa;
+import sistema.utilitario.periferico.Mouse;
 import sistema.utilitario.periferico.Teclado;
 
 /**
@@ -17,11 +24,12 @@ import sistema.utilitario.periferico.Teclado;
  */
 @SuppressWarnings("unused")
 public class RendDoJogo extends Renderizador {
-	// TODO Implementar o Jogo aqui
-	// TODO Integrar os dados dos controladores aqui
+	// TODO Implementar o Jogo integrando os dados dos controladores aqui
 	private ControladorDaEntidade controladorDaEntidade;
 	private ControladorDoAmbiente controladorDoAmbiente;
 	private ControladorDoJogo controladorDoJogo;
+
+	private Tela tela;
 
 	private int x = 100, y = 100;
 	private boolean xdir = true, ydir = false;
@@ -33,11 +41,14 @@ public class RendDoJogo extends Renderizador {
 	 * @param contDaEntidade
 	 * @param contDoAmbiente
 	 */
-	public RendDoJogo(Painel painel, ControladorDaEntidade contDaEntidade, ControladorDoAmbiente contDoAmbiente,ControladorDoJogo contDoJogo) {
+	public RendDoJogo(Painel painel, ControladorDaEntidade contDaEntidade, ControladorDoAmbiente contDoAmbiente,
+			ControladorDoJogo contDoJogo) {
 		super(painel);
 		controladorDaEntidade = contDaEntidade;
 		controladorDoAmbiente = contDoAmbiente;
 		controladorDoJogo = contDoJogo;
+
+		tela = new Tela(painel.getWidth(), painel.getHeight() - 30);
 	}
 
 	/**
@@ -49,10 +60,10 @@ public class RendDoJogo extends Renderizador {
 		carregarGraficos();
 
 		renderizarInfo();
-		renderizarJogo();
+		renderizarTelaDoJogo();
 
 		// TODO Remover depois
-		moveText();
+		// moveText();
 
 		// Ações conforme as teclas são pressionadas
 		if (Teclado.sair) painel.acaoDoBotao('s');
@@ -65,18 +76,15 @@ public class RendDoJogo extends Renderizador {
 	 * Renderizar a janela do informações
 	 */
 	private void renderizarInfo() {
-		int percentualMassa = (int) ((painel.massaCelular / painel.MASSA_CELULAR_MAX) * 100);
 		final int MIL = (int) Math.pow(10, 3);
 		graficos.setColor(Color.black);
 		graficos.fillRect(0, 0, painel.getWidth(), 30);
 
-		renderizarRotulo(Color.lightGray, "Massa Celular: " + percentualMassa + "%", painel.getWidth() - 10);
+		renderizarRotulo(Color.lightGray, "Massa Celular: " + painel.massaCelular + "%", painel.getWidth() - 10);
 		if (painel.pontuacao < MIL)
 			renderizarRotulo(Color.gray, "Pontuacao: " + painel.pontuacao, (painel.getWidth() / 2) + 70);
-		else renderizarRotulo(Color.gray, "Pontuacao: " + painel.pontuacao / MIL + "K",
-				(painel.getWidth() / 2) + 70);
-		if (painel.qtdCelulas < MIL)
-			renderizarRotulo(Color.darkGray, "Qtd Celulas: " + painel.qtdCelulas, 150);
+		else renderizarRotulo(Color.gray, "Pontuacao: " + painel.pontuacao / MIL + "K", (painel.getWidth() / 2) + 70);
+		if (painel.qtdCelulas < MIL) renderizarRotulo(Color.darkGray, "Qtd Celulas: " + painel.qtdCelulas, 150);
 		else renderizarRotulo(Color.darkGray, "Qtd Celulas: " + painel.qtdCelulas / MIL + "K", 150);
 	}
 
@@ -102,14 +110,58 @@ public class RendDoJogo extends Renderizador {
 	}
 
 	/**
-	 * Renderizar a tela do jogo
+	 * Renderiza a tela do jogo
 	 */
-	private void renderizarJogo() {
+	private void renderizarTelaDoJogo() {
+		BufferedImage imagem = new BufferedImage(tela.largura, tela.altura, BufferedImage.TYPE_INT_RGB);
+		int pixeis[] = ((DataBufferInt) imagem.getRaster().getDataBuffer()).getData();
+
+		// TODO Implementar a renderização para todas as entidades
+		tela.limpar();
+		Posicao posicao = controladorDaEntidade.obterComponente(controladorDoJogo.obterJogador(), Posicao.class);
+		int rolagemX = posicao.x - tela.largura / 2;
+		int rolagemY = posicao.y - tela.altura / 2;
+		Mapa mapa = controladorDoJogo.obterMapa();
+		mapa.renderizar(rolagemX, rolagemY, tela);
+		Velocidade velocidade = controladorDaEntidade.obterComponente(controladorDoJogo.obterJogador(),
+				Velocidade.class);
+		Sprites sprites = controladorDaEntidade.obterComponente(controladorDoJogo.obterJogador(), Sprites.class);
+		int invertido = 0;
+		if (velocidade.direcao == 2) invertido = 2;
+		if (velocidade.direcao == 3) invertido = 1;
+		// TODO Implementar animação de movimento alternando entre sprites
+		// movendo e parado
+		if (velocidade.direcao % 2 == 0)
+			tela.renderizarEspecime(rolagemX, rolagemY, sprites.obterSpriteY(velocidade.movendo), invertido);
+		else tela.renderizarEspecime(rolagemX, rolagemY, sprites.obterSpriteX(velocidade.movendo), invertido);
+
+		for (int i = 0; i < tela.pixeis.length; i++) {
+			pixeis[i] = tela.pixeis[i];
+		}
+
+		// TODO Descobrir porque não renderiza nada
+		graficos.drawImage(imagem, 0, 30, painel.getWidth(), painel.getHeight(), null);
 		graficos.setColor(Color.white);
-		graficos.fillRect(0, 30, painel.getWidth(), painel.getHeight());
-		graficos.setColor(Color.black);
-		graficos.setFont(new Font("Verdana", 0, 25));
-		graficos.drawString("Janela do Jogo", x, y);
+		graficos.setFont(new Font("Verdana", 0, 12));
+		if (Mouse.obterBotao() > -1) {
+			graficos.setColor(Color.green);
+			graficos.fillRect(Mouse.obterX(), Mouse.obterY(), 16, 16);
+
+			graficos.setColor(Color.red);
+			graficos.drawString("Button: " + Mouse.obterBotao(), 20, 60);
+
+			graficos.setColor(Color.white);
+			graficos.drawString("X: " + Mouse.obterX() + ", Y: " + Mouse.obterY(), 20, 100);
+			graficos.drawString("X: " + posicao.x + ", Y: " + posicao.y, 20, 120);
+		}
+		graficos.dispose();
+
+		// TODO Remover depois
+		// graficos.setColor(Color.white);
+		// graficos.fillRect(0, 30, painel.getWidth(), painel.getHeight());
+		// graficos.setColor(Color.black);
+		// graficos.setFont(new Font("Verdana", 0, 25));
+		// graficos.drawString("Janela do Jogo", x, y);
 	}
 
 	/**

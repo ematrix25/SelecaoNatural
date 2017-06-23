@@ -40,8 +40,8 @@ public class RendDaSelecao extends Renderizador {
 	 * 
 	 * @return int
 	 */
-	public int obtemSelecao() {
-		return selecao;
+	public int obterSelecao() {
+		return selecao * 2;
 	}
 
 	/**
@@ -60,7 +60,7 @@ public class RendDaSelecao extends Renderizador {
 		Integer especime;
 		Especie especie;
 		for (int i = 1; i <= 3; i++) {
-			especime = controladorDoAmbiente.obterEspecie(ambiente.obterEspecieID(i * 2)).get(0);
+			especime = controladorDoAmbiente.obterEspecimesPorEspecie(ambiente.obterEspecieID(i * 2)).get(0);
 			especie = controladorDaEntidade.obterComponente(especime, Especime.class).especie;
 			opcoes[i - 1] = "Nome = " + especie.nome + ":Tipo = " + especie.tipo + ":TempMax = " + especie.tempMaxSup
 					+ ":TempMin = " + especie.tempMinSup;

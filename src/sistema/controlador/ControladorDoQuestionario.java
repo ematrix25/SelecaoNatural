@@ -6,7 +6,6 @@ package sistema.controlador;
  * @author Emanuel
  */
 public class ControladorDoQuestionario {
-	// TODO Implementar sistema de controle do questionário
 	/**
 	 * Classe com os dados do questionário
 	 * 
@@ -14,7 +13,7 @@ public class ControladorDoQuestionario {
 	 */
 	@SuppressWarnings("unused")
 	public class Questionario {
-		// TODO Escrever as perguntas e opções de respostas aqui
+		// TODO Escrever as perguntas e opções de respostas aqui pelo controle do questionário
 		private String perguntas[];
 		private String opcoes[];		
 	}

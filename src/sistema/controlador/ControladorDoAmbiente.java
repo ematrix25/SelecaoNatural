@@ -28,7 +28,7 @@ public class ControladorDoAmbiente {
 	/**
 	 * Obtem o Ambiente
 	 * 
-	 * @return
+	 * @return Ambiente
 	 */
 	public Ambiente obterAmbiente() {
 		return ambiente;
@@ -39,7 +39,7 @@ public class ControladorDoAmbiente {
 	 * 
 	 * @param ehSoma
 	 * @param tempBase
-	 * @return
+	 * @return int
 	 */
 	private int gerarTempAleatoria(boolean ehSoma, int tempBase) {
 		final int aux = new Random().nextInt(tempBase / 10);
@@ -63,7 +63,7 @@ public class ControladorDoAmbiente {
 	 * 
 	 * @param ehSoma
 	 * @param temp
-	 * @return
+	 * @return boolean
 	 */
 	public boolean atualizarTemp(boolean ehSoma, int temp) {
 		int tempAux = ambiente.temp;
@@ -79,6 +79,7 @@ public class ControladorDoAmbiente {
 	 * 
 	 * @param especie
 	 * @param ID
+	 * @return boolean
 	 */
 	private boolean guardarEspecie(int especie, int ID) {
 		List<Integer> especimes = new ArrayList<Integer>();
@@ -94,7 +95,7 @@ public class ControladorDoAmbiente {
 	 * @param ID
 	 * @param tempMax
 	 * @param tempMin
-	 * @return
+	 * @return Especie
 	 */
 	private Especie criarEspecie(int ID, int tempMax, int tempMin) {
 		Especie especie = null;
@@ -112,7 +113,7 @@ public class ControladorDoAmbiente {
 	 * @param forma
 	 * @param tempMax
 	 * @param tempMin
-	 * @return
+	 * @return Especie
 	 */
 	private Especie criarEspecie(int ID, Forma forma, int tempMax, int tempMin) {
 		Especie especie = new Especie(forma, gerarTempAleatoria(true, tempMax), gerarTempAleatoria(false, tempMin));
@@ -124,7 +125,7 @@ public class ControladorDoAmbiente {
 	 * Cria as Especies do Ambiente
 	 * 
 	 * @param IDs
-	 * @return
+	 * @return Especie[]
 	 */
 	public Especie[] criarEspecies(int[] IDs) {
 		Especie especies[] = new Especie[7];
@@ -137,12 +138,36 @@ public class ControladorDoAmbiente {
 	}
 
 	/**
-	 * Obtem os Especimes da Especie do Ambiente
+	 * Obte a Especie do Especime do Ambiente
+	 * 
+	 * @param especime
+	 * @return Integer
+	 */
+	public Integer obterEspecie(int especime) {
+		for (Integer especie : ambiente.especies.keySet()) {
+			if(ambiente.especies.get(especie).contains(especime))
+				return especie;
+		}
+		return null;
+	}
+	
+	/**
+	 * Obtem os Especimes da Especie do Ambiente por um Especime
+	 * 
+	 * @param especime
+	 * @return Lista de Integer
+	 */
+	public List<Integer> obterEspecimesPorEspecime(int especime) {
+		return ambiente.especies.get(ambiente.obterEspecieID(especime));
+	}
+
+	/**
+	 * Obtem os Especimes da Especie do Ambiente por Especie
 	 * 
 	 * @param especie
-	 * @return
+	 * @return Lista de Integer
 	 */
-	public List<Integer> obterEspecie(int especie) {
+	public List<Integer> obterEspecimesPorEspecie(int especie) {
 		return ambiente.especies.get(especie);
 	}
 
@@ -152,7 +177,6 @@ public class ControladorDoAmbiente {
 	 * @param ID
 	 * @param ehAdicao
 	 * @param especie
-	 * @return
 	 */
 	public void atualizarEspecie(int ID, boolean ehAdicao, int especie) {
 		List<Integer> especimes = ambiente.especies.get(especie);
@@ -169,7 +193,6 @@ public class ControladorDoAmbiente {
 	 * Remove a Especie e seus especimes
 	 * 
 	 * @param especie
-	 * @return
 	 */
 	public void removerEspecie(int especie) {
 		ambiente.especies.remove(especie);
@@ -228,13 +251,13 @@ public class ControladorDoAmbiente {
 		 * Obtem a IDs da Especie
 		 * 
 		 * @param especime
-		 * @return int
+		 * @return Integer
 		 */
-		public int obterEspecieID(int especime) {
+		public Integer obterEspecieID(int especime) {
 			for (Integer especie : especies.keySet()) {
 				if (especies.get(especie).get(0) == especime) return especie;
 			}
-			return -1;
+			return null;
 		}
 
 		/**
@@ -308,7 +331,7 @@ public class ControladorDoAmbiente {
 
 		// Remover Especie
 		System.out.println("Removendo a Especie do Especime 6");
-		for (Integer ID : controladorDoAmbiente.obterEspecie(especies[5].obterCodigo())) {
+		for (Integer ID : controladorDoAmbiente.obterEspecimesPorEspecie(especies[5].obterCodigo())) {
 			controladorDaEntidade.removerEntidade(ID);
 		}
 		controladorDoAmbiente.removerEspecie(especies[5].obterCodigo());

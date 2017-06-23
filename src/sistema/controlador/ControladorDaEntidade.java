@@ -116,7 +116,7 @@ public class ControladorDaEntidade {
 	 * Obtem todas as Entidades do tipo de Componente
 	 * 
 	 * @param tipoDeComponente
-	 * @return Set<Integer>
+	 * @return Conjunto de Integer
 	 */
 	public <T extends Componente> Set<Integer> obterTodasEntidadesComOComponente(Class<T> tipoDeComponente) {
 		HashMap<Integer, ? extends Componente> base = baseDeComponentes.get(tipoDeComponente);
