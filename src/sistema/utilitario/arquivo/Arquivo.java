@@ -65,7 +65,7 @@ public abstract class Arquivo {
 	 * @param arquivo
 	 * @throws IOException
 	 */
-	private static void criar(File arquivo) {
+	public static void criar(File arquivo) {
 		try {
 			arquivo.getParentFile().mkdirs();
 			arquivo.createNewFile();
@@ -89,7 +89,7 @@ public abstract class Arquivo {
 		 * @return
 		 */
 		public static int[] ler() {
-			File arquivo = new File(recurso.getArquivoDoEndereco("/dados") + "/" + NOME);
+			File arquivo = new File(recurso.obterArquivoDoEndereco("/dados") + "/" + NOME);
 			if (!arquivo.exists()) criar(arquivo);
 			List<String> texto = Arquivo.ler(arquivo);
 			int[] config = new int[texto.size()];
@@ -106,7 +106,7 @@ public abstract class Arquivo {
 		 * @param config
 		 */
 		public static void escrever(int[] config) {
-			File arquivo = new File(recurso.getArquivoDoEndereco("/dados") + "/" + NOME);
+			File arquivo = new File(recurso.obterArquivoDoEndereco("/dados") + "/" + NOME);
 			List<String> texto = Arquivo.ler(arquivo);
 			if (!arquivo.exists()) criar(arquivo);
 			for (int i = 0; i < config.length; i++) {
@@ -121,7 +121,7 @@ public abstract class Arquivo {
 		 * @param arquivo
 		 * @throws IOException
 		 */
-		private static void criar(File arquivo) {
+		public static void criar(File arquivo) {
 			Arquivo.criar(arquivo);
 			int[] config = { 2, 1 };
 			List<String> texto = new ArrayList<String>();
@@ -146,7 +146,7 @@ public abstract class Arquivo {
 		 * @param config
 		 */
 		public static void escrever(int[] respostas) {
-			File arquivo = new File(recurso.getArquivoDoEndereco("/dados") + "/" + NOME);
+			File arquivo = new File(recurso.obterArquivoDoEndereco("/dados") + "/" + NOME);
 			List<String> texto = new ArrayList<String>();
 			if (!arquivo.exists()) criar(arquivo);
 			texto.add(Arrays.toString(respostas));

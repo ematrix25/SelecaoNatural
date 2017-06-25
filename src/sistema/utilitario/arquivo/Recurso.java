@@ -15,9 +15,14 @@ public class Recurso {
 	 * @param CAMINHO
 	 * @return
 	 */
-	public String getArquivoDoEndereco(final String CAMINHO) {
-		URL endereco = getEndereco(CAMINHO);
-		return (endereco != null) ? endereco.getFile() : "";
+	public String obterArquivoDoEndereco(final String CAMINHO) {
+		URL endereco = obterEndereco(CAMINHO);
+		String caminho;
+		if (endereco == null) {
+			endereco = obterEndereco("/imagens");
+			caminho = endereco.getFile().replace("imagens", "dados");
+		} else caminho = endereco.getFile();
+		return caminho;
 	}
 
 	/**
@@ -26,7 +31,7 @@ public class Recurso {
 	 * @param CAMINHO
 	 * @return
 	 */
-	public URL getEndereco(String CAMINHO) {
+	public URL obterEndereco(String CAMINHO) {
 		return getClass().getResource(CAMINHO);
 	}
 
@@ -36,7 +41,7 @@ public class Recurso {
 	 * @param CAMINHO
 	 * @return
 	 */
-	public InputStream getEnderecoEmFluxo(String CAMINHO) {
+	public InputStream obterEnderecoEmFluxo(String CAMINHO) {
 		return getClass().getResourceAsStream(CAMINHO);
 	}
 }

@@ -54,7 +54,7 @@ public class Jogo {
 		public Janela() {
 			// Obtem o endereco da imagem do icone
 			Recurso recurso = new Recurso();
-			URL endereco = recurso.getEndereco("/imagens/icones/icone.ico");
+			URL endereco = recurso.obterEndereco("/imagens/icones/icone.ico");
 
 			setIconImage(Toolkit.getDefaultToolkit().getImage(endereco));
 			setTitle(TITULO);

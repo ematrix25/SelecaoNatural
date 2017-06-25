@@ -32,7 +32,7 @@ public class Mapa {
 	 */
 	public Mapa(String endereco) {
 		try {
-			BufferedImage imagem = ImageIO.read(new Recurso().getEndereco(endereco));
+			BufferedImage imagem = ImageIO.read(new Recurso().obterEndereco(endereco));
 			largura = imagem.getWidth();
 			altura = imagem.getHeight();
 			blocos = new int[largura * altura];

@@ -97,7 +97,7 @@ public class Sprite {
 		 */
 		private void carregar(String endereco) {
 			try {
-				BufferedImage imagem = ImageIO.read(new Recurso().getEndereco(endereco));
+				BufferedImage imagem = ImageIO.read(new Recurso().obterEndereco(endereco));
 				int largura = imagem.getWidth();
 				int altura = imagem.getHeight();
 				imagem.getRGB(0, 0, largura, altura, pixeis, 0, largura);
