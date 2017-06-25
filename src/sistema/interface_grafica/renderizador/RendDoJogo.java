@@ -24,7 +24,6 @@ import sistema.utilitario.periferico.Teclado;
  */
 @SuppressWarnings("unused")
 public class RendDoJogo extends Renderizador {
-	// TODO Implementar o Jogo integrando os dados dos controladores aqui
 	private ControladorDaEntidade controladorDaEntidade;
 	private ControladorDoAmbiente controladorDoAmbiente;
 	private ControladorDoJogo controladorDoJogo;
@@ -61,9 +60,6 @@ public class RendDoJogo extends Renderizador {
 
 		renderizarInfo();
 		renderizarTelaDoJogo();
-
-		// TODO Remover depois
-		// moveText();
 
 		// Ações conforme as teclas são pressionadas
 		if (Teclado.sair) painel.acaoDoBotao('s');
@@ -139,9 +135,10 @@ public class RendDoJogo extends Renderizador {
 			pixeis[i] = tela.pixeis[i];
 		}
 
-		// TODO Descobrir porque não renderiza nada
+		// TODO Descobrir porque renderiza o mapa todo ao inves da tela do mapa
 		graficos.drawImage(imagem, 0, 30, painel.getWidth(), painel.getHeight(), null);
-		graficos.setColor(Color.white);
+
+		// Mostra posição do mouse e do jogador
 		graficos.setFont(new Font("Verdana", 0, 12));
 		if (Mouse.obterBotao() > -1) {
 			graficos.setColor(Color.green);
@@ -154,14 +151,6 @@ public class RendDoJogo extends Renderizador {
 			graficos.drawString("X: " + Mouse.obterX() + ", Y: " + Mouse.obterY(), 20, 100);
 			graficos.drawString("X: " + posicao.x + ", Y: " + posicao.y, 20, 120);
 		}
-		graficos.dispose();
-
-		// TODO Remover depois
-		// graficos.setColor(Color.white);
-		// graficos.fillRect(0, 30, painel.getWidth(), painel.getHeight());
-		// graficos.setColor(Color.black);
-		// graficos.setFont(new Font("Verdana", 0, 25));
-		// graficos.drawString("Janela do Jogo", x, y);
 	}
 
 	/**

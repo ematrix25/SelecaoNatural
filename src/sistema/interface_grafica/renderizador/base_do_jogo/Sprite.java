@@ -88,8 +88,8 @@ public class Sprite {
 		 * @param tamanho
 		 */
 		public FolhaDeSprites(String endereco) {
-			carregar(endereco);
 			pixeis = new int[TAMANHO * TAMANHO];
+			carregar(endereco);
 		}
 
 		/**

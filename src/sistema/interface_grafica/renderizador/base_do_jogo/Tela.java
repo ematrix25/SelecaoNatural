@@ -58,7 +58,7 @@ public class Tela {
 		for (int y = 0; y < Bloco.TAMANHO; y++) {
 			yAux = y + posY;
 			for (int x = 0; x < Bloco.TAMANHO; x++) {
-				xAux = x + posY;
+				xAux = x + posX;
 				if (xAux < -Bloco.TAMANHO || xAux >= largura || yAux < 0 || yAux >= altura) break;
 				if (xAux < 0) xAux = 0;
 				pixeis[xAux + yAux * largura] = bloco.sprite.pixeis[x + y * Bloco.TAMANHO];
