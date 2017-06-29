@@ -44,7 +44,7 @@ public class TesteControladorDoJogo {
 	 */
 	private int criarEntidade() {
 		int ID = controladorDaEntidade.criarEntidade();
-		Coordenada coordenada = new Coordenada(8, 7);
+		Coordenada coordenada = new Coordenada(mapa, 8, 7);
 		controladorDaEntidade.adicionarComponente(ID, (Componente) new Posicao(coordenada));
 		controladorDaEntidade.adicionarComponente(ID, (Componente) new Velocidade());
 		Sprite arrayDeSprites[] = { Sprite.jogadorMovendoY, Sprite.jogadorMovendoX, Sprite.jogadorParadoY,
@@ -70,7 +70,7 @@ public class TesteControladorDoJogo {
 	@Test
 	public void testarCompoentesDaEntidade() {
 		int ID = criarEntidade();
-		Posicao posicao = new Posicao(new Coordenada(8, 7));
+		Posicao posicao = new Posicao(new Coordenada(mapa, 8, 7));
 		assertEquals(controladorDaEntidade.obterComponente(ID, Posicao.class), posicao);
 		Velocidade velocidade = new Velocidade();
 		assertEquals(controladorDaEntidade.obterComponente(ID, Velocidade.class), velocidade);
@@ -102,7 +102,7 @@ public class TesteControladorDoJogo {
 		Posicao posicao = controladorDaEntidade.obterComponente(ID, Posicao.class);
 		posicao = new Posicao(posicao.x, posicao.y);
 		Velocidade velocidade = controladorDaEntidade.obterComponente(ID, Velocidade.class);
-		velocidade = new Velocidade(velocidade.movendo,velocidade.valor,velocidade.direcao);
+		velocidade = new Velocidade(velocidade.movendo, velocidade.valor, velocidade.direcao);
 		assertEquals(controladorDaEntidade.obterComponentes(ID).size(), 3);
 		moverEntidade(ID);
 		assertNotEquals(controladorDaEntidade.obterComponente(ID, Posicao.class), posicao);

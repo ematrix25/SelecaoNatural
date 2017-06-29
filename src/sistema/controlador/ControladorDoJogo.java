@@ -202,7 +202,7 @@ public class ControladorDoJogo {
 
 		// Gera a entidade na coordenada referente ao mapa
 		int entidade = controladorDaEntidade.criarEntidade();
-		Coordenada coordenada = new Coordenada(8, 7);
+		Coordenada coordenada = new Coordenada(mapa, 8, 7);
 		controladorDaEntidade.adicionarComponente(entidade, (Componente) new Posicao(coordenada));
 		controladorDaEntidade.adicionarComponente(entidade, (Componente) new Velocidade());
 		Sprite arrayDeSprites[] = { Sprite.jogadorMovendoY, Sprite.jogadorMovendoX, Sprite.jogadorParadoY,

@@ -333,12 +333,13 @@ public class Painel extends Canvas implements Runnable {
 	 * Coloca as entidades no mapa
 	 */
 	private void mapearEntidades() {
-		Coordenada coordenada = new Coordenada();
+		Coordenada coordenada = new Coordenada(mapa);
 		// TODO Melhorar o sistema de associação das sprites à entidade
 		Sprite arrayDeSprites[] = { Sprite.jogadorMovendoY, Sprite.jogadorMovendoX, Sprite.jogadorParadoY,
 				Sprite.jogadorParadoX };
 		for (int entidade : controladorDaEntidade.obterTodasEntidadesComOComponente(Especime.class)) {
 			if (entidade == controladorDoJogo.obterJogador()) coordenada.configurarCoordenada(8, 7);
+			else coordenada.configurarCoordenada();
 			controladorDaEntidade.adicionarComponente(entidade, (Componente) new Posicao(coordenada));
 			controladorDaEntidade.adicionarComponente(entidade, (Componente) new Velocidade());
 			controladorDaEntidade.adicionarComponente(entidade, (Componente) new Sprites(arrayDeSprites));

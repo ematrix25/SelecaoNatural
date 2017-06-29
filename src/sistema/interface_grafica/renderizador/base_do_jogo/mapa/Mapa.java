@@ -15,8 +15,9 @@ import sistema.utilitario.arquivo.Recurso;
  * @author Emanuel
  */
 public class Mapa {
-	private int largura, altura;
 	private int blocos[];
+
+	public int largura, altura;
 
 	public static final int COR_DE_AGUA = 0xFF0000FF;
 	public static final int COR_DE_AGUA1 = 0xFFFFFFFF;
@@ -83,8 +84,10 @@ public class Mapa {
 	 */
 	public void renderizar(int desvioX, int desvioY, Tela tela) {
 		tela.configurarDesvio(desvioX, desvioY);
-		int xInicial = desvioX >> 4, xFinal = (desvioX + tela.largura + 16) >> 4;
-		int yInicial = desvioY >> 4, yFinal = (desvioY + tela.altura + 16) >> 4;
+		int xInicial = desvioX >> 4;
+		int xFinal = (desvioX + tela.largura + 16) >> 4;
+		int yInicial = desvioY >> 4;
+		int yFinal = (desvioY + tela.altura + 16) >> 4;
 		for (int y = yInicial; y < yFinal; y++) {
 			for (int x = xInicial; x < xFinal; x++) {
 				obterBloco(x, y).renderizar(x, y, tela);

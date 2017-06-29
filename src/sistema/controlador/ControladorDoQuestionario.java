@@ -13,8 +13,8 @@ public class ControladorDoQuestionario {
 	 */
 	@SuppressWarnings("unused")
 	public class Questionario {
-		// TODO Escrever as perguntas e opções de respostas aqui pelo controle do questionário
+		// TODO Escrever as perguntas e opções de respostas aqui
 		private String perguntas[];
-		private String opcoes[];		
+		private String opcoes[];
 	}
 }

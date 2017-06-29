@@ -52,6 +52,7 @@ public class Tela {
 	 * @param bloco
 	 */
 	public void renderizarBloco(int posX, int posY, Bloco bloco) {
+		// TODO Descobrir porque renderiza o mapa todo ao inves da tela do mapa
 		int xAux = 0, yAux = 0;
 		posX -= desvioX;
 		posY -= desvioY;

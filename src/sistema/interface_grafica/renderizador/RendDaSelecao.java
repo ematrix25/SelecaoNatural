@@ -53,7 +53,8 @@ public class RendDaSelecao extends Renderizador {
 		carregarGraficos("/imagens/selecao.jpg");
 
 		Ambiente ambiente = controladorDoAmbiente.obterAmbiente();
-		String dados[] = { "TempMax = " + ambiente.obterTempMax(), "TempMin = " + ambiente.obterTempMin() };
+		String dados[] = { "Temperatura Máx. = " + ambiente.obterTempMax(),
+				"Temperatura Mínima = " + ambiente.obterTempMin() };
 		renderizarDados("Ambiente", dados, 50);
 
 		String opcoes[] = new String[3];
@@ -62,8 +63,8 @@ public class RendDaSelecao extends Renderizador {
 		for (int i = 1; i <= 3; i++) {
 			especime = controladorDoAmbiente.obterEspecimesPorEspecie(ambiente.obterEspecieID(i * 2)).get(0);
 			especie = controladorDaEntidade.obterComponente(especime, Especime.class).especie;
-			opcoes[i - 1] = "Nome = " + especie.nome + ":Tipo = " + especie.tipo + ":TempMax = " + especie.tempMaxSup
-					+ ":TempMin = " + especie.tempMinSup;
+			opcoes[i - 1] = "Nome = " + especie.nome + ":Tipo = " + especie.tipo + ":Temperatura Máx. = "
+					+ especie.tempMaxSup + ":Temperatura Mínima = " + especie.tempMinSup;
 		}
 		int selecao = renderizarSelecao("Selecione uma espécie: ", opcoes, 100);
 		if (selecao != -1) this.selecao = selecao;
@@ -93,7 +94,7 @@ public class RendDaSelecao extends Renderizador {
 
 		// Renderiza os dados
 		renderizarDado(dados[0], x + 0, y + 20);
-		renderizarDado(dados[1], x + 150, y + 20);
+		renderizarDado(dados[1], x + 175, y + 20);
 	}
 
 	/**

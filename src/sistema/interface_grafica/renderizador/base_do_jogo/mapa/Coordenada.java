@@ -1,5 +1,7 @@
 package sistema.interface_grafica.renderizador.base_do_jogo.mapa;
 
+import java.util.Random;
+
 /**
  * Classe com a coordenada do mapa
  * 
@@ -8,12 +10,15 @@ package sistema.interface_grafica.renderizador.base_do_jogo.mapa;
 public class Coordenada {
 	private int x, y;
 	private final int TAMANHO_DO_BLOCO = Bloco.TAMANHO;
+	private Mapa mapa;
 
 	/**
 	 * Cria o objeto coordenada
+	 *
+	 * @param mapa
 	 */
-	public Coordenada() {
-		this(0, 0);
+	public Coordenada(Mapa mapa) {
+		this(mapa, 0, 0);
 	}
 
 	/**
@@ -22,7 +27,8 @@ public class Coordenada {
 	 * @param x
 	 * @param y
 	 */
-	public Coordenada(int x, int y) {
+	public Coordenada(Mapa mapa, int x, int y) {
+		this.mapa = mapa;
 		configurarCoordenada(x, y);
 	}
 
@@ -52,6 +58,14 @@ public class Coordenada {
 	public int[] obterCoordenada() {
 		int coordenada[] = { x, y };
 		return coordenada;
+	}
+
+	/**
+	 * Configura uma coordenada aleatória
+	 */
+	public void configurarCoordenada() {
+		this.x = new Random().nextInt(mapa.largura) * TAMANHO_DO_BLOCO;
+		this.y = new Random().nextInt(mapa.altura) * TAMANHO_DO_BLOCO;
 	}
 
 	/**

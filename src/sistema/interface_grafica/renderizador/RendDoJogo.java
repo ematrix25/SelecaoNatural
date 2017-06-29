@@ -30,9 +30,6 @@ public class RendDoJogo extends Renderizador {
 
 	private Tela tela;
 
-	private int x = 100, y = 100;
-	private boolean xdir = true, ydir = false;
-
 	/**
 	 * Cria o objeto para renderização do jogo
 	 * 
@@ -114,6 +111,7 @@ public class RendDoJogo extends Renderizador {
 
 		// TODO Implementar a renderização para todas as entidades
 		tela.limpar();
+		// TODO Descobrir porque a posição está diferente
 		Posicao posicao = controladorDaEntidade.obterComponente(controladorDoJogo.obterJogador(), Posicao.class);
 		int rolagemX = posicao.x - tela.largura / 2;
 		int rolagemY = posicao.y - tela.altura / 2;
@@ -125,8 +123,7 @@ public class RendDoJogo extends Renderizador {
 		int invertido = 0;
 		if (velocidade.direcao == 2) invertido = 2;
 		if (velocidade.direcao == 3) invertido = 1;
-		// TODO Implementar animação de movimento alternando entre sprites
-		// movendo e parado
+		// TODO Implementar animação de movimento alternando sprites
 		if (velocidade.direcao % 2 == 0)
 			tela.renderizarEspecime(rolagemX, rolagemY, sprites.obterSpriteY(velocidade.movendo), invertido);
 		else tela.renderizarEspecime(rolagemX, rolagemY, sprites.obterSpriteX(velocidade.movendo), invertido);
@@ -135,7 +132,7 @@ public class RendDoJogo extends Renderizador {
 			pixeis[i] = tela.pixeis[i];
 		}
 
-		// TODO Descobrir porque renderiza o mapa todo ao inves da tela do mapa
+		// Desenha a imagem da tela
 		graficos.drawImage(imagem, 0, 30, painel.getWidth(), painel.getHeight(), null);
 
 		// Mostra posição do mouse e do jogador
@@ -151,17 +148,5 @@ public class RendDoJogo extends Renderizador {
 			graficos.drawString("X: " + Mouse.obterX() + ", Y: " + Mouse.obterY(), 20, 100);
 			graficos.drawString("X: " + posicao.x + ", Y: " + posicao.y, 20, 120);
 		}
-	}
-
-	/**
-	 * Faz a movimentação das posições de x e y do texto
-	 */
-	private void moveText() {
-		if (x == painel.getWidth() - 183 || x == 0) xdir = !xdir;
-		if (y == painel.getHeight() - 5 || y == 49) ydir = !ydir;
-		if (xdir) x++;
-		else x--;
-		if (ydir) y++;
-		else y--;
 	}
 }
