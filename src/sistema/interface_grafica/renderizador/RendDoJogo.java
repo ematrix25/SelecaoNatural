@@ -24,11 +24,13 @@ import sistema.utilitario.periferico.Teclado;
  */
 @SuppressWarnings("unused")
 public class RendDoJogo extends Renderizador {
+	private final int ESCALA = 3;
+
+	private Tela tela;
+
 	private ControladorDaEntidade controladorDaEntidade;
 	private ControladorDoAmbiente controladorDoAmbiente;
 	private ControladorDoJogo controladorDoJogo;
-
-	private Tela tela;
 
 	/**
 	 * Cria o objeto para renderização do jogo
@@ -44,7 +46,7 @@ public class RendDoJogo extends Renderizador {
 		controladorDoAmbiente = contDoAmbiente;
 		controladorDoJogo = contDoJogo;
 
-		tela = new Tela(painel.getWidth(), painel.getHeight() - 30);
+		tela = new Tela(painel.getWidth() / ESCALA, (painel.getHeight() - 30) / ESCALA);
 	}
 
 	/**
@@ -111,11 +113,11 @@ public class RendDoJogo extends Renderizador {
 
 		// TODO Implementar a renderização para todas as entidades
 		tela.limpar();
-		// TODO Descobrir porque a posição está diferente
 		Posicao posicao = controladorDaEntidade.obterComponente(controladorDoJogo.obterJogador(), Posicao.class);
 		int rolagemX = posicao.x - tela.largura / 2;
 		int rolagemY = posicao.y - tela.altura / 2;
 		Mapa mapa = controladorDoJogo.obterMapa();
+		// TODO FOCO: Descobrir porque não renderiza o mapa corretamente
 		mapa.renderizar(rolagemX, rolagemY, tela);
 		Velocidade velocidade = controladorDaEntidade.obterComponente(controladorDoJogo.obterJogador(),
 				Velocidade.class);
