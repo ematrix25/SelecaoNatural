@@ -135,7 +135,7 @@ public class Painel extends Canvas implements Runnable {
 				// Conta os segundos para abrir o painel do questionarios
 				if (telaAtiva == 'S' || telaAtiva == 'J') {
 					contDeSegundos++;
-					if (contDeSegundos > 60) {
+					if (contDeSegundos > 600) {
 						janela.redimensionar(1.7f);
 						rendDoQuest = new RendDoQuest(this);
 						telaAtiva = 'Q';
@@ -308,6 +308,7 @@ public class Painel extends Canvas implements Runnable {
 		controladorDaEntidade = new ControladorDaEntidade();
 		controladorDoAmbiente = new ControladorDoAmbiente();
 		gerarAmbiente();
+		// mapa = new Mapa(128, 128);
 		mapa = new Mapa("/mapas/caverna.png");
 		controladorDoJogo = new ControladorDoJogo(mapa);
 

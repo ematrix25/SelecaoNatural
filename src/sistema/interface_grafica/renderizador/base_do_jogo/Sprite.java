@@ -42,8 +42,8 @@ public class Sprite {
 	 */
 	public Sprite(int x, int y, FolhaDeSprites folhaDeSprites) {
 		pixeis = new int[TAMANHO * TAMANHO];
-		this.x = x;
-		this.y = y;
+		this.x = x * TAMANHO;
+		this.y = y * TAMANHO;
 		this.folhaDeSprites = folhaDeSprites;
 		carregar();
 	}
@@ -75,11 +75,11 @@ public class Sprite {
 	 * @author Emanuel
 	 */
 	public static class FolhaDeSprites {
-		public int pixeis[];
+		private int pixeis[];
 
-		public static final int TAMANHO = 256;
+		private static final int TAMANHO = 256;
 
-		public static final FolhaDeSprites SPRITES = new FolhaDeSprites("/imagens/texturas/sprites.png");
+		private static final FolhaDeSprites SPRITES = new FolhaDeSprites("/imagens/texturas/sprites.png");
 
 		/**
 		 * Cria o objeto da FolhaDeSprites

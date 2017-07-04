@@ -94,7 +94,7 @@ public class ControladorDoJogo {
 	private Velocidade configurarVelocidade(Velocidade velocidade) {
 		Velocidade novaVelocidade = velocidade;
 		if (Opcoes.controlePorMouse) {
-			// Sujeito a modificações
+			// TODO Configurar movimento por mouse que está errado
 			int desvioX = Mouse.obterX() / (Mouse.xMaximo / 4 - 5);
 			int desvioY = Mouse.obterY() / (Mouse.yMaximo / 4 - 5);
 			novaVelocidade.valor = (desvioX > desvioY) ? desvioX : desvioY;

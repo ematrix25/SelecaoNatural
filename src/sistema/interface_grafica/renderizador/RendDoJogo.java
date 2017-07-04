@@ -117,7 +117,6 @@ public class RendDoJogo extends Renderizador {
 		int rolagemX = posicao.x - tela.largura / 2;
 		int rolagemY = posicao.y - tela.altura / 2;
 		Mapa mapa = controladorDoJogo.obterMapa();
-		// TODO FOCO: Descobrir porque não renderiza o mapa corretamente
 		mapa.renderizar(rolagemX, rolagemY, tela);
 		Velocidade velocidade = controladorDaEntidade.obterComponente(controladorDoJogo.obterJogador(),
 				Velocidade.class);
@@ -126,6 +125,7 @@ public class RendDoJogo extends Renderizador {
 		if (velocidade.direcao == 2) invertido = 2;
 		if (velocidade.direcao == 3) invertido = 1;
 		// TODO Implementar animação de movimento alternando sprites
+		// TODO ARRUMAR: Especime renderizando na posição errada
 		if (velocidade.direcao % 2 == 0)
 			tela.renderizarEspecime(rolagemX, rolagemY, sprites.obterSpriteY(velocidade.movendo), invertido);
 		else tela.renderizarEspecime(rolagemX, rolagemY, sprites.obterSpriteX(velocidade.movendo), invertido);
