@@ -76,7 +76,7 @@ public class Painel extends Canvas implements Runnable {
 
 		thread = new Thread(this, "Jogo");
 		teclado = new Teclado();
-		mouse = new Mouse(this.getWidth(), this.getHeight());
+		mouse = new Mouse(getWidth(), getHeight());
 
 		// Adiciona os escutadores dos periféricos
 		addKeyListener(teclado);
@@ -146,6 +146,35 @@ public class Painel extends Canvas implements Runnable {
 	}
 
 	/**
+	 * Atualiza todos os dados do jogo
+	 */
+	private void atualizar() {
+		Teclado.atualizar();
+		Mouse.atualizar(getWidth(), getHeight());
+		massaCelular = controladorDaEntidade.obterComponente(controladorDoJogo.obterJogador(), Especime.class).massa;
+		qtdCelulas = controladorDoAmbiente.obterEspecimesPorEspecime(controladorDoJogo.obterJogador()).size();
+		pontuacao = controladorDoJogo.obterPontuacao();
+
+		moverEntidades();
+	}
+
+	/**
+	 * Move as entidades no mapa
+	 */
+	private void moverEntidades() {
+		// TODO Implementar movimentos da inteligência artificial
+		Posicao posicao;
+		Velocidade velocidade;
+		for (int entidade : controladorDaEntidade.obterTodasEntidadesComOComponente(Especime.class)) {
+			posicao = controladorDaEntidade.obterComponente(entidade, Posicao.class);
+			velocidade = controladorDaEntidade.obterComponente(entidade, Velocidade.class);
+			if (entidade == controladorDoJogo.obterJogador()) {
+				controladorDoJogo.moverJogador(posicao, velocidade);
+			}
+		}
+	}
+
+	/**
 	 * Renderiza a tela do painel
 	 */
 	private void renderizar() {
@@ -181,34 +210,6 @@ public class Painel extends Canvas implements Runnable {
 	}
 
 	/**
-	 * Atualiza todos os dados do jogo
-	 */
-	private void atualizar() {
-		Teclado.atualizar();
-		massaCelular = controladorDaEntidade.obterComponente(controladorDoJogo.obterJogador(), Especime.class).massa;
-		qtdCelulas = controladorDoAmbiente.obterEspecimesPorEspecime(controladorDoJogo.obterJogador()).size();
-		pontuacao = controladorDoJogo.obterPontuacao();
-
-		moverEntidades();
-	}
-
-	/**
-	 * Move as entidades no mapa
-	 */
-	private void moverEntidades() {
-		// TODO Implementar movimentos da inteligência artificial
-		Posicao posicao;
-		Velocidade velocidade;
-		for (int entidade : controladorDaEntidade.obterTodasEntidadesComOComponente(Especime.class)) {
-			posicao = controladorDaEntidade.obterComponente(entidade, Posicao.class);
-			velocidade = controladorDaEntidade.obterComponente(entidade, Velocidade.class);
-			if (entidade == controladorDoJogo.obterJogador()) {
-				controladorDoJogo.moverJogador(posicao, velocidade);
-			}
-		}
-	}
-
-	/**
 	 * Verifica se o mouse clicou no botão em x e y
 	 *
 	 * @param x
@@ -219,7 +220,7 @@ public class Painel extends Canvas implements Runnable {
 	 */
 	public boolean mouseClicouNoBotao(int x, int y, int largura, int altura) {
 		if (mouseEstaNoBotao(x, y, largura, altura) && Mouse.obterBotao() > -1) {
-			Mouse.configurarBotao(-1);
+			Mouse.reconfigurarBotao();
 			return true;
 		}
 		return false;

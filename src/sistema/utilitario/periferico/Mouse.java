@@ -16,40 +16,101 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	private static int botaoDoMouse = -1;
 	public static int xMaximo;
 	public static int yMaximo;
+	public static int diferencaX;
+	public static int diferencaY;
 
 	/**
 	 * Cria o objeto Mouse com maximos de metade dos limites da tela
 	 * 
-	 * @param width
-	 * @param height
+	 * @param largura
+	 * @param altura
 	 */
-	public Mouse(int width, int height) {
-		Mouse.xMaximo = width / 2;
-		Mouse.yMaximo = height / 2;
+	public Mouse(int largura, int altura) {
+		Mouse.xMaximo = largura / 2;
+		Mouse.yMaximo = altura / 2;
+	}
+
+	/**
+	 * Atualiza o objeto Mouse com maximos de metade dos limites da tela
+	 * 
+	 * @param largura
+	 * @param altura
+	 */
+	public static void atualizar(int largura, int altura) {
+		Mouse.xMaximo = largura / 2;
+		Mouse.yMaximo = altura / 2;
 	}
 
 	/**
 	 * Obtem o valor de X
 	 * 
-	 * @return X
+	 * @return int
 	 */
 	public static int obterX() {
-		return xMouse;// - xMaximo;
+		return xMouse;
+	}
+
+	/**
+	 * Obtem o valor de X relativo ao xMaximo
+	 * 
+	 * @return int
+	 */
+	public static int obterDesvioX() {
+		return xMouse - xMaximo;
 	}
 
 	/**
 	 * Obtem o valor de Y
 	 * 
-	 * @return Y
+	 * @return int
 	 */
 	public static int obterY() {
-		return yMouse;// - yMaximo;
+		return yMouse;
+	}
+
+	/**
+	 * Obtem o valor de Y relativo ao yMaximo
+	 * 
+	 * @return desvioY
+	 */
+	public static int obterDesvioY() {
+		return yMouse - yMaximo;
+	}
+
+	/**
+	 * Obtem a maior diferença de X e Y relativo a parte do Maximo
+	 * 
+	 * @return int
+	 */
+	public static int obterMaiorDiferenca(int fator) {
+		diferencaX = Mouse.obterDiferencaX(fator);
+		diferencaY = Mouse.obterDiferencaY(fator);
+		return (diferencaX > diferencaY) ? diferencaX : diferencaY;
+
+	}
+
+	/**
+	 * Obtem a diferença de X relativo a parte do xMaximo
+	 * 
+	 * @return int
+	 */
+	private static int obterDiferencaX(int fator) {
+		return obterDesvioX() / (xMaximo / fator);
+	}
+
+	/**
+	 * Obtem a diferença de Y relativo a parte do yMaximo
+	 * 
+	 * @return int
+	 */
+	private static int obterDiferencaY(int fator) {
+		return obterDesvioY() / (yMaximo / fator);
 	}
 
 	/**
 	 * Obtem o valor do botão do mouse
 	 * 
-	 * @return Mouse button
+	 * @return int
 	 */
 	public static int obterBotao() {
 		return botaoDoMouse;
@@ -57,11 +118,9 @@ public class Mouse implements MouseListener, MouseMotionListener {
 
 	/**
 	 * Modifica o valor do botão do mouse
-	 * 
-	 * @param botao
 	 */
-	public static void configurarBotao(int botao) {
-		botaoDoMouse = botao;
+	public static void reconfigurarBotao() {
+		botaoDoMouse = -1;
 	}
 
 	/**

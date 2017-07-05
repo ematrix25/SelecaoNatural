@@ -93,14 +93,12 @@ public class ControladorDoJogo {
 	 */
 	private Velocidade configurarVelocidade(Velocidade velocidade) {
 		Velocidade novaVelocidade = velocidade;
+		int velocidadeMaxima = 4;
 		if (Opcoes.controlePorMouse) {
-			// TODO Configurar movimento por mouse que está errado
-			int desvioX = Mouse.obterX() / (Mouse.xMaximo / 4 - 5);
-			int desvioY = Mouse.obterY() / (Mouse.yMaximo / 4 - 5);
-			novaVelocidade.valor = (desvioX > desvioY) ? desvioX : desvioY;
+			novaVelocidade.valor = Mouse.obterMaiorDiferenca(velocidadeMaxima);
 		} else {
-			if (Teclado.correr) novaVelocidade.valor = 4;
-			else novaVelocidade.valor = 2;
+			if (Teclado.correr) novaVelocidade.valor = velocidadeMaxima;
+			else novaVelocidade.valor = velocidadeMaxima / 2;
 		}
 		return novaVelocidade;
 	}
@@ -126,7 +124,7 @@ public class ControladorDoJogo {
 	 */
 	private int configurarX(Velocidade velocidade) {
 		int xAux = 0;
-		if (Opcoes.controlePorMouse) xAux += velocidade.valor;
+		if (Opcoes.controlePorMouse) xAux += Mouse.diferencaX;
 		else {
 			if (Teclado.esquerda) xAux -= velocidade.valor;
 			if (Teclado.direita) xAux += velocidade.valor;
@@ -142,7 +140,7 @@ public class ControladorDoJogo {
 	 */
 	private int configurarY(Velocidade velocidade) {
 		int yAux = 0;
-		if (Opcoes.controlePorMouse) yAux += velocidade.valor;
+		if (Opcoes.controlePorMouse) yAux += Mouse.diferencaY;
 		else {
 			if (Teclado.cima) yAux -= velocidade.valor;
 			if (Teclado.baixo) yAux += velocidade.valor;

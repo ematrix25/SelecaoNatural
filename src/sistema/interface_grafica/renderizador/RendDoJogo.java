@@ -127,13 +127,13 @@ public class RendDoJogo extends Renderizador {
 		graficos.setFont(new Font("Verdana", 0, 12));
 		if (Mouse.obterBotao() > -1) {
 			graficos.setColor(Color.green);
-			graficos.fillRect(Mouse.obterX(), Mouse.obterY(), 16, 16);
+			graficos.fillRect(Mouse.obterDesvioX(), Mouse.obterDesvioY(), 16, 16);
 
 			graficos.setColor(Color.red);
 			graficos.drawString("Button: " + Mouse.obterBotao(), 20, 60);
 
 			graficos.setColor(Color.white);
-			graficos.drawString("X: " + Mouse.obterX() + ", Y: " + Mouse.obterY(), 20, 100);
+			graficos.drawString("X: " + Mouse.obterDesvioX() + ", Y: " + Mouse.obterDesvioY(), 20, 100);
 			Posicao posicao = controladorDaEntidade.obterComponente(controladorDoJogo.obterJogador(), Posicao.class);
 			graficos.drawString("X: " + posicao.x + ", Y: " + posicao.y, 20, 120);
 		}
