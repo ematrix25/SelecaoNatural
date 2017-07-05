@@ -29,9 +29,10 @@ public class Mapa {
 	/**
 	 * Cria um objeto do mapa de um arquivo no dado endereco
 	 * 
+	 * @param temperatura
 	 * @param endereco
 	 */
-	public Mapa(String endereco) {
+	public Mapa(int temperatura, String endereco) {
 		try {
 			BufferedImage imagem = ImageIO.read(new Recurso().obterEndereco(endereco));
 			largura = imagem.getWidth();
@@ -41,19 +42,22 @@ public class Mapa {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		Bloco.associarSprites(temperatura);
 	}
 
 	/**
 	 * Cria um objeto do mapa dada largura e altura
 	 * 
+	 * @param temperatura
 	 * @param largura
 	 * @param altura
 	 */
-	public Mapa(int largura, int altura) {
+	public Mapa(int temperatura, int largura, int altura) {
 		this.largura = largura;
 		this.altura = altura;
 		blocos = new int[largura * altura];
 		gerarMapa();
+		Bloco.associarSprites(temperatura);
 	}
 
 	/**

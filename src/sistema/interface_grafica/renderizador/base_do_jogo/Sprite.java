@@ -20,22 +20,19 @@ public class Sprite {
 
 	public int pixeis[];
 
-	public static Sprite spriteDeAgua = new Sprite(0, 0, FolhaDeSprites.SPRITES);
-	public static Sprite spriteDePolimeroOrganico = new Sprite(1, 0, FolhaDeSprites.SPRITES);
-	public static Sprite spriteDePolimeroInorganico = new Sprite(2, 0, FolhaDeSprites.SPRITES);
-	public static Sprite spriteDeAgua1 = new Sprite(3, 0, FolhaDeSprites.SPRITES);
-	public static Sprite spriteDePolimeroOrganico1 = new Sprite(4, 0, FolhaDeSprites.SPRITES);
-	public static Sprite spriteDePolimeroOrganico2 = new Sprite(5, 0, FolhaDeSprites.SPRITES);
+	private static Sprite ambienteFrio[] = associarSprites(0, 6);
+	private static Sprite ambienteMorno[] = associarSprites(1, 6);
+	private static Sprite ambienteQuente[] = associarSprites(2, 6);
 
-	public static Sprite jogadorMovendoY = new Sprite(0, 15, FolhaDeSprites.SPRITES);
-	public static Sprite jogadorMovendoX = new Sprite(1, 15, FolhaDeSprites.SPRITES);
-	public static Sprite jogadorParadoY = new Sprite(2, 15, FolhaDeSprites.SPRITES);
-	public static Sprite jogadorParadoX = new Sprite(3, 15, FolhaDeSprites.SPRITES);
+	public static Sprite ambiente[][] = { ambienteFrio, ambienteMorno, ambienteQuente };
+
+	public static Sprite spiral[] = associarSprites(13, 4);
+	public static Sprite bacillus[] = associarSprites(14, 4);
+	public static Sprite coccus[] = associarSprites(15, 4);
 
 	/**
 	 * Cria o objeto de Sprite da FolhaDeSprites
 	 * 
-	 * @param tamanho
 	 * @param x
 	 * @param y
 	 * @param folhaDeSprites
@@ -57,6 +54,21 @@ public class Sprite {
 				pixeis[x + y * TAMANHO] = folhaDeSprites.pixeis[(this.x + x) + (this.y + y) * FolhaDeSprites.TAMANHO];
 			}
 		}
+	}
+
+	/**
+	 * Associa sprites em um array
+	 * 
+	 * @param y
+	 * @param qtd
+	 * @return Sprite[]
+	 */
+	private static Sprite[] associarSprites(int y, int qtd) {
+		Sprite sprites[] = new Sprite[qtd];
+		for (int x = 0; x < sprites.length; x++) {
+			sprites[x] = new Sprite(x, y, FolhaDeSprites.SPRITES);
+		}
+		return sprites;
 	}
 
 	/**
@@ -85,7 +97,6 @@ public class Sprite {
 		 * Cria o objeto da FolhaDeSprites
 		 * 
 		 * @param endereco
-		 * @param tamanho
 		 */
 		public FolhaDeSprites(String endereco) {
 			pixeis = new int[TAMANHO * TAMANHO];
@@ -94,6 +105,8 @@ public class Sprite {
 
 		/**
 		 * Carrega a folha de Sprites
+		 *
+		 * @param endereco
 		 */
 		private void carregar(String endereco) {
 			try {

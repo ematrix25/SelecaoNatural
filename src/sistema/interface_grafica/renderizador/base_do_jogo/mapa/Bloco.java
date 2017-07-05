@@ -14,14 +14,14 @@ public class Bloco {
 	public boolean solido;
 
 	public final static int TAMANHO = Sprite.TAMANHO;
-	
-	public static Bloco blocoDeAgua = new Bloco(Sprite.spriteDeAgua, false);
-	public static Bloco blocoOrganico = new Bloco(Sprite.spriteDePolimeroOrganico, false);
-	public static Bloco blocoInorganico = new Bloco(Sprite.spriteDePolimeroInorganico, true);
-	public static Bloco blocoDeAgua1 = new Bloco(Sprite.spriteDeAgua1, false);
-	public static Bloco blocoOrganico1 = new Bloco(Sprite.spriteDePolimeroOrganico1, false);
-	public static Bloco blocoOrganico2 = new Bloco(Sprite.spriteDePolimeroOrganico2, false);
-	
+
+	public static Bloco blocoDeAgua;
+	public static Bloco blocoOrganico;
+	public static Bloco blocoInorganico;
+	public static Bloco blocoDeAgua1;
+	public static Bloco blocoOrganico1;
+	public static Bloco blocoOrganico2;
+
 	/**
 	 * Cria um objeto do bloco
 	 * 
@@ -31,6 +31,20 @@ public class Bloco {
 	public Bloco(Sprite sprite, boolean solido) {
 		this.sprite = sprite;
 		this.solido = solido;
+	}
+
+	/**
+	 * Associa as sprites com os blocos
+	 * 
+	 * @param temperatura
+	 */
+	public static void associarSprites(int temperatura) {
+		blocoDeAgua = new Bloco(Sprite.ambiente[temperatura][0], false);
+		blocoOrganico = new Bloco(Sprite.ambiente[temperatura][1], false);
+		blocoInorganico = new Bloco(Sprite.ambiente[temperatura][2], true);
+		blocoDeAgua1 = new Bloco(Sprite.ambiente[temperatura][3], false);
+		blocoOrganico1 = new Bloco(Sprite.ambiente[temperatura][4], false);
+		blocoOrganico2 = new Bloco(Sprite.ambiente[temperatura][5], false);
 	}
 
 	/**

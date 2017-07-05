@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
+import componente.Especime;
 import componente.Componente.Posicao;
 import componente.Componente.Sprites;
 import componente.Componente.Velocidade;
@@ -24,7 +25,7 @@ import sistema.utilitario.periferico.Teclado;
  */
 @SuppressWarnings("unused")
 public class RendDoJogo extends Renderizador {
-	private final int ESCALA = 3;
+	private final int ESCALA = 2;
 
 	private Tela tela;
 
@@ -111,24 +112,9 @@ public class RendDoJogo extends Renderizador {
 		BufferedImage imagem = new BufferedImage(tela.largura, tela.altura, BufferedImage.TYPE_INT_RGB);
 		int pixeis[] = ((DataBufferInt) imagem.getRaster().getDataBuffer()).getData();
 
-		// TODO Implementar a renderização para todas as entidades
 		tela.limpar();
-		Posicao posicao = controladorDaEntidade.obterComponente(controladorDoJogo.obterJogador(), Posicao.class);
-		int rolagemX = posicao.x - tela.largura / 2;
-		int rolagemY = posicao.y - tela.altura / 2;
-		Mapa mapa = controladorDoJogo.obterMapa();
-		mapa.renderizar(rolagemX, rolagemY, tela);
-		Velocidade velocidade = controladorDaEntidade.obterComponente(controladorDoJogo.obterJogador(),
-				Velocidade.class);
-		Sprites sprites = controladorDaEntidade.obterComponente(controladorDoJogo.obterJogador(), Sprites.class);
-		int invertido = 0;
-		if (velocidade.direcao == 2) invertido = 2;
-		if (velocidade.direcao == 3) invertido = 1;
-		// TODO Implementar animação de movimento alternando sprites
-		// TODO ARRUMAR: Especime renderizando na posição errada
-		if (velocidade.direcao % 2 == 0)
-			tela.renderizarEspecime(rolagemX, rolagemY, sprites.obterSpriteY(velocidade.movendo), invertido);
-		else tela.renderizarEspecime(rolagemX, rolagemY, sprites.obterSpriteX(velocidade.movendo), invertido);
+		renderizarMapa();
+		renderizarEntidades();
 
 		for (int i = 0; i < tela.pixeis.length; i++) {
 			pixeis[i] = tela.pixeis[i];
@@ -148,7 +134,41 @@ public class RendDoJogo extends Renderizador {
 
 			graficos.setColor(Color.white);
 			graficos.drawString("X: " + Mouse.obterX() + ", Y: " + Mouse.obterY(), 20, 100);
+			Posicao posicao = controladorDaEntidade.obterComponente(controladorDoJogo.obterJogador(), Posicao.class);
 			graficos.drawString("X: " + posicao.x + ", Y: " + posicao.y, 20, 120);
+		}
+	}
+
+	/**
+	 * Renderiza o mapa em relação a posição do jogador
+	 */
+	private void renderizarMapa() {
+		Posicao posicao = controladorDaEntidade.obterComponente(controladorDoJogo.obterJogador(), Posicao.class);
+		int rolagemX = posicao.x - tela.largura / 2;
+		int rolagemY = posicao.y - tela.altura / 2;
+		Mapa mapa = controladorDoJogo.obterMapa();
+		mapa.renderizar(rolagemX, rolagemY, tela);
+	}
+
+	/**
+	 * Renderiza as sprites de cada entidade
+	 */
+	private void renderizarEntidades() {
+		// Renderiza o sprite do jogador conforme a velocidade
+		Posicao posicao;
+		Velocidade velocidade;
+		Sprites sprites;
+		int invertido;
+		for (int entidade : controladorDaEntidade.obterTodasEntidadesComOComponente(Especime.class)) {
+			posicao = controladorDaEntidade.obterComponente(entidade, Posicao.class);
+			velocidade = controladorDaEntidade.obterComponente(entidade, Velocidade.class);
+			sprites = controladorDaEntidade.obterComponente(entidade, Sprites.class);
+			invertido = 0;
+			if (velocidade.direcao == 2) invertido = 2;
+			if (velocidade.direcao == 3) invertido = 1;
+			if (velocidade.direcao % 2 == 0)
+				tela.renderizarEspecime(posicao.x, posicao.y, sprites.obterSpriteY(velocidade.movendo), invertido);
+			else tela.renderizarEspecime(posicao.x, posicao.y, sprites.obterSpriteX(velocidade.movendo), invertido);
 		}
 	}
 }

@@ -33,7 +33,7 @@ public class TesteControladorDoJogo {
 	@Before
 	public void iniciar() {
 		controladorDaEntidade = new ControladorDaEntidade();
-		mapa = new Mapa("/mapas/caverna.png");
+		mapa = new Mapa(0, "/mapas/caverna.png");
 		controladorDoJogo = new ControladorDoJogo(mapa);
 	}
 
@@ -47,9 +47,7 @@ public class TesteControladorDoJogo {
 		Coordenada coordenada = new Coordenada(mapa, 8, 7);
 		controladorDaEntidade.adicionarComponente(ID, (Componente) new Posicao(coordenada));
 		controladorDaEntidade.adicionarComponente(ID, (Componente) new Velocidade());
-		Sprite arrayDeSprites[] = { Sprite.jogadorMovendoY, Sprite.jogadorMovendoX, Sprite.jogadorParadoY,
-				Sprite.jogadorParadoX };
-		controladorDaEntidade.adicionarComponente(ID, new Sprites(arrayDeSprites));
+		controladorDaEntidade.adicionarComponente(ID, new Sprites(Sprite.coccus));
 		return ID;
 	}
 
@@ -74,9 +72,7 @@ public class TesteControladorDoJogo {
 		assertEquals(controladorDaEntidade.obterComponente(ID, Posicao.class), posicao);
 		Velocidade velocidade = new Velocidade();
 		assertEquals(controladorDaEntidade.obterComponente(ID, Velocidade.class), velocidade);
-		Sprite arrayDeSprites[] = { Sprite.jogadorMovendoY, Sprite.jogadorMovendoX, Sprite.jogadorParadoY,
-				Sprite.jogadorParadoX };
-		Sprites sprites = new Sprites(arrayDeSprites);
+		Sprites sprites = new Sprites(Sprite.coccus);
 		assertEquals(controladorDaEntidade.obterComponente(ID, Sprites.class), sprites);
 	}
 

@@ -197,7 +197,7 @@ public class ControladorDoJogo {
 	 */
 	public static void main(String[] args) {
 		ControladorDaEntidade controladorDaEntidade = new ControladorDaEntidade();
-		Mapa mapa = new Mapa("/mapas/caverna.png");
+		Mapa mapa = new Mapa(0, "/mapas/caverna.png");
 		ControladorDoJogo controladorDoJogo = new ControladorDoJogo(mapa);
 
 		// Gera a entidade na coordenada referente ao mapa
@@ -205,9 +205,7 @@ public class ControladorDoJogo {
 		Coordenada coordenada = new Coordenada(mapa, 8, 7);
 		controladorDaEntidade.adicionarComponente(entidade, (Componente) new Posicao(coordenada));
 		controladorDaEntidade.adicionarComponente(entidade, (Componente) new Velocidade());
-		Sprite arrayDeSprites[] = { Sprite.jogadorMovendoY, Sprite.jogadorMovendoX, Sprite.jogadorParadoY,
-				Sprite.jogadorParadoX };
-		controladorDaEntidade.adicionarComponente(entidade, (Componente) new Sprites(arrayDeSprites));
+		controladorDaEntidade.adicionarComponente(entidade, (Componente) new Sprites(Sprite.coccus));
 
 		// Obtem os dados iniciais
 		Posicao posicao = controladorDaEntidade.obterComponente(entidade, Posicao.class);

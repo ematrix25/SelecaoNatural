@@ -308,8 +308,8 @@ public class Painel extends Canvas implements Runnable {
 		controladorDaEntidade = new ControladorDaEntidade();
 		controladorDoAmbiente = new ControladorDoAmbiente();
 		gerarAmbiente();
-		// mapa = new Mapa(128, 128);
-		mapa = new Mapa("/mapas/caverna.png");
+		// mapa = new Mapa(0, 128, 128);
+		mapa = new Mapa(0, "/mapas/caverna.png");
 		controladorDoJogo = new ControladorDoJogo(mapa);
 
 		rendDaSelecao = new RendDaSelecao(this, controladorDaEntidade, controladorDoAmbiente);
@@ -335,15 +335,14 @@ public class Painel extends Canvas implements Runnable {
 	 */
 	private void mapearEntidades() {
 		Coordenada coordenada = new Coordenada(mapa);
-		// TODO Melhorar o sistema de associação das sprites à entidade
-		Sprite arrayDeSprites[] = { Sprite.jogadorMovendoY, Sprite.jogadorMovendoX, Sprite.jogadorParadoY,
-				Sprite.jogadorParadoX };
 		for (int entidade : controladorDaEntidade.obterTodasEntidadesComOComponente(Especime.class)) {
 			if (entidade == controladorDoJogo.obterJogador()) coordenada.configurarCoordenada(8, 7);
+			// TODO Adicionar coordenadas mais afastadas das outras entidades
 			else coordenada.configurarCoordenada();
 			controladorDaEntidade.adicionarComponente(entidade, (Componente) new Posicao(coordenada));
 			controladorDaEntidade.adicionarComponente(entidade, (Componente) new Velocidade());
-			controladorDaEntidade.adicionarComponente(entidade, (Componente) new Sprites(arrayDeSprites));
+			// TODO Adicionar as sprites para a forma da espécie da entidade
+			controladorDaEntidade.adicionarComponente(entidade, (Componente) new Sprites(Sprite.coccus));
 		}
 	}
 }
