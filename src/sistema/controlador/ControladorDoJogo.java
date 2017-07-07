@@ -78,7 +78,7 @@ public class ControladorDoJogo {
 		Posicao novaPosicao = configurarPosicao(novaVelocidade);
 		if (novaPosicao.y == 0 && novaPosicao.x == 0) novaVelocidade.movendo = false;
 		else {
-			if (novaPosicao.y != 0 && novaPosicao.x != 0) novaPosicao.x = 0;
+			if (novaPosicao.y != 0) novaPosicao.x = 0;
 			novaVelocidade.movendo = true;
 			novaVelocidade = mover(posicao, novaVelocidade, novaPosicao);
 		}
@@ -95,7 +95,7 @@ public class ControladorDoJogo {
 		Velocidade novaVelocidade = velocidade;
 		int velocidadeMaxima = 4;
 		if (Opcoes.controlePorMouse) {
-			novaVelocidade.valor = Mouse.obterMaiorDiferenca(velocidadeMaxima);
+			novaVelocidade.valor = Mouse.obterDiferenca(velocidadeMaxima);
 		} else {
 			if (Teclado.correr) novaVelocidade.valor = velocidadeMaxima;
 			else novaVelocidade.valor = velocidadeMaxima / 2;

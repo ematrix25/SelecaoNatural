@@ -78,14 +78,14 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	}
 
 	/**
-	 * Obtem a maior diferença de X e Y relativo a parte do Maximo
+	 * Obtem a diferença da posição do Mouse relativo a parte do Maximo
 	 * 
 	 * @return int
 	 */
-	public static int obterMaiorDiferenca(int fator) {
+	public static int obterDiferenca(int fator) {
 		diferencaX = Mouse.obterDiferencaX(fator);
 		diferencaY = Mouse.obterDiferencaY(fator);
-		return (diferencaX > diferencaY) ? diferencaX : diferencaY;
+		return (diferencaY != 0) ? diferencaY : diferencaX;
 
 	}
 

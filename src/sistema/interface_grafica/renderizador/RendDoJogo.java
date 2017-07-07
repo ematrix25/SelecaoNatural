@@ -166,6 +166,7 @@ public class RendDoJogo extends Renderizador {
 			invertido = 0;
 			if (velocidade.direcao == 2) invertido = 2;
 			if (velocidade.direcao == 3) invertido = 1;
+			// TODO Adicionar animação para movimentação
 			if (velocidade.direcao % 2 == 0)
 				tela.renderizarEspecime(posicao.x, posicao.y, sprites.obterSpriteY(velocidade.movendo), invertido);
 			else tela.renderizarEspecime(posicao.x, posicao.y, sprites.obterSpriteX(velocidade.movendo), invertido);

@@ -8,18 +8,10 @@ import java.util.Random;
  * @author Emanuel
  */
 public class Coordenada {
-	private int x, y;
 	private final int TAMANHO_DO_BLOCO = Bloco.TAMANHO;
-	private Mapa mapa;
 
-	/**
-	 * Cria o objeto coordenada
-	 *
-	 * @param mapa
-	 */
-	public Coordenada(Mapa mapa) {
-		this(mapa, 0, 0);
-	}
+	private int x, y;
+	private Mapa mapa;
 
 	/**
 	 * Cria o objeto coordenada com x e y
@@ -61,11 +53,14 @@ public class Coordenada {
 	}
 
 	/**
-	 * Configura uma coordenada aleatória
+	 * Configura uma coordenada aleatória afastada da coordenada dada
 	 */
 	public void configurarCoordenada() {
-		this.x = new Random().nextInt(mapa.largura) * TAMANHO_DO_BLOCO;
-		this.y = new Random().nextInt(mapa.altura) * TAMANHO_DO_BLOCO;
+		int x = gerarInteiro(0, mapa.largura);
+		int y = gerarInteiro(0, mapa.altura);
+		if(mapa.obterBloco(x, y).solido)
+			configurarCoordenada();
+		configurarCoordenada(x, y);
 	}
 
 	/**
@@ -77,5 +72,41 @@ public class Coordenada {
 	public void configurarCoordenada(int x, int y) {
 		this.x = x * TAMANHO_DO_BLOCO;
 		this.y = y * TAMANHO_DO_BLOCO;
+	}
+
+	/**
+	 * Gera um número inteiro dentro dos limites estabelecidos
+	 * 
+	 * @param limiteMin
+	 * @param limiteMax
+	 * @return int
+	 */
+	private int gerarInteiro(int limiteMin, int limiteMax) {
+		return limiteMin + new Random().nextInt(limiteMax - limiteMin);
+	}
+
+	/**
+	 * Gera o texto com a posição da coordenada
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "(" + x + ", " + y + ")";
+	}
+
+	/**
+	 * Testa a geração das coordenadas
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		Mapa mapa = new Mapa(0, 1024, 1024);
+		Coordenada coordenada = new Coordenada(mapa, 10, 10);
+		System.out.println("Coordenada Base: " + coordenada);
+		for (int i = 0; i < 10; i++) {
+			coordenada.configurarCoordenada();
+			System.out.println("Coordenada " + (i + 1) + ": " + coordenada);
+		}
 	}
 }
