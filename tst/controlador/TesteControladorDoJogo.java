@@ -33,7 +33,7 @@ public class TesteControladorDoJogo {
 	@Before
 	public void iniciar() {
 		controladorDaEntidade = new ControladorDaEntidade();
-		mapa = new Mapa(0, "/mapas/caverna.png");
+		mapa = new Mapa("/mapas/caverna.png", 0);
 		controladorDoJogo = new ControladorDoJogo(mapa);
 	}
 

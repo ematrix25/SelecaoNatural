@@ -309,9 +309,7 @@ public class Painel extends Canvas implements Runnable {
 		controladorDaEntidade = new ControladorDaEntidade();
 		controladorDoAmbiente = new ControladorDoAmbiente();
 		gerarAmbiente();
-		// TODO Unir o mapa gerado com o mapa de spawn ou criar mapa maior
-		// mapa = new Mapa(0, 128, 128);
-		mapa = new Mapa(0, "/mapas/caverna.png");
+		mapa = new Mapa("/mapas/caverna.png", 0);
 		controladorDoJogo = new ControladorDoJogo(mapa);
 
 		rendDaSelecao = new RendDaSelecao(this, controladorDaEntidade, controladorDoAmbiente);
@@ -338,7 +336,8 @@ public class Painel extends Canvas implements Runnable {
 	private void mapearEntidades() {
 		Coordenada coordenada = new Coordenada(mapa, 0, 0);
 		for (int entidade : controladorDaEntidade.obterTodasEntidadesComOComponente(Especime.class)) {
-			if (entidade == controladorDoJogo.obterJogador()) coordenada.configurarCoordenada(8, 7);
+			if (entidade == controladorDoJogo.obterJogador())
+				coordenada.configurarCoordenada(mapa.largura / 2, mapa.altura / 2 - 1);
 			else {
 				while (controladorDaEntidade.obterEntidadeComOComponente(new Posicao(coordenada)) != null)
 					coordenada.configurarCoordenada();

@@ -195,7 +195,7 @@ public class ControladorDoJogo {
 	 */
 	public static void main(String[] args) {
 		ControladorDaEntidade controladorDaEntidade = new ControladorDaEntidade();
-		Mapa mapa = new Mapa(0, "/mapas/caverna.png");
+		Mapa mapa = new Mapa("/mapas/caverna.png", 0);
 		ControladorDoJogo controladorDoJogo = new ControladorDoJogo(mapa);
 
 		// Gera a entidade na coordenada referente ao mapa
