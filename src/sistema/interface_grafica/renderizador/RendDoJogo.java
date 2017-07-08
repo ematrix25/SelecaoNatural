@@ -151,10 +151,9 @@ public class RendDoJogo extends Renderizador {
 	}
 
 	/**
-	 * Renderiza as sprites de cada entidade
+	 * Renderiza as sprites de cada entidade conforme a velocidade
 	 */
 	private void renderizarEntidades() {
-		// Renderiza o sprite do jogador conforme a velocidade
 		Posicao posicao;
 		Velocidade velocidade;
 		Sprites sprites;
@@ -166,7 +165,6 @@ public class RendDoJogo extends Renderizador {
 			invertido = 0;
 			if (velocidade.direcao == 2) invertido = 2;
 			if (velocidade.direcao == 3) invertido = 1;
-			// TODO Adicionar animação para movimentação
 			if (velocidade.direcao % 2 == 0)
 				tela.renderizarEspecime(posicao.x, posicao.y, sprites.obterSpriteY(velocidade.movendo), invertido);
 			else tela.renderizarEspecime(posicao.x, posicao.y, sprites.obterSpriteX(velocidade.movendo), invertido);

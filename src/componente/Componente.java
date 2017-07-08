@@ -182,6 +182,7 @@ public abstract class Componente {
 	 */
 	public static class Sprites extends Componente {
 		private Sprite sprites[];
+		private int contador = 0;
 
 		/**
 		 * Cria o objeto Sprites com os sprites
@@ -198,8 +199,14 @@ public abstract class Componente {
 		 * @return Sprite
 		 */
 		public Sprite obterSpriteX(boolean movendo) {
-			if (movendo) return sprites[1];
-			else return sprites[3];
+			if (movendo) {
+				if (!(contador < 99)) contador = 0;
+				if (contador++ > 55) return sprites[3];
+				else return sprites[1];
+			} else {
+				contador = 0;
+				return sprites[3];
+			}
 		}
 
 		/**
@@ -208,8 +215,14 @@ public abstract class Componente {
 		 * @return Sprite
 		 */
 		public Sprite obterSpriteY(boolean movendo) {
-			if (movendo) return sprites[0];
-			else return sprites[2];
+			if (movendo) {
+				if (!(contador < 99)) contador = 0;
+				if (contador++ > 55) return sprites[2];
+				return sprites[0];
+			} else {
+				contador = 0;
+				return sprites[2];
+			}
 		}
 
 		/**
