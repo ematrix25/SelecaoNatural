@@ -16,6 +16,7 @@ import sistema.Jogo.Janela;
 import sistema.controlador.ControladorDaEntidade;
 import sistema.controlador.ControladorDoAmbiente;
 import sistema.controlador.ControladorDoJogo;
+import sistema.controlador.ControladorDoQuestionario;
 import sistema.interface_grafica.renderizador.RendDaSelecao;
 import sistema.interface_grafica.renderizador.RendDeOpcoes;
 import sistema.interface_grafica.renderizador.RendDoJogo;
@@ -49,6 +50,7 @@ public class Painel extends Canvas implements Runnable {
 	private ControladorDaEntidade controladorDaEntidade;
 	private ControladorDoAmbiente controladorDoAmbiente;
 	private ControladorDoJogo controladorDoJogo;
+	private ControladorDoQuestionario controladorDoQuest;
 
 	private RendDoMenu rendDoMenu;
 	private RendDeOpcoes rendDeOpcoes;
@@ -135,9 +137,10 @@ public class Painel extends Canvas implements Runnable {
 				// Conta os segundos para abrir o painel do questionarios
 				if (telaAtiva == 'S' || telaAtiva == 'J') {
 					contDeSegundos++;
-					if (contDeSegundos > 600) {
+					if (contDeSegundos > 6) {
 						janela.redimensionar(1.7f);
-						rendDoQuest = new RendDoQuest(this);
+						controladorDoQuest = new ControladorDoQuestionario();
+						rendDoQuest = new RendDoQuest(this, controladorDoQuest);
 						telaAtiva = 'Q';
 					}
 				}

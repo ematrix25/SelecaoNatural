@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
 
+import sistema.controlador.ControladorDoQuestionario;
 import sistema.interface_grafica.Painel;
 
 /**
@@ -12,6 +13,8 @@ import sistema.interface_grafica.Painel;
  * @author Emanuel
  */
 public class RendDoQuest extends Renderizador {
+	private ControladorDoQuestionario controladorDoQuest;
+	private final int NUMERO;
 	private int respostas[];
 
 	/**
@@ -19,9 +22,12 @@ public class RendDoQuest extends Renderizador {
 	 * 
 	 * @param painel
 	 */
-	public RendDoQuest(Painel painel) {
+	public RendDoQuest(Painel painel, ControladorDoQuestionario controladorDoQuest) {
 		super(painel);
-		respostas = new int[5];
+		this.controladorDoQuest = controladorDoQuest;
+		//NUMERO = controladorDoQuest.obterQtdPerguntas();
+		NUMERO = 4;
+		respostas = new int[NUMERO];
 		inicializarRespostas();
 	}
 
@@ -47,16 +53,18 @@ public class RendDoQuest extends Renderizador {
 	 * Renderiza a tela do questionário
 	 */
 	public BufferedImage renderizar() {
+		//TODO Renderizar várias páginas com ao menos 4 perguntas por página
 		carregarGraficos("/imagens/menu.jpg");
-
-		String opcoes[] = new String[5];
+		
 		int resposta;
-
-		for (int i = 0; i < respostas.length; i++) {
-			for (int j = 0; j < opcoes.length; j++) {
-				opcoes[j] = "Opção " + (i + 1) + "." + (j + 1);
-			}
-			resposta = renderizarSelecao("Pergunta " + (i + 1), opcoes, 40 + 80 * i, i);
+		String opcoes[] = new String[controladorDoQuest.obterQtdRespostas()];
+		
+		for (int i = 0; i < controladorDoQuest.obterQtdRespostas(); i++) {
+			opcoes[i] = controladorDoQuest.obterResposta(i);
+		}
+		//4 por página até controladorDoQuest.obterQtdPerguntas();
+		for (int i = 0; i < 4; i++) {
+			resposta = renderizarSelecao(controladorDoQuest.obterPergunta(i), opcoes, 40 + 80 * i, i);
 			if (resposta != -1) respostas[i] = resposta;
 		}
 
@@ -84,7 +92,7 @@ public class RendDoQuest extends Renderizador {
 
 		// Renderiza as Opções de respostas da Pergunta
 		for (int i = 0; i < opcoes.length; i++) {
-			if (renderizarOpcao(opcoes[i], x + 150 * i, y + 20, respostas[selecao] == i + 1)) resposta = i + 1;
+			if (renderizarOpcao(opcoes[i], x + 100 * i, y + 20, respostas[selecao] == i + 1)) resposta = i + 1;
 		}
 		return resposta;
 	}

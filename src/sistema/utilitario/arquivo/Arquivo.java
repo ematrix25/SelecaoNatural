@@ -155,7 +155,10 @@ public abstract class Arquivo {
 			String nome = (saoPerguntas) ? PERGUNTAS : RESPOSTAS;
 			File arquivo = new File(recurso.obterArquivoDoEndereco("/dados_base") + "/" + nome);
 			if (!arquivo.exists()) criar(arquivo);
-			return Arquivo.ler(arquivo);
+			List<String> texto =Arquivo.ler(arquivo);
+			String linha = texto.get(0);
+			texto.set(0, linha.substring(1, linha.length()));
+			return texto;
 		}
 
 		/**
