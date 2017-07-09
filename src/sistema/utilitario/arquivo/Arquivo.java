@@ -3,9 +3,11 @@ package sistema.utilitario.arquivo;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,18 +18,20 @@ import java.util.List;
  * @author Emanuel
  */
 public abstract class Arquivo {
+	private static Recurso recurso = new Recurso();
+
 	/**
 	 * Lê as linhas do arquivo
 	 * 
 	 * @param caminho
-	 * @return
+	 * @return Lista de String
 	 */
 	public static List<String> ler(File arquivo) {
 		List<String> texto = new ArrayList<String>();
 		BufferedReader leitor;
 		String linha;
 		try {
-			leitor = new BufferedReader(new FileReader(arquivo));
+			leitor = new BufferedReader(new InputStreamReader(new FileInputStream(arquivo), "UTF8"));
 			while ((linha = leitor.readLine()) != null) {
 				texto.add(linha);
 			}
@@ -48,9 +52,10 @@ public abstract class Arquivo {
 	public static void escrever(boolean substitui, File arquivo, List<String> texto) {
 		BufferedWriter escritor;
 		try {
-			escritor = new BufferedWriter(new FileWriter(arquivo, !substitui));
+			escritor = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(arquivo), "UTF8"));
 			for (String linha : texto) {
-				escritor.write(linha);
+				if (substitui) escritor.write(linha);
+				else escritor.append(linha);
 				escritor.newLine();
 			}
 			escritor.close();
@@ -80,13 +85,12 @@ public abstract class Arquivo {
 	 * @author Emanuel
 	 */
 	public static class ArquivoDeConfig extends Arquivo {
-		private static Recurso recurso = new Recurso();
 		private static final String NOME = "config.ini";
 
 		/**
 		 * Lê as configurações do arquivo
 		 * 
-		 * @return
+		 * @return int[]
 		 */
 		public static int[] ler() {
 			File arquivo = new File(recurso.obterArquivoDoEndereco("/dados") + "/" + NOME);
@@ -137,8 +141,22 @@ public abstract class Arquivo {
 	 * @author Emanuel
 	 */
 	public static class ArquivoDoQuest extends Arquivo {
-		private static Recurso recurso = new Recurso();
-		private static final String NOME = "questionario.dat";
+		private static final String RESULTADO = "questionario.dat";
+		private static final String PERGUNTAS = "perguntas.dat";
+		private static final String RESPOSTAS = "respostas.dat";
+
+		/**
+		 * Filtra do arquivo e obtem as perguntas ou respostas
+		 * 
+		 * @param saoPerguntas
+		 * @return Lista de String
+		 */
+		public static List<String> ler(boolean saoPerguntas) {
+			String nome = (saoPerguntas) ? PERGUNTAS : RESPOSTAS;
+			File arquivo = new File(recurso.obterArquivoDoEndereco("/dados_base") + "/" + nome);
+			if (!arquivo.exists()) criar(arquivo);
+			return Arquivo.ler(arquivo);
+		}
 
 		/**
 		 * Escreve as respostas do questionario no arquivo
@@ -146,7 +164,8 @@ public abstract class Arquivo {
 		 * @param config
 		 */
 		public static void escrever(int[] respostas) {
-			File arquivo = new File(recurso.obterArquivoDoEndereco("/dados") + "/" + NOME);
+			String nome = RESULTADO;
+			File arquivo = new File(recurso.obterArquivoDoEndereco("/dados") + "/" + nome);
 			List<String> texto = new ArrayList<String>();
 			if (!arquivo.exists()) criar(arquivo);
 			texto.add(Arrays.toString(respostas));
