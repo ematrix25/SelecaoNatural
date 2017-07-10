@@ -69,7 +69,6 @@ public class RendDoQuest extends Renderizador {
 	 * Renderiza a tela do questionário
 	 */
 	public BufferedImage renderizar() {
-		// TODO Renderizar várias páginas com ao menos 4 perguntas por página
 		carregarGraficos("/imagens/menu.jpg");
 
 		int limite = controladorDoQuest.obterQtdRespostas();
@@ -81,6 +80,7 @@ public class RendDoQuest extends Renderizador {
 		int resposta, indice = (pagina - 1) * PERGUNTAS_POR_PAGINA;
 		limite = (indice + (PERGUNTAS_POR_PAGINA - 1) > this.limite) ? (this.limite - indice) : PERGUNTAS_POR_PAGINA;
 		for (int i = 0; i < limite; i++) {
+			if (!(indice + i < this.limite)) break;
 			resposta = renderizarSelecao(controladorDoQuest.obterPergunta(indice + i), opcoes, 40 + 80 * i, indice + i);
 			if (resposta != -1) respostas[indice + i] = resposta;
 		}
