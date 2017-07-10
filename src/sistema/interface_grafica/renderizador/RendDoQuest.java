@@ -14,8 +14,8 @@ import sistema.interface_grafica.Painel;
  */
 public class RendDoQuest extends Renderizador {
 	private ControladorDoQuestionario controladorDoQuest;
-	private final int NUMERO;
-	private int respostas[];
+	private final int PERGUNTAS_POR_PAGINA = 5;
+	private int limite, pagina, respostas[];
 
 	/**
 	 * Cria o objeto de renderizador do questionário
@@ -25,9 +25,9 @@ public class RendDoQuest extends Renderizador {
 	public RendDoQuest(Painel painel, ControladorDoQuestionario controladorDoQuest) {
 		super(painel);
 		this.controladorDoQuest = controladorDoQuest;
-		//NUMERO = controladorDoQuest.obterQtdPerguntas();
-		NUMERO = 4;
-		respostas = new int[NUMERO];
+		limite = controladorDoQuest.obterQtdPerguntas();
+		respostas = new int[limite];
+		pagina = 1;
 		inicializarRespostas();
 	}
 
@@ -50,26 +50,44 @@ public class RendDoQuest extends Renderizador {
 	}
 
 	/**
+	 * Verifica se ainda tem páginas para serem exibidas
+	 * 
+	 * @return boolean
+	 */
+	public boolean temPagina() {
+		return !(pagina > (limite / PERGUNTAS_POR_PAGINA));
+	}
+
+	/**
+	 * Incrementa o contador da página
+	 */
+	public void proxPagina() {
+		pagina++;
+	}
+
+	/**
 	 * Renderiza a tela do questionário
 	 */
 	public BufferedImage renderizar() {
-		//TODO Renderizar várias páginas com ao menos 4 perguntas por página
+		// TODO Renderizar várias páginas com ao menos 4 perguntas por página
 		carregarGraficos("/imagens/menu.jpg");
-		
-		int resposta;
-		String opcoes[] = new String[controladorDoQuest.obterQtdRespostas()];
-		
-		for (int i = 0; i < controladorDoQuest.obterQtdRespostas(); i++) {
+
+		int limite = controladorDoQuest.obterQtdRespostas();
+		String opcoes[] = new String[limite];
+		for (int i = 0; i < limite; i++) {
 			opcoes[i] = controladorDoQuest.obterResposta(i);
 		}
-		//4 por página até controladorDoQuest.obterQtdPerguntas();
-		for (int i = 0; i < 4; i++) {
-			resposta = renderizarSelecao(controladorDoQuest.obterPergunta(i), opcoes, 40 + 80 * i, i);
-			if (resposta != -1) respostas[i] = resposta;
+
+		int resposta, indice = (pagina - 1) * PERGUNTAS_POR_PAGINA;
+		limite = (indice + (PERGUNTAS_POR_PAGINA - 1) > this.limite) ? (this.limite - indice) : PERGUNTAS_POR_PAGINA;
+		for (int i = 0; i < limite; i++) {
+			resposta = renderizarSelecao(controladorDoQuest.obterPergunta(indice + i), opcoes, 40 + 80 * i, indice + i);
+			if (resposta != -1) respostas[indice + i] = resposta;
 		}
 
-		// Renderiza o botão para submeter as respostas
-		renderizarBotao("Submeter", 40);
+		// Renderiza o botão para a próxima página ou para submeter as respostas
+		String texto = temPagina() ? "Seguinte" : "Submeter";
+		renderizarBotao(texto, 40);
 
 		descarregarGraficos();
 		return imagem;
@@ -155,9 +173,10 @@ public class RendDoQuest extends Renderizador {
 	 */
 	private boolean estaSelecionado() {
 		int qtdSelecionado = 0;
-		for (int i = 0; i < respostas.length; i++) {
+		int limite = temPagina() ? PERGUNTAS_POR_PAGINA : respostas.length;
+		for (int i = 0; i < limite; i++) {
 			if (respostas[i] != -1) qtdSelecionado++;
 		}
-		return qtdSelecionado == respostas.length;
+		return qtdSelecionado == limite;
 	}
 }

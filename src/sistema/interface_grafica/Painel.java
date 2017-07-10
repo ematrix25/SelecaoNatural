@@ -138,7 +138,7 @@ public class Painel extends Canvas implements Runnable {
 				if (telaAtiva == 'S' || telaAtiva == 'J') {
 					contDeSegundos++;
 					if (contDeSegundos > 6) {
-						janela.redimensionar(1.7f);
+						janela.redimensionar(1.5f);
 						controladorDoQuest = new ControladorDoQuestionario();
 						rendDoQuest = new RendDoQuest(this, controladorDoQuest);
 						telaAtiva = 'Q';
@@ -265,8 +265,10 @@ public class Painel extends Canvas implements Runnable {
 				Opcoes.carregarConfig(true, rendDeOpcoes.obterConfiguracoes());
 				voltarParaMenu();
 			} else if (telaAtiva == 'Q') {
-				ArquivoDoQuest.escrever(rendDoQuest.obterRespostas());
-				janela.dispatchEvent(new WindowEvent(janela, WindowEvent.WINDOW_CLOSING));
+				if (!rendDoQuest.temPagina()) {
+					ArquivoDoQuest.escrever(rendDoQuest.obterRespostas());
+					janela.dispatchEvent(new WindowEvent(janela, WindowEvent.WINDOW_CLOSING));
+				} else rendDoQuest.proxPagina();
 			}
 			break;
 		case 'N':
