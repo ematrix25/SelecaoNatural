@@ -173,10 +173,14 @@ public class RendDoQuest extends Renderizador {
 	 */
 	private boolean estaSelecionado() {
 		int qtdSelecionado = 0;
+		int indice = (pagina - 1) * PERGUNTAS_POR_PAGINA;
 		int limite = temPagina() ? PERGUNTAS_POR_PAGINA : respostas.length;
 		for (int i = 0; i < limite; i++) {
-			if (respostas[i] != -1) qtdSelecionado++;
+			if (temPagina()) {
+				if (respostas[indice + i] != -1) qtdSelecionado++;
+			} else if (respostas[i] != -1) qtdSelecionado++;
 		}
+		System.out.println(limite + "<->" + qtdSelecionado);
 		return qtdSelecionado == limite;
 	}
 }
