@@ -105,7 +105,7 @@ public class RendDoQuest extends Renderizador {
 
 		// Texto da Pergunta
 		graficos.setColor(Color.lightGray);
-		graficos.setFont(new Font("Verdana", 1, 18));
+		graficos.setFont(new Font("Verdana", 1, 16));
 		graficos.drawString(texto, x, y);
 
 		// Renderiza as Opções de respostas da Pergunta

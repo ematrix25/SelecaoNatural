@@ -31,7 +31,7 @@ public abstract class Arquivo {
 		BufferedReader leitor;
 		String linha;
 		try {
-			leitor = new BufferedReader(new InputStreamReader(new FileInputStream(arquivo), "UTF8"));
+			leitor = new BufferedReader(new InputStreamReader(new FileInputStream(arquivo), "UTF-8"));
 			while ((linha = leitor.readLine()) != null) {
 				texto.add(linha);
 			}
@@ -52,7 +52,7 @@ public abstract class Arquivo {
 	public static void escrever(boolean substitui, File arquivo, List<String> texto) {
 		BufferedWriter escritor;
 		try {
-			escritor = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(arquivo), "UTF8"));
+			escritor = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(arquivo, !substitui), "UTF-8"));
 			for (String linha : texto) {
 				if (substitui) escritor.write(linha);
 				else escritor.append(linha);
