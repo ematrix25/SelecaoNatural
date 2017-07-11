@@ -58,8 +58,8 @@ public class Coordenada {
 	public void configurarCoordenada() {
 		int x = gerarInteiro(0, mapa.largura);
 		int y = gerarInteiro(0, mapa.altura);
-		if(mapa.obterBloco(x, y).solido)
-			configurarCoordenada();
+		// TODO Arrumar o spawm em bloco sólido
+		if (mapa.obterBloco(x, y).solido) configurarCoordenada();
 		configurarCoordenada(x, y);
 	}
 

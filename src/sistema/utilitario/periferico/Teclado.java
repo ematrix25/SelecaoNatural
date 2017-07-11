@@ -10,6 +10,7 @@ import java.awt.event.KeyListener;
  *
  */
 public class Teclado implements KeyListener {
+	// TODO Mapear quantidade de teclas
 	private static boolean teclas[] = new boolean[120];
 	public static boolean cima, baixo, esquerda, direita, correr, sair;
 

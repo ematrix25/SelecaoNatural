@@ -166,8 +166,8 @@ public class RendDoJogo extends Renderizador {
 			if (velocidade.direcao == 2) invertido = 2;
 			if (velocidade.direcao == 3) invertido = 1;
 			if (velocidade.direcao % 2 == 0)
-				tela.renderizarEspecime(posicao.x, posicao.y, sprites.obterSpriteY(velocidade.movendo), invertido);
-			else tela.renderizarEspecime(posicao.x, posicao.y, sprites.obterSpriteX(velocidade.movendo), invertido);
+				tela.renderizarEspecime(posicao.x, posicao.y, sprites.obterSpriteY(velocidade.movendo), sprites.obterCor(), invertido);
+			else tela.renderizarEspecime(posicao.x, posicao.y, sprites.obterSpriteX(velocidade.movendo), sprites.obterCor(), invertido);
 		}
 	}
 }

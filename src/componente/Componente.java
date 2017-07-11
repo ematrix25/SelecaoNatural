@@ -182,6 +182,7 @@ public abstract class Componente {
 	 */
 	public static class Sprites extends Componente {
 		private Sprite sprites[];
+		private int cor = 0xffffffff;
 		private int contador = 0;
 
 		/**
@@ -191,6 +192,16 @@ public abstract class Componente {
 		 */
 		public Sprites(Sprite[] sprites) {
 			this.sprites = sprites;
+		}
+
+		/**
+		 * Cria o objeto Sprites com os sprites e cor
+		 * 
+		 * @param sprites
+		 */
+		public Sprites(Sprite[] sprites, int cor) {
+			this.sprites = sprites;
+			this.cor = cor;
 		}
 
 		/**
@@ -223,6 +234,15 @@ public abstract class Componente {
 				contador = 0;
 				return sprites[2];
 			}
+		}
+
+		/**
+		 * Obtem a cor
+		 * 
+		 * @return int
+		 */
+		public int obterCor() {
+			return cor;
 		}
 
 		/**

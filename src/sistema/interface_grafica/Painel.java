@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
+import java.util.Random;
 
 import componente.Componente;
 import componente.Componente.Posicao;
@@ -137,7 +138,7 @@ public class Painel extends Canvas implements Runnable {
 				// Conta os segundos para abrir o painel do questionarios
 				if (telaAtiva == 'S' || telaAtiva == 'J') {
 					contDeSegundos++;
-					if (contDeSegundos > 6) {
+					if (contDeSegundos > 600) {
 						janela.redimensionar(1.5f);
 						controladorDoQuest = new ControladorDoQuestionario();
 						rendDoQuest = new RendDoQuest(this, controladorDoQuest);
@@ -349,8 +350,31 @@ public class Painel extends Canvas implements Runnable {
 			}
 			controladorDaEntidade.adicionarComponente(entidade, (Componente) new Posicao(coordenada));
 			controladorDaEntidade.adicionarComponente(entidade, (Componente) new Velocidade());
-			// TODO Adicionar as sprites para a forma da espécie da entidade
-			controladorDaEntidade.adicionarComponente(entidade, (Componente) new Sprites(Sprite.coccus));
+			Especie especie = controladorDaEntidade.obterComponente(entidade, Especime.class).especie;
+			switch (especie.tipo.forma) {
+			case Coccus:
+				controladorDaEntidade.adicionarComponente(entidade,
+						(Componente) new Sprites(Sprite.coccus, gerarCor()));
+				break;
+			case Bacillus:
+				controladorDaEntidade.adicionarComponente(entidade,
+						(Componente) new Sprites(Sprite.bacillus, gerarCor()));
+				break;
+			case Spiral:
+				controladorDaEntidade.adicionarComponente(entidade,
+						(Componente) new Sprites(Sprite.spiral, gerarCor()));
+				break;
+			}
 		}
+	}
+
+	/**
+	 * Gera uma cor
+	 */
+	private int gerarCor() {
+		int vermelho = new Random().nextInt(0x3f);
+		int verde = new Random().nextInt(0x3f);
+		int azul = new Random().nextInt(0x3f);
+		return 0xff000000 + vermelho * 10000 + verde * 100 + azul;
 	}
 }

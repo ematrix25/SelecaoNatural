@@ -74,8 +74,8 @@ public class Tela {
 	 * @param sprite
 	 * @param invertido
 	 */
-	public void renderizarEspecime(int posX, int posY, Sprite sprite, int invertido) {
-		int xAux = 0, yAux = 0, xRes, yRes, cor;
+	public void renderizarEspecime(int posX, int posY, Sprite sprite, int cor, int invertido) {
+		int xAux = 0, yAux = 0, xRes, yRes, corAux;
 		posX -= desvioX;
 		posY -= desvioY;
 		for (int y = 0; y < Sprite.TAMANHO; y++) {
@@ -88,8 +88,8 @@ public class Tela {
 				if (invertido == 1 || invertido == 3) xRes = 15 - x;
 				if (xAux < -Sprite.TAMANHO || xAux >= largura || yAux < 0 || yAux >= altura) break;
 				if (xAux < 0) xAux = 0;
-				cor = sprite.pixeis[xRes + yRes * Sprite.TAMANHO];
-				if (cor != COR_TRANSPARENTE) pixeis[xAux + yAux * largura] = cor;
+				corAux = sprite.pixeis[xRes + yRes * Sprite.TAMANHO];
+				if (corAux != COR_TRANSPARENTE) pixeis[xAux + yAux * largura] = corAux + cor;
 			}
 		}
 	}

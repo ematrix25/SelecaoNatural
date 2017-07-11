@@ -26,7 +26,9 @@ public class Mapa {
 	public static final int COR_ORGANICA2 = 0xFFFF0000;
 	public static final int COR_INORGANICA = 0xFF3F3F3F;
 
-	public final int TAMANHO_MINIMO = (int) Math.pow(Bloco.TAMANHO, 2);
+	// TODO Modificar depois
+	public final int TAMANHO_MINIMO = 16;
+	// public final int TAMANHO_MINIMO = (int) Math.pow(Bloco.TAMANHO, 2);
 
 	/**
 	 * Cria um objeto do mapa de um arquivo no dado endereco
