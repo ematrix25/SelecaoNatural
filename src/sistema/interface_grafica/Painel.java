@@ -340,7 +340,7 @@ public class Painel extends Canvas implements Runnable {
 	 * Coloca as entidades no mapa
 	 */
 	private void mapearEntidades() {
-		Coordenada coordenada = new Coordenada(mapa, 0, 0);
+		Coordenada coordenada = new Coordenada(mapa);
 		for (int entidade : controladorDaEntidade.obterTodasEntidadesComOComponente(Especime.class)) {
 			if (entidade == controladorDoJogo.obterJogador())
 				coordenada.configurarCoordenada(mapa.largura / 2, mapa.altura / 2 - 1);
@@ -348,6 +348,7 @@ public class Painel extends Canvas implements Runnable {
 				while (controladorDaEntidade.obterEntidadeComOComponente(new Posicao(coordenada)) != null)
 					coordenada.configurarCoordenada();
 			}
+			System.out.println(coordenada);
 			controladorDaEntidade.adicionarComponente(entidade, (Componente) new Posicao(coordenada));
 			controladorDaEntidade.adicionarComponente(entidade, (Componente) new Velocidade());
 			Especie especie = controladorDaEntidade.obterComponente(entidade, Especime.class).especie;

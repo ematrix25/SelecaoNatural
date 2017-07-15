@@ -25,6 +25,14 @@ public class Coordenada {
 	}
 
 	/**
+	 * Cria o objeto coordenada com x e y aleatórias
+	 */
+	public Coordenada(Mapa mapa) {
+		this.mapa = mapa;
+		configurarCoordenada();
+	}
+
+	/**
 	 * Obtem x
 	 * 
 	 * @return x
