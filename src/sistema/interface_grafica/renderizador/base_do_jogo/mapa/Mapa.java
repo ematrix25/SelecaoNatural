@@ -104,13 +104,18 @@ public class Mapa {
 		Random aleatorio = new Random();
 		for (int y = 0; y < altura; y++) {
 			for (int x = 0; x < largura; x++) {
-				numero = aleatorio.nextInt(20);
-				if (numero > 11) blocos[x + y * largura] = COR_DE_AGUA;
-				if (numero < 8) blocos[x + y * largura] = COR_DE_AGUA1;
-				if (numero == 8) blocos[x + y * largura] = COR_ORGANICA;
-				if (numero == 9) blocos[x + y * largura] = COR_ORGANICA1;
-				if (numero == 10) blocos[x + y * largura] = COR_ORGANICA2;
-				if (numero == 11) blocos[x + y * largura] = COR_INORGANICA;
+				// Paredes de pedra que fecham o mapa
+				if (x == 0 || x == largura - 1 || y == 0 || y == altura - 1) blocos[x + y * largura] = COR_INORGANICA;
+				// Dentro das paredes
+				else {
+					numero = aleatorio.nextInt(20);
+					if (numero > 11) blocos[x + y * largura] = COR_DE_AGUA;
+					if (numero < 8) blocos[x + y * largura] = COR_DE_AGUA1;
+					if (numero == 8) blocos[x + y * largura] = COR_ORGANICA;
+					if (numero == 9) blocos[x + y * largura] = COR_ORGANICA1;
+					if (numero == 10) blocos[x + y * largura] = COR_ORGANICA2;
+					if (numero == 11) blocos[x + y * largura] = COR_INORGANICA;
+				}
 			}
 		}
 	}
