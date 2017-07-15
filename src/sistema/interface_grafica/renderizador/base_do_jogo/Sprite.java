@@ -78,7 +78,7 @@ public class Sprite {
 	 */
 	@Override
 	public String toString() {
-		return "Sprite = [" + x + ", " + y + "]";
+		return "Sprite = [" + x / TAMANHO + ", " + y / TAMANHO + "]";
 	}
 
 	/**

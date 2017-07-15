@@ -76,12 +76,8 @@ public class ControladorDoJogo {
 	public Velocidade moverJogador(Posicao posicao, Velocidade velocidade) {
 		Velocidade novaVelocidade = configurarVelocidade(velocidade);
 		Posicao novaPosicao = configurarPosicao(novaVelocidade);
-		if (novaPosicao.y == 0 && novaPosicao.x == 0) novaVelocidade.movendo = false;
-		else {
-			if (novaPosicao.y != 0) novaPosicao.x = 0;
-			novaVelocidade.movendo = true;
-			novaVelocidade = mover(posicao, novaVelocidade, novaPosicao);
-		}
+		if (novaPosicao.y != 0) novaPosicao.x = 0;
+		novaVelocidade = mover(posicao, novaVelocidade, novaPosicao);
 		return novaVelocidade;
 	}
 
@@ -97,8 +93,10 @@ public class ControladorDoJogo {
 		if (Opcoes.controlePorMouse) {
 			novaVelocidade.valor = Mouse.obterDiferenca(velocidadeMaxima);
 		} else {
-			if (Teclado.correr) novaVelocidade.valor = velocidadeMaxima;
-			else novaVelocidade.valor = velocidadeMaxima / 2;
+			if (Teclado.cima || Teclado.baixo || Teclado.direita || Teclado.esquerda) {
+				if (Teclado.correr) novaVelocidade.valor = velocidadeMaxima;
+				else novaVelocidade.valor = velocidadeMaxima / 2;
+			} else novaVelocidade.valor = 0;
 		}
 		return novaVelocidade;
 	}
@@ -209,7 +207,7 @@ public class ControladorDoJogo {
 		Posicao posicao = controladorDaEntidade.obterComponente(entidade, Posicao.class);
 		Velocidade velocidade = controladorDaEntidade.obterComponente(entidade, Velocidade.class);
 		Sprites sprites = controladorDaEntidade.obterComponente(entidade, Sprites.class);
-		System.out.println(posicao + "\n" + velocidade + "\n" + sprites.obterSpriteY(velocidade.movendo));
+		System.out.println(posicao + "\n" + velocidade + "\n" + sprites.obterSpriteY(velocidade.valor));
 		System.out.println("Mapa " + mapa.obterBloco(posicao.x, posicao.y).sprite + "\n");
 
 		// Move a entidade
@@ -217,15 +215,15 @@ public class ControladorDoJogo {
 		Opcoes.controlePorMouse = false;
 		while (cont > 0) {
 			Teclado.atualizar();
-			Teclado.direita = true;
+			if (cont % 2 == 0) Teclado.direita = true;
 			// if (cont % 3 == 0) Teclado.baixo = true;
 			controladorDoJogo.moverJogador(posicao, velocidade);
 			posicao = controladorDaEntidade.obterComponente(entidade, Posicao.class);
 			velocidade = controladorDaEntidade.obterComponente(entidade, Velocidade.class);
 			System.out.println(posicao + "\n" + velocidade);
 			if (velocidade.direcao == 0 || velocidade.direcao == 2)
-				System.out.println(sprites.obterSpriteY(velocidade.movendo));
-			else System.out.println(sprites.obterSpriteX(velocidade.movendo));
+				System.out.println(sprites.obterSpriteY(velocidade.valor));
+			else System.out.println(sprites.obterSpriteX(velocidade.valor));
 			System.out.println("Mapa " + mapa.obterBloco(posicao.x, posicao.y).sprite + "\n");
 			cont--;
 		}

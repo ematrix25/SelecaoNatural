@@ -101,26 +101,22 @@ public abstract class Componente {
 	 * @author Emanuel
 	 */
 	public static class Velocidade extends Componente {
-		public boolean movendo;
 		public int valor, direcao;
 
 		/**
 		 * Gera o objeto Velocidade
 		 */
 		public Velocidade() {
-			this(false, 0, -1);
+			this(0, -1);
 		}
 
 		/**
-		 * Gera o objeto Velocidade com valores de movendo e direcao de
-		 * movimento
+		 * Gera o objeto Velocidade com valor e direcao de movimento
 		 * 
-		 * @param movendo
 		 * @param valor
 		 * @param direcao
 		 */
-		public Velocidade(boolean movendo, int valor, int direcao) {
-			this.movendo = movendo;
+		public Velocidade(int valor, int direcao) {
 			this.valor = valor;
 			this.direcao = direcao;
 		}
@@ -134,9 +130,8 @@ public abstract class Componente {
 		public int hashCode() {
 			final int primo = 31;
 			int resultado = 1;
-			resultado = primo * resultado + direcao;
-			resultado = primo * resultado + (movendo ? 1231 : 1237);
 			resultado = primo * resultado + valor;
+			resultado = primo * resultado + direcao;
 			return resultado;
 		}
 
@@ -170,8 +165,7 @@ public abstract class Componente {
 		 */
 		@Override
 		public String toString() {
-			if (movendo) return "Velocidade = " + valor + " e Direcao = " + direcao;
-			else return "Velocidade = 0 e Direcao = " + direcao;
+			return "Velocidade = " + valor + " e Direcao = " + direcao;
 		}
 	}
 
@@ -181,6 +175,8 @@ public abstract class Componente {
 	 * @author Emanuel
 	 */
 	public static class Sprites extends Componente {
+		private final int LIMITE = 25;
+
 		private Sprite sprites[];
 		private int cor = 0xffffffff;
 		private int contador = 0;
@@ -205,14 +201,16 @@ public abstract class Componente {
 		}
 
 		/**
-		 * Obtem a sprite para o eixo X
+		 * Obtem a sprite para o eixo X dado a velocidade
 		 * 
+		 * @param velocidade
 		 * @return Sprite
 		 */
-		public Sprite obterSpriteX(boolean movendo) {
-			if (movendo) {
-				if (!(contador < 99)) contador = 0;
-				if (contador++ > 55) return sprites[3];
+		public Sprite obterSpriteX(int velocidade) {
+			if (velocidade > 0) {
+				int limite = LIMITE / velocidade;
+				if (!(contador < limite)) contador = 0;
+				if (contador++ > limite / 2) return sprites[3];
 				else return sprites[1];
 			} else {
 				contador = 0;
@@ -221,14 +219,15 @@ public abstract class Componente {
 		}
 
 		/**
-		 * Obtem a sprite para o eixo Y
+		 * Obtem a sprite para o eixo Y dado a velocidade
 		 * 
 		 * @return Sprite
 		 */
-		public Sprite obterSpriteY(boolean movendo) {
-			if (movendo) {
-				if (!(contador < 99)) contador = 0;
-				if (contador++ > 55) return sprites[2];
+		public Sprite obterSpriteY(int velocidade) {
+			if (velocidade > 0) {
+				int limite = LIMITE / velocidade;
+				if (!(contador < limite)) contador = 0;
+				if (contador++ > limite / 2) return sprites[2];
 				return sprites[0];
 			} else {
 				contador = 0;
