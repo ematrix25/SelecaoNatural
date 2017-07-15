@@ -58,9 +58,8 @@ public class Coordenada {
 	public void configurarCoordenada() {
 		int x = gerarInteiro(0, mapa.largura);
 		int y = gerarInteiro(0, mapa.altura);
-		// TODO Arrumar o spawm em bloco sólido
 		if (mapa.obterBloco(x, y).solido) configurarCoordenada();
-		configurarCoordenada(x, y);
+		else configurarCoordenada(x, y);
 	}
 
 	/**
@@ -93,20 +92,5 @@ public class Coordenada {
 	@Override
 	public String toString() {
 		return "(" + x + ", " + y + ")";
-	}
-
-	/**
-	 * Testa a geração das coordenadas
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		Mapa mapa = new Mapa(0, 1024, 1024);
-		Coordenada coordenada = new Coordenada(mapa, 10, 10);
-		System.out.println("Coordenada Base: " + coordenada);
-		for (int i = 0; i < 10; i++) {
-			coordenada.configurarCoordenada();
-			System.out.println("Coordenada " + (i + 1) + ": " + coordenada);
-		}
 	}
 }
