@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.image.BufferedImage;
 
 import sistema.interface_grafica.Painel;
+import sistema.utilitario.TocadorDeMusica;
 
 /**
  * Classe para renderizar a tela do menu
@@ -32,10 +33,14 @@ public class RendDoMenu extends Renderizador {
 
 		int desvio = 20;
 
-		// Renderizar texto da informação do sobre
+		// Renderizar texto da informação sobre o jogo
 		graficos.setColor(Color.white);
 		graficos.setFont(new Font("Verdana", 0, 12));
-		graficos.drawString("Jogo desenvolvido por Emanuel Torres", 10, painel.getHeight() - 20);
+		graficos.drawString("Jogo desenvolvido por Emanuel Torres", 10, painel.getHeight() - 40);
+		// TODO Imprimir o que está sendo tocado com os devidos creditos
+		graficos.drawString("Tocando " + TocadorDeMusica.obterNomeDaMusica() + " de "
+				+ TocadorDeMusica.obterCompositorDaMusica() + " por " + TocadorDeMusica.obterArtistaDaMusica(), 10,
+				painel.getHeight() - 20);
 
 		// Renderizar Botões
 		renderizarBotao("Opções", desvio);

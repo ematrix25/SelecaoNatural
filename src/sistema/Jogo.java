@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import sistema.interface_grafica.Painel;
 import sistema.utilitario.Opcoes;
 import sistema.utilitario.Resolucao;
+import sistema.utilitario.TocadorDeMusica;
 import sistema.utilitario.arquivo.Recurso;
 
 /**
@@ -30,6 +31,7 @@ public class Jogo {
 			public void run() {
 				try {
 					new Jogo().new Janela();
+					new TocadorDeMusica();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
