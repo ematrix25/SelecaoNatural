@@ -251,7 +251,6 @@ public class Painel extends Canvas implements Runnable {
 	 * @param inicial
 	 */
 	public void acaoDoBotao(char inicial) {
-		// TODO Implementar as ações das teclas do jogo aqui
 		switch (inicial) {
 		case 's':
 			voltarParaMenu();

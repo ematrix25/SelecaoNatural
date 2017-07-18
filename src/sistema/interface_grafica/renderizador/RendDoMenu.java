@@ -37,7 +37,6 @@ public class RendDoMenu extends Renderizador {
 		graficos.setColor(Color.white);
 		graficos.setFont(new Font("Verdana", 0, 12));
 		graficos.drawString("Jogo desenvolvido por Emanuel Torres", 10, painel.getHeight() - 40);
-		// TODO Imprimir o que está sendo tocado com os devidos creditos
 		graficos.drawString("Tocando " + TocadorDeMusica.obterNomeDaMusica() + " de "
 				+ TocadorDeMusica.obterCompositorDaMusica() + " por " + TocadorDeMusica.obterArtistaDaMusica(), 10,
 				painel.getHeight() - 20);

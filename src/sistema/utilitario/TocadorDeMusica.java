@@ -76,7 +76,6 @@ public class TocadorDeMusica implements Runnable {
 	 * @return MP3File
 	 */
 	private static MP3File obterMusica() {
-		System.out.println(musicas.get(faixa));
 		try {
 			return new MP3File(musicas.get(faixa));
 		} catch (IOException | TagException e) {
@@ -106,8 +105,6 @@ public class TocadorDeMusica implements Runnable {
 	private void tocar() {
 		MP3Player tocador = new MP3Player(musicas.get(faixa));
 		tocador.play();
-		System.out.println("Tocando " + TocadorDeMusica.obterNomeDaMusica() + " de "
-				+ TocadorDeMusica.obterCompositorDaMusica() + " por " + TocadorDeMusica.obterArtistaDaMusica());
 		while (!tocador.isStopped()) {
 			try {
 				Thread.sleep(5000);

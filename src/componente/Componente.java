@@ -176,7 +176,8 @@ public abstract class Componente {
 	 */
 	public static class Sprites extends Componente {
 		private final int LIMITE = 25;
-
+		
+		//TODO Criar classe de animação de sprites (GP Ep. 87-91)
 		private Sprite sprites[];
 		private int cor = 0xffffffff;
 		private int contador = 0;
