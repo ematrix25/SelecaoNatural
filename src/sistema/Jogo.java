@@ -14,9 +14,10 @@ import sistema.utilitario.TocadorDeMusica;
 import sistema.utilitario.arquivo.Recurso;
 
 /**
- * Inicia todo o processo
+ * Inicia todo o processo do jogo
  * 
  * @author Emanuel
+ * @see GP Ep 93
  */
 public class Jogo {
 

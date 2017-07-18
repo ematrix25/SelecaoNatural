@@ -65,7 +65,7 @@ public class Painel extends Canvas implements Runnable {
 	public int massaCelular = 0, qtdCelulas = 0, pontuacao = 0;
 	public final float MASSA_CELULAR_MAX = 100.0f;
 
-	private int contDeSegundos = 0;
+	public int tempo = 0, contDeSegundos = 0;
 
 	/**
 	 * Inicializa o painel
@@ -103,6 +103,7 @@ public class Painel extends Canvas implements Runnable {
 		final double NANOSEGUNDOS = 1000000000.0;
 		double deltaTempo = 0.0;
 		int quadros = 0, atualizacoes = 0;
+		// Será executado até dar fim de jogo ou abrir o questionário
 		while (true) {
 			requestFocusInWindow();
 			try {
@@ -121,6 +122,7 @@ public class Painel extends Canvas implements Runnable {
 					atualizar();
 					atualizacoes++;
 					deltaTempo--;
+					tempo++;
 				}
 			}
 
@@ -166,14 +168,18 @@ public class Painel extends Canvas implements Runnable {
 	 * Move as entidades no mapa
 	 */
 	private void moverEntidades() {
-		// TODO Implementar movimentos da inteligência artificial
+		// TODO Melhorar os movimentos da inteligência artificial
 		Posicao posicao;
 		Velocidade velocidade;
+		Especime especime;
 		for (int entidade : controladorDaEntidade.obterTodasEntidadesComOComponente(Especime.class)) {
 			posicao = controladorDaEntidade.obterComponente(entidade, Posicao.class);
 			velocidade = controladorDaEntidade.obterComponente(entidade, Velocidade.class);
+			especime = controladorDaEntidade.obterComponente(entidade, Especime.class);
 			if (entidade == controladorDoJogo.obterJogador()) {
-				controladorDoJogo.moverJogador(posicao, velocidade);
+				controladorDoJogo.moverEntidade(true, especime.especie.tipo.movimento, posicao, velocidade);
+			} else if (tempo % (new Random().nextInt(50)+30) == 0) {
+				controladorDoJogo.moverEntidade(false, especime.especie.tipo.movimento, posicao, velocidade);
 			}
 		}
 	}

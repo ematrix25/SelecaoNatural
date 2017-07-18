@@ -6,6 +6,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import componente.Componente;
+import componente.Especime;
 import componente.Componente.Posicao;
 import componente.Componente.Sprites;
 import componente.Componente.Velocidade;
@@ -86,7 +87,9 @@ public class TesteControladorDoJogo {
 		Teclado.direita = true;
 		Posicao posicao = controladorDaEntidade.obterComponente(ID, Posicao.class);
 		Velocidade velocidade = controladorDaEntidade.obterComponente(ID, Velocidade.class);
-		controladorDoJogo.moverJogador(posicao, velocidade);
+		Especime especime = controladorDaEntidade.obterComponente(ID, Especime.class);
+		
+		controladorDoJogo.moverEntidade(true, especime.especie.tipo.movimento,posicao, velocidade);
 	}
 
 	/**

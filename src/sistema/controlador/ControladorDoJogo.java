@@ -1,9 +1,13 @@
 package sistema.controlador;
 
+import java.util.Random;
+
 import componente.Componente;
 import componente.Componente.Posicao;
 import componente.Componente.Sprites;
 import componente.Componente.Velocidade;
+import componente.Especime;
+import componente.Especime.Especie.Movimento;
 import sistema.interface_grafica.renderizador.base_do_jogo.Sprite;
 import sistema.interface_grafica.renderizador.base_do_jogo.mapa.Coordenada;
 import sistema.interface_grafica.renderizador.base_do_jogo.mapa.Mapa;
@@ -67,65 +71,112 @@ public class ControladorDoJogo {
 	}
 
 	/**
-	 * Move o jogador
+	 * Move a entidade
 	 * 
+	 * @param ehJogador
+	 * @param movimento
 	 * @param posicao
 	 * @param velocidade
 	 * @return Velocidade
 	 */
-	public Velocidade moverJogador(Posicao posicao, Velocidade velocidade) {
-		Velocidade novaVelocidade = configurarVelocidade(velocidade);
-		Posicao novaPosicao = configurarPosicao(novaVelocidade);
-		if (novaPosicao.y != 0) novaPosicao.x = 0;
-		novaVelocidade = mover(posicao, novaVelocidade, novaPosicao);
-		return novaVelocidade;
-	}
-
-	/**
-	 * Configura a velocidade conforme a entrada dos perifericos
-	 * 
-	 * @param velocidade
-	 * @return Velocidade
-	 */
-	private Velocidade configurarVelocidade(Velocidade velocidade) {
-		Velocidade novaVelocidade = velocidade;
-		int velocidadeMaxima = 4;
-		if (Opcoes.controlePorMouse) {
-			novaVelocidade.valor = Mouse.obterDiferenca(velocidadeMaxima);
-		} else {
-			if (Teclado.cima || Teclado.baixo || Teclado.direita || Teclado.esquerda) {
-				if (Teclado.correr) novaVelocidade.valor = velocidadeMaxima;
-				else novaVelocidade.valor = velocidadeMaxima / 2;
-			} else novaVelocidade.valor = 0;
+	public Velocidade moverEntidade(boolean ehJogador, Movimento movimento, Posicao posicao, Velocidade velocidade) {
+		Velocidade novaVelocidade = configurarVelocidade(ehJogador, movimento, velocidade);
+		if (novaVelocidade.valor != 0) {
+			Posicao novaPosicao = configurarPosicao(ehJogador, novaVelocidade);
+			if (novaPosicao.y != 0) novaPosicao.x = 0;
+			novaVelocidade = mover(posicao, novaVelocidade, novaPosicao);
 		}
 		return novaVelocidade;
 	}
 
 	/**
+	 * Configura a velocidade conforme a entrada dos perifericos ou da ia
+	 * 
+	 * @param ehJogador
+	 * @param movimento
+	 * @param velocidade
+	 * @return Velocidade
+	 */
+	private Velocidade configurarVelocidade(boolean ehJogador, Movimento movimento, Velocidade velocidade) {
+		Velocidade novaVelocidade = velocidade;
+		int velocidadeMaxima = obterVelocidadeMax(movimento);
+		// Obtem a velocidade do Jogador
+		if (ehJogador) {
+			if (Opcoes.controlePorMouse) {
+				novaVelocidade.valor = Mouse.obterDiferenca(velocidadeMaxima);
+			} else {
+				if (Teclado.cima || Teclado.baixo || Teclado.direita || Teclado.esquerda) {
+					if (Teclado.correr) novaVelocidade.valor = velocidadeMaxima;
+					else novaVelocidade.valor = velocidadeMaxima / 2;
+				} else novaVelocidade.valor = 0;
+			}
+		}
+		// Obtem a velocidade aleatória
+		else novaVelocidade.valor = new Random().nextInt(velocidadeMaxima + 1);
+		return novaVelocidade;
+	}
+
+	/**
+	 * Obtem a velocidade máxima dado o tipo de movimento da entidade
+	 * 
+	 * @param movimento
+	 * @return int
+	 */
+	private int obterVelocidadeMax(Movimento movimento) {
+		switch (movimento) {
+		case Deslizamento:
+			return 1;
+		case Contracao:
+			return 2;
+		case Flagelo:
+			return 4;
+		default:
+			return 0;
+		}
+	}
+
+	/**
 	 * Configura uma posição nova dado a velocidade e a posição almejada
 	 * 
+	 * @param ehJogador
 	 * @param velocidade
 	 * @return Posicao
 	 */
-	private Posicao configurarPosicao(Velocidade velocidade) {
+	private Posicao configurarPosicao(boolean ehJogador, Velocidade velocidade) {
 		Posicao novaPosicao = new Posicao();
-		novaPosicao.x = configurarX(velocidade);
-		novaPosicao.y = configurarY(velocidade);
+		// Obtem a posição x do Jogador
+		if (ehJogador) {
+			novaPosicao.x = configurarX(ehJogador, velocidade);
+			novaPosicao.y = configurarY(ehJogador, velocidade);
+		} else {
+			if (new Random().nextBoolean()) novaPosicao.x = configurarX(ehJogador, velocidade);
+			else novaPosicao.y = configurarY(ehJogador, velocidade);
+		}
 		return novaPosicao;
 	}
 
 	/**
 	 * Configura a posição de X de acordo com a velocidade
 	 * 
+	 * @param ehJogador
 	 * @param velocidade
 	 * @return int
 	 */
-	private int configurarX(Velocidade velocidade) {
+	private int configurarX(boolean ehJogador, Velocidade velocidade) {
 		int xAux = 0;
-		if (Opcoes.controlePorMouse) xAux += Mouse.diferencaX;
+
+		// Obtem a posição x do Jogador
+		if (ehJogador) {
+			if (Opcoes.controlePorMouse) xAux += Mouse.diferencaX;
+			else {
+				if (Teclado.esquerda) xAux -= velocidade.valor;
+				if (Teclado.direita) xAux += velocidade.valor;
+			}
+		}
+		// Obtem a posição aleatória de x
 		else {
-			if (Teclado.esquerda) xAux -= velocidade.valor;
-			if (Teclado.direita) xAux += velocidade.valor;
+			if (new Random().nextBoolean()) xAux -= velocidade.valor;
+			else xAux += velocidade.valor;
 		}
 		return xAux;
 	}
@@ -133,15 +184,25 @@ public class ControladorDoJogo {
 	/**
 	 * Configura a posição de Y de acordo com a velocidade
 	 * 
+	 * @param ehJogador
 	 * @param velocidade
 	 * @return int
 	 */
-	private int configurarY(Velocidade velocidade) {
+	private int configurarY(boolean ehJogador, Velocidade velocidade) {
 		int yAux = 0;
-		if (Opcoes.controlePorMouse) yAux += Mouse.diferencaY;
+
+		// Obtem a posição xy do Jogador
+		if (ehJogador) {
+			if (Opcoes.controlePorMouse) yAux += Mouse.diferencaY;
+			else {
+				if (Teclado.cima) yAux -= velocidade.valor;
+				if (Teclado.baixo) yAux += velocidade.valor;
+			}
+		}
+		// Obtem a posição aleatória de y
 		else {
-			if (Teclado.cima) yAux -= velocidade.valor;
-			if (Teclado.baixo) yAux += velocidade.valor;
+			if (new Random().nextBoolean()) yAux -= velocidade.valor;
+			else yAux += velocidade.valor;
 		}
 		return yAux;
 	}
@@ -209,6 +270,7 @@ public class ControladorDoJogo {
 		Sprites sprites = controladorDaEntidade.obterComponente(entidade, Sprites.class);
 		System.out.println(posicao + "\n" + velocidade + "\n" + sprites.obterSpriteY(velocidade.valor));
 		System.out.println("Mapa " + mapa.obterBloco(posicao.x, posicao.y).sprite + "\n");
+		Especime especime = controladorDaEntidade.obterComponente(entidade, Especime.class);
 
 		// Move a entidade
 		int cont = 40;
@@ -217,7 +279,7 @@ public class ControladorDoJogo {
 			Teclado.atualizar();
 			if (cont % 2 == 0) Teclado.direita = true;
 			// if (cont % 3 == 0) Teclado.baixo = true;
-			controladorDoJogo.moverJogador(posicao, velocidade);
+			controladorDoJogo.moverEntidade(true, especime.especie.tipo.movimento, posicao, velocidade);
 			posicao = controladorDaEntidade.obterComponente(entidade, Posicao.class);
 			velocidade = controladorDaEntidade.obterComponente(entidade, Velocidade.class);
 			System.out.println(posicao + "\n" + velocidade);
