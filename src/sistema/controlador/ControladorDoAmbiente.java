@@ -35,6 +35,17 @@ public class ControladorDoAmbiente {
 	}
 
 	/**
+	 * Recria o Ambiente com temperatura menos quente
+	 * 
+	 * @param tempMax
+	 * @param tempMin
+	 */
+	public void atualizarAmbiente(int tempMax, int tempMin) {
+		ambiente.tempMax = gerarTempAleatoria(false, ambiente.tempMax);
+		ambiente.tempMin = gerarTempAleatoria(false, ambiente.tempMin);
+	}
+
+	/**
 	 * Gera temperatura aleatoria dada por uma temperatura base
 	 * 
 	 * @param ehSoma
@@ -45,17 +56,6 @@ public class ControladorDoAmbiente {
 		final int aux = new Random().nextInt(tempBase / 10);
 		if (ehSoma) return tempBase + aux;
 		else return tempBase - aux;
-	}
-
-	/**
-	 * Recria o Ambiente com temperatura menos quente
-	 * 
-	 * @param tempMax
-	 * @param tempMin
-	 */
-	public void atualizarAmbiente(int tempMax, int tempMin) {
-		ambiente.tempMax = gerarTempAleatoria(false, ambiente.tempMax);
-		ambiente.tempMin = gerarTempAleatoria(false, ambiente.tempMin);
 	}
 
 	/**
@@ -75,18 +75,32 @@ public class ControladorDoAmbiente {
 	}
 
 	/**
-	 * Armazena os dados da Especie
+	 * Cria uma Especie do Ambiente
 	 * 
-	 * @param especie
 	 * @param ID
-	 * @return boolean
+	 * @return Especie
 	 */
-	private boolean guardarEspecie(int especie, int ID) {
-		List<Integer> especimes = new ArrayList<Integer>();
-		especimes.add(ID);
-		if (ambiente.especies.containsKey(especie)) return false;
-		ambiente.especies.put(especie, especimes);
-		return true;
+	public Especie criarEspecie(int ID, Forma forma) {
+		if (forma != null)
+			return criarEspecie(ID, forma, ambiente.tempMax, ambiente.tempMin);
+		else
+			return criarEspecie(ID, ambiente.tempMax, ambiente.tempMin);
+	}
+
+	/**
+	 * Cria as Especies do Ambiente
+	 * 
+	 * @param IDs
+	 * @return Especie[]
+	 */
+	public Especie[] criarEspecies(int[] IDs) {
+		Especie especies[] = new Especie[7];
+		especies[0] = criarEspecie(IDs[0], Forma.Coccus, ambiente.tempMax, ambiente.tempMin);
+		for (int i = 1; i <= 3; i++) {
+			especies[i * 2 - 1] = criarEspecie(IDs[i * 2 - 1], Forma.Bacillus, ambiente.tempMax, ambiente.tempMin);
+			especies[i * 2] = criarEspecie(IDs[i * 2], ambiente.tempMax, ambiente.tempMin);
+		}
+		return especies;
 	}
 
 	/**
@@ -122,19 +136,18 @@ public class ControladorDoAmbiente {
 	}
 
 	/**
-	 * Cria as Especies do Ambiente
+	 * Armazena os dados da Especie
 	 * 
-	 * @param IDs
-	 * @return Especie[]
+	 * @param especie
+	 * @param ID
+	 * @return boolean
 	 */
-	public Especie[] criarEspecies(int[] IDs) {
-		Especie especies[] = new Especie[7];
-		especies[0] = criarEspecie(IDs[0], Forma.Coccus, ambiente.tempMax, ambiente.tempMin);
-		for (int i = 1; i <= 3; i++) {
-			especies[i * 2 - 1] = criarEspecie(IDs[i * 2 - 1], Forma.Bacillus, ambiente.tempMax, ambiente.tempMin);
-			especies[i * 2] = criarEspecie(IDs[i * 2], ambiente.tempMax, ambiente.tempMin);
-		}
-		return especies;
+	private boolean guardarEspecie(int especie, int ID) {
+		List<Integer> especimes = new ArrayList<Integer>();
+		especimes.add(ID);
+		if (ambiente.especies.containsKey(especie)) return false;
+		ambiente.especies.put(especie, especimes);
+		return true;
 	}
 
 	/**
@@ -145,12 +158,11 @@ public class ControladorDoAmbiente {
 	 */
 	public Integer obterEspecie(int especime) {
 		for (Integer especie : ambiente.especies.keySet()) {
-			if(ambiente.especies.get(especie).contains(especime))
-				return especie;
+			if (ambiente.especies.get(especie).contains(especime)) return especie;
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Obtem os Especimes da Especie do Ambiente por um Especime
 	 * 

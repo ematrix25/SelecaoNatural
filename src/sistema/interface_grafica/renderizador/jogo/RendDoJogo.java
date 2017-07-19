@@ -30,7 +30,6 @@ public class RendDoJogo extends Renderizador {
 	private Tela tela;
 
 	private ControladorDaEntidade controladorDaEntidade;
-	@SuppressWarnings("unused")
 	private ControladorDoAmbiente controladorDoAmbiente;
 	private ControladorDoMapa controladorDoJogo;
 

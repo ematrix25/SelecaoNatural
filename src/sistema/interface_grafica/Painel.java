@@ -17,6 +17,9 @@ import sistema.Jogo.Janela;
 import sistema.controlador.ControladorDaEntidade;
 import sistema.controlador.ControladorDoAmbiente;
 import sistema.controlador.ControladorDoQuestionario;
+import sistema.controlador.jogo.ControladorDaEntidadeMovel;
+import sistema.controlador.jogo.ControladorDaIA;
+import sistema.controlador.jogo.ControladorDoJogador;
 import sistema.controlador.jogo.ControladorDoMapa;
 import sistema.interface_grafica.renderizador.RendDeOpcoes;
 import sistema.interface_grafica.renderizador.RendDoMenu;
@@ -50,7 +53,13 @@ public class Painel extends Canvas implements Runnable {
 
 	private ControladorDaEntidade controladorDaEntidade;
 	private ControladorDoAmbiente controladorDoAmbiente;
-	private ControladorDoMapa controladorDoJogo;
+
+	private ControladorDoMapa controladorDoMapa;
+
+	private ControladorDaEntidadeMovel controladorDaEntMovel;
+	private ControladorDoJogador controladorDoJogador;
+	private ControladorDaIA controladorDaIA;
+
 	private ControladorDoQuestionario controladorDoQuest;
 
 	private RendDoMenu rendDoMenu;
@@ -157,9 +166,10 @@ public class Painel extends Canvas implements Runnable {
 	private void atualizar() {
 		Teclado.atualizar();
 		Mouse.atualizar(getWidth(), getHeight());
-		massaCelular = controladorDaEntidade.obterComponente(controladorDoJogo.obterJogador(), Especime.class).massa;
-		qtdCelulas = controladorDoAmbiente.obterEspecimesPorEspecime(controladorDoJogo.obterJogador()).size();
-		pontuacao = controladorDoJogo.obterPontuacao();
+		int jogador = controladorDoJogador.obterID();
+		massaCelular = controladorDaEntidade.obterComponente(jogador, Especime.class).massa;
+		qtdCelulas = controladorDoAmbiente.obterEspecimesPorEspecime(jogador).size();
+		pontuacao = controladorDoJogador.obterPontuacao();
 
 		moverEntidades();
 	}
@@ -169,17 +179,12 @@ public class Painel extends Canvas implements Runnable {
 	 */
 	private void moverEntidades() {
 		// TODO Melhorar os movimentos da inteligência artificial
-		Posicao posicao;
-		Velocidade velocidade;
-		Especime especime;
 		for (int entidade : controladorDaEntidade.obterTodasEntidadesComOComponente(Especime.class)) {
-			posicao = controladorDaEntidade.obterComponente(entidade, Posicao.class);
-			velocidade = controladorDaEntidade.obterComponente(entidade, Velocidade.class);
-			especime = controladorDaEntidade.obterComponente(entidade, Especime.class);
-			if (entidade == controladorDoJogo.obterJogador()) {
-				controladorDoJogo.moverEntidade(true, especime.especie.tipo.movimento, posicao, velocidade);
-			} else if (tempo % (new Random().nextInt(50)+30) == 0) {
-				controladorDoJogo.moverEntidade(false, especime.especie.tipo.movimento, posicao, velocidade);
+			controladorDaEntMovel.configurarEntidade(entidade, controladorDaEntidade.obterComponentes(entidade));
+			if (entidade == controladorDoJogador.obterID()) {
+				controladorDoMapa.moverEntidade(true, controladorDaEntMovel.obterEntidade());
+			} else if (tempo % (new Random().nextInt(50) + 30) == 0) {
+				controladorDoMapa.moverEntidade(false, controladorDaEntMovel.obterEntidade());
 			}
 		}
 	}
@@ -264,7 +269,7 @@ public class Painel extends Canvas implements Runnable {
 		case 'S':
 			if (telaAtiva == 'S') {
 				int selecao = rendDaSelecao.obterSelecao();
-				controladorDoJogo.configurarJogador(selecao);
+				controladorDoJogador.configurarID(selecao);
 				mapearEntidades();
 				voltarParaJogo();
 			} else if (telaAtiva == 'O') {
@@ -320,11 +325,16 @@ public class Painel extends Canvas implements Runnable {
 		controladorDaEntidade = new ControladorDaEntidade();
 		controladorDoAmbiente = new ControladorDoAmbiente();
 		gerarAmbiente();
+
 		mapa = new Mapa("/mapas/caverna.png", 0);
-		controladorDoJogo = new ControladorDoMapa(mapa);
+		controladorDoMapa = new ControladorDoMapa(mapa);
+
+		controladorDaEntMovel = new ControladorDaEntidadeMovel();
+		controladorDoJogador = new ControladorDoJogador();
+		controladorDaIA = new ControladorDaIA();
 
 		rendDaSelecao = new RendDaSelecao(this, controladorDaEntidade, controladorDoAmbiente);
-		rendDoJogo = new RendDoJogo(this, controladorDaEntidade, controladorDoAmbiente, controladorDoJogo);
+		rendDoJogo = new RendDoJogo(this, controladorDaEntidade, controladorDoAmbiente, controladorDoMapa);
 	}
 
 	/**
@@ -347,7 +357,7 @@ public class Painel extends Canvas implements Runnable {
 	private void mapearEntidades() {
 		Coordenada coordenada = new Coordenada(mapa);
 		for (int entidade : controladorDaEntidade.obterTodasEntidadesComOComponente(Especime.class)) {
-			if (entidade == controladorDoJogo.obterJogador())
+			if (entidade == controladorDoJogador.obterID())
 				coordenada.configurarCoordenada(mapa.largura / 2, mapa.altura / 2 - 1);
 			else {
 				while (controladorDaEntidade.obterEntidadeComOComponente(new Posicao(coordenada)) != null)

@@ -2,22 +2,18 @@ package sistema.controlador.jogo;
 
 import java.util.Random;
 
-import componente.Componente;
 import componente.Componente.Posicao;
-import componente.Componente.Sprites;
 import componente.Componente.Velocidade;
-import componente.Especime;
+import componente.Especime.Especie;
 import componente.Especime.Especie.Movimento;
-import sistema.controlador.ControladorDaEntidade;
-import sistema.interface_grafica.renderizador.jogo.base.Sprite;
-import sistema.interface_grafica.renderizador.jogo.base.mapa.Coordenada;
+import sistema.controlador.jogo.ControladorDaEntidadeMovel.Entidade;
 import sistema.interface_grafica.renderizador.jogo.base.mapa.Mapa;
 import sistema.utilitario.Opcoes;
 import sistema.utilitario.periferico.Mouse;
 import sistema.utilitario.periferico.Teclado;
 
 /**
- * Classe que controla os dados do jogo
+ * Classe que controla os dados do mapa do jogo
  * 
  * @author Emanuel
  */
@@ -27,7 +23,7 @@ public class ControladorDoMapa {
 	private int pontuacao;
 
 	/**
-	 * Cria o objeto controlador do jogo dado o mapa
+	 * Cria o objeto controlador do mapa dado o mapa
 	 * 
 	 * @param mapa
 	 */
@@ -75,17 +71,16 @@ public class ControladorDoMapa {
 	 * Move a entidade
 	 * 
 	 * @param ehJogador
-	 * @param movimento
-	 * @param posicao
-	 * @param velocidade
+	 * @param entidade
 	 * @return Velocidade
 	 */
-	public Velocidade moverEntidade(boolean ehJogador, Movimento movimento, Posicao posicao, Velocidade velocidade) {
-		Velocidade novaVelocidade = configurarVelocidade(ehJogador, movimento, velocidade);
+	public Velocidade moverEntidade(boolean ehJogador, Entidade entidade) {
+		Especie especie = entidade.especime.especie;
+		Velocidade novaVelocidade = configurarVelocidade(ehJogador, especie.tipo.movimento, entidade.velocidade);
 		if (novaVelocidade.valor != 0) {
 			Posicao novaPosicao = configurarPosicao(ehJogador, novaVelocidade);
 			if (novaPosicao.y != 0) novaPosicao.x = 0;
-			novaVelocidade = mover(posicao, novaVelocidade, novaPosicao);
+			novaVelocidade = mover(entidade.posicao, novaVelocidade, novaPosicao);
 		}
 		return novaVelocidade;
 	}
@@ -246,49 +241,5 @@ public class ControladorDoMapa {
 			if (mapa.obterBloco(xAux, yAux).solido) colidiu = true;
 		}
 		return colidiu;
-	}
-
-	/**
-	 * Método principal para testar o Controlador do Jogo
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		ControladorDaEntidade controladorDaEntidade = new ControladorDaEntidade();
-		Mapa mapa = new Mapa("/mapas/caverna.png", 0);
-		ControladorDoMapa controladorDoJogo = new ControladorDoMapa(mapa);
-
-		// Gera a entidade na coordenada referente ao mapa
-		int entidade = controladorDaEntidade.criarEntidade();
-		Coordenada coordenada = new Coordenada(mapa, 8, 7);
-		controladorDaEntidade.adicionarComponente(entidade, (Componente) new Posicao(coordenada));
-		controladorDaEntidade.adicionarComponente(entidade, (Componente) new Velocidade());
-		controladorDaEntidade.adicionarComponente(entidade, (Componente) new Sprites(Sprite.coccus));
-
-		// Obtem os dados iniciais
-		Posicao posicao = controladorDaEntidade.obterComponente(entidade, Posicao.class);
-		Velocidade velocidade = controladorDaEntidade.obterComponente(entidade, Velocidade.class);
-		Sprites sprites = controladorDaEntidade.obterComponente(entidade, Sprites.class);
-		System.out.println(posicao + "\n" + velocidade + "\n" + sprites.obterSpriteY(velocidade.valor));
-		System.out.println("Mapa " + mapa.obterBloco(posicao.x, posicao.y).sprite + "\n");
-		Especime especime = controladorDaEntidade.obterComponente(entidade, Especime.class);
-
-		// Move a entidade
-		int cont = 40;
-		Opcoes.controlePorMouse = false;
-		while (cont > 0) {
-			Teclado.atualizar();
-			if (cont % 2 == 0) Teclado.direita = true;
-			// if (cont % 3 == 0) Teclado.baixo = true;
-			controladorDoJogo.moverEntidade(true, especime.especie.tipo.movimento, posicao, velocidade);
-			posicao = controladorDaEntidade.obterComponente(entidade, Posicao.class);
-			velocidade = controladorDaEntidade.obterComponente(entidade, Velocidade.class);
-			System.out.println(posicao + "\n" + velocidade);
-			if (velocidade.direcao == 0 || velocidade.direcao == 2)
-				System.out.println(sprites.obterSpriteY(velocidade.valor));
-			else System.out.println(sprites.obterSpriteX(velocidade.valor));
-			System.out.println("Mapa " + mapa.obterBloco(posicao.x, posicao.y).sprite + "\n");
-			cont--;
-		}
 	}
 }

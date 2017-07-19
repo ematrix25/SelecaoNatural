@@ -13,7 +13,11 @@ import componente.Componente.Posicao;
 import componente.Componente.Sprites;
 import componente.Componente.Velocidade;
 import componente.Especime;
+import componente.Especime.Especie;
+import componente.Especime.Especie.Forma;
 import sistema.controlador.ControladorDaEntidade;
+import sistema.controlador.ControladorDoAmbiente;
+import sistema.controlador.jogo.ControladorDaEntidadeMovel;
 import sistema.controlador.jogo.ControladorDoMapa;
 import sistema.interface_grafica.renderizador.jogo.base.Sprite;
 import sistema.interface_grafica.renderizador.jogo.base.mapa.Coordenada;
@@ -28,7 +32,9 @@ import sistema.utilitario.periferico.Teclado;
  */
 public class TesteControladorDoJogo {
 	private ControladorDaEntidade controladorDaEntidade;
-	private ControladorDoMapa controladorDoJogo;
+	private ControladorDoAmbiente controladorDoAmbiente;
+	private ControladorDoMapa controladorDoMapa;
+	private ControladorDaEntidadeMovel controladorDaEntMovel;
 	private Mapa mapa;
 
 	/**
@@ -36,9 +42,11 @@ public class TesteControladorDoJogo {
 	 */
 	@Before
 	public void iniciar() {
+		controladorDoAmbiente = new ControladorDoAmbiente();
 		controladorDaEntidade = new ControladorDaEntidade();
 		mapa = new Mapa("/mapas/caverna.png", 0);
-		controladorDoJogo = new ControladorDoMapa(mapa);
+		controladorDoMapa = new ControladorDoMapa(mapa);
+		controladorDaEntMovel = new ControladorDaEntidadeMovel();
 	}
 
 	/**
@@ -49,6 +57,8 @@ public class TesteControladorDoJogo {
 	private int criarEntidade() {
 		int ID = controladorDaEntidade.criarEntidade();
 		Coordenada coordenada = new Coordenada(mapa, 8, 7);
+		Especie especie = controladorDoAmbiente.criarEspecie(ID, Forma.Coccus);
+		controladorDaEntidade.adicionarComponente(ID, (Componente) new Especime(especie));
 		controladorDaEntidade.adicionarComponente(ID, (Componente) new Posicao(coordenada));
 		controladorDaEntidade.adicionarComponente(ID, (Componente) new Velocidade());
 		controladorDaEntidade.adicionarComponente(ID, new Sprites(Sprite.coccus));
@@ -63,7 +73,7 @@ public class TesteControladorDoJogo {
 		assertTrue(controladorDaEntidade.entidades.isEmpty());
 		int ID = criarEntidade();
 		assertFalse(controladorDaEntidade.entidades.isEmpty());
-		assertEquals(controladorDaEntidade.obterComponentes(ID).size(), 3);
+		assertEquals(controladorDaEntidade.obterComponentes(ID).size(), 4);
 	}
 
 	/**
@@ -88,11 +98,9 @@ public class TesteControladorDoJogo {
 	private void moverEntidade(int ID) {
 		Opcoes.controlePorMouse = false;
 		Teclado.direita = true;
-		Posicao posicao = controladorDaEntidade.obterComponente(ID, Posicao.class);
-		Velocidade velocidade = controladorDaEntidade.obterComponente(ID, Velocidade.class);
-		Especime especime = controladorDaEntidade.obterComponente(ID, Especime.class);
-		
-		controladorDoJogo.moverEntidade(true, especime.especie.tipo.movimento,posicao, velocidade);
+
+		controladorDaEntMovel.configurarEntidade(ID, controladorDaEntidade.obterComponentes(ID));
+		controladorDoMapa.moverEntidade(true, controladorDaEntMovel.obterEntidade());
 	}
 
 	/**
@@ -105,8 +113,9 @@ public class TesteControladorDoJogo {
 		posicao = new Posicao(posicao.x, posicao.y);
 		Velocidade velocidade = controladorDaEntidade.obterComponente(ID, Velocidade.class);
 		velocidade = new Velocidade(velocidade.valor, velocidade.direcao);
-		assertEquals(controladorDaEntidade.obterComponentes(ID).size(), 3);
+		assertEquals(controladorDaEntidade.obterComponentes(ID).size(), 4);
 		moverEntidade(ID);
+		//TODO Verificar porque não mudou de posição
 		assertNotEquals(controladorDaEntidade.obterComponente(ID, Posicao.class), posicao);
 		assertNotEquals(controladorDaEntidade.obterComponente(ID, Velocidade.class), velocidade);
 	}
