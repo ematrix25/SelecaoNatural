@@ -1,7 +1,7 @@
-package sistema.interface_grafica.renderizador.base_do_jogo.mapa;
+package sistema.interface_grafica.renderizador.jogo.base.mapa;
 
-import sistema.interface_grafica.renderizador.base_do_jogo.Sprite;
-import sistema.interface_grafica.renderizador.base_do_jogo.Tela;
+import sistema.interface_grafica.renderizador.jogo.base.Sprite;
+import sistema.interface_grafica.renderizador.jogo.base.Tela;
 
 /**
  * Classe do bloco que compõe o mapa

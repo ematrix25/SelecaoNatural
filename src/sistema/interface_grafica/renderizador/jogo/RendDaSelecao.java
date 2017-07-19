@@ -1,4 +1,4 @@
-package sistema.interface_grafica.renderizador;
+package sistema.interface_grafica.renderizador.jogo;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -10,6 +10,7 @@ import sistema.controlador.ControladorDaEntidade;
 import sistema.controlador.ControladorDoAmbiente;
 import sistema.controlador.ControladorDoAmbiente.Ambiente;
 import sistema.interface_grafica.Painel;
+import sistema.interface_grafica.renderizador.Renderizador;
 
 /**
  * Classe para renderizar a tela de seleção das espécies

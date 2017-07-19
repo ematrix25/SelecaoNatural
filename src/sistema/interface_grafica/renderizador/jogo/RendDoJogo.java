@@ -1,20 +1,21 @@
-package sistema.interface_grafica.renderizador;
+package sistema.interface_grafica.renderizador.jogo;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
-import componente.Especime;
 import componente.Componente.Posicao;
 import componente.Componente.Sprites;
 import componente.Componente.Velocidade;
+import componente.Especime;
 import sistema.controlador.ControladorDaEntidade;
 import sistema.controlador.ControladorDoAmbiente;
-import sistema.controlador.ControladorDoJogo;
+import sistema.controlador.jogo.ControladorDoMapa;
 import sistema.interface_grafica.Painel;
-import sistema.interface_grafica.renderizador.base_do_jogo.Tela;
-import sistema.interface_grafica.renderizador.base_do_jogo.mapa.Mapa;
+import sistema.interface_grafica.renderizador.Renderizador;
+import sistema.interface_grafica.renderizador.jogo.base.Tela;
+import sistema.interface_grafica.renderizador.jogo.base.mapa.Mapa;
 import sistema.utilitario.periferico.Mouse;
 import sistema.utilitario.periferico.Teclado;
 
@@ -23,15 +24,15 @@ import sistema.utilitario.periferico.Teclado;
  * 
  * @author Emanuel
  */
-@SuppressWarnings("unused")
 public class RendDoJogo extends Renderizador {
 	private final int ESCALA = 2;
 
 	private Tela tela;
 
 	private ControladorDaEntidade controladorDaEntidade;
+	@SuppressWarnings("unused")
 	private ControladorDoAmbiente controladorDoAmbiente;
-	private ControladorDoJogo controladorDoJogo;
+	private ControladorDoMapa controladorDoJogo;
 
 	/**
 	 * Cria o objeto para renderização do jogo
@@ -41,7 +42,7 @@ public class RendDoJogo extends Renderizador {
 	 * @param contDoAmbiente
 	 */
 	public RendDoJogo(Painel painel, ControladorDaEntidade contDaEntidade, ControladorDoAmbiente contDoAmbiente,
-			ControladorDoJogo contDoJogo) {
+			ControladorDoMapa contDoJogo) {
 		super(painel);
 		controladorDaEntidade = contDaEntidade;
 		controladorDoAmbiente = contDoAmbiente;

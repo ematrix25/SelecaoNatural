@@ -1,8 +1,8 @@
-package sistema.interface_grafica.renderizador.base_do_jogo;
+package sistema.interface_grafica.renderizador.jogo.base;
 
 import java.util.Random;
 
-import sistema.interface_grafica.renderizador.base_do_jogo.mapa.Bloco;
+import sistema.interface_grafica.renderizador.jogo.base.mapa.Bloco;
 
 /**
  * Tela do Jogo

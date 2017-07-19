@@ -1,20 +1,23 @@
 package controlador;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 import componente.Componente;
-import componente.Especime;
 import componente.Componente.Posicao;
 import componente.Componente.Sprites;
 import componente.Componente.Velocidade;
+import componente.Especime;
 import sistema.controlador.ControladorDaEntidade;
-import sistema.controlador.ControladorDoJogo;
-import sistema.interface_grafica.renderizador.base_do_jogo.Sprite;
-import sistema.interface_grafica.renderizador.base_do_jogo.mapa.Coordenada;
-import sistema.interface_grafica.renderizador.base_do_jogo.mapa.Mapa;
+import sistema.controlador.jogo.ControladorDoMapa;
+import sistema.interface_grafica.renderizador.jogo.base.Sprite;
+import sistema.interface_grafica.renderizador.jogo.base.mapa.Coordenada;
+import sistema.interface_grafica.renderizador.jogo.base.mapa.Mapa;
 import sistema.utilitario.Opcoes;
 import sistema.utilitario.periferico.Teclado;
 
@@ -25,7 +28,7 @@ import sistema.utilitario.periferico.Teclado;
  */
 public class TesteControladorDoJogo {
 	private ControladorDaEntidade controladorDaEntidade;
-	private ControladorDoJogo controladorDoJogo;
+	private ControladorDoMapa controladorDoJogo;
 	private Mapa mapa;
 
 	/**
@@ -35,7 +38,7 @@ public class TesteControladorDoJogo {
 	public void iniciar() {
 		controladorDaEntidade = new ControladorDaEntidade();
 		mapa = new Mapa("/mapas/caverna.png", 0);
-		controladorDoJogo = new ControladorDoJogo(mapa);
+		controladorDoJogo = new ControladorDoMapa(mapa);
 	}
 
 	/**

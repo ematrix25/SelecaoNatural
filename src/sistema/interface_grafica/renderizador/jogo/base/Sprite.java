@@ -1,4 +1,4 @@
-package sistema.interface_grafica.renderizador.base_do_jogo;
+package sistema.interface_grafica.renderizador.jogo.base;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;

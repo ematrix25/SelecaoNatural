@@ -1,4 +1,4 @@
-package sistema.interface_grafica.renderizador.base_do_jogo.mapa;
+package sistema.interface_grafica.renderizador.jogo.base.mapa;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
-import sistema.interface_grafica.renderizador.base_do_jogo.Tela;
+import sistema.interface_grafica.renderizador.jogo.base.Tela;
 import sistema.utilitario.arquivo.Recurso;
 
 /**

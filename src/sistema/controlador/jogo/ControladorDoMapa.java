@@ -1,4 +1,4 @@
-package sistema.controlador;
+package sistema.controlador.jogo;
 
 import java.util.Random;
 
@@ -8,9 +8,10 @@ import componente.Componente.Sprites;
 import componente.Componente.Velocidade;
 import componente.Especime;
 import componente.Especime.Especie.Movimento;
-import sistema.interface_grafica.renderizador.base_do_jogo.Sprite;
-import sistema.interface_grafica.renderizador.base_do_jogo.mapa.Coordenada;
-import sistema.interface_grafica.renderizador.base_do_jogo.mapa.Mapa;
+import sistema.controlador.ControladorDaEntidade;
+import sistema.interface_grafica.renderizador.jogo.base.Sprite;
+import sistema.interface_grafica.renderizador.jogo.base.mapa.Coordenada;
+import sistema.interface_grafica.renderizador.jogo.base.mapa.Mapa;
 import sistema.utilitario.Opcoes;
 import sistema.utilitario.periferico.Mouse;
 import sistema.utilitario.periferico.Teclado;
@@ -20,7 +21,7 @@ import sistema.utilitario.periferico.Teclado;
  * 
  * @author Emanuel
  */
-public class ControladorDoJogo {
+public class ControladorDoMapa {
 	private Mapa mapa;
 	private int jogador;
 	private int pontuacao;
@@ -30,7 +31,7 @@ public class ControladorDoJogo {
 	 * 
 	 * @param mapa
 	 */
-	public ControladorDoJogo(Mapa mapa) {
+	public ControladorDoMapa(Mapa mapa) {
 		this.mapa = mapa;
 	}
 
@@ -255,7 +256,7 @@ public class ControladorDoJogo {
 	public static void main(String[] args) {
 		ControladorDaEntidade controladorDaEntidade = new ControladorDaEntidade();
 		Mapa mapa = new Mapa("/mapas/caverna.png", 0);
-		ControladorDoJogo controladorDoJogo = new ControladorDoJogo(mapa);
+		ControladorDoMapa controladorDoJogo = new ControladorDoMapa(mapa);
 
 		// Gera a entidade na coordenada referente ao mapa
 		int entidade = controladorDaEntidade.criarEntidade();

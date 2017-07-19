@@ -2,8 +2,8 @@ package componente;
 
 import java.util.Arrays;
 
-import sistema.interface_grafica.renderizador.base_do_jogo.Sprite;
-import sistema.interface_grafica.renderizador.base_do_jogo.mapa.Coordenada;
+import sistema.interface_grafica.renderizador.jogo.base.Sprite;
+import sistema.interface_grafica.renderizador.jogo.base.mapa.Coordenada;
 
 /**
  * Abstrai classes de componentes que vão adicionar funcionalidades à entidade

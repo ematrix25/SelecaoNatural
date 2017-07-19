@@ -16,16 +16,16 @@ import componente.Especime.Especie;
 import sistema.Jogo.Janela;
 import sistema.controlador.ControladorDaEntidade;
 import sistema.controlador.ControladorDoAmbiente;
-import sistema.controlador.ControladorDoJogo;
 import sistema.controlador.ControladorDoQuestionario;
-import sistema.interface_grafica.renderizador.RendDaSelecao;
+import sistema.controlador.jogo.ControladorDoMapa;
 import sistema.interface_grafica.renderizador.RendDeOpcoes;
-import sistema.interface_grafica.renderizador.RendDoJogo;
 import sistema.interface_grafica.renderizador.RendDoMenu;
 import sistema.interface_grafica.renderizador.RendDoQuest;
-import sistema.interface_grafica.renderizador.base_do_jogo.Sprite;
-import sistema.interface_grafica.renderizador.base_do_jogo.mapa.Coordenada;
-import sistema.interface_grafica.renderizador.base_do_jogo.mapa.Mapa;
+import sistema.interface_grafica.renderizador.jogo.RendDaSelecao;
+import sistema.interface_grafica.renderizador.jogo.RendDoJogo;
+import sistema.interface_grafica.renderizador.jogo.base.Sprite;
+import sistema.interface_grafica.renderizador.jogo.base.mapa.Coordenada;
+import sistema.interface_grafica.renderizador.jogo.base.mapa.Mapa;
 import sistema.utilitario.Opcoes;
 import sistema.utilitario.arquivo.Arquivo.ArquivoDoQuest;
 import sistema.utilitario.periferico.Mouse;
@@ -50,7 +50,7 @@ public class Painel extends Canvas implements Runnable {
 
 	private ControladorDaEntidade controladorDaEntidade;
 	private ControladorDoAmbiente controladorDoAmbiente;
-	private ControladorDoJogo controladorDoJogo;
+	private ControladorDoMapa controladorDoJogo;
 	private ControladorDoQuestionario controladorDoQuest;
 
 	private RendDoMenu rendDoMenu;
@@ -321,7 +321,7 @@ public class Painel extends Canvas implements Runnable {
 		controladorDoAmbiente = new ControladorDoAmbiente();
 		gerarAmbiente();
 		mapa = new Mapa("/mapas/caverna.png", 0);
-		controladorDoJogo = new ControladorDoJogo(mapa);
+		controladorDoJogo = new ControladorDoMapa(mapa);
 
 		rendDaSelecao = new RendDaSelecao(this, controladorDaEntidade, controladorDoAmbiente);
 		rendDoJogo = new RendDoJogo(this, controladorDaEntidade, controladorDoAmbiente, controladorDoJogo);
