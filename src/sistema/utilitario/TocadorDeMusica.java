@@ -112,6 +112,5 @@ public class TocadorDeMusica implements Runnable {
 				e.printStackTrace();
 			}
 		}
-		System.out.println();
 	}
 }

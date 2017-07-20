@@ -52,9 +52,6 @@ public class Opcoes {
 			larguraPadrao = Resolucao.larguras[2];
 			alturaPadrao = Resolucao.alturas[2];
 			break;
-		default:
-			System.out.println("Opção de tamanho de tela não reconhecido");
-			break;
 		}
 	}
 }

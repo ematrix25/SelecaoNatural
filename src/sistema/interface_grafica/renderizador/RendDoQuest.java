@@ -180,7 +180,6 @@ public class RendDoQuest extends Renderizador {
 				if (respostas[indice + i] != -1) qtdSelecionado++;
 			} else if (respostas[i] != -1) qtdSelecionado++;
 		}
-		System.out.println(limite + "<->" + qtdSelecionado);
 		return qtdSelecionado == limite;
 	}
 }

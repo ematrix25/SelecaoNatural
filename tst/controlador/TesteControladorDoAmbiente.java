@@ -54,7 +54,6 @@ public class TesteControladorDoAmbiente {
 		controladorDoAmbiente.atualizarAmbiente(450, 400);
 		tempMax = controladorDoAmbiente.obterAmbiente().obterTempMax();
 		tempMin = controladorDoAmbiente.obterAmbiente().obterTempMin();
-		System.out.println(tempMax + " e " + tempMin);
 		assertFalse(tempMax == 400 && tempMin == 350);
 	}
 

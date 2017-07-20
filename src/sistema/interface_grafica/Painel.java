@@ -215,9 +215,6 @@ public class Painel extends Canvas implements Runnable {
 		case 'Q':
 			imagem = rendDoQuest.renderizar();
 			break;
-		default:
-			System.out.println("Tela desconhecida");
-			break;
 		}
 		graficos.drawImage(imagem, 0, 0, getWidth(), getHeight(), null);
 		graficos.dispose();
@@ -296,9 +293,6 @@ public class Painel extends Canvas implements Runnable {
 			janela.redimensionar(1.1f);
 			telaAtiva = 'O';
 			break;
-		default:
-			System.out.println("Botao clicado não reconhecido");
-			break;
 		}
 	}
 
@@ -363,7 +357,6 @@ public class Painel extends Canvas implements Runnable {
 				while (controladorDaEntidade.obterEntidadeComOComponente(new Posicao(coordenada)) != null)
 					coordenada.configurarCoordenada();
 			}
-			System.out.println(coordenada);
 			controladorDaEntidade.adicionarComponente(entidade, (Componente) new Posicao(coordenada));
 			controladorDaEntidade.adicionarComponente(entidade, (Componente) new Velocidade());
 			Especie especie = controladorDaEntidade.obterComponente(entidade, Especime.class).especie;
