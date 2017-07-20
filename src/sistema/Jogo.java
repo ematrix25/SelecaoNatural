@@ -21,6 +21,11 @@ import sistema.utilitario.arquivo.Recurso;
  */
 public class Jogo {
 
+	/**
+	 * Inicia o jogo
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		// Inicializa as possiveis resoluções para a configuração
 		Resolucao.iniciar();

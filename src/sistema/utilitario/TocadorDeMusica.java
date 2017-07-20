@@ -114,13 +114,4 @@ public class TocadorDeMusica implements Runnable {
 		}
 		System.out.println();
 	}
-
-	/**
-	 * Testa o tocador
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		new TocadorDeMusica();
-	}
 }

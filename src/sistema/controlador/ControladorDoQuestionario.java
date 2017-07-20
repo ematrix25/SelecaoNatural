@@ -78,21 +78,4 @@ public class ControladorDoQuestionario {
 			this.opcoes = opcoes;
 		}
 	}
-
-	/**
-	 * Testa o controlador do questionário
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		ControladorDoQuestionario controladorDoQuest = new ControladorDoQuestionario();
-		for (int i = 0; i < controladorDoQuest.obterQtdPerguntas(); i++) {
-			System.out.println(controladorDoQuest.obterPergunta(i));
-			System.out.print(controladorDoQuest.obterResposta(0));
-			for (int j = 1; j < controladorDoQuest.obterQtdRespostas(); j++) {
-				System.out.print(" - " + controladorDoQuest.obterResposta(j));
-			}
-			System.out.println("\n");
-		}
-	}
 }

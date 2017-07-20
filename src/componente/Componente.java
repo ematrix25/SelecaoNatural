@@ -37,6 +37,15 @@ public abstract class Componente {
 		}
 
 		/**
+		 * Gera o objeto Posicao dada uma posicao
+		 * 
+		 * @param posicao
+		 */
+		public Posicao(Posicao posicao) {
+			this(posicao.x, posicao.y);
+		}
+
+		/**
 		 * Gera o objeto Posicao com x e y
 		 * 
 		 * @param x
@@ -108,6 +117,15 @@ public abstract class Componente {
 		 */
 		public Velocidade() {
 			this(0, -1);
+		}
+
+		/**
+		 * Gera o objeto Velocidade dada uma velocidade
+		 * 
+		 * @param velocidade
+		 */
+		public Velocidade(Velocidade velocidade) {
+			this(velocidade.valor, velocidade.direcao);
 		}
 
 		/**

@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Set;
 
 import componente.Componente;
-import componente.Componente.Posicao;
 
 /**
  * Gerencia as Entidades e seus Componentes
@@ -178,22 +177,5 @@ public class ControladorDaEntidade {
 			List<T> result = new ArrayList<T>((java.util.Collection<T>) base.values());
 			return result;
 		}
-	}
-
-	/**
-	 * Método principal para testar o Controlador da Entidade
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		ControladorDaEntidade controladorDaEntidade = new ControladorDaEntidade();
-
-		int entidade = controladorDaEntidade.criarEntidade();
-
-		controladorDaEntidade.adicionarComponente(entidade, new Posicao());
-		controladorDaEntidade.obterComponente(entidade, Posicao.class).x = 5;
-		controladorDaEntidade.obterComponente(entidade, Posicao.class).y = 10;
-
-		System.out.println("Valor da posicao é: " + controladorDaEntidade.obterComponente(entidade, Posicao.class));
 	}
 }

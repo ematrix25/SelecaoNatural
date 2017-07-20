@@ -50,22 +50,6 @@ public class TesteControladorDoJogo {
 	}
 
 	/**
-	 * Método auxiliar para testar a criação de Entidade
-	 *
-	 * @return int
-	 */
-	private int criarEntidade() {
-		int ID = controladorDaEntidade.criarEntidade();
-		Coordenada coordenada = new Coordenada(mapa, 8, 7);
-		Especie especie = controladorDoAmbiente.criarEspecie(ID, Forma.Coccus);
-		controladorDaEntidade.adicionarComponente(ID, (Componente) new Especime(especie));
-		controladorDaEntidade.adicionarComponente(ID, (Componente) new Posicao(coordenada));
-		controladorDaEntidade.adicionarComponente(ID, (Componente) new Velocidade());
-		controladorDaEntidade.adicionarComponente(ID, new Sprites(Sprite.coccus));
-		return ID;
-	}
-
-	/**
 	 * Testa se o sistema cria a Entidade com seus componentes
 	 */
 	@Test
@@ -91,6 +75,36 @@ public class TesteControladorDoJogo {
 	}
 
 	/**
+	 * Testa se os componentes mudaram quando moveram
+	 */
+	@Test
+	public void testarMovimentacaoDaEntidade() {
+		int ID = criarEntidade();
+		Posicao posicao = new Posicao(controladorDaEntidade.obterComponente(ID, Posicao.class));
+		Velocidade velocidade = new Velocidade(controladorDaEntidade.obterComponente(ID, Velocidade.class));
+		assertEquals(controladorDaEntidade.obterComponentes(ID).size(), 4);
+		moverEntidade(ID);
+		assertNotEquals(controladorDaEntidade.obterComponente(ID, Posicao.class), posicao);
+		assertNotEquals(controladorDaEntidade.obterComponente(ID, Velocidade.class), velocidade);
+	}
+
+	/**
+	 * Método auxiliar para testar a criação de Entidade
+	 *
+	 * @return int
+	 */
+	private int criarEntidade() {
+		int ID = controladorDaEntidade.criarEntidade();
+		Coordenada coordenada = new Coordenada(mapa, 8, 7);
+		Especie especie = controladorDoAmbiente.criarEspecie(ID, Forma.Coccus);
+		controladorDaEntidade.adicionarComponente(ID, (Componente) new Especime(especie));
+		controladorDaEntidade.adicionarComponente(ID, (Componente) new Posicao(coordenada));
+		controladorDaEntidade.adicionarComponente(ID, (Componente) new Velocidade());
+		controladorDaEntidade.adicionarComponente(ID, new Sprites(Sprite.coccus));
+		return ID;
+	}
+
+	/**
 	 * Método auxiliar para testar a movimentação da Entidade
 	 *
 	 * @param ID
@@ -98,25 +112,9 @@ public class TesteControladorDoJogo {
 	private void moverEntidade(int ID) {
 		Opcoes.controlePorMouse = false;
 		Teclado.direita = true;
+		Teclado.correr = true;
 
 		controladorDaEntMovel.configurarEntidade(ID, controladorDaEntidade.obterComponentes(ID));
 		controladorDoMapa.moverEntidade(true, controladorDaEntMovel.obterEntidade());
-	}
-
-	/**
-	 * Testa se os componentes mudaram quando moveram
-	 */
-	@Test
-	public void testarMovimentacaoDaEntidade() {
-		int ID = criarEntidade();
-		Posicao posicao = controladorDaEntidade.obterComponente(ID, Posicao.class);
-		posicao = new Posicao(posicao.x, posicao.y);
-		Velocidade velocidade = controladorDaEntidade.obterComponente(ID, Velocidade.class);
-		velocidade = new Velocidade(velocidade.valor, velocidade.direcao);
-		assertEquals(controladorDaEntidade.obterComponentes(ID).size(), 4);
-		moverEntidade(ID);
-		//TODO Verificar porque não mudou de posição
-		assertNotEquals(controladorDaEntidade.obterComponente(ID, Posicao.class), posicao);
-		assertNotEquals(controladorDaEntidade.obterComponente(ID, Velocidade.class), velocidade);
 	}
 }

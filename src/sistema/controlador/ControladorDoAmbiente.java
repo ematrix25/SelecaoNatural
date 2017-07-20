@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import componente.Componente;
-import componente.Especime;
 import componente.Especime.Especie;
 import componente.Especime.Especie.Forma;
 
@@ -289,65 +287,5 @@ public class ControladorDoAmbiente {
 		public String toString() {
 			return "[" + tempMax + ", " + tempMin + "]";
 		}
-	}
-
-	/**
-	 * Método principal para testar o Controlador do Ambiente
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		ControladorDaEntidade controladorDaEntidade = new ControladorDaEntidade();
-		ControladorDoAmbiente controladorDoAmbiente = new ControladorDoAmbiente();
-		System.out.println("Ambiente:\n" + controladorDoAmbiente.obterAmbiente());
-		System.out.println();
-
-		// Atualizar Ambiente
-		controladorDoAmbiente.atualizarAmbiente(450, 400);
-		System.out.println("Ambiente atualizado:\n" + controladorDoAmbiente.obterAmbiente());
-		System.out.println();
-
-		// Atualizar Temperatura
-		if (controladorDoAmbiente.atualizarTemp(true, 20))
-			System.out.println("Temperatura ambiente é " + controladorDoAmbiente.obterAmbiente().obterTemp() + "K");
-		else System.out.println("Temperatura não foi atualizada");
-		System.out.println();
-
-		// Popular Ambiente
-		int entidades[] = new int[7];
-		for (int i = 0; i < 7; i++) {
-			entidades[i] = controladorDaEntidade.criarEntidade();
-		}
-		Especie[] especies = controladorDoAmbiente.criarEspecies(entidades);
-		for (int i = 0; i < 7; i++) {
-			controladorDaEntidade.adicionarComponente(entidades[i], (Componente) new Especime(especies[i]));
-		}
-		System.out.println("Ambiente populado:\n" + controladorDoAmbiente.obterAmbiente().especies);
-		System.out.println();
-
-		// Atualizar População - Adicionar Especime
-		System.out.println("Adicionando o Especime 8");
-		int entidade = controladorDaEntidade.criarEntidade();
-		controladorDaEntidade.adicionarComponente(entidade, new Especime(especies[5]));
-		controladorDoAmbiente.atualizarEspecie(entidade, true, especies[5].obterCodigo());
-		System.out.println(controladorDoAmbiente.obterAmbiente().especies);
-		System.out.println();
-
-		// Atualizar População - Remover Especime
-		System.out.println("Removendo o Especime 6");
-		entidade = controladorDaEntidade.obterEntidadeComOComponente(new Especime(especies[5]));
-		controladorDaEntidade.removerEntidade(entidade);
-		controladorDoAmbiente.atualizarEspecie(entidade, false, especies[5].obterCodigo());
-		System.out.println(controladorDoAmbiente.obterAmbiente().especies);
-		System.out.println();
-
-		// Remover Especie
-		System.out.println("Removendo a Especie do Especime 6");
-		for (Integer ID : controladorDoAmbiente.obterEspecimesPorEspecie(especies[5].obterCodigo())) {
-			controladorDaEntidade.removerEntidade(ID);
-		}
-		controladorDoAmbiente.removerEspecie(especies[5].obterCodigo());
-		System.out.println(controladorDoAmbiente.obterAmbiente().especies);
-		System.out.println();
 	}
 }
