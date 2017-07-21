@@ -6,9 +6,9 @@ import java.awt.image.BufferedImage;
 
 import componente.Especime;
 import componente.Especime.Especie;
-import sistema.controlador.ControladorDaEntidade;
-import sistema.controlador.ControladorDoAmbiente;
-import sistema.controlador.ControladorDoAmbiente.Ambiente;
+import sistema.controlador.ContDaEntidade;
+import sistema.controlador.ContDoAmbiente;
+import sistema.controlador.ContDoAmbiente.Ambiente;
 import sistema.interface_grafica.Painel;
 import sistema.interface_grafica.renderizador.Renderizador;
 
@@ -18,8 +18,8 @@ import sistema.interface_grafica.renderizador.Renderizador;
  * @author Emanuel
  */
 public class RendDaSelecao extends Renderizador {
-	private ControladorDaEntidade controladorDaEntidade;
-	private ControladorDoAmbiente controladorDoAmbiente;
+	private ContDaEntidade contDaEntidade;
+	private ContDoAmbiente contDoAmbiente;
 
 	private int selecao = -1;
 
@@ -30,10 +30,10 @@ public class RendDaSelecao extends Renderizador {
 	 * @param contDaEntidade
 	 * @param contDoAmbiente
 	 */
-	public RendDaSelecao(Painel painel, ControladorDaEntidade contDaEntidade, ControladorDoAmbiente contDoAmbiente) {
+	public RendDaSelecao(Painel painel, ContDaEntidade contDaEntidade, ContDoAmbiente contDoAmbiente) {
 		super(painel);
-		controladorDaEntidade = contDaEntidade;
-		controladorDoAmbiente = contDoAmbiente;
+		this.contDaEntidade = contDaEntidade;
+		this.contDoAmbiente = contDoAmbiente;
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class RendDaSelecao extends Renderizador {
 	public BufferedImage renderizar() {
 		carregarGraficos("/imagens/selecao.jpg");
 
-		Ambiente ambiente = controladorDoAmbiente.obterAmbiente();
+		Ambiente ambiente = contDoAmbiente.obterAmbiente();
 		String dados[] = { "Temperatura Máx. = " + ambiente.obterTempMax(),
 				"Temperatura Mínima = " + ambiente.obterTempMin() };
 		renderizarDados("Ambiente", dados, 50);
@@ -62,8 +62,8 @@ public class RendDaSelecao extends Renderizador {
 		Integer especime;
 		Especie especie;
 		for (int i = 1; i <= 3; i++) {
-			especime = controladorDoAmbiente.obterEspecimesPorEspecie(ambiente.obterEspecieID(i * 2)).get(0);
-			especie = controladorDaEntidade.obterComponente(especime, Especime.class).especie;
+			especime = contDoAmbiente.obterEspecimesPorEspecie(ambiente.obterEspecieID(i * 2)).get(0);
+			especie = contDaEntidade.obterComponente(especime, Especime.class).especie;
 			opcoes[i - 1] = "Nome = " + especie.nome + ":Tipo = " + especie.tipo + ":Temperatura Máx. = "
 					+ especie.tempMaxSup + ":Temperatura Mínima = " + especie.tempMinSup;
 		}

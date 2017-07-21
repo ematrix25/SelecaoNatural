@@ -9,9 +9,12 @@ import componente.Componente.Posicao;
 import componente.Componente.Sprites;
 import componente.Componente.Velocidade;
 import componente.Especime;
-import sistema.controlador.ControladorDaEntidade;
-import sistema.controlador.ControladorDoAmbiente;
-import sistema.controlador.jogo.ControladorDoMapa;
+import sistema.controlador.ContDaEntidade;
+import sistema.controlador.ContDoAmbiente;
+import sistema.controlador.jogo.ContDaEntMovel;
+import sistema.controlador.jogo.ContDaIA;
+import sistema.controlador.jogo.ContDoJogador;
+import sistema.controlador.jogo.ContDoMapa;
 import sistema.interface_grafica.Painel;
 import sistema.interface_grafica.renderizador.Renderizador;
 import sistema.interface_grafica.renderizador.jogo.base.Tela;
@@ -29,9 +32,14 @@ public class RendDoJogo extends Renderizador {
 
 	private Tela tela;
 
-	private ControladorDaEntidade controladorDaEntidade;
-	private ControladorDoAmbiente controladorDoAmbiente;
-	private ControladorDoMapa controladorDoJogo;
+	private ContDaEntidade contDaEntidade;
+	private ContDoAmbiente contDoAmbiente;
+
+	private ContDoMapa contDoMapa;
+
+	private ContDaEntMovel contDaEntMovel;
+	private ContDoJogador contDoJogador;
+	private ContDaIA contDaIA;
 
 	/**
 	 * Cria o objeto para renderização do jogo
@@ -39,13 +47,20 @@ public class RendDoJogo extends Renderizador {
 	 * @param painel
 	 * @param contDaEntidade
 	 * @param contDoAmbiente
+	 * @param contDoMapa
+	 * @param contDaEntMovel
+	 * @param contDoJogador
+	 * @param contDaIA
 	 */
-	public RendDoJogo(Painel painel, ControladorDaEntidade contDaEntidade, ControladorDoAmbiente contDoAmbiente,
-			ControladorDoMapa contDoJogo) {
+	public RendDoJogo(Painel painel, ContDaEntidade contDaEntidade, ContDoAmbiente contDoAmbiente,
+			ContDoMapa contDoMapa, ContDaEntMovel contDaEntMovel, ContDoJogador contDoJogador, ContDaIA contDaIA) {
 		super(painel);
-		controladorDaEntidade = contDaEntidade;
-		controladorDoAmbiente = contDoAmbiente;
-		controladorDoJogo = contDoJogo;
+		this.contDaEntidade = contDaEntidade;
+		this.contDoAmbiente = contDoAmbiente;
+		this.contDoMapa = contDoMapa;
+		this.contDaEntMovel = contDaEntMovel;
+		this.contDoJogador = contDoJogador;
+		this.contDaIA = contDaIA;
 
 		tela = new Tela(painel.getWidth() / ESCALA, (painel.getHeight() - 30) / ESCALA);
 	}
@@ -134,7 +149,7 @@ public class RendDoJogo extends Renderizador {
 
 			graficos.setColor(Color.white);
 			graficos.drawString("X: " + Mouse.obterDesvioX() + ", Y: " + Mouse.obterDesvioY(), 20, 100);
-			Posicao posicao = controladorDaEntidade.obterComponente(controladorDoJogo.obterJogador(), Posicao.class);
+			Posicao posicao = contDaEntidade.obterComponente(contDoJogador.obterID(), Posicao.class);
 			graficos.drawString("X: " + posicao.x + ", Y: " + posicao.y, 20, 120);
 		}
 	}
@@ -143,10 +158,11 @@ public class RendDoJogo extends Renderizador {
 	 * Renderiza o mapa em relação a posição do jogador
 	 */
 	private void renderizarMapa() {
-		Posicao posicao = controladorDaEntidade.obterComponente(controladorDoJogo.obterJogador(), Posicao.class);
+		int id = contDoJogador.obterID();
+		Posicao posicao = contDaEntidade.obterComponente(id, Posicao.class);
 		int rolagemX = posicao.x - tela.largura / 2;
 		int rolagemY = posicao.y - tela.altura / 2;
-		Mapa mapa = controladorDoJogo.obterMapa();
+		Mapa mapa = contDoMapa.obterMapa();
 		mapa.renderizar(rolagemX, rolagemY, tela);
 	}
 
@@ -158,16 +174,17 @@ public class RendDoJogo extends Renderizador {
 		Velocidade velocidade;
 		Sprites sprites;
 		int invertido;
-		for (int entidade : controladorDaEntidade.obterTodasEntidadesComOComponente(Especime.class)) {
-			posicao = controladorDaEntidade.obterComponente(entidade, Posicao.class);
-			velocidade = controladorDaEntidade.obterComponente(entidade, Velocidade.class);
-			sprites = controladorDaEntidade.obterComponente(entidade, Sprites.class);
+		for (int entidade : contDaEntidade.obterTodasEntidadesComOComponente(Especime.class)) {
+			posicao = contDaEntidade.obterComponente(entidade, Posicao.class);
+			velocidade = contDaEntidade.obterComponente(entidade, Velocidade.class);
+			sprites = contDaEntidade.obterComponente(entidade, Sprites.class);
 			invertido = 0;
 			if (velocidade.direcao == 2) invertido = 2;
 			if (velocidade.direcao == 3) invertido = 1;
-			if (velocidade.direcao % 2 == 0)
-				tela.renderizarEspecime(posicao.x, posicao.y, sprites.obterSpriteY(velocidade.valor), sprites.obterCor(), invertido);
-			else tela.renderizarEspecime(posicao.x, posicao.y, sprites.obterSpriteX(velocidade.valor), sprites.obterCor(), invertido);
+			if (velocidade.direcao % 2 == 0) tela.renderizarEspecime(posicao.x, posicao.y,
+					sprites.obterSpriteY(velocidade.valor), sprites.obterCor(), invertido);
+			else tela.renderizarEspecime(posicao.x, posicao.y, sprites.obterSpriteX(velocidade.valor),
+					sprites.obterCor(), invertido);
 		}
 	}
 }

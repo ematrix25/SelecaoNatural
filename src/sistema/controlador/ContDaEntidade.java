@@ -14,7 +14,7 @@ import componente.Componente;
  * 
  * @author Emanuel
  */
-public class ControladorDaEntidade {
+public class ContDaEntidade {
 	public int menorIDNaoAssociada = 1;
 	public List<Integer> entidades;
 	public HashMap<Class<?>, HashMap<Integer, ? extends Componente>> baseDeComponentes;
@@ -22,7 +22,7 @@ public class ControladorDaEntidade {
 	/**
 	 * Cria o objeto para controlar Entidades
 	 */
-	public ControladorDaEntidade() {
+	public ContDaEntidade() {
 		entidades = new LinkedList<Integer>();
 		baseDeComponentes = new HashMap<Class<?>, HashMap<Integer, ? extends Componente>>();
 	}

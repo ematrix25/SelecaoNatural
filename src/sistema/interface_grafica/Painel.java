@@ -14,13 +14,14 @@ import componente.Componente.Velocidade;
 import componente.Especime;
 import componente.Especime.Especie;
 import sistema.Jogo.Janela;
-import sistema.controlador.ControladorDaEntidade;
-import sistema.controlador.ControladorDoAmbiente;
-import sistema.controlador.ControladorDoQuestionario;
-import sistema.controlador.jogo.ControladorDaEntidadeMovel;
-import sistema.controlador.jogo.ControladorDaIA;
-import sistema.controlador.jogo.ControladorDoJogador;
-import sistema.controlador.jogo.ControladorDoMapa;
+import sistema.controlador.ContDaEntidade;
+import sistema.controlador.ContDoAmbiente;
+import sistema.controlador.ContDoQuestionario;
+import sistema.controlador.jogo.ContDaEntMovel;
+import sistema.controlador.jogo.ContDaEntMovel.Entidade;
+import sistema.controlador.jogo.ContDaIA;
+import sistema.controlador.jogo.ContDoJogador;
+import sistema.controlador.jogo.ContDoMapa;
 import sistema.interface_grafica.renderizador.RendDeOpcoes;
 import sistema.interface_grafica.renderizador.RendDoMenu;
 import sistema.interface_grafica.renderizador.RendDoQuest;
@@ -51,16 +52,16 @@ public class Painel extends Canvas implements Runnable {
 
 	private Mapa mapa;
 
-	private ControladorDaEntidade controladorDaEntidade;
-	private ControladorDoAmbiente controladorDoAmbiente;
+	private ContDaEntidade contDaEntidade;
+	private ContDoAmbiente contDoAmbiente;
 
-	private ControladorDoMapa controladorDoMapa;
+	private ContDoMapa contDoMapa;
 
-	private ControladorDaEntidadeMovel controladorDaEntMovel;
-	private ControladorDoJogador controladorDoJogador;
-	private ControladorDaIA controladorDaIA;
+	private ContDaEntMovel contDaEntMovel;
+	private ContDoJogador contDoJogador;
+	private ContDaIA contDaIA;
 
-	private ControladorDoQuestionario controladorDoQuest;
+	private ContDoQuestionario controladorDoQuest;
 
 	private RendDoMenu rendDoMenu;
 	private RendDeOpcoes rendDeOpcoes;
@@ -151,7 +152,7 @@ public class Painel extends Canvas implements Runnable {
 					contDeSegundos++;
 					if (contDeSegundos > 600) {
 						janela.redimensionar(1.5f);
-						controladorDoQuest = new ControladorDoQuestionario();
+						controladorDoQuest = new ContDoQuestionario();
 						rendDoQuest = new RendDoQuest(this, controladorDoQuest);
 						telaAtiva = 'Q';
 					}
@@ -166,10 +167,10 @@ public class Painel extends Canvas implements Runnable {
 	private void atualizar() {
 		Teclado.atualizar();
 		Mouse.atualizar(getWidth(), getHeight());
-		int jogador = controladorDoJogador.obterID();
-		massaCelular = controladorDaEntidade.obterComponente(jogador, Especime.class).massa;
-		qtdCelulas = controladorDoAmbiente.obterEspecimesPorEspecime(jogador).size();
-		pontuacao = controladorDoJogador.obterPontuacao();
+		int jogador = contDoJogador.obterID();
+		massaCelular = contDaEntidade.obterComponente(jogador, Especime.class).massa;
+		qtdCelulas = contDoAmbiente.obterEspecimesPorEspecime(jogador).size();
+		pontuacao = contDoJogador.obterPontuacao();
 
 		moverEntidades();
 	}
@@ -179,12 +180,16 @@ public class Painel extends Canvas implements Runnable {
 	 */
 	private void moverEntidades() {
 		// TODO Melhorar os movimentos da inteligência artificial
-		for (int entidade : controladorDaEntidade.obterTodasEntidadesComOComponente(Especime.class)) {
-			controladorDaEntMovel.configurarEntidade(entidade, controladorDaEntidade.obterComponentes(entidade));
-			if (entidade == controladorDoJogador.obterID()) {
-				controladorDoMapa.moverEntidade(true, controladorDaEntMovel.obterEntidade());
+		Entidade entidade;
+		int velocidadeMax;
+		for (int id : contDaEntidade.obterTodasEntidadesComOComponente(Especime.class)) {
+			contDaEntMovel.configurarEntidade(id, contDaEntidade.obterComponentes(id));
+			entidade = contDaEntMovel.obterEntidade();
+			velocidadeMax = contDoMapa.obterVelocidadeMax(entidade.especime.especie.tipo.movimento);
+			if (id == contDoJogador.obterID()) {
+				contDoMapa.moverEntidade(contDoJogador.obterMovimentacao(velocidadeMax), contDoJogador.obterDirecao(), entidade);
 			} else if (tempo % (new Random().nextInt(50) + 30) == 0) {
-				controladorDoMapa.moverEntidade(false, controladorDaEntMovel.obterEntidade());
+				contDoMapa.moverEntidade(contDaIA.obterMovimentacao(velocidadeMax), contDaIA.obterDirecao(), entidade);
 			}
 		}
 	}
@@ -266,7 +271,7 @@ public class Painel extends Canvas implements Runnable {
 		case 'S':
 			if (telaAtiva == 'S') {
 				int selecao = rendDaSelecao.obterSelecao();
-				controladorDoJogador.configurarID(selecao);
+				contDoJogador.configurarID(selecao);
 				mapearEntidades();
 				voltarParaJogo();
 			} else if (telaAtiva == 'O') {
@@ -316,19 +321,20 @@ public class Painel extends Canvas implements Runnable {
 	 * Inicia o jogo
 	 */
 	private void iniciarJogo() {
-		controladorDaEntidade = new ControladorDaEntidade();
-		controladorDoAmbiente = new ControladorDoAmbiente();
+		contDaEntidade = new ContDaEntidade();
+		contDoAmbiente = new ContDoAmbiente();
 		gerarAmbiente();
 
 		mapa = new Mapa("/mapas/caverna.png", 0);
-		controladorDoMapa = new ControladorDoMapa(mapa);
+		contDoMapa = new ContDoMapa(mapa);
 
-		controladorDaEntMovel = new ControladorDaEntidadeMovel();
-		controladorDoJogador = new ControladorDoJogador();
-		controladorDaIA = new ControladorDaIA();
+		contDaEntMovel = new ContDaEntMovel();
+		contDoJogador = new ContDoJogador();
+		contDaIA = new ContDaIA();
 
-		rendDaSelecao = new RendDaSelecao(this, controladorDaEntidade, controladorDoAmbiente);
-		rendDoJogo = new RendDoJogo(this, controladorDaEntidade, controladorDoAmbiente, controladorDoMapa);
+		rendDaSelecao = new RendDaSelecao(this, contDaEntidade, contDoAmbiente);
+		rendDoJogo = new RendDoJogo(this, contDaEntidade, contDoAmbiente, contDoMapa, contDaEntMovel, contDoJogador,
+				contDaIA);
 	}
 
 	/**
@@ -337,11 +343,11 @@ public class Painel extends Canvas implements Runnable {
 	private void gerarAmbiente() {
 		int entidades[] = new int[7];
 		for (int i = 0; i < 7; i++) {
-			entidades[i] = controladorDaEntidade.criarEntidade();
+			entidades[i] = contDaEntidade.criarEntidade();
 		}
-		Especie[] especies = controladorDoAmbiente.criarEspecies(entidades);
+		Especie[] especies = contDoAmbiente.criarEspecies(entidades);
 		for (int i = 0; i < 7; i++) {
-			controladorDaEntidade.adicionarComponente(entidades[i], (Componente) new Especime(especies[i]));
+			contDaEntidade.adicionarComponente(entidades[i], (Componente) new Especime(especies[i]));
 		}
 	}
 
@@ -350,28 +356,26 @@ public class Painel extends Canvas implements Runnable {
 	 */
 	private void mapearEntidades() {
 		Coordenada coordenada = new Coordenada(mapa);
-		for (int entidade : controladorDaEntidade.obterTodasEntidadesComOComponente(Especime.class)) {
-			if (entidade == controladorDoJogador.obterID())
+		for (int entidade : contDaEntidade.obterTodasEntidadesComOComponente(Especime.class)) {
+			if (entidade == contDoJogador.obterID())
 				coordenada.configurarCoordenada(mapa.largura / 2, mapa.altura / 2 - 1);
 			else {
-				while (controladorDaEntidade.obterEntidadeComOComponente(new Posicao(coordenada)) != null)
+				while (contDaEntidade.obterEntidadeComOComponente(new Posicao(coordenada)) != null)
 					coordenada.configurarCoordenada();
 			}
-			controladorDaEntidade.adicionarComponente(entidade, (Componente) new Posicao(coordenada));
-			controladorDaEntidade.adicionarComponente(entidade, (Componente) new Velocidade());
-			Especie especie = controladorDaEntidade.obterComponente(entidade, Especime.class).especie;
+			System.out.println(coordenada);
+			contDaEntidade.adicionarComponente(entidade, (Componente) new Posicao(coordenada));
+			contDaEntidade.adicionarComponente(entidade, (Componente) new Velocidade());
+			Especie especie = contDaEntidade.obterComponente(entidade, Especime.class).especie;
 			switch (especie.tipo.forma) {
 			case Coccus:
-				controladorDaEntidade.adicionarComponente(entidade,
-						(Componente) new Sprites(Sprite.coccus, gerarCor()));
+				contDaEntidade.adicionarComponente(entidade, (Componente) new Sprites(Sprite.coccus, gerarCor()));
 				break;
 			case Bacillus:
-				controladorDaEntidade.adicionarComponente(entidade,
-						(Componente) new Sprites(Sprite.bacillus, gerarCor()));
+				contDaEntidade.adicionarComponente(entidade, (Componente) new Sprites(Sprite.bacillus, gerarCor()));
 				break;
 			case Spiral:
-				controladorDaEntidade.adicionarComponente(entidade,
-						(Componente) new Sprites(Sprite.spiral, gerarCor()));
+				contDaEntidade.adicionarComponente(entidade, (Componente) new Sprites(Sprite.spiral, gerarCor()));
 				break;
 			}
 		}

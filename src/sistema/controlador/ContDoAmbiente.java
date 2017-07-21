@@ -13,13 +13,13 @@ import componente.Especime.Especie.Forma;
  * 
  * @author Emanuel
  */
-public class ControladorDoAmbiente {
+public class ContDoAmbiente {
 	private Ambiente ambiente;
 
 	/**
 	 * Cria o objeto Controlador Do Ambiente
 	 */
-	public ControladorDoAmbiente() {
+	public ContDoAmbiente() {
 		ambiente = new Ambiente(400, 350);
 	}
 

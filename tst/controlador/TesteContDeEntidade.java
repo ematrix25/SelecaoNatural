@@ -8,15 +8,15 @@ import org.junit.Before;
 import org.junit.Test;
 
 import componente.Componente.Posicao;
-import sistema.controlador.ControladorDaEntidade;
+import sistema.controlador.ContDaEntidade;
 
 /**
  * Testa o bom funcionamento do sistema do Controlador Da Entidade
  * 
  * @author Emanuel
  */
-public class TesteControladorDeEntidade {
-	private ControladorDaEntidade controladorDaEntidade;
+public class TesteContDeEntidade {
+	private ContDaEntidade contDaEntidade;
 	private int ID;
 	private Posicao posicao;
 
@@ -27,7 +27,7 @@ public class TesteControladorDeEntidade {
 	 */
 	@Before
 	public void iniciar() throws Exception {
-		controladorDaEntidade = new ControladorDaEntidade();
+		contDaEntidade = new ContDaEntidade();
 		ID = 0;
 		posicao = new Posicao(1, 1);
 	}
@@ -36,7 +36,7 @@ public class TesteControladorDeEntidade {
 	 * Método auxiliar para testar a criação de Entidade
 	 */
 	private void criarEntidade() {
-		ID = controladorDaEntidade.criarEntidade();
+		ID = contDaEntidade.criarEntidade();
 	}
 
 	/**
@@ -44,10 +44,10 @@ public class TesteControladorDeEntidade {
 	 */
 	@Test
 	public void testarCriarEntidade() {
-		assertTrue(controladorDaEntidade.entidades.isEmpty());
+		assertTrue(contDaEntidade.entidades.isEmpty());
 		criarEntidade();
-		assertFalse(controladorDaEntidade.entidades.isEmpty());
-		assertEquals(new Integer(ID), controladorDaEntidade.entidades.get(0));
+		assertFalse(contDaEntidade.entidades.isEmpty());
+		assertEquals(new Integer(ID), contDaEntidade.entidades.get(0));
 	}
 
 	/**
@@ -58,9 +58,9 @@ public class TesteControladorDeEntidade {
 		criarEntidade();
 
 		// Avaliação em si
-		assertTrue(controladorDaEntidade.baseDeComponentes.isEmpty());
-		assertTrue(controladorDaEntidade.adicionarComponente(ID, posicao));
-		assertFalse(controladorDaEntidade.baseDeComponentes.isEmpty());
+		assertTrue(contDaEntidade.baseDeComponentes.isEmpty());
+		assertTrue(contDaEntidade.adicionarComponente(ID, posicao));
+		assertFalse(contDaEntidade.baseDeComponentes.isEmpty());
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class TesteControladorDeEntidade {
 	 */
 	private void adicionarComponente() {
 		criarEntidade();
-		controladorDaEntidade.adicionarComponente(ID, posicao);
+		contDaEntidade.adicionarComponente(ID, posicao);
 	}
 
 	/**
@@ -79,9 +79,9 @@ public class TesteControladorDeEntidade {
 		adicionarComponente();
 
 		// Avaliação em si
-		assertFalse(controladorDaEntidade.baseDeComponentes.isEmpty());
-		assertEquals(posicao, controladorDaEntidade.obterComponente(ID, Posicao.class));
-		assertFalse(controladorDaEntidade.baseDeComponentes.isEmpty());
+		assertFalse(contDaEntidade.baseDeComponentes.isEmpty());
+		assertEquals(posicao, contDaEntidade.obterComponente(ID, Posicao.class));
+		assertFalse(contDaEntidade.baseDeComponentes.isEmpty());
 	}
 
 	/**
@@ -92,9 +92,9 @@ public class TesteControladorDeEntidade {
 		adicionarComponente();
 
 		// Avaliação em si
-		assertFalse(controladorDaEntidade.entidades.isEmpty());
-		assertFalse(controladorDaEntidade.baseDeComponentes.isEmpty());
-		assertTrue(controladorDaEntidade.obterTodasEntidadesComOComponente(Posicao.class).contains(new Integer(ID)));
+		assertFalse(contDaEntidade.entidades.isEmpty());
+		assertFalse(contDaEntidade.baseDeComponentes.isEmpty());
+		assertTrue(contDaEntidade.obterTodasEntidadesComOComponente(Posicao.class).contains(new Integer(ID)));
 	}
 
 	/**
@@ -105,9 +105,9 @@ public class TesteControladorDeEntidade {
 		adicionarComponente();
 
 		// Avaliação em si
-		assertFalse(controladorDaEntidade.entidades.isEmpty());
-		assertFalse(controladorDaEntidade.baseDeComponentes.isEmpty());
-		assertTrue(controladorDaEntidade.obterTodosOsComponentesDoTipo(Posicao.class).contains(posicao));
+		assertFalse(contDaEntidade.entidades.isEmpty());
+		assertFalse(contDaEntidade.baseDeComponentes.isEmpty());
+		assertTrue(contDaEntidade.obterTodosOsComponentesDoTipo(Posicao.class).contains(posicao));
 	}
 
 	/**
@@ -118,9 +118,9 @@ public class TesteControladorDeEntidade {
 		adicionarComponente();
 
 		// Avaliação em si
-		assertFalse(controladorDaEntidade.entidades.isEmpty());
-		assertTrue(controladorDaEntidade.removerEntidade(ID));
-		assertTrue(controladorDaEntidade.entidades.isEmpty());
+		assertFalse(contDaEntidade.entidades.isEmpty());
+		assertTrue(contDaEntidade.removerEntidade(ID));
+		assertTrue(contDaEntidade.entidades.isEmpty());
 	}
 
 	/**
@@ -128,7 +128,7 @@ public class TesteControladorDeEntidade {
 	 */
 	private void removerEntidade() {
 		adicionarComponente();
-		controladorDaEntidade.removerEntidade(ID);
+		contDaEntidade.removerEntidade(ID);
 	}
 
 	/**
@@ -139,9 +139,9 @@ public class TesteControladorDeEntidade {
 		removerEntidade();
 
 		// Avaliação em si
-		assertTrue(controladorDaEntidade.entidades.isEmpty());
-		assertTrue(controladorDaEntidade.baseDeComponentes.isEmpty());
-		assertFalse(posicao.equals(controladorDaEntidade.obterComponente(ID, Posicao.class)));
+		assertTrue(contDaEntidade.entidades.isEmpty());
+		assertTrue(contDaEntidade.baseDeComponentes.isEmpty());
+		assertFalse(posicao.equals(contDaEntidade.obterComponente(ID, Posicao.class)));
 	}
 
 	/**
@@ -152,8 +152,8 @@ public class TesteControladorDeEntidade {
 		removerEntidade();
 
 		// Avaliação em si
-		assertTrue(controladorDaEntidade.entidades.isEmpty());
-		assertTrue(controladorDaEntidade.baseDeComponentes.isEmpty());
-		assertTrue(controladorDaEntidade.obterTodosOsComponentesDoTipo(Posicao.class).isEmpty());
+		assertTrue(contDaEntidade.entidades.isEmpty());
+		assertTrue(contDaEntidade.baseDeComponentes.isEmpty());
+		assertTrue(contDaEntidade.obterTodosOsComponentesDoTipo(Posicao.class).isEmpty());
 	}
 }

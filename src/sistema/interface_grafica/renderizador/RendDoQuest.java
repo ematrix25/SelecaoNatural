@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
 
-import sistema.controlador.ControladorDoQuestionario;
+import sistema.controlador.ContDoQuestionario;
 import sistema.interface_grafica.Painel;
 
 /**
@@ -13,7 +13,7 @@ import sistema.interface_grafica.Painel;
  * @author Emanuel
  */
 public class RendDoQuest extends Renderizador {
-	private ControladorDoQuestionario controladorDoQuest;
+	private ContDoQuestionario controladorDoQuest;
 	private final int PERGUNTAS_POR_PAGINA = 5;
 	private int limite, pagina, respostas[];
 
@@ -22,7 +22,7 @@ public class RendDoQuest extends Renderizador {
 	 * 
 	 * @param painel
 	 */
-	public RendDoQuest(Painel painel, ControladorDoQuestionario controladorDoQuest) {
+	public RendDoQuest(Painel painel, ContDoQuestionario controladorDoQuest) {
 		super(painel);
 		this.controladorDoQuest = controladorDoQuest;
 		limite = controladorDoQuest.obterQtdPerguntas();
