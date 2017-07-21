@@ -12,7 +12,7 @@ import componente.Especime;
  * 
  * @author Emanuel
  */
-public class ContDaEntMovel {
+public class ContAuxDaEnt {
 
 	private Entidade entidade;
 

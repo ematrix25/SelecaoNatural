@@ -1,4 +1,4 @@
-package sistema.controlador.jogo;
+package sistema.controlador.jogo.movimento;
 
 import sistema.utilitario.Opcoes;
 import sistema.utilitario.periferico.Mouse;
@@ -9,7 +9,7 @@ import sistema.utilitario.periferico.Teclado;
  * 
  * @author Emanuel
  */
-public class ContDoJogador {
+public class ContDoJogador implements ContDaEntMovel {
 	private int id;
 	private int pontuacao;
 
@@ -50,10 +50,9 @@ public class ContDoJogador {
 	}
 
 	/**
-	 * Obtem o movimento requerido pelo jogador dada velocidade maxima
+	 * Obtem o movimento requerido pelo jogador dada velocidade máxima
 	 * 
-	 * @param velocidadeMaxima
-	 * @return int
+	 * @see sistema.controlador.jogo.movimento.ContDaEntMovel#obterMovimentacao(int)
 	 */
 	public int obterMovimentacao(int velocidadeMaxima) {
 		if (Opcoes.controlePorMouse) {
@@ -69,7 +68,7 @@ public class ContDoJogador {
 	/**
 	 * Obtem a direção pela entrada de dados dos perifericos
 	 * 
-	 * @return int
+	 * @see sistema.controlador.jogo.movimento.ContDaEntMovel#obterDirecao()
 	 */
 	public int obterDirecao() {
 		if (Opcoes.controlePorMouse) return obterDirDoMouse();

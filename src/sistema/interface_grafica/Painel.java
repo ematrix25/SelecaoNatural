@@ -17,10 +17,10 @@ import sistema.Jogo.Janela;
 import sistema.controlador.ContDaEntidade;
 import sistema.controlador.ContDoAmbiente;
 import sistema.controlador.ContDoQuestionario;
-import sistema.controlador.jogo.ContDaEntMovel;
-import sistema.controlador.jogo.ContDaEntMovel.Entidade;
-import sistema.controlador.jogo.ContDaIA;
-import sistema.controlador.jogo.ContDoJogador;
+import sistema.controlador.jogo.ContAuxDaEnt;
+import sistema.controlador.jogo.ContAuxDaEnt.Entidade;
+import sistema.controlador.jogo.movimento.ContDaIA;
+import sistema.controlador.jogo.movimento.ContDoJogador;
 import sistema.controlador.jogo.ContDoMapa;
 import sistema.interface_grafica.renderizador.RendDeOpcoes;
 import sistema.interface_grafica.renderizador.RendDoMenu;
@@ -57,7 +57,7 @@ public class Painel extends Canvas implements Runnable {
 
 	private ContDoMapa contDoMapa;
 
-	private ContDaEntMovel contDaEntMovel;
+	private ContAuxDaEnt contAuxDaEnt;
 	private ContDoJogador contDoJogador;
 	private ContDaIA contDaIA;
 
@@ -183,8 +183,8 @@ public class Painel extends Canvas implements Runnable {
 		Entidade entidade;
 		int velocidadeMax;
 		for (int id : contDaEntidade.obterTodasEntidadesComOComponente(Especime.class)) {
-			contDaEntMovel.configurarEntidade(id, contDaEntidade.obterComponentes(id));
-			entidade = contDaEntMovel.obterEntidade();
+			contAuxDaEnt.configurarEntidade(id, contDaEntidade.obterComponentes(id));
+			entidade = contAuxDaEnt.obterEntidade();
 			velocidadeMax = contDoMapa.obterVelocidadeMax(entidade.especime.especie.tipo.movimento);
 			if (id == contDoJogador.obterID()) {
 				contDoMapa.moverEntidade(contDoJogador.obterMovimentacao(velocidadeMax), contDoJogador.obterDirecao(), entidade);
@@ -328,12 +328,12 @@ public class Painel extends Canvas implements Runnable {
 		mapa = new Mapa("/mapas/caverna.png", 0);
 		contDoMapa = new ContDoMapa(mapa);
 
-		contDaEntMovel = new ContDaEntMovel();
+		contAuxDaEnt = new ContAuxDaEnt();
 		contDoJogador = new ContDoJogador();
 		contDaIA = new ContDaIA();
 
 		rendDaSelecao = new RendDaSelecao(this, contDaEntidade, contDoAmbiente);
-		rendDoJogo = new RendDoJogo(this, contDaEntidade, contDoAmbiente, contDoMapa, contDaEntMovel, contDoJogador,
+		rendDoJogo = new RendDoJogo(this, contDaEntidade, contDoAmbiente, contDoMapa, contAuxDaEnt, contDoJogador,
 				contDaIA);
 	}
 

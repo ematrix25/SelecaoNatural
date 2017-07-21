@@ -1,4 +1,4 @@
-package sistema.controlador.jogo;
+package sistema.controlador.jogo.movimento;
 
 import java.util.Random;
 
@@ -7,7 +7,7 @@ import java.util.Random;
  * 
  * @author Emanuel
  */
-public class ContDaIA {
+public class ContDaIA implements ContDaEntMovel {
 	private Random aleatorio;
 
 	/**
@@ -18,10 +18,9 @@ public class ContDaIA {
 	}
 
 	/**
-	 * Obtem o movimento aleatório
+	 * Obtem o movimento aleatório dado a velocidade máxima permitida
 	 * 
-	 * @param velocidadeMaxima
-	 * @return int
+	 * @see sistema.controlador.jogo.movimento.ContDaEntMovel#obterMovimentacao(int)
 	 */
 	public int obterMovimentacao(int velocidadeMaxima) {
 		return aleatorio.nextInt(velocidadeMaxima + 1);
@@ -30,7 +29,7 @@ public class ContDaIA {
 	/**
 	 * Obtem uma direção aleatória
 	 * 
-	 * @return int
+	 * @see sistema.controlador.jogo.movimento.ContDaEntMovel#obterDirecao()
 	 */
 	public int obterDirecao() {
 		return aleatorio.nextInt(4);

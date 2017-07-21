@@ -17,9 +17,9 @@ import componente.Especime.Especie;
 import componente.Especime.Especie.Forma;
 import sistema.controlador.ContDaEntidade;
 import sistema.controlador.ContDoAmbiente;
-import sistema.controlador.jogo.ContDaEntMovel;
-import sistema.controlador.jogo.ContDoJogador;
+import sistema.controlador.jogo.ContAuxDaEnt;
 import sistema.controlador.jogo.ContDoMapa;
+import sistema.controlador.jogo.movimento.ContDoJogador;
 import sistema.interface_grafica.renderizador.jogo.base.Sprite;
 import sistema.interface_grafica.renderizador.jogo.base.mapa.Coordenada;
 import sistema.interface_grafica.renderizador.jogo.base.mapa.Mapa;
@@ -35,7 +35,7 @@ public class TesteContDoJogo {
 	private ContDaEntidade contDaEntidade;
 	private ContDoAmbiente contDoAmbiente;
 	private ContDoMapa contDoMapa;
-	private ContDaEntMovel contDaEntMovel;
+	private ContAuxDaEnt contAuxDaEnt;
 	private ContDoJogador contDoJogador;
 	private Mapa mapa;
 
@@ -48,7 +48,7 @@ public class TesteContDoJogo {
 		contDaEntidade = new ContDaEntidade();
 		mapa = new Mapa("/mapas/caverna.png", 0);
 		contDoMapa = new ContDoMapa(mapa);
-		contDaEntMovel = new ContDaEntMovel();
+		contAuxDaEnt = new ContAuxDaEnt();
 		contDoJogador = new ContDoJogador();
 	}
 
@@ -117,9 +117,9 @@ public class TesteContDoJogo {
 		Teclado.direita = true;
 		Teclado.correr = true;
 
-		contDaEntMovel.configurarEntidade(ID, contDaEntidade.obterComponentes(ID));
-		int velocidadeMax = contDoMapa.obterVelocidadeMax(contDaEntMovel.obterEntidade().especime.especie.tipo.movimento);
+		contAuxDaEnt.configurarEntidade(ID, contDaEntidade.obterComponentes(ID));
+		int velocidadeMax = contDoMapa.obterVelocidadeMax(contAuxDaEnt.obterEntidade().especime.especie.tipo.movimento);
 		contDoMapa.moverEntidade(contDoJogador.obterMovimentacao(velocidadeMax), contDoJogador.obterDirecao(),
-				contDaEntMovel.obterEntidade());
+				contAuxDaEnt.obterEntidade());
 	}
 }

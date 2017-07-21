@@ -11,10 +11,10 @@ import componente.Componente.Velocidade;
 import componente.Especime;
 import sistema.controlador.ContDaEntidade;
 import sistema.controlador.ContDoAmbiente;
-import sistema.controlador.jogo.ContDaEntMovel;
-import sistema.controlador.jogo.ContDaIA;
-import sistema.controlador.jogo.ContDoJogador;
+import sistema.controlador.jogo.ContAuxDaEnt;
 import sistema.controlador.jogo.ContDoMapa;
+import sistema.controlador.jogo.movimento.ContDaIA;
+import sistema.controlador.jogo.movimento.ContDoJogador;
 import sistema.interface_grafica.Painel;
 import sistema.interface_grafica.renderizador.Renderizador;
 import sistema.interface_grafica.renderizador.jogo.base.Tela;
@@ -37,7 +37,7 @@ public class RendDoJogo extends Renderizador {
 
 	private ContDoMapa contDoMapa;
 
-	private ContDaEntMovel contDaEntMovel;
+	private ContAuxDaEnt contAuxDaEnt;
 	private ContDoJogador contDoJogador;
 	private ContDaIA contDaIA;
 
@@ -48,17 +48,17 @@ public class RendDoJogo extends Renderizador {
 	 * @param contDaEntidade
 	 * @param contDoAmbiente
 	 * @param contDoMapa
-	 * @param contDaEntMovel
+	 * @param contAuxDaEnt
 	 * @param contDoJogador
 	 * @param contDaIA
 	 */
 	public RendDoJogo(Painel painel, ContDaEntidade contDaEntidade, ContDoAmbiente contDoAmbiente,
-			ContDoMapa contDoMapa, ContDaEntMovel contDaEntMovel, ContDoJogador contDoJogador, ContDaIA contDaIA) {
+			ContDoMapa contDoMapa, ContAuxDaEnt contAuxDaEnt, ContDoJogador contDoJogador, ContDaIA contDaIA) {
 		super(painel);
 		this.contDaEntidade = contDaEntidade;
 		this.contDoAmbiente = contDoAmbiente;
 		this.contDoMapa = contDoMapa;
-		this.contDaEntMovel = contDaEntMovel;
+		this.contAuxDaEnt = contAuxDaEnt;
 		this.contDoJogador = contDoJogador;
 		this.contDaIA = contDaIA;
 

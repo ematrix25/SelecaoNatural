@@ -3,7 +3,7 @@ package sistema.controlador.jogo;
 import componente.Componente.Posicao;
 import componente.Componente.Velocidade;
 import componente.Especime.Especie.Movimento;
-import sistema.controlador.jogo.ContDaEntMovel.Entidade;
+import sistema.controlador.jogo.ContAuxDaEnt.Entidade;
 import sistema.interface_grafica.renderizador.jogo.base.mapa.Mapa;
 import sistema.utilitario.Opcoes;
 
