@@ -1,6 +1,7 @@
 package componente;
 
 import java.util.Arrays;
+import java.util.Random;
 
 import sistema.interface_grafica.renderizador.jogo.base.Sprite;
 import sistema.interface_grafica.renderizador.jogo.base.mapa.Coordenada;
@@ -110,13 +111,14 @@ public abstract class Componente {
 	 * @author Emanuel
 	 */
 	public static class Velocidade extends Componente {
-		public int valor, direcao;
+		public int valor;
+		public Direcao direcao;
 
 		/**
 		 * Gera o objeto Velocidade
 		 */
 		public Velocidade() {
-			this(0, -1);
+			this(0, null);
 		}
 
 		/**
@@ -134,7 +136,7 @@ public abstract class Componente {
 		 * @param valor
 		 * @param direcao
 		 */
-		public Velocidade(int valor, int direcao) {
+		public Velocidade(int valor, Direcao direcao) {
 			this.valor = valor;
 			this.direcao = direcao;
 		}
@@ -149,7 +151,7 @@ public abstract class Componente {
 			final int primo = 31;
 			int resultado = 1;
 			resultado = primo * resultado + valor;
-			resultado = primo * resultado + direcao;
+			resultado = primo * resultado + direcao.hashCode();
 			return resultado;
 		}
 
@@ -185,6 +187,24 @@ public abstract class Componente {
 		public String toString() {
 			return "Velocidade = " + valor + " e Direcao = " + direcao;
 		}
+
+		/**
+		 * Define a direção da velocidade
+		 * 
+		 * @author Emanuel
+		 */
+		public enum Direcao {
+			Cima, Baixo, Direita, Esquerda;
+
+			/**
+			 * Escolhe uma direção aleatória
+			 * 
+			 * @return Direcao
+			 */
+			public static Direcao escolhaAleatoria() {
+				return values()[new Random().nextInt(values().length)];
+			}
+		}
 	}
 
 	/**
@@ -194,8 +214,8 @@ public abstract class Componente {
 	 */
 	public static class Sprites extends Componente {
 		private final int LIMITE = 25;
-		
-		//TODO Criar classe de animação de sprites (GP Ep. 87-91)
+
+		// TODO Criar classe de animação de sprites (GP Ep. 87-91)
 		private Sprite sprites[];
 		private int cor = 0xffffffff;
 		private int contador = 0;

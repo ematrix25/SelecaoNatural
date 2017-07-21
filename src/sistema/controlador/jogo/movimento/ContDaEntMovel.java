@@ -1,5 +1,7 @@
 package sistema.controlador.jogo.movimento;
 
+import componente.Componente.Velocidade.Direcao;
+
 /**
  * Interface para as classes das entidades móveis
  * 
@@ -17,7 +19,7 @@ public interface ContDaEntMovel {
 	/**
 	 * Obtem a direção
 	 * 
-	 * @return int
+	 * @return Direcao
 	 */
-	public int obterDirecao();
+	public Direcao obterDirecao();
 }

@@ -8,6 +8,7 @@ import java.awt.image.DataBufferInt;
 import componente.Componente.Posicao;
 import componente.Componente.Sprites;
 import componente.Componente.Velocidade;
+import componente.Componente.Velocidade.Direcao;
 import componente.Especime;
 import sistema.controlador.ContDaEntidade;
 import sistema.controlador.ContDoAmbiente;
@@ -73,8 +74,8 @@ public class RendDoJogo extends Renderizador {
 	public BufferedImage renderizar() {
 		carregarGraficos();
 
-		renderizarInfo();
-		renderizarTelaDoJogo();
+		rendInfo();
+		rendTelaDoJogo();
 
 		// Ações conforme as teclas são pressionadas
 		if (Teclado.sair) painel.acaoDoBotao('s');
@@ -86,17 +87,17 @@ public class RendDoJogo extends Renderizador {
 	/**
 	 * Renderizar a janela do informações
 	 */
-	private void renderizarInfo() {
+	private void rendInfo() {
 		final int MIL = (int) Math.pow(10, 3);
 		graficos.setColor(Color.black);
 		graficos.fillRect(0, 0, painel.getWidth(), 30);
 
-		renderizarRotulo(Color.lightGray, "Massa Celular: " + painel.massaCelular + "%", painel.getWidth() - 10);
+		rendRotulo(Color.lightGray, "Massa Celular: " + painel.massaCelular + "%", painel.getWidth() - 10);
 		if (painel.pontuacao < MIL)
-			renderizarRotulo(Color.gray, "Pontuacao: " + painel.pontuacao, (painel.getWidth() / 2) + 70);
-		else renderizarRotulo(Color.gray, "Pontuacao: " + painel.pontuacao / MIL + "K", (painel.getWidth() / 2) + 70);
-		if (painel.qtdCelulas < MIL) renderizarRotulo(Color.darkGray, "Qtd Celulas: " + painel.qtdCelulas, 150);
-		else renderizarRotulo(Color.darkGray, "Qtd Celulas: " + painel.qtdCelulas / MIL + "K", 150);
+			rendRotulo(Color.gray, "Pontuacao: " + painel.pontuacao, (painel.getWidth() / 2) + 70);
+		else rendRotulo(Color.gray, "Pontuacao: " + painel.pontuacao / MIL + "K", (painel.getWidth() / 2) + 70);
+		if (painel.qtdCelulas < MIL) rendRotulo(Color.darkGray, "Qtd Celulas: " + painel.qtdCelulas, 150);
+		else rendRotulo(Color.darkGray, "Qtd Celulas: " + painel.qtdCelulas / MIL + "K", 150);
 	}
 
 	/**
@@ -106,7 +107,7 @@ public class RendDoJogo extends Renderizador {
 	 * @param texto
 	 * @param desvioX
 	 */
-	private void renderizarRotulo(Color cor, String texto, int desvioX) {
+	private void rendRotulo(Color cor, String texto, int desvioX) {
 		int x = painel.getWidth() - desvioX, y = 5;
 
 		// Retangulo do rotulo
@@ -123,13 +124,13 @@ public class RendDoJogo extends Renderizador {
 	/**
 	 * Renderiza a tela do jogo
 	 */
-	private void renderizarTelaDoJogo() {
+	private void rendTelaDoJogo() {
 		BufferedImage imagem = new BufferedImage(tela.largura, tela.altura, BufferedImage.TYPE_INT_RGB);
 		int pixeis[] = ((DataBufferInt) imagem.getRaster().getDataBuffer()).getData();
 
 		tela.limpar();
-		renderizarMapa();
-		renderizarEntidades();
+		rendMapa();
+		rendEntidades();
 
 		for (int i = 0; i < tela.pixeis.length; i++) {
 			pixeis[i] = tela.pixeis[i];
@@ -157,7 +158,7 @@ public class RendDoJogo extends Renderizador {
 	/**
 	 * Renderiza o mapa em relação a posição do jogador
 	 */
-	private void renderizarMapa() {
+	private void rendMapa() {
 		int id = contDoJogador.obterID();
 		Posicao posicao = contDaEntidade.obterComponente(id, Posicao.class);
 		int rolagemX = posicao.x - tela.largura / 2;
@@ -169,7 +170,7 @@ public class RendDoJogo extends Renderizador {
 	/**
 	 * Renderiza as sprites de cada entidade conforme a velocidade
 	 */
-	private void renderizarEntidades() {
+	private void rendEntidades() {
 		Posicao posicao;
 		Velocidade velocidade;
 		Sprites sprites;
@@ -179,12 +180,12 @@ public class RendDoJogo extends Renderizador {
 			velocidade = contDaEntidade.obterComponente(entidade, Velocidade.class);
 			sprites = contDaEntidade.obterComponente(entidade, Sprites.class);
 			invertido = 0;
-			if (velocidade.direcao == 2) invertido = 2;
-			if (velocidade.direcao == 3) invertido = 1;
-			if (velocidade.direcao % 2 == 0) tela.renderizarEspecime(posicao.x, posicao.y,
-					sprites.obterSpriteY(velocidade.valor), sprites.obterCor(), invertido);
-			else tela.renderizarEspecime(posicao.x, posicao.y, sprites.obterSpriteX(velocidade.valor),
-					sprites.obterCor(), invertido);
+			if (velocidade.direcao == Direcao.Baixo) invertido = 2;
+			if (velocidade.direcao == Direcao.Esquerda) invertido = 1;
+			if (velocidade.direcao == Direcao.Cima || velocidade.direcao == Direcao.Baixo) tela.rendEspecime(posicao.x,
+					posicao.y, sprites.obterSpriteY(velocidade.valor), sprites.obterCor(), invertido);
+			else tela.rendEspecime(posicao.x, posicao.y, sprites.obterSpriteX(velocidade.valor), sprites.obterCor(),
+					invertido);
 		}
 	}
 }

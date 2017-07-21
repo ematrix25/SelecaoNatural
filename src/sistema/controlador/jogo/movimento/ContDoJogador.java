@@ -1,5 +1,6 @@
 package sistema.controlador.jogo.movimento;
 
+import componente.Componente.Velocidade.Direcao;
 import sistema.utilitario.Opcoes;
 import sistema.utilitario.periferico.Mouse;
 import sistema.utilitario.periferico.Teclado;
@@ -70,8 +71,7 @@ public class ContDoJogador implements ContDaEntMovel {
 	 * 
 	 * @see sistema.controlador.jogo.movimento.ContDaEntMovel#obterDirecao()
 	 */
-	public int obterDirecao() {
-		// Direção = 0 (cima) | 1 (direita) | 2 (baixo) | 3 (esquerda)		
+	public Direcao obterDirecao() {	
 		if (Opcoes.controlePorMouse) return obterDirDoMouse();
 		else return obterDirDoTeclado();
 	}
@@ -79,26 +79,26 @@ public class ContDoJogador implements ContDaEntMovel {
 	/**
 	 * Obtem a direção pela entrada de dados do mouse
 	 * 
-	 * @return int
+	 * @return Direcao
 	 */
-	private int obterDirDoMouse() {
-		if (Mouse.diferencaY > 0) return 0;
-		if (Mouse.diferencaY < 0) return 2;
-		if (Mouse.diferencaX > 0) return 1;
-		if (Mouse.diferencaX < 0) return 3;
-		return -1;
+	private Direcao obterDirDoMouse() {
+		if (Mouse.diferencaY > 0) return Direcao.Cima;
+		if (Mouse.diferencaY < 0) return Direcao.Baixo;
+		if (Mouse.diferencaX > 0) return Direcao.Direita;
+		if (Mouse.diferencaX < 0) return Direcao.Esquerda;;
+		return null;
 	}
 
 	/**
 	 * Obtem a direção pela entrada de dados do teclado
 	 * 
-	 * @return int
+	 * @return Direcao
 	 */
-	private int obterDirDoTeclado() {
-		if (Teclado.cima) return 0;
-		if (Teclado.baixo) return 2;
-		if (Teclado.direita) return 1;
-		if (Teclado.esquerda) return 3;
-		return -1;
+	private Direcao obterDirDoTeclado() {
+		if (Teclado.cima) return Direcao.Cima;
+		if (Teclado.baixo) return Direcao.Baixo;
+		if (Teclado.direita) return Direcao.Direita;
+		if (Teclado.esquerda) return Direcao.Esquerda;
+		return null;
 	}
 }

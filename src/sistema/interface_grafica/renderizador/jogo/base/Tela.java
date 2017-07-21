@@ -74,7 +74,7 @@ public class Tela {
 	 * @param sprite
 	 * @param invertido
 	 */
-	public void renderizarEspecime(int posX, int posY, Sprite sprite, int cor, int invertido) {
+	public void rendEspecime(int posX, int posY, Sprite sprite, int cor, int invertido) {
 		int xAux = 0, yAux = 0, xRes, yRes, corAux;
 		posX -= desvioX;
 		posY -= desvioY;

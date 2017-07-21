@@ -2,6 +2,8 @@ package sistema.controlador.jogo.movimento;
 
 import java.util.Random;
 
+import componente.Componente.Velocidade.Direcao;
+
 /**
  * Classe que controla os dados da IA
  * 
@@ -31,8 +33,7 @@ public class ContDaIA implements ContDaEntMovel {
 	 * 
 	 * @see sistema.controlador.jogo.movimento.ContDaEntMovel#obterDirecao()
 	 */
-	public int obterDirecao() {
-		// Direção = 0 (cima) | 1 (direita) | 2 (baixo) | 3 (esquerda)
-		return aleatorio.nextInt(4);
+	public Direcao obterDirecao() {
+		return Direcao.escolhaAleatoria();
 	}
 }

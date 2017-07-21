@@ -257,6 +257,11 @@ public class Especime extends Componente {
 		public enum Forma {
 			Coccus, Bacillus, Spiral;
 
+			/**
+			 * Escolhe uma forma aleatória
+			 * 
+			 * @return Forma
+			 */
 			public static Forma escolhaAleatoria() {
 				return values()[new Random().nextInt(values().length)];
 			}

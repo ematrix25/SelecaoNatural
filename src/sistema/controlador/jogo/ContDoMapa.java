@@ -2,6 +2,7 @@ package sistema.controlador.jogo;
 
 import componente.Componente.Posicao;
 import componente.Componente.Velocidade;
+import componente.Componente.Velocidade.Direcao;
 import componente.Especime.Especie.Movimento;
 import sistema.controlador.jogo.ContAuxDaEnt.Entidade;
 import sistema.interface_grafica.renderizador.jogo.base.mapa.Mapa;
@@ -60,7 +61,7 @@ public class ContDoMapa {
 	 * @param entidade
 	 * @return Velocidade
 	 */
-	public Velocidade moverEntidade(int movimentacao, int direcao, Entidade entidade) {
+	public Velocidade moverEntidade(int movimentacao, Direcao direcao, Entidade entidade) {
 		Velocidade novaVelocidade = entidade.velocidade;
 		novaVelocidade.valor = movimentacao;
 		if (novaVelocidade.valor != 0) {
@@ -79,10 +80,10 @@ public class ContDoMapa {
 	 */
 	private Posicao configurarPosicao(Velocidade velocidade) {
 		Posicao novaPosicao = new Posicao();
-		if (Opcoes.controlePorMouse || velocidade.direcao == 1) novaPosicao.x += velocidade.valor;
-		else if(velocidade.direcao == 3) novaPosicao.x -= velocidade.valor;
-		if (Opcoes.controlePorMouse || velocidade.direcao == 2) novaPosicao.y += velocidade.valor;
-		else if(velocidade.direcao == 0) novaPosicao.y -= velocidade.valor;
+		if (Opcoes.controlePorMouse || velocidade.direcao == Direcao.Direita) novaPosicao.x += velocidade.valor;
+		else if(velocidade.direcao == Direcao.Esquerda) novaPosicao.x -= velocidade.valor;
+		if (Opcoes.controlePorMouse || velocidade.direcao == Direcao.Baixo) novaPosicao.y += velocidade.valor;
+		else if(velocidade.direcao == Direcao.Cima) novaPosicao.y -= velocidade.valor;
 		if (novaPosicao.y != 0) novaPosicao.x = 0;
 		return novaPosicao;
 	}
