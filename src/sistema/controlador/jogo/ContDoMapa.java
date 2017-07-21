@@ -65,7 +65,7 @@ public class ContDoMapa {
 		novaVelocidade.valor = movimentacao;
 		if (novaVelocidade.valor != 0) {
 			novaVelocidade.direcao = direcao;
-			novaVelocidade = mover(entidade.posicao, novaVelocidade, configurarPosicao(novaVelocidade));
+			mover(entidade.posicao, configurarPosicao(novaVelocidade));
 		}
 		return novaVelocidade;
 	}
@@ -91,22 +91,13 @@ public class ContDoMapa {
 	 * Tenta mover a entidade móvel para um nova posição
 	 * 
 	 * @param posicao
-	 * @param velocidade
 	 * @param novaPosicao
-	 * @return Velocidade
 	 */
-	private Velocidade mover(Posicao posicao, Velocidade velocidade, Posicao novaPosicao) {
-		Velocidade novaVelocidade = velocidade;
-		// Direção = 0 (cima) | 1 (direita) | 2 (baixo) | 3 (esquerda)
-		if (novaPosicao.y < 0) novaVelocidade.direcao = 0;
-		if (novaPosicao.x > 0) novaVelocidade.direcao = 1;
-		if (novaPosicao.y > 0) novaVelocidade.direcao = 2;
-		if (novaPosicao.x < 0) novaVelocidade.direcao = 3;
+	private void mover(Posicao posicao, Posicao novaPosicao) {
 		if (!colide(posicao, novaPosicao) && conflito()) {
 			posicao.x += novaPosicao.x;
 			posicao.y += novaPosicao.y;
 		}
-		return novaVelocidade;
 	}
 
 	/**

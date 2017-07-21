@@ -71,6 +71,7 @@ public class ContDoJogador implements ContDaEntMovel {
 	 * @see sistema.controlador.jogo.movimento.ContDaEntMovel#obterDirecao()
 	 */
 	public int obterDirecao() {
+		// Direção = 0 (cima) | 1 (direita) | 2 (baixo) | 3 (esquerda)		
 		if (Opcoes.controlePorMouse) return obterDirDoMouse();
 		else return obterDirDoTeclado();
 	}
