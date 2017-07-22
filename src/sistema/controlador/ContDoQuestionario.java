@@ -10,7 +10,7 @@ import sistema.utilitario.arquivo.Arquivo.ArquivoDoQuest;
  * @author Emanuel
  */
 public class ContDoQuestionario {
-	// TODO Arrumar o arquivo de perguntas
+	// XXX Arrumar o arquivo de perguntas
 	private Questionario questionario;
 
 	/**

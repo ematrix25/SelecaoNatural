@@ -1,4 +1,4 @@
-package sistema.interface_grafica;
+package sistema.igu;
 
 import java.awt.Canvas;
 import java.awt.Graphics;
@@ -19,17 +19,17 @@ import sistema.controlador.ContDoAmbiente;
 import sistema.controlador.ContDoQuestionario;
 import sistema.controlador.jogo.ContAuxDaEnt;
 import sistema.controlador.jogo.ContAuxDaEnt.Entidade;
+import sistema.controlador.jogo.ContDoMapa;
 import sistema.controlador.jogo.movimento.ContDaIA;
 import sistema.controlador.jogo.movimento.ContDoJogador;
-import sistema.controlador.jogo.ContDoMapa;
-import sistema.interface_grafica.renderizador.RendDeOpcoes;
-import sistema.interface_grafica.renderizador.RendDoMenu;
-import sistema.interface_grafica.renderizador.RendDoQuest;
-import sistema.interface_grafica.renderizador.jogo.RendDaSelecao;
-import sistema.interface_grafica.renderizador.jogo.RendDoJogo;
-import sistema.interface_grafica.renderizador.jogo.base.Sprite;
-import sistema.interface_grafica.renderizador.jogo.base.mapa.Coordenada;
-import sistema.interface_grafica.renderizador.jogo.base.mapa.Mapa;
+import sistema.igu.renderizador.RendDeOpcoes;
+import sistema.igu.renderizador.RendDoMenu;
+import sistema.igu.renderizador.RendDoQuest;
+import sistema.igu.renderizador.jogo.RendDaSelecao;
+import sistema.igu.renderizador.jogo.RendDoJogo;
+import sistema.igu.renderizador.jogo.base.SpritesAnimados;
+import sistema.igu.renderizador.jogo.base.mapa.Coordenada;
+import sistema.igu.renderizador.jogo.base.mapa.Mapa;
 import sistema.utilitario.Opcoes;
 import sistema.utilitario.arquivo.Arquivo.ArquivoDoQuest;
 import sistema.utilitario.periferico.Mouse;
@@ -75,7 +75,9 @@ public class Painel extends Canvas implements Runnable {
 	public int massaCelular = 0, qtdCelulas = 0, pontuacao = 0;
 	public final float MASSA_CELULAR_MAX = 100.0f;
 
-	public int tempo = 0, contDeSegundos = 0;
+	public int contDeSegundos = 0;
+	
+	public static int tempo = 0;
 
 	/**
 	 * Inicializa o painel
@@ -187,7 +189,8 @@ public class Painel extends Canvas implements Runnable {
 			entidade = contAuxDaEnt.obterEntidade();
 			velocidadeMax = contDoMapa.obterVelocidadeMax(entidade.especime.especie.tipo.movimento);
 			if (id == contDoJogador.obterID()) {
-				contDoMapa.moverEntidade(contDoJogador.obterMovimentacao(velocidadeMax), contDoJogador.obterDirecao(), entidade);
+				contDoMapa.moverEntidade(contDoJogador.obterMovimentacao(velocidadeMax), contDoJogador.obterDirecao(),
+						entidade);
 			} else if (tempo % (new Random().nextInt(50) + 30) == 0) {
 				contDoMapa.moverEntidade(contDaIA.obterMovimentacao(velocidadeMax), contDaIA.obterDirecao(), entidade);
 			}
@@ -367,17 +370,7 @@ public class Painel extends Canvas implements Runnable {
 			contDaEntidade.adicionarComponente(entidade, (Componente) new Posicao(coordenada));
 			contDaEntidade.adicionarComponente(entidade, (Componente) new Velocidade());
 			Especie especie = contDaEntidade.obterComponente(entidade, Especime.class).especie;
-			switch (especie.tipo.forma) {
-			case Coccus:
-				contDaEntidade.adicionarComponente(entidade, (Componente) new Sprites(Sprite.coccus, gerarCor()));
-				break;
-			case Bacillus:
-				contDaEntidade.adicionarComponente(entidade, (Componente) new Sprites(Sprite.bacillus, gerarCor()));
-				break;
-			case Spiral:
-				contDaEntidade.adicionarComponente(entidade, (Componente) new Sprites(Sprite.spiral, gerarCor()));
-				break;
-			}
+			contDaEntidade.adicionarComponente(entidade, (Componente) new Sprites(especie.tipo.forma, gerarCor()));
 		}
 	}
 

@@ -5,7 +5,7 @@ import componente.Componente.Velocidade;
 import componente.Componente.Velocidade.Direcao;
 import componente.Especime.Especie.Movimento;
 import sistema.controlador.jogo.ContAuxDaEnt.Entidade;
-import sistema.interface_grafica.renderizador.jogo.base.mapa.Mapa;
+import sistema.igu.renderizador.jogo.base.mapa.Mapa;
 import sistema.utilitario.Opcoes;
 
 /**

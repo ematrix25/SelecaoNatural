@@ -1,10 +1,12 @@
 package componente;
 
-import java.util.Arrays;
 import java.util.Random;
 
-import sistema.interface_grafica.renderizador.jogo.base.Sprite;
-import sistema.interface_grafica.renderizador.jogo.base.mapa.Coordenada;
+import componente.Componente.Velocidade.Direcao;
+import componente.Especime.Especie.Forma;
+import sistema.igu.renderizador.jogo.base.Sprite;
+import sistema.igu.renderizador.jogo.base.SpritesAnimados;
+import sistema.igu.renderizador.jogo.base.mapa.Coordenada;
 
 /**
  * Abstrai classes de componentes que vão adicionar funcionalidades à entidade
@@ -208,70 +210,53 @@ public abstract class Componente {
 	}
 
 	/**
-	 * Componente com os Sprites da Entidade
+	 * Componente dos Sprites da Entidade
 	 * 
 	 * @author Emanuel
 	 */
 	public static class Sprites extends Componente {
-		private final int LIMITE = 25;
+		private SpritesAnimados spritesAnim;
 
-		// TODO Criar classe de animação de sprites (GP Ep. 87-91)
-		private Sprite sprites[];
 		private int cor = 0xffffffff;
-		private int contador = 0;
 
 		/**
-		 * Cria o objeto Sprites com os sprites
+		 * Cria o objeto Sprites com os sprites da forma da Entidade
 		 * 
 		 * @param sprites
 		 */
-		public Sprites(Sprite[] sprites) {
-			this.sprites = sprites;
+		public Sprites(Forma forma) {
+			switch (forma) {
+			case Bacillus:
+				spritesAnim = SpritesAnimados.bacillus;
+				break;
+			case Spiral:
+				spritesAnim = SpritesAnimados.spiral;
+				break;
+			case Coccus:
+				spritesAnim = SpritesAnimados.coccus;
+				break;
+			}
 		}
 
 		/**
-		 * Cria o objeto Sprites com os sprites e cor
+		 * Cria o objeto Sprites com os sprites da forma da Entidade e com a cor
 		 * 
 		 * @param sprites
 		 */
-		public Sprites(Sprite[] sprites, int cor) {
-			this.sprites = sprites;
+		public Sprites(Forma forma, int cor) {
+			this(forma);
 			this.cor = cor;
 		}
 
 		/**
-		 * Obtem a sprite para o eixo X dado a velocidade
+		 * Obtem a sprite dada a direção e a velocidade
 		 * 
+		 * @param direcao
 		 * @param velocidade
 		 * @return Sprite
 		 */
-		public Sprite obterSpriteX(int velocidade) {
-			if (velocidade > 0) {
-				int limite = LIMITE / velocidade;
-				if (!(contador < limite)) contador = 0;
-				if (contador++ > limite / 2) return sprites[3];
-				else return sprites[1];
-			} else {
-				contador = 0;
-				return sprites[3];
-			}
-		}
-
-		/**
-		 * Obtem a sprite para o eixo Y dado a velocidade
-		 * 
-		 * @return Sprite
-		 */
-		public Sprite obterSpriteY(int velocidade) {
-			if (velocidade > 0) {
-				int limite = LIMITE / velocidade;
-				if (!(contador < limite)) contador = 0;
-				if (contador++ > limite / 2) return sprites[2];
-				return sprites[0];
-			} else {
-				contador = 0;
-				return sprites[2];
-			}
+		public Sprite obterSprite(Direcao direcao, int velocidade) {
+			return spritesAnim.obterSprite(direcao, velocidade);
 		}
 
 		/**
@@ -292,7 +277,7 @@ public abstract class Componente {
 		public int hashCode() {
 			final int prime = 31;
 			int result = 1;
-			result = prime * result + Arrays.hashCode(sprites);
+			result = prime * result + spritesAnim.hashCode();
 			return result;
 		}
 

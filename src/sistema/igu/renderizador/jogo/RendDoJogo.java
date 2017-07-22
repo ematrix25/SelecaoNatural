@@ -1,4 +1,4 @@
-package sistema.interface_grafica.renderizador.jogo;
+package sistema.igu.renderizador.jogo;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -8,7 +8,6 @@ import java.awt.image.DataBufferInt;
 import componente.Componente.Posicao;
 import componente.Componente.Sprites;
 import componente.Componente.Velocidade;
-import componente.Componente.Velocidade.Direcao;
 import componente.Especime;
 import sistema.controlador.ContDaEntidade;
 import sistema.controlador.ContDoAmbiente;
@@ -16,10 +15,10 @@ import sistema.controlador.jogo.ContAuxDaEnt;
 import sistema.controlador.jogo.ContDoMapa;
 import sistema.controlador.jogo.movimento.ContDaIA;
 import sistema.controlador.jogo.movimento.ContDoJogador;
-import sistema.interface_grafica.Painel;
-import sistema.interface_grafica.renderizador.Renderizador;
-import sistema.interface_grafica.renderizador.jogo.base.Tela;
-import sistema.interface_grafica.renderizador.jogo.base.mapa.Mapa;
+import sistema.igu.Painel;
+import sistema.igu.renderizador.Renderizador;
+import sistema.igu.renderizador.jogo.base.Tela;
+import sistema.igu.renderizador.jogo.base.mapa.Mapa;
 import sistema.utilitario.periferico.Mouse;
 import sistema.utilitario.periferico.Teclado;
 
@@ -69,7 +68,7 @@ public class RendDoJogo extends Renderizador {
 	/**
 	 * Renderiza a tela do jogo
 	 *
-	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizar()
+	 * @see sistema.igu.renderizador.Renderizador#renderizar()
 	 */
 	public BufferedImage renderizar() {
 		carregarGraficos();
@@ -174,18 +173,12 @@ public class RendDoJogo extends Renderizador {
 		Posicao posicao;
 		Velocidade velocidade;
 		Sprites sprites;
-		int invertido;
 		for (int entidade : contDaEntidade.obterTodasEntidadesComOComponente(Especime.class)) {
 			posicao = contDaEntidade.obterComponente(entidade, Posicao.class);
 			velocidade = contDaEntidade.obterComponente(entidade, Velocidade.class);
 			sprites = contDaEntidade.obterComponente(entidade, Sprites.class);
-			invertido = 0;
-			if (velocidade.direcao == Direcao.Baixo) invertido = 2;
-			if (velocidade.direcao == Direcao.Esquerda) invertido = 1;
-			if (velocidade.direcao == Direcao.Cima || velocidade.direcao == Direcao.Baixo) tela.rendEspecime(posicao.x,
-					posicao.y, sprites.obterSpriteY(velocidade.valor), sprites.obterCor(), invertido);
-			else tela.rendEspecime(posicao.x, posicao.y, sprites.obterSpriteX(velocidade.valor), sprites.obterCor(),
-					invertido);
+			tela.rendEspecime(posicao.x, posicao.y, sprites.obterSprite(velocidade.direcao, velocidade.valor),
+					sprites.obterCor());
 		}
 	}
 }

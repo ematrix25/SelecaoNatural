@@ -1,8 +1,8 @@
-package sistema.interface_grafica.renderizador.jogo.base;
+package sistema.igu.renderizador.jogo.base;
 
 import java.util.Random;
 
-import sistema.interface_grafica.renderizador.jogo.base.mapa.Bloco;
+import sistema.igu.renderizador.jogo.base.mapa.Bloco;
 
 /**
  * Tela do Jogo
@@ -72,20 +72,17 @@ public class Tela {
 	 * @param posX
 	 * @param posY
 	 * @param sprite
-	 * @param invertido
 	 */
-	public void rendEspecime(int posX, int posY, Sprite sprite, int cor, int invertido) {
+	public void rendEspecime(int posX, int posY, Sprite sprite, int cor) {
 		int xAux = 0, yAux = 0, xRes, yRes, corAux;
 		posX -= desvioX;
 		posY -= desvioY;
 		for (int y = 0; y < Sprite.TAMANHO; y++) {
 			yAux = y + posY;
 			yRes = y;
-			if (invertido == 2 || invertido == 3) yRes = 15 - y;
 			for (int x = 0; x < Sprite.TAMANHO; x++) {
 				xAux = x + posX;
 				xRes = x;
-				if (invertido == 1 || invertido == 3) xRes = 15 - x;
 				if (xAux < -Sprite.TAMANHO || xAux >= largura || yAux < 0 || yAux >= altura) break;
 				if (xAux < 0) xAux = 0;
 				corAux = sprite.pixeis[xRes + yRes * Sprite.TAMANHO];

@@ -1,7 +1,7 @@
-package sistema.interface_grafica.renderizador.jogo.base.mapa;
+package sistema.igu.renderizador.jogo.base.mapa;
 
-import sistema.interface_grafica.renderizador.jogo.base.Sprite;
-import sistema.interface_grafica.renderizador.jogo.base.Tela;
+import sistema.igu.renderizador.jogo.base.Sprite;
+import sistema.igu.renderizador.jogo.base.Tela;
 
 /**
  * Classe do bloco que compõe o mapa
@@ -39,6 +39,7 @@ public class Bloco {
 	 * @param temperatura
 	 */
 	public static void associarSprites(int temperatura) {
+		//FIXME Criar classe para Sprites do Bloco
 		blocoDeAgua = new Bloco(Sprite.ambiente[temperatura][0], false);
 		blocoOrganico = new Bloco(Sprite.ambiente[temperatura][1], false);
 		blocoInorganico = new Bloco(Sprite.ambiente[temperatura][2], true);

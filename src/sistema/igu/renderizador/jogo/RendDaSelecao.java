@@ -1,4 +1,4 @@
-package sistema.interface_grafica.renderizador.jogo;
+package sistema.igu.renderizador.jogo;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -9,8 +9,8 @@ import componente.Especime.Especie;
 import sistema.controlador.ContDaEntidade;
 import sistema.controlador.ContDoAmbiente;
 import sistema.controlador.ContDoAmbiente.Ambiente;
-import sistema.interface_grafica.Painel;
-import sistema.interface_grafica.renderizador.Renderizador;
+import sistema.igu.Painel;
+import sistema.igu.renderizador.Renderizador;
 
 /**
  * Classe para renderizar a tela de seleção das espécies
@@ -48,7 +48,7 @@ public class RendDaSelecao extends Renderizador {
 	/**
 	 * Renderiza a tela de seleção
 	 *
-	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizar()
+	 * @see sistema.igu.renderizador.Renderizador#renderizar()
 	 */
 	public BufferedImage renderizar() {
 		carregarGraficos("/imagens/selecao.jpg");
@@ -117,7 +117,7 @@ public class RendDaSelecao extends Renderizador {
 	/**
 	 * Renderiza a seleção com suas opções
 	 *
-	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarSelecao(java.lang.String,
+	 * @see sistema.igu.renderizador.Renderizador#renderizarSelecao(java.lang.String,
 	 *      java.lang.String[], int)
 	 */
 	protected int renderizarSelecao(String texto, String[] opcoes, int desvioY) {
@@ -139,7 +139,7 @@ public class RendDaSelecao extends Renderizador {
 	/**
 	 * Renderiza uma opção com o texto em x e y
 	 *
-	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarOpcao(java.lang.String,
+	 * @see sistema.igu.renderizador.Renderizador#renderizarOpcao(java.lang.String,
 	 *      int, int, boolean)
 	 */
 	protected boolean renderizarOpcao(String texto, int desvioX, int desvioY, boolean selecionado) {
@@ -170,7 +170,7 @@ public class RendDaSelecao extends Renderizador {
 	/**
 	 * Renderiza um botão com o texto em x e y saindo do canto inferior direito
 	 * 
-	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarBotao(java.lang.String,
+	 * @see sistema.igu.renderizador.Renderizador#renderizarBotao(java.lang.String,
 	 *      int)
 	 */
 	protected void renderizarBotao(String texto, int desvioY) {

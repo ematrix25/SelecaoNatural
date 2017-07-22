@@ -20,9 +20,8 @@ import sistema.controlador.ContDoAmbiente;
 import sistema.controlador.jogo.ContAuxDaEnt;
 import sistema.controlador.jogo.ContDoMapa;
 import sistema.controlador.jogo.movimento.ContDoJogador;
-import sistema.interface_grafica.renderizador.jogo.base.Sprite;
-import sistema.interface_grafica.renderizador.jogo.base.mapa.Coordenada;
-import sistema.interface_grafica.renderizador.jogo.base.mapa.Mapa;
+import sistema.igu.renderizador.jogo.base.mapa.Coordenada;
+import sistema.igu.renderizador.jogo.base.mapa.Mapa;
 import sistema.utilitario.Opcoes;
 import sistema.utilitario.periferico.Teclado;
 
@@ -73,7 +72,7 @@ public class TesteContDoJogo {
 		assertEquals(contDaEntidade.obterComponente(ID, Posicao.class), posicao);
 		Velocidade velocidade = new Velocidade();
 		assertEquals(contDaEntidade.obterComponente(ID, Velocidade.class), velocidade);
-		Sprites sprites = new Sprites(Sprite.coccus);
+		Sprites sprites = new Sprites(Forma.Coccus);
 		assertEquals(contDaEntidade.obterComponente(ID, Sprites.class), sprites);
 	}
 
@@ -103,7 +102,7 @@ public class TesteContDoJogo {
 		contDaEntidade.adicionarComponente(ID, (Componente) new Especime(especie));
 		contDaEntidade.adicionarComponente(ID, (Componente) new Posicao(coordenada));
 		contDaEntidade.adicionarComponente(ID, (Componente) new Velocidade());
-		contDaEntidade.adicionarComponente(ID, new Sprites(Sprite.coccus));
+		contDaEntidade.adicionarComponente(ID, new Sprites(Forma.Coccus));
 		return ID;
 	}
 

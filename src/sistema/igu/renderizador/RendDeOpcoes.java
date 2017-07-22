@@ -1,10 +1,10 @@
-package sistema.interface_grafica.renderizador;
+package sistema.igu.renderizador;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
 
-import sistema.interface_grafica.Painel;
+import sistema.igu.Painel;
 import sistema.utilitario.Opcoes;
 import sistema.utilitario.Resolucao;
 
@@ -38,7 +38,7 @@ public class RendDeOpcoes extends Renderizador {
 	/**
 	 * Renderiza a tela de opcoes
 	 * 
-	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizar()
+	 * @see sistema.igu.renderizador.Renderizador#renderizar()
 	 */
 	public BufferedImage renderizar() {
 		carregarGraficos("/imagens/opcoes.jpg");
@@ -69,7 +69,7 @@ public class RendDeOpcoes extends Renderizador {
 	/**
 	 * Renderiza a selecao de configuração com suas opções
 	 *
-	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarSelecao(java.awt.Graphics,
+	 * @see sistema.igu.renderizador.Renderizador#renderizarSelecao(java.awt.Graphics,
 	 *      java.lang.String, java.lang.String[], int, int)
 	 */
 	protected int renderizarSelecao(String texto, String[] opcoes, int desvioY, int selecao) {
@@ -93,7 +93,7 @@ public class RendDeOpcoes extends Renderizador {
 	/**
 	 * Renderiza uma opção de configuração com o texto em x e y
 	 *
-	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarOpcao(java.lang.String,
+	 * @see sistema.igu.renderizador.Renderizador#renderizarOpcao(java.lang.String,
 	 *      int, int, boolean)
 	 */
 	protected boolean renderizarOpcao(String texto, int desvioX, int desvioY, boolean selecionado) {
@@ -120,7 +120,7 @@ public class RendDeOpcoes extends Renderizador {
 	/**
 	 * Renderiza um botão com o texto em x e y saindo do canto inferior direito
 	 * 
-	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarBotao(java.lang.String, int)
+	 * @see sistema.igu.renderizador.Renderizador#renderizarBotao(java.lang.String, int)
 	 */
 	protected void renderizarBotao(String texto, int desvioX) {
 		int x = painel.getWidth() - desvioX, y = painel.getHeight() - 40;

@@ -1,11 +1,11 @@
-package sistema.interface_grafica.renderizador;
+package sistema.igu.renderizador;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
 
 import sistema.controlador.ContDoQuestionario;
-import sistema.interface_grafica.Painel;
+import sistema.igu.Painel;
 
 /**
  * Classe para renderizar a tela do questionário
@@ -96,7 +96,7 @@ public class RendDoQuest extends Renderizador {
 	/**
 	 * Renderiza a pergunta com suas opções de respostas
 	 * 
-	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarSelecao(java.lang.String,
+	 * @see sistema.igu.renderizador.Renderizador#renderizarSelecao(java.lang.String,
 	 *      java.lang.String[], int, int)
 	 */
 	protected int renderizarSelecao(String texto, String[] opcoes, int desvioY, int selecao) {
@@ -118,7 +118,7 @@ public class RendDoQuest extends Renderizador {
 	/**
 	 * Renderiza uma opção de resposta com o texto em x e y
 	 *
-	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarOpcao(java.lang.String,
+	 * @see sistema.igu.renderizador.Renderizador#renderizarOpcao(java.lang.String,
 	 *      int, int, boolean)
 	 */
 	protected boolean renderizarOpcao(String texto, int desvioX, int desvioY, boolean selecionado) {
@@ -145,7 +145,7 @@ public class RendDoQuest extends Renderizador {
 	/**
 	 * Renderiza um botão com o texto em x e y saindo do canto inferior direito
 	 * 
-	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarBotao(java.lang.String,
+	 * @see sistema.igu.renderizador.Renderizador#renderizarBotao(java.lang.String,
 	 *      int)
 	 */
 	protected void renderizarBotao(String texto, int desvioY) {

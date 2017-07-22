@@ -7,7 +7,7 @@ import java.net.URL;
 
 import javax.swing.JFrame;
 
-import sistema.interface_grafica.Painel;
+import sistema.igu.Painel;
 import sistema.utilitario.Opcoes;
 import sistema.utilitario.Resolucao;
 import sistema.utilitario.TocadorDeMusica;

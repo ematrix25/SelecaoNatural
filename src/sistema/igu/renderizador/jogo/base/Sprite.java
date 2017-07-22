@@ -1,4 +1,4 @@
-package sistema.interface_grafica.renderizador.jogo.base;
+package sistema.igu.renderizador.jogo.base;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -16,7 +16,7 @@ public class Sprite {
 	private int x, y;
 	private FolhaDeSprites folhaDeSprites;
 
-	public static final int TAMANHO = (int) Math.sqrt(FolhaDeSprites.TAMANHO);
+	public static final int TAMANHO = 16;
 
 	public int pixeis[];
 
@@ -25,10 +25,6 @@ public class Sprite {
 	private static Sprite ambienteQuente[] = associarSprites(2, 6);
 
 	public static Sprite ambiente[][] = { ambienteFrio, ambienteMorno, ambienteQuente };
-
-	public static Sprite spiral[] = associarSprites(13, 4);
-	public static Sprite bacillus[] = associarSprites(14, 4);
-	public static Sprite coccus[] = associarSprites(15, 4);
 
 	/**
 	 * Cria o objeto de Sprite da FolhaDeSprites
@@ -51,7 +47,7 @@ public class Sprite {
 	private void carregar() {
 		for (int y = 0; y < TAMANHO; y++) {
 			for (int x = 0; x < TAMANHO; x++) {
-				pixeis[x + y * TAMANHO] = folhaDeSprites.pixeis[(this.x + x) + (this.y + y) * FolhaDeSprites.TAMANHO];
+				pixeis[x + y * TAMANHO] = folhaDeSprites.pixeis[(this.x + x) + (this.y + y) * folhaDeSprites.largura];
 			}
 		}
 	}
@@ -89,9 +85,15 @@ public class Sprite {
 	public static class FolhaDeSprites {
 		private int pixeis[];
 
-		private static final int TAMANHO = 256;
+		public int largura, altura;
 
-		private static final FolhaDeSprites SPRITES = new FolhaDeSprites("/imagens/texturas/sprites.png");
+		private static final FolhaDeSprites SPRITES = new FolhaDeSprites("/imagens/sprites/sprites.png");
+
+		public static final FolhaDeSprites AMBIENTE = new FolhaDeSprites("/imagens/sprites/ambiente.png");
+
+		public static final FolhaDeSprites BACILLUS = new FolhaDeSprites("/imagens/sprites/entidades/bacillus.png");
+		public static final FolhaDeSprites COCCUS = new FolhaDeSprites("/imagens/sprites/entidades/coccus.png");
+		public static final FolhaDeSprites SPIRAL = new FolhaDeSprites("/imagens/sprites/entidades/spiral.png");
 
 		/**
 		 * Cria o objeto da FolhaDeSprites
@@ -99,7 +101,6 @@ public class Sprite {
 		 * @param endereco
 		 */
 		public FolhaDeSprites(String endereco) {
-			pixeis = new int[TAMANHO * TAMANHO];
 			carregar(endereco);
 		}
 
@@ -111,8 +112,9 @@ public class Sprite {
 		private void carregar(String endereco) {
 			try {
 				BufferedImage imagem = ImageIO.read(new Recurso().obterEndereco(endereco));
-				int largura = imagem.getWidth();
-				int altura = imagem.getHeight();
+				largura = imagem.getWidth();
+				altura = imagem.getHeight();
+				pixeis = new int[largura * altura];
 				imagem.getRGB(0, 0, largura, altura, pixeis, 0, largura);
 			} catch (IOException e) {
 				e.printStackTrace();

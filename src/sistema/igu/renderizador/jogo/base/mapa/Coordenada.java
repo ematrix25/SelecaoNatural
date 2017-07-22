@@ -1,4 +1,4 @@
-package sistema.interface_grafica.renderizador.jogo.base.mapa;
+package sistema.igu.renderizador.jogo.base.mapa;
 
 import java.util.Random;
 

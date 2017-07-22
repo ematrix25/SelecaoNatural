@@ -1,4 +1,4 @@
-package sistema.interface_grafica.renderizador;
+package sistema.igu.renderizador;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import sistema.interface_grafica.Painel;
+import sistema.igu.Painel;
 import sistema.utilitario.arquivo.Recurso;
 
 /**

@@ -1,10 +1,10 @@
-package sistema.interface_grafica.renderizador;
+package sistema.igu.renderizador;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
 
-import sistema.interface_grafica.Painel;
+import sistema.igu.Painel;
 import sistema.utilitario.TocadorDeMusica;
 
 /**
@@ -26,7 +26,7 @@ public class RendDoMenu extends Renderizador {
 	/**
 	 * Renderiza a tela do menu
 	 * 
-	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizar()
+	 * @see sistema.igu.renderizador.Renderizador#renderizar()
 	 */
 	public BufferedImage renderizar() {
 		carregarGraficos("/imagens/menu.jpg");
@@ -53,7 +53,7 @@ public class RendDoMenu extends Renderizador {
 	/**
 	 * Renderiza um botão com o texto em x e y saindo do canto inferior direito
 	 * 
-	 * @see sistema.interface_grafica.renderizador.Renderizador#renderizarBotao(java.lang.String,
+	 * @see sistema.igu.renderizador.Renderizador#renderizarBotao(java.lang.String,
 	 *      int)
 	 */
 	protected void renderizarBotao(String texto, int desvioY) {
