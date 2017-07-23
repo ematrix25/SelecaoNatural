@@ -17,14 +17,11 @@ import sistema.utilitario.arquivo.Recurso;
 public class Mapa {
 	private int blocos[];
 
-	public int largura, altura;
+	private int coresDeAgua[];
+	private int coresOrganicas[];
+	private int coresInorganicas[];
 
-	public static final int COR_DE_AGUA = 0xFF0000FF;
-	public static final int COR_DE_AGUA1 = 0xFFFFFFFF;
-	public static final int COR_ORGANICA = 0xFF00FF00;
-	public static final int COR_ORGANICA1 = 0xFFFFFF00;
-	public static final int COR_ORGANICA2 = 0xFFFF0000;
-	public static final int COR_INORGANICA = 0xFF3F3F3F;
+	public int largura, altura;
 
 	public final int TAMANHO_MINIMO = (int) Math.pow(Bloco.TAMANHO, 2);
 
@@ -35,6 +32,7 @@ public class Mapa {
 	 * @param temperatura
 	 */
 	public Mapa(String endereco, int temperatura) {
+		inicializarCores();
 		try {
 			BufferedImage imagem = ImageIO.read(new Recurso().obterEndereco(endereco));
 			int largura = imagem.getWidth();
@@ -60,8 +58,54 @@ public class Mapa {
 	 * @param temperatura
 	 */
 	public Mapa(int largura, int altura, int temperatura) {
+		inicializarCores();
 		criarMapa(largura, altura);
 		Bloco.associarTemperatura(temperatura);
+	}
+
+	/**
+	 * Inicializa as cores conforme a quantidade de blocos do ambiente
+	 */
+	private void inicializarCores() {
+		coresDeAgua = new int[Bloco.blocosDeAgua.length];
+		coresDeAgua[0] = 0xFF0000FF;
+		for (int i = 1; i < coresDeAgua.length; i++) {
+			coresDeAgua[i] = coresDeAgua[0] - obterFator(0) * i;
+		}
+
+		coresOrganicas = new int[Bloco.blocosOrganicos.length];
+		coresOrganicas[0] = 0xFF00FF00;
+		for (int i = 1; i < coresOrganicas.length; i++) {
+			coresOrganicas[i] = coresOrganicas[0] - obterFator(1) * i;
+		}
+
+		System.out.println("INORGANICAS");
+		coresInorganicas = new int[Bloco.blocosInorganicos.length];
+		coresInorganicas[0] = 0xFF3F3F3F;
+		for (int i = 1; i < coresInorganicas.length; i++) {
+			coresInorganicas[i] = coresInorganicas[0] - obterFator(2) * i;
+			System.out.println(Integer.toHexString(coresInorganicas[i]).toUpperCase());
+		}
+		System.out.println();
+	}
+
+	/**
+	 * Obtém o fator de subtração do RGB
+	 * 
+	 * @param tipo
+	 * @return int
+	 */
+	private int obterFator(int tipo) {
+		switch (tipo) {
+		case 0:
+			return 0xFF / coresDeAgua.length;
+		case 1:
+			return (0xFF / coresOrganicas.length) * 0x100;
+		case 2:
+			int aux = 0x3F / coresInorganicas.length;
+			return aux * 0x10000 + aux * 0x100 + aux;
+		}
+		return -1;
 	}
 
 	/**
@@ -105,16 +149,16 @@ public class Mapa {
 		for (int y = 0; y < altura; y++) {
 			for (int x = 0; x < largura; x++) {
 				// Paredes de pedra que fecham o mapa
-				if (x == 0 || x == largura - 1 || y == 0 || y == altura - 1) blocos[x + y * largura] = COR_INORGANICA;
+				if (x == 0 || x == largura - 1 || y == 0 || y == altura - 1)
+					blocos[x + y * largura] = coresInorganicas[aleatorio.nextInt(coresInorganicas.length)];
 				// Dentro das paredes
 				else {
 					numero = aleatorio.nextInt(20);
-					if (numero > 11) blocos[x + y * largura] = COR_DE_AGUA;
-					if (numero < 8) blocos[x + y * largura] = COR_DE_AGUA1;
-					if (numero == 8) blocos[x + y * largura] = COR_ORGANICA;
-					if (numero == 9) blocos[x + y * largura] = COR_ORGANICA1;
-					if (numero == 10) blocos[x + y * largura] = COR_ORGANICA2;
-					if (numero == 11) blocos[x + y * largura] = COR_INORGANICA;
+					if (numero >= 5) blocos[x + y * largura] = coresDeAgua[aleatorio.nextInt(coresDeAgua.length)];
+					if (numero > 0 && numero < 5)
+						blocos[x + y * largura] = coresOrganicas[aleatorio.nextInt(coresOrganicas.length)];
+					if (numero == 0)
+						blocos[x + y * largura] = coresInorganicas[aleatorio.nextInt(coresInorganicas.length)];
 				}
 			}
 		}
@@ -149,19 +193,13 @@ public class Mapa {
 	 */
 	public Bloco obterBloco(int x, int y) {
 		if (x < 0 || y < 0 || x >= largura || y >= altura) return Bloco.blocosDeAgua[0];
-		else switch (blocos[x + y * largura]) {
-		case COR_DE_AGUA:
-			return Bloco.blocosDeAgua[1];
-		case COR_ORGANICA:
-			return Bloco.blocosOrganico[0];
-		case COR_ORGANICA1:
-			return Bloco.blocosOrganico[1];
-		case COR_ORGANICA2:
-			return Bloco.blocosOrganico[2];
-		case COR_INORGANICA:
-			return Bloco.blocosInorganico[0];
-		default:
-			return Bloco.blocosDeAgua[0];
+		else for (int i = 0; i < coresInorganicas.length; i++) {
+			if (blocos[x + y * largura] == coresDeAgua[i * 2]) return Bloco.blocosDeAgua[i * 2];
+			if (blocos[x + y * largura] == coresDeAgua[i * 2 + 1]) return Bloco.blocosDeAgua[i * 2 + 1];
+			if (blocos[x + y * largura] == coresOrganicas[i * 2]) return Bloco.blocosOrganicos[i * 2];
+			if (blocos[x + y * largura] == coresOrganicas[i * 2 + 1]) return Bloco.blocosOrganicos[i * 2 + 1];
+			if (blocos[x + y * largura] == coresInorganicas[i]) return Bloco.blocosInorganicos[i];
 		}
+		return Bloco.blocosDeAgua[0];
 	}
 }

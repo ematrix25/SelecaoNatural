@@ -75,7 +75,7 @@ public class Painel extends Canvas implements Runnable {
 	public final float MASSA_CELULAR_MAX = 100.0f;
 
 	public int contDeSegundos = 0;
-	
+
 	public static int tempo = 0;
 
 	/**
@@ -328,6 +328,7 @@ public class Painel extends Canvas implements Runnable {
 		gerarAmbiente();
 
 		mapa = new Mapa("/mapas/caverna.png", 0);
+		// mapa = new Mapa(128, 128, 0);
 		contDoMapa = new ContDoMapa(mapa);
 
 		contAuxDaEnt = new ContAuxDaEnt();

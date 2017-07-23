@@ -125,7 +125,7 @@ public class ContDoMapa {
 	 * @return boolean
 	 */
 	private boolean conflito() {
-		// TODO Implementar o sistema de conflito entre entidades
+		// FIXME Implementar o sistema de conflito entre entidades
 		return true;
 	}
 }

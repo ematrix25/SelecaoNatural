@@ -15,9 +15,9 @@ public class Bloco {
 
 	public final static int TAMANHO = Sprite.TAMANHO;
 
-	public static Bloco blocosDeAgua[] = new Bloco[2];// 4
-	public static Bloco blocosOrganico[] = new Bloco[3];// 4
-	public static Bloco blocosInorganico[] = new Bloco[1];// 2
+	public static Bloco blocosDeAgua[] = new Bloco[4];
+	public static Bloco blocosOrganicos[] = new Bloco[4];
+	public static Bloco blocosInorganicos[] = new Bloco[2];
 
 	/**
 	 * Cria um objeto do bloco
@@ -61,10 +61,9 @@ public class Bloco {
 	 * @param sprites
 	 */
 	public static void associarBlocos(SpritesDoAmbiente sprites) {
-		// FIXME Criar mais sprites para os blocos do ambiente
-		blocosDeAgua = associarSprites(sprites, 0, 2, false);
-		blocosOrganico = associarSprites(sprites, 4, 3, false);
-		blocosInorganico = associarSprites(sprites, 8, 1, true);
+		blocosDeAgua = associarSprites(sprites, 0, 4, false);
+		blocosOrganicos = associarSprites(sprites, 4, 4, false);
+		blocosInorganicos = associarSprites(sprites, 8, 2, true);
 	}
 
 	/**
