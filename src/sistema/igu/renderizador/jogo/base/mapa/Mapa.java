@@ -49,7 +49,7 @@ public class Mapa {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		Bloco.associarSprites(temperatura);
+		Bloco.associarTemperatura(temperatura);
 	}
 
 	/**
@@ -61,7 +61,7 @@ public class Mapa {
 	 */
 	public Mapa(int largura, int altura, int temperatura) {
 		criarMapa(largura, altura);
-		Bloco.associarSprites(temperatura);
+		Bloco.associarTemperatura(temperatura);
 	}
 
 	/**
@@ -148,20 +148,20 @@ public class Mapa {
 	 * @return Bloco
 	 */
 	public Bloco obterBloco(int x, int y) {
-		if (x < 0 || y < 0 || x >= largura || y >= altura) return Bloco.blocoDeAgua1;
+		if (x < 0 || y < 0 || x >= largura || y >= altura) return Bloco.blocosDeAgua[0];
 		else switch (blocos[x + y * largura]) {
 		case COR_DE_AGUA:
-			return Bloco.blocoDeAgua;
+			return Bloco.blocosDeAgua[1];
 		case COR_ORGANICA:
-			return Bloco.blocoOrganico;
+			return Bloco.blocosOrganico[0];
 		case COR_ORGANICA1:
-			return Bloco.blocoOrganico1;
+			return Bloco.blocosOrganico[1];
 		case COR_ORGANICA2:
-			return Bloco.blocoOrganico2;
+			return Bloco.blocosOrganico[2];
 		case COR_INORGANICA:
-			return Bloco.blocoInorganico;
+			return Bloco.blocosInorganico[0];
 		default:
-			return Bloco.blocoDeAgua1;
+			return Bloco.blocosDeAgua[0];
 		}
 	}
 }

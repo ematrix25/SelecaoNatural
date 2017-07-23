@@ -20,12 +20,6 @@ public class Sprite {
 
 	public int pixeis[];
 
-	private static Sprite ambienteFrio[] = associarSprites(0, 6);
-	private static Sprite ambienteMorno[] = associarSprites(1, 6);
-	private static Sprite ambienteQuente[] = associarSprites(2, 6);
-
-	public static Sprite ambiente[][] = { ambienteFrio, ambienteMorno, ambienteQuente };
-
 	/**
 	 * Cria o objeto de Sprite da FolhaDeSprites
 	 * 
@@ -53,21 +47,6 @@ public class Sprite {
 	}
 
 	/**
-	 * Associa sprites em um array
-	 * 
-	 * @param y
-	 * @param qtd
-	 * @return Sprite[]
-	 */
-	private static Sprite[] associarSprites(int y, int qtd) {
-		Sprite sprites[] = new Sprite[qtd];
-		for (int x = 0; x < sprites.length; x++) {
-			sprites[x] = new Sprite(x, y, FolhaDeSprites.SPRITES);
-		}
-		return sprites;
-	}
-
-	/**
 	 * Gera um texto com a posição da sprite na folha de sprites
 	 * 
 	 * @see java.lang.Object#toString()
@@ -86,8 +65,6 @@ public class Sprite {
 		private int pixeis[];
 
 		public int largura, altura;
-
-		private static final FolhaDeSprites SPRITES = new FolhaDeSprites("/imagens/sprites/sprites.png");
 
 		public static final FolhaDeSprites AMBIENTE = new FolhaDeSprites("/imagens/sprites/ambiente.png");
 

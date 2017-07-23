@@ -27,7 +27,6 @@ import sistema.igu.renderizador.RendDoMenu;
 import sistema.igu.renderizador.RendDoQuest;
 import sistema.igu.renderizador.jogo.RendDaSelecao;
 import sistema.igu.renderizador.jogo.RendDoJogo;
-import sistema.igu.renderizador.jogo.base.SpritesAnimados;
 import sistema.igu.renderizador.jogo.base.mapa.Coordenada;
 import sistema.igu.renderizador.jogo.base.mapa.Mapa;
 import sistema.utilitario.Opcoes;

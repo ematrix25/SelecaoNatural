@@ -1,6 +1,7 @@
 package sistema.igu.renderizador.jogo.base.mapa;
 
 import sistema.igu.renderizador.jogo.base.Sprite;
+import sistema.igu.renderizador.jogo.base.Sprite.FolhaDeSprites;
 import sistema.igu.renderizador.jogo.base.Tela;
 
 /**
@@ -9,18 +10,14 @@ import sistema.igu.renderizador.jogo.base.Tela;
  * @author Emanuel
  */
 public class Bloco {
-	public int x, y;
 	public Sprite sprite;
 	public boolean solido;
 
 	public final static int TAMANHO = Sprite.TAMANHO;
 
-	public static Bloco blocoDeAgua;
-	public static Bloco blocoOrganico;
-	public static Bloco blocoInorganico;
-	public static Bloco blocoDeAgua1;
-	public static Bloco blocoOrganico1;
-	public static Bloco blocoOrganico2;
+	public static Bloco blocosDeAgua[] = new Bloco[2];// 4
+	public static Bloco blocosOrganico[] = new Bloco[3];// 4
+	public static Bloco blocosInorganico[] = new Bloco[1];// 2
 
 	/**
 	 * Cria um objeto do bloco
@@ -34,18 +31,54 @@ public class Bloco {
 	}
 
 	/**
-	 * Associa as sprites com os blocos
+	 * Associa as sprites do ambiente com os blocos dada temperatura
 	 * 
 	 * @param temperatura
 	 */
-	public static void associarSprites(int temperatura) {
-		//FIXME Criar classe para Sprites do Bloco
-		blocoDeAgua = new Bloco(Sprite.ambiente[temperatura][0], false);
-		blocoOrganico = new Bloco(Sprite.ambiente[temperatura][1], false);
-		blocoInorganico = new Bloco(Sprite.ambiente[temperatura][2], true);
-		blocoDeAgua1 = new Bloco(Sprite.ambiente[temperatura][3], false);
-		blocoOrganico1 = new Bloco(Sprite.ambiente[temperatura][4], false);
-		blocoOrganico2 = new Bloco(Sprite.ambiente[temperatura][5], false);
+	public static void associarTemperatura(int temperatura) {
+		switch (temperatura) {
+		case 0:
+			associarBlocos(SpritesDoAmbiente.ambienteFrio);
+			break;
+		case 1:
+			associarBlocos(SpritesDoAmbiente.ambienteMenosFrio);
+			break;
+		case 2:
+			associarBlocos(SpritesDoAmbiente.ambienteMorno);
+			break;
+		case 3:
+			associarBlocos(SpritesDoAmbiente.ambienteMenosQuente);
+			break;
+		case 4:
+			associarBlocos(SpritesDoAmbiente.ambienteQuente);
+			break;
+		}
+	}
+
+	/**
+	 * Associa as sprites da folha de sprites do ambiente com os blocos
+	 * 
+	 * @param sprites
+	 */
+	public static void associarBlocos(SpritesDoAmbiente sprites) {
+		// FIXME Criar mais sprites para os blocos do ambiente
+		blocosDeAgua = associarSprites(sprites, 0, 2, false);
+		blocosOrganico = associarSprites(sprites, 4, 3, false);
+		blocosInorganico = associarSprites(sprites, 8, 1, true);
+	}
+
+	/**
+	 * Associa as sprites com os blocos
+	 * 
+	 * @param qtd
+	 * @return Bloco[]
+	 */
+	private static Bloco[] associarSprites(SpritesDoAmbiente sprites, int inicio, int qtd, boolean solido) {
+		Bloco blocos[] = new Bloco[qtd];
+		for (int i = 0; i < qtd; i++) {
+			blocos[i] = new Bloco(sprites.obterSprite(inicio+i), solido);
+		}
+		return blocos;
 	}
 
 	/**
@@ -57,5 +90,42 @@ public class Bloco {
 	 */
 	public void renderizar(int x, int y, Tela tela) {
 		tela.renderizarBloco(x << 4, y << 4, this);
+	}
+
+	/**
+	 * Classe que organiza sprites dos blocos do ambiente
+	 * 
+	 * @author Emanuel
+	 */
+	public static class SpritesDoAmbiente {
+		private Sprite sprites[];
+
+		public static SpritesDoAmbiente ambienteFrio = new SpritesDoAmbiente(0);
+		public static SpritesDoAmbiente ambienteMenosFrio = new SpritesDoAmbiente(1);
+		public static SpritesDoAmbiente ambienteMorno = new SpritesDoAmbiente(2);
+		public static SpritesDoAmbiente ambienteMenosQuente = new SpritesDoAmbiente(3);
+		public static SpritesDoAmbiente ambienteQuente = new SpritesDoAmbiente(4);
+
+		/**
+		 * Cria o objeto gestor de sprites do ambiente
+		 *
+		 * @param folhaDeSprites
+		 */
+		public SpritesDoAmbiente(int y) {
+			sprites = new Sprite[10];
+			for (int x = 0; x < sprites.length; x++) {
+				sprites[x] = new Sprite(x, y, FolhaDeSprites.AMBIENTE);
+			}
+		}
+
+		/**
+		 * Obtém a sprite dado o indice
+		 * 
+		 * @param indice
+		 * @return Sprite
+		 */
+		public Sprite obterSprite(int indice) {
+			return sprites[indice];
+		}
 	}
 }
