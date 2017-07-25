@@ -27,7 +27,7 @@ public class RendDeOpcoes extends Renderizador {
 	}
 
 	/**
-	 * Obtem as configuracoes
+	 * Obtém as configuracoes
 	 * 
 	 * @return int[]
 	 */

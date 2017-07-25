@@ -60,7 +60,7 @@ public class Jogo {
 		 * Cria a Tela
 		 */
 		public Janela() {
-			// Obtem o endereco da imagem do icone
+			// Obtém o endereco da imagem do icone
 			Recurso recurso = new Recurso();
 			URL endereco = recurso.obterEndereco("/imagens/icones/icone.ico");
 

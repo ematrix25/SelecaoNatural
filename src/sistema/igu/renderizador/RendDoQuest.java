@@ -41,7 +41,7 @@ public class RendDoQuest extends Renderizador {
 	}
 
 	/**
-	 * Obtem as respostas
+	 * Obtém as respostas
 	 * 
 	 * @return int[]
 	 */

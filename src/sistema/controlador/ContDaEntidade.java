@@ -97,7 +97,7 @@ public class ContDaEntidade {
 	}
 
 	/**
-	 * Obtem a Entidade dado um Componente
+	 * Obtém a Entidade dado um Componente
 	 * 
 	 * @param componente
 	 * @return Integer
@@ -112,7 +112,7 @@ public class ContDaEntidade {
 	}
 
 	/**
-	 * Obtem todas as Entidades do tipo de Componente
+	 * Obtém todas as Entidades do tipo de Componente
 	 * 
 	 * @param tipoDeComponente
 	 * @return Conjunto de Integer
@@ -124,7 +124,7 @@ public class ContDaEntidade {
 	}
 
 	/**
-	 * Obtem o Componente da Entidade da ID
+	 * Obtém o Componente da Entidade da ID
 	 * 
 	 * @param ID
 	 * @param tipoDeComponente
@@ -142,7 +142,7 @@ public class ContDaEntidade {
 	}
 
 	/**
-	 * Obtem todos os Componentes da Entidade da ID
+	 * Obtém todos os Componentes da Entidade da ID
 	 * 
 	 * @param ID
 	 * @return List<T>
@@ -163,7 +163,7 @@ public class ContDaEntidade {
 	}
 
 	/**
-	 * Obtem todos os Componentes do tipo de Componente
+	 * Obtém todos os Componentes do tipo de Componente
 	 * 
 	 * @param tipoDeComponente
 	 * @return List<T>

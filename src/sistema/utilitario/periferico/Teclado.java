@@ -33,7 +33,7 @@ public class Teclado implements KeyListener {
 	}
 
 	/**
-	 * Obtem o evento do teclado quando uma tecla é pressionada
+	 * Obtém o evento do teclado quando uma tecla é pressionada
 	 * 
 	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
 	 */
@@ -44,7 +44,7 @@ public class Teclado implements KeyListener {
 	}
 
 	/**
-	 * Obtem o evento do teclado quando uma tecla é soltada
+	 * Obtém o evento do teclado quando uma tecla é soltada
 	 * 
 	 * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
 	 */
@@ -54,7 +54,7 @@ public class Teclado implements KeyListener {
 	}
 
 	/**
-	 * Obtem o evento do teclado quando uma tecla é teclada
+	 * Obtém o evento do teclado quando uma tecla é teclada
 	 * 
 	 * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
 	 */

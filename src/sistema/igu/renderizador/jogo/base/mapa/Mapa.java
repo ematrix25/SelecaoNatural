@@ -185,7 +185,7 @@ public class Mapa {
 	}
 
 	/**
-	 * Obtem o bloco a ser renderizado no mapa
+	 * Obtém o bloco a ser renderizado no mapa
 	 * 
 	 * @param x
 	 * @param y

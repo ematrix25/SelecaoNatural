@@ -20,7 +20,7 @@ public class ContDaIA implements ContDaEntMovel {
 	}
 
 	/**
-	 * Obtem o movimento aleatório dado a velocidade máxima permitida
+	 * Obtém o movimento aleatório dado a velocidade máxima permitida
 	 * 
 	 * @see sistema.controlador.jogo.movimento.ContDaEntMovel#obterMovimentacao(int)
 	 */
@@ -29,7 +29,7 @@ public class ContDaIA implements ContDaEntMovel {
 	}
 
 	/**
-	 * Obtem uma direção aleatória
+	 * Obtém uma direção aleatória
 	 * 
 	 * @see sistema.controlador.jogo.movimento.ContDaEntMovel#obterDirecao()
 	 */

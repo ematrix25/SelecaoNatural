@@ -42,7 +42,7 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	}
 
 	/**
-	 * Obtem o valor de X
+	 * Obtém o valor de X
 	 * 
 	 * @return int
 	 */
@@ -51,7 +51,7 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	}
 
 	/**
-	 * Obtem o valor de X relativo ao xMaximo
+	 * Obtém o valor de X relativo ao xMaximo
 	 * 
 	 * @return int
 	 */
@@ -60,7 +60,7 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	}
 
 	/**
-	 * Obtem o valor de Y
+	 * Obtém o valor de Y
 	 * 
 	 * @return int
 	 */
@@ -69,7 +69,7 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	}
 
 	/**
-	 * Obtem o valor de Y relativo ao yMaximo
+	 * Obtém o valor de Y relativo ao yMaximo
 	 * 
 	 * @return desvioY
 	 */
@@ -78,7 +78,7 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	}
 
 	/**
-	 * Obtem a diferença da posição do Mouse relativo a parte do Maximo
+	 * Obtém a diferença da posição do Mouse relativo a parte do Maximo
 	 * 
 	 * @return int
 	 */
@@ -90,7 +90,7 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	}
 
 	/**
-	 * Obtem a diferença de X relativo a parte do xMaximo
+	 * Obtém a diferença de X relativo a parte do xMaximo
 	 * 
 	 * @return int
 	 */
@@ -99,7 +99,7 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	}
 
 	/**
-	 * Obtem a diferença de Y relativo a parte do yMaximo
+	 * Obtém a diferença de Y relativo a parte do yMaximo
 	 * 
 	 * @return int
 	 */
@@ -108,7 +108,7 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	}
 
 	/**
-	 * Obtem o valor do botão do mouse
+	 * Obtém o valor do botão do mouse
 	 * 
 	 * @return int
 	 */
@@ -124,7 +124,7 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	}
 
 	/**
-	 * Obtem o evento quando o mouse é arrastado
+	 * Obtém o evento quando o mouse é arrastado
 	 * 
 	 * @see java.awt.event.MouseMotionListener#mouseDragged(java.awt.event.MouseEvent)
 	 */
@@ -134,7 +134,7 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	}
 
 	/**
-	 * Obtem o evento quando o mouse é movido
+	 * Obtém o evento quando o mouse é movido
 	 * 
 	 * @see java.awt.event.MouseMotionListener#mouseMoved(java.awt.event.MouseEvent)
 	 */
@@ -145,7 +145,7 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	}
 
 	/**
-	 * Obtem o evento quando um botão do mouse é clicado
+	 * Obtém o evento quando um botão do mouse é clicado
 	 * 
 	 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
 	 */
@@ -155,7 +155,7 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	}
 
 	/**
-	 * Obtem o evento quando o mouse entra num componente
+	 * Obtém o evento quando o mouse entra num componente
 	 * 
 	 * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
 	 */
@@ -165,7 +165,7 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	}
 
 	/**
-	 * Obtem o evento quando o mouse sai dum componente
+	 * Obtém o evento quando o mouse sai dum componente
 	 * 
 	 * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
 	 */
@@ -175,7 +175,7 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	}
 
 	/**
-	 * Obtem o evento quando um botão do mouse é pressionado
+	 * Obtém o evento quando um botão do mouse é pressionado
 	 * 
 	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
 	 */
@@ -185,7 +185,7 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	}
 
 	/**
-	 * Obtem o evento quando um botão do mouse é soltado
+	 * Obtém o evento quando um botão do mouse é soltado
 	 * 
 	 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
 	 */

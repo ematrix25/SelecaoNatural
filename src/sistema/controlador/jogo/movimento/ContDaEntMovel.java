@@ -9,7 +9,7 @@ import componente.Componente.Velocidade.Direcao;
  */
 public interface ContDaEntMovel {
 	/**
-	 * Obtem o movimento dado a velocidade máxima permitida
+	 * Obtém o movimento dado a velocidade máxima permitida
 	 * 
 	 * @param velocidadeMaxima
 	 * @return int
@@ -17,7 +17,7 @@ public interface ContDaEntMovel {
 	public int obterMovimentacao(int velocidadeMaxima);
 
 	/**
-	 * Obtem a direção
+	 * Obtém a direção
 	 * 
 	 * @return Direcao
 	 */

@@ -1,10 +1,13 @@
 package sistema.controlador.jogo;
 
+import java.util.HashMap;
+
 import componente.Componente.Posicao;
 import componente.Componente.Velocidade;
 import componente.Componente.Velocidade.Direcao;
 import componente.Especime.Especie.Movimento;
 import sistema.controlador.jogo.ContAuxDaEnt.Entidade;
+import sistema.igu.Painel;
 import sistema.igu.renderizador.jogo.base.mapa.Mapa;
 import sistema.utilitario.Opcoes;
 
@@ -14,19 +17,24 @@ import sistema.utilitario.Opcoes;
  * @author Emanuel
  */
 public class ContDoMapa {
+	private Painel painel;
 	private Mapa mapa;
+	private int entidadeAlvo = -1;
+	private HashMap<Integer, Posicao> entidades;
 
 	/**
 	 * Cria o objeto controlador do mapa dado o mapa
 	 * 
 	 * @param mapa
 	 */
-	public ContDoMapa(Mapa mapa) {
+	public ContDoMapa(Painel painel, Mapa mapa) {
+		this.painel = painel;
 		this.mapa = mapa;
+		entidades = new HashMap<>();
 	}
 
 	/**
-	 * Obtem o mapa do Jogo
+	 * Obtém o mapa do Jogo
 	 * 
 	 * @return Mapa
 	 */
@@ -35,7 +43,7 @@ public class ContDoMapa {
 	}
 
 	/**
-	 * Obtem a velocidade máxima dado o tipo de movimento da entidade
+	 * Obtém a velocidade máxima dado o tipo de movimento da entidade
 	 * 
 	 * @param movimento
 	 * @return int
@@ -66,38 +74,45 @@ public class ContDoMapa {
 		novaVelocidade.valor = movimentacao;
 		if (novaVelocidade.valor != 0) {
 			novaVelocidade.direcao = direcao;
-			mover(entidade.posicao, configurarPosicao(novaVelocidade));
+			mover(entidade, configurarDiferencial(novaVelocidade));
 		}
 		return novaVelocidade;
 	}
 
 	/**
-	 * Configura uma posição nova dado a velocidade e a direcao
+	 * Configura a diferença para a posição nova dado a velocidade e a direção
 	 * 
 	 * @param direcao
 	 * @param velocidade
 	 * @return Posicao
 	 */
-	private Posicao configurarPosicao(Velocidade velocidade) {
-		Posicao novaPosicao = new Posicao();
-		if (Opcoes.controlePorMouse || velocidade.direcao == Direcao.Direita) novaPosicao.x += velocidade.valor;
-		else if(velocidade.direcao == Direcao.Esquerda) novaPosicao.x -= velocidade.valor;
-		if (Opcoes.controlePorMouse || velocidade.direcao == Direcao.Baixo) novaPosicao.y += velocidade.valor;
-		else if(velocidade.direcao == Direcao.Cima) novaPosicao.y -= velocidade.valor;
-		if (novaPosicao.y != 0) novaPosicao.x = 0;
-		return novaPosicao;
+	private Posicao configurarDiferencial(Velocidade velocidade) {
+		Posicao diferencial = new Posicao();
+		if (Opcoes.controlePorMouse || velocidade.direcao == Direcao.Direita) diferencial.x += velocidade.valor;
+		else if (velocidade.direcao == Direcao.Esquerda) diferencial.x -= velocidade.valor;
+		if (Opcoes.controlePorMouse || velocidade.direcao == Direcao.Baixo) diferencial.y += velocidade.valor;
+		else if (velocidade.direcao == Direcao.Cima) diferencial.y -= velocidade.valor;
+		if (diferencial.y != 0) diferencial.x = 0;
+		return diferencial;
 	}
 
 	/**
 	 * Tenta mover a entidade móvel para um nova posição
 	 * 
-	 * @param posicao
-	 * @param novaPosicao
+	 * @param entidade
+	 * @param diferencial
 	 */
-	private void mover(Posicao posicao, Posicao novaPosicao) {
-		if (!colide(posicao, novaPosicao) && conflito()) {
-			posicao.x += novaPosicao.x;
-			posicao.y += novaPosicao.y;
+	private void mover(Entidade entidade, Posicao diferencial) {
+		boolean move = false;
+		if (conflita(entidade.posicao, diferencial)) {
+			move = painel.resolverConflito(entidade, entidadeAlvo);
+		}
+		move = !colide(entidade.posicao, diferencial);
+			
+		if(move){
+			entidade.posicao.x += diferencial.x;
+			entidade.posicao.y += diferencial.y;
+			atualizarEntidades(entidade.id, entidade.posicao);
 		}
 	}
 
@@ -105,27 +120,46 @@ public class ContDoMapa {
 	 * Verifica se haverá colisão com blocos sólidos do mapa ao se mover
 	 * 
 	 * @param posicao
-	 * @param novaPosicao
+	 * @param diferencial
 	 * @return boolean
 	 */
-	private boolean colide(Posicao posicao, Posicao novaPosicao) {
+	private boolean colide(Posicao posicao, Posicao diferencial) {
 		int xAux, yAux;
 		boolean colidiu = false;
 		for (int lado = 0; lado < 4; lado++) {
-			xAux = ((posicao.x + novaPosicao.x) + lado % 2 * 15) / 16;
-			yAux = ((posicao.y + novaPosicao.y) + lado / 2 * 15) / 16;
+			xAux = ((posicao.x + diferencial.x) + lado % 2 * 15) / 16;
+			yAux = ((posicao.y + diferencial.y) + lado / 2 * 15) / 16;
 			if (mapa.obterBloco(xAux, yAux).solido) colidiu = true;
 		}
 		return colidiu;
 	}
 
 	/**
-	 * Verifica se ao se mover o conflito foi resolvido e a entidade ganhou
+	 * Verifica se houve conflito e guarda qual entidade é alvo
 	 * 
 	 * @return boolean
 	 */
-	private boolean conflito() {
-		// FIXME Implementar o sistema de conflito entre entidades
-		return true;
+	private boolean conflita(Posicao posicao, Posicao diferencial) {
+		Posicao posicaoAux = new Posicao(posicao.x + diferencial.x, posicao.y + diferencial.y);
+		for (int id : entidades.keySet()) {
+			if (entidades.get(id).equals(posicaoAux)) {
+				entidadeAlvo = id;
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Atualiza as posições das entidades
+	 * 
+	 * @param id
+	 * @param posicao
+	 */
+	private void atualizarEntidades(int id, Posicao posicao) {
+		if (!entidades.isEmpty() && entidades.containsKey(id)) {
+			entidades.remove(id);
+		}
+		entidades.put(id, posicao);
 	}
 }

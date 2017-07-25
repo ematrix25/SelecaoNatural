@@ -46,7 +46,8 @@ public class TesteContDoJogo {
 		contDoAmbiente = new ContDoAmbiente();
 		contDaEntidade = new ContDaEntidade();
 		mapa = new Mapa("/mapas/caverna.png", 0);
-		contDoMapa = new ContDoMapa(mapa);
+		//Painel é nulo por motivos de teste
+		contDoMapa = new ContDoMapa(null, mapa);
 		contAuxDaEnt = new ContAuxDaEnt();
 		contDoJogador = new ContDoJogador();
 	}

@@ -15,7 +15,7 @@ public class ContDoJogador implements ContDaEntMovel {
 	private int pontuacao;
 
 	/**
-	 * Obtem a ID da entidade do Jogador
+	 * Obtém a ID da entidade do Jogador
 	 * 
 	 * @return int
 	 */
@@ -33,7 +33,7 @@ public class ContDoJogador implements ContDaEntMovel {
 	}
 
 	/**
-	 * Obtem a pontuacao do jogo
+	 * Obtém a pontuacao do jogo
 	 * 
 	 * @return int
 	 */
@@ -51,7 +51,7 @@ public class ContDoJogador implements ContDaEntMovel {
 	}
 
 	/**
-	 * Obtem o movimento requerido pelo jogador dada velocidade máxima
+	 * Obtém o movimento requerido pelo jogador dada velocidade máxima
 	 * 
 	 * @see sistema.controlador.jogo.movimento.ContDaEntMovel#obterMovimentacao(int)
 	 */
@@ -67,7 +67,7 @@ public class ContDoJogador implements ContDaEntMovel {
 	}
 
 	/**
-	 * Obtem a direção pela entrada de dados dos perifericos
+	 * Obtém a direção pela entrada de dados dos perifericos
 	 * 
 	 * @see sistema.controlador.jogo.movimento.ContDaEntMovel#obterDirecao()
 	 */
@@ -77,7 +77,7 @@ public class ContDoJogador implements ContDaEntMovel {
 	}
 
 	/**
-	 * Obtem a direção pela entrada de dados do mouse
+	 * Obtém a direção pela entrada de dados do mouse
 	 * 
 	 * @return Direcao
 	 */
@@ -90,7 +90,7 @@ public class ContDoJogador implements ContDaEntMovel {
 	}
 
 	/**
-	 * Obtem a direção pela entrada de dados do teclado
+	 * Obtém a direção pela entrada de dados do teclado
 	 * 
 	 * @return Direcao
 	 */

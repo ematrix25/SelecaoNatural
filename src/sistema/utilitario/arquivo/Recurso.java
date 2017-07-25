@@ -10,7 +10,7 @@ import java.net.URL;
  */
 public class Recurso {
 	/**
-	 * Obtem o arquivo do endereco dos recursos dado caminho do arquivo
+	 * Obtém o arquivo do endereco dos recursos dado caminho do arquivo
 	 * 
 	 * @param CAMINHO
 	 * @return
@@ -26,7 +26,7 @@ public class Recurso {
 	}
 
 	/**
-	 * Obtem o endereço nos recursos dado caminho do arquivo
+	 * Obtém o endereço nos recursos dado caminho do arquivo
 	 * 
 	 * @param CAMINHO
 	 * @return
@@ -36,7 +36,7 @@ public class Recurso {
 	}
 
 	/**
-	 * Obtem o fluxo do endereco dos recursos dado caminho do arquivo
+	 * Obtém o fluxo do endereco dos recursos dado caminho do arquivo
 	 * 
 	 * @param CAMINHO
 	 * @return

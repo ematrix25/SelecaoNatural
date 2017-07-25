@@ -197,6 +197,52 @@ public class Painel extends Canvas implements Runnable {
 	}
 
 	/**
+	 * Resolve o conflito das entidades e se a entidadeAlvo for removida, true
+	 * 
+	 * @param entidade
+	 * @param entidadeAlvo
+	 * @return boolean
+	 */
+	public boolean resolverConflito(Entidade entidade, int entidadeAlvo) {
+		// TODO Testar o sistema de resolução do conflito
+		Especime especimeAlvo = contDaEntidade.obterComponente(entidadeAlvo, Especime.class);
+		Especime especime = entidade.especime;
+		if (especime.massa > especimeAlvo.massa) {
+			especime.massa = juntarMassa(especime.massa, especimeAlvo.massa);
+			removerEntidade(entidadeAlvo);
+			return true;
+		}
+		if (especime.massa < especimeAlvo.massa) {
+			especimeAlvo.massa = juntarMassa(especimeAlvo.massa, especime.massa);
+			removerEntidade(entidade.id);
+		}
+		return false;
+	}
+
+	/**
+	 * Junta as massas dos especimes
+	 * 
+	 * @param massa
+	 * @param acrescimo
+	 * @return int
+	 */
+	private int juntarMassa(int massa, int acrescimo) {
+		// 20% não são integrados a massa
+		acrescimo = (int) (acrescimo * 0.8);
+		if (massa + acrescimo > 100) return 100;
+		return massa += acrescimo;
+	}
+
+	/**
+	 * Remove a entidade
+	 * 
+	 * @param entidade
+	 */
+	private void removerEntidade(int entidade) {
+		// FIXME Implementar a classe do removedor de Entidade
+	}
+
+	/**
 	 * Renderiza a tela do painel
 	 */
 	private void renderizar() {
@@ -329,7 +375,7 @@ public class Painel extends Canvas implements Runnable {
 
 		mapa = new Mapa("/mapas/caverna.png", 0);
 		// mapa = new Mapa(128, 128, 0);
-		contDoMapa = new ContDoMapa(mapa);
+		contDoMapa = new ContDoMapa(this, mapa);
 
 		contAuxDaEnt = new ContAuxDaEnt();
 		contDoJogador = new ContDoJogador();

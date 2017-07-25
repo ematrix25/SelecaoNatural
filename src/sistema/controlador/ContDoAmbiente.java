@@ -24,7 +24,7 @@ public class ContDoAmbiente {
 	}
 
 	/**
-	 * Obtem o Ambiente
+	 * Obtém o Ambiente
 	 * 
 	 * @return Ambiente
 	 */
@@ -162,7 +162,7 @@ public class ContDoAmbiente {
 	}
 
 	/**
-	 * Obtem os Especimes da Especie do Ambiente por um Especime
+	 * Obtém os Especimes da Especie do Ambiente por um Especime
 	 * 
 	 * @param especime
 	 * @return Lista de Integer
@@ -172,7 +172,7 @@ public class ContDoAmbiente {
 	}
 
 	/**
-	 * Obtem os Especimes da Especie do Ambiente por Especie
+	 * Obtém os Especimes da Especie do Ambiente por Especie
 	 * 
 	 * @param especie
 	 * @return Lista de Integer
@@ -231,7 +231,7 @@ public class ContDoAmbiente {
 		}
 
 		/**
-		 * Obtem a Temperatura Máxima do Ambiente
+		 * Obtém a Temperatura Máxima do Ambiente
 		 * 
 		 * @return int
 		 */
@@ -240,7 +240,7 @@ public class ContDoAmbiente {
 		}
 
 		/**
-		 * Obtem a Temperatura Mínima do Ambiente
+		 * Obtém a Temperatura Mínima do Ambiente
 		 * 
 		 * @return int
 		 */
@@ -249,7 +249,7 @@ public class ContDoAmbiente {
 		}
 
 		/**
-		 * Obtem a Temperatura do Ambiente
+		 * Obtém a Temperatura do Ambiente
 		 * 
 		 * @return int
 		 */
@@ -258,7 +258,7 @@ public class ContDoAmbiente {
 		}
 
 		/**
-		 * Obtem a IDs da Especie
+		 * Obtém a IDs da Especie
 		 * 
 		 * @param especime
 		 * @return Integer
@@ -271,7 +271,7 @@ public class ContDoAmbiente {
 		}
 
 		/**
-		 * Obtem a QTD de Especies
+		 * Obtém a QTD de Especies
 		 * 
 		 * @return int
 		 */

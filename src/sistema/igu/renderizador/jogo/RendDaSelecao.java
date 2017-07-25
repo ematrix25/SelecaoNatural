@@ -37,7 +37,7 @@ public class RendDaSelecao extends Renderizador {
 	}
 
 	/**
-	 * Obtem o resultado da selecao
+	 * Obtém o resultado da selecao
 	 * 
 	 * @return int
 	 */

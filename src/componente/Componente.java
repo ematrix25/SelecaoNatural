@@ -249,7 +249,7 @@ public abstract class Componente {
 		}
 
 		/**
-		 * Obtem a sprite dada a direção e a velocidade
+		 * Obtém a sprite dada a direção e a velocidade
 		 * 
 		 * @param direcao
 		 * @param velocidade
@@ -260,7 +260,7 @@ public abstract class Componente {
 		}
 
 		/**
-		 * Obtem a cor
+		 * Obtém a cor
 		 * 
 		 * @return int
 		 */

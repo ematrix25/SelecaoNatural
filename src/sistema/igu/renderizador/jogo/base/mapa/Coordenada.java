@@ -33,7 +33,7 @@ public class Coordenada {
 	}
 
 	/**
-	 * Obtem x
+	 * Obtém x
 	 * 
 	 * @return x
 	 */
@@ -42,7 +42,7 @@ public class Coordenada {
 	}
 
 	/**
-	 * Obtem y
+	 * Obtém y
 	 * 
 	 * @return y
 	 */
@@ -51,7 +51,7 @@ public class Coordenada {
 	}
 
 	/**
-	 * Obtem a coordenada x e y
+	 * Obtém a coordenada x e y
 	 * 
 	 * @return int[]
 	 */

@@ -38,7 +38,7 @@ public class TocadorDeMusica implements Runnable {
 	}
 
 	/**
-	 * Obtem o nome da música
+	 * Obtém o nome da música
 	 * 
 	 * @return String
 	 */
@@ -49,7 +49,7 @@ public class TocadorDeMusica implements Runnable {
 	}
 
 	/**
-	 * Obtem o artista da música
+	 * Obtém o artista da música
 	 * 
 	 * @return String
 	 */
@@ -60,7 +60,7 @@ public class TocadorDeMusica implements Runnable {
 	}
 
 	/**
-	 * Obtem o compositor da música
+	 * Obtém o compositor da música
 	 * 
 	 * @return String
 	 */
@@ -71,7 +71,7 @@ public class TocadorDeMusica implements Runnable {
 	}
 
 	/**
-	 * Obtem o arquivo mp3 da música sendo tocada
+	 * Obtém o arquivo mp3 da música sendo tocada
 	 * 
 	 * @return MP3File
 	 */

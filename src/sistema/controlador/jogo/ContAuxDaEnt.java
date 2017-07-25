@@ -17,7 +17,7 @@ public class ContAuxDaEnt {
 	private Entidade entidade;
 
 	/**
-	 * Obtem a entidade
+	 * Obtém a entidade
 	 * 
 	 * @return Entidade
 	 */

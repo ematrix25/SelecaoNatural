@@ -21,7 +21,7 @@ public class ContDoQuestionario {
 	}
 
 	/**
-	 * Obtem a quantidade de Perguntas do questionário
+	 * Obtém a quantidade de Perguntas do questionário
 	 * 
 	 * @return int
 	 */
@@ -30,7 +30,7 @@ public class ContDoQuestionario {
 	}
 
 	/**
-	 * Obtem a quantidade de Respostas do questionário
+	 * Obtém a quantidade de Respostas do questionário
 	 * 
 	 * @return int
 	 */
@@ -39,7 +39,7 @@ public class ContDoQuestionario {
 	}
 
 	/**
-	 * Obtem uma Pergunta do questionário
+	 * Obtém uma Pergunta do questionário
 	 * 
 	 * @param index
 	 * @return String
@@ -49,7 +49,7 @@ public class ContDoQuestionario {
 	}
 
 	/**
-	 * Obtem uma Resposta do questionário
+	 * Obtém uma Resposta do questionário
 	 * 
 	 * @param index
 	 * @return String
