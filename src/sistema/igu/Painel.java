@@ -204,17 +204,16 @@ public class Painel extends Canvas implements Runnable {
 	 * @return boolean
 	 */
 	public boolean resolverConflito(Entidade entidade, int entidadeAlvo) {
-		// TODO Testar o sistema de resolução do conflito
+		// FIXME Testar o sistema de resolução do conflito
 		Especime especimeAlvo = contDaEntidade.obterComponente(entidadeAlvo, Especime.class);
 		Especime especime = entidade.especime;
 		if (especime.massa > especimeAlvo.massa) {
 			especime.massa = juntarMassa(especime.massa, especimeAlvo.massa);
-			removerEntidade(entidadeAlvo);
-			return true;
+			return contDaEntidade.removerEntidade(entidadeAlvo);
 		}
 		if (especime.massa < especimeAlvo.massa) {
 			especimeAlvo.massa = juntarMassa(especimeAlvo.massa, especime.massa);
-			removerEntidade(entidade.id);
+			contDaEntidade.removerEntidade(entidade.id);
 		}
 		return false;
 	}
@@ -231,15 +230,6 @@ public class Painel extends Canvas implements Runnable {
 		acrescimo = (int) (acrescimo * 0.8);
 		if (massa + acrescimo > 100) return 100;
 		return massa += acrescimo;
-	}
-
-	/**
-	 * Remove a entidade
-	 * 
-	 * @param entidade
-	 */
-	private void removerEntidade(int entidade) {
-		// FIXME Implementar a classe do removedor de Entidade
 	}
 
 	/**
