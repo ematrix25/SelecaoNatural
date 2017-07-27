@@ -103,17 +103,39 @@ public class ContDoMapa {
 	 * @param diferencial
 	 */
 	private void mover(Entidade entidade, Posicao diferencial) {
-		boolean move = false;
-		if (conflita(entidade.posicao, diferencial)) {
-			move = painel.resolverConflito(entidade, entidadeAlvo);
+		boolean move = true;
+		if (conflita(entidade, diferencial)) {
+			move &= painel.resolverConflito(entidade, entidadeAlvo);
+			entidades.remove(entidadeAlvo);
 		}
-		move = !colide(entidade.posicao, diferencial);
-			
-		if(move){
+		move &= !colide(entidade.posicao, diferencial);
+
+		if (move) {
 			entidade.posicao.x += diferencial.x;
 			entidade.posicao.y += diferencial.y;
 			atualizarEntidades(entidade.id, entidade.posicao);
 		}
+	}
+
+	/**
+	 * Verifica se houve conflito e guarda qual entidade é alvo
+	 * 
+	 * @param entidade
+	 * @param diferencial
+	 * @return boolean
+	 */
+	private boolean conflita(Entidade entidade, Posicao diferencial) {
+		Posicao posicao = new Posicao(entidade.posicao.x + diferencial.x, entidade.posicao.y + diferencial.y);
+		Posicao posicaoAux;
+		for (int id : entidades.keySet()) {
+			if (id == entidade.id) continue;
+			posicaoAux = entidades.get(id);
+			if (Math.abs(posicaoAux.x - posicao.x) < 16 && Math.abs(posicaoAux.y - posicao.y) < 16) {
+				entidadeAlvo = id;
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -124,30 +146,15 @@ public class ContDoMapa {
 	 * @return boolean
 	 */
 	private boolean colide(Posicao posicao, Posicao diferencial) {
+		Posicao posicaoAux = new Posicao(posicao.x + diferencial.x, posicao.y + diferencial.y);
 		int xAux, yAux;
 		boolean colidiu = false;
 		for (int lado = 0; lado < 4; lado++) {
-			xAux = ((posicao.x + diferencial.x) + lado % 2 * 15) / 16;
-			yAux = ((posicao.y + diferencial.y) + lado / 2 * 15) / 16;
+			xAux = (posicaoAux.x + lado % 2 * 15) / 16;
+			yAux = (posicaoAux.y + lado / 2 * 15) / 16;
 			if (mapa.obterBloco(xAux, yAux).solido) colidiu = true;
 		}
 		return colidiu;
-	}
-
-	/**
-	 * Verifica se houve conflito e guarda qual entidade é alvo
-	 * 
-	 * @return boolean
-	 */
-	private boolean conflita(Posicao posicao, Posicao diferencial) {
-		Posicao posicaoAux = new Posicao(posicao.x + diferencial.x, posicao.y + diferencial.y);
-		for (int id : entidades.keySet()) {
-			if (entidades.get(id).equals(posicaoAux)) {
-				entidadeAlvo = id;
-				return true;
-			}
-		}
-		return false;
 	}
 
 	/**

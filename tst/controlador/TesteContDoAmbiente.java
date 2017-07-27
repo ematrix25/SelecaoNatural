@@ -106,7 +106,8 @@ public class TesteContDoAmbiente {
 		contDaEntidade.adicionarComponente(entidade, new Especime(especies[5]));
 		contDoAmbiente.atualizarEspecie(entidade, true, especies[5].obterCodigo());
 		assertEquals(contDoAmbiente.obterEspecimesPorEspecie(especies[5].obterCodigo()).size(), 2);
-		contDaEntidade.removerEntidade(entidade);
+		contDaEntidade.marcarEntidades(entidade);
+		contDaEntidade.removerEntidades();
 		contDoAmbiente.atualizarEspecie(entidade, false, especies[5].obterCodigo());
 		assertEquals(contDoAmbiente.obterEspecimesPorEspecie(especies[5].obterCodigo()).size(), 1);
 	}
@@ -119,8 +120,9 @@ public class TesteContDoAmbiente {
 		criarEspecies();
 		assertEquals(contDoAmbiente.obterAmbiente().obterQTD(), 7);
 		for (Integer ID : contDoAmbiente.obterEspecimesPorEspecie(especies[5].obterCodigo())) {
-			contDaEntidade.removerEntidade(ID);
+			contDaEntidade.marcarEntidades(ID);
 		}
+		contDaEntidade.removerEntidades();
 		contDoAmbiente.removerEspecie(especies[5].obterCodigo());
 		assertFalse(contDoAmbiente.obterEspecimesPorEspecie(especies[5].obterCodigo()) != null);
 		assertEquals(contDoAmbiente.obterAmbiente().obterQTD(), 6);

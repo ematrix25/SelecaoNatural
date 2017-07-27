@@ -69,6 +69,7 @@ public class Painel extends Canvas implements Runnable {
 	private RendDoQuest rendDoQuest;
 
 	private char telaAtiva = 'M';
+
 	public boolean ehContinuavel = false;
 
 	public int massaCelular = 0, qtdCelulas = 0, pontuacao = 0;
@@ -174,6 +175,10 @@ public class Painel extends Canvas implements Runnable {
 		pontuacao = contDoJogador.obterPontuacao();
 
 		moverEntidades();
+
+		// Remove todas as entidades marcadas na movimentação
+
+		contDaEntidade.removerEntidades();
 	}
 
 	/**
@@ -204,17 +209,21 @@ public class Painel extends Canvas implements Runnable {
 	 * @return boolean
 	 */
 	public boolean resolverConflito(Entidade entidade, int entidadeAlvo) {
-		// FIXME Testar o sistema de resolução do conflito
+		// FIXME Resolver conflito de massas iguais
 		Especime especimeAlvo = contDaEntidade.obterComponente(entidadeAlvo, Especime.class);
 		Especime especime = entidade.especime;
+
+		System.out.print("Conflito " + entidade.id + " vs " + entidadeAlvo);
 		if (especime.massa > especimeAlvo.massa) {
+			System.out.println(" foi resolvido com sucesso");
 			especime.massa = juntarMassa(especime.massa, especimeAlvo.massa);
-			return contDaEntidade.removerEntidade(entidadeAlvo);
+			return contDaEntidade.marcarEntidades(entidadeAlvo);
 		}
 		if (especime.massa < especimeAlvo.massa) {
 			especimeAlvo.massa = juntarMassa(especimeAlvo.massa, especime.massa);
-			contDaEntidade.removerEntidade(entidade.id);
+			contDaEntidade.marcarEntidades(entidade.id);
 		}
+		System.out.println(" deu ruim");
 		return false;
 	}
 
@@ -386,7 +395,10 @@ public class Painel extends Canvas implements Runnable {
 		}
 		Especie[] especies = contDoAmbiente.criarEspecies(entidades);
 		for (int i = 0; i < 7; i++) {
+			// if (especies[i].tipo.forma == Forma.Bacillus)
 			contDaEntidade.adicionarComponente(entidades[i], (Componente) new Especime(especies[i]));
+			// else contDaEntidade.adicionarComponente(entidades[i],
+			// (Componente) new Especime(40, especies[i]));
 		}
 	}
 

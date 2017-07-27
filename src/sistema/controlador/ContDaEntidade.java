@@ -16,7 +16,7 @@ import componente.Componente;
  */
 public class ContDaEntidade {
 	public int menorIDNaoAssociada = 1;
-	public List<Integer> entidades;
+	public List<Integer> entidades, idsParaRemocao;
 	public HashMap<Class<?>, HashMap<Integer, ? extends Componente>> baseDeComponentes;
 
 	/**
@@ -24,6 +24,7 @@ public class ContDaEntidade {
 	 */
 	public ContDaEntidade() {
 		entidades = new LinkedList<Integer>();
+		idsParaRemocao = new ArrayList<Integer>();
 		baseDeComponentes = new HashMap<Class<?>, HashMap<Integer, ? extends Componente>>();
 	}
 
@@ -50,12 +51,29 @@ public class ContDaEntidade {
 	}
 
 	/**
-	 * Remove os registros de tipos de Componentes vazios da Base de Componentes
+	 * Marca uma entidade para posterior remoção
+	 * 
+	 * @param ID
+	 * @return boolean
 	 */
-	private void limparBaseDeComponentes() {
-		for (Class<?> Componente : baseDeComponentes.keySet()) {
-			baseDeComponentes.remove(Componente);
+	public boolean marcarEntidades(Integer ID) {
+		return idsParaRemocao.add(ID);
+	}
+
+	/**
+	 * Remove as entidades que foram marcadas
+	 * 
+	 * @return boolean
+	 */
+	public boolean removerEntidades() {
+		boolean resultado = false;
+		if (!idsParaRemocao.isEmpty()) {
+			for (Integer id : idsParaRemocao) {
+				resultado |= removerEntidade(id);
+			}
+			idsParaRemocao.clear();
 		}
+		return resultado;
 	}
 
 	/**
@@ -64,13 +82,17 @@ public class ContDaEntidade {
 	 * @param ID
 	 * @return boolean
 	 */
-	public boolean removerEntidade(Integer ID) {
+	private boolean removerEntidade(Integer ID) {
 		// Previne a remoção ao mesmo tempo da mesma Entidade
+		Componente componente;
 		synchronized (this) {
 			entidades.remove(ID);
 			for (HashMap<Integer, ? extends Componente> base : baseDeComponentes.values()) {
-				base.remove(ID);
-				limparBaseDeComponentes();
+				componente = base.remove(ID);
+				if (componente != null) {
+					if (baseDeComponentes.get(componente.getClass()) == null)
+						baseDeComponentes.remove(componente.getClass());
+				}
 			}
 			menorIDNaoAssociada = ID;
 		}

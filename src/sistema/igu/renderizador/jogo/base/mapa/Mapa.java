@@ -79,14 +79,11 @@ public class Mapa {
 			coresOrganicas[i] = coresOrganicas[0] - obterFator(1) * i;
 		}
 
-		System.out.println("INORGANICAS");
 		coresInorganicas = new int[Bloco.blocosInorganicos.length];
 		coresInorganicas[0] = 0xFF3F3F3F;
 		for (int i = 1; i < coresInorganicas.length; i++) {
 			coresInorganicas[i] = coresInorganicas[0] - obterFator(2) * i;
-			System.out.println(Integer.toHexString(coresInorganicas[i]).toUpperCase());
 		}
-		System.out.println();
 	}
 
 	/**
