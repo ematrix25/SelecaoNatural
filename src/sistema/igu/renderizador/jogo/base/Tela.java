@@ -86,9 +86,7 @@ public class Tela {
 				if (xAux < -Sprite.TAMANHO || xAux >= largura || yAux < 0 || yAux >= altura) break;
 				if (xAux < 0) xAux = 0;
 				corAux = sprite.pixeis[xRes + yRes * Sprite.TAMANHO];
-				// TODO Remover o comentário
-				// if (corAux != COR_TRANSPARENTE)
-				pixeis[xAux + yAux * largura] = corAux + cor;
+				if (corAux != COR_TRANSPARENTE) pixeis[xAux + yAux * largura] = corAux + cor;
 			}
 		}
 	}

@@ -106,7 +106,6 @@ public class ContDoMapa {
 		boolean move = true;
 		if (conflita(entidade, diferencial)) {
 			move &= painel.resolverConflito(entidade, entidadeAlvo);
-			entidades.remove(entidadeAlvo);
 		}
 		move &= !colide(entidade.posicao, diferencial);
 
@@ -114,6 +113,8 @@ public class ContDoMapa {
 			entidade.posicao.x += diferencial.x;
 			entidade.posicao.y += diferencial.y;
 			atualizarEntidades(entidade.id, entidade.posicao);
+			entidades.remove(entidadeAlvo);
+			entidadeAlvo = -1;
 		}
 	}
 
