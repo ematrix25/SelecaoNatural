@@ -20,7 +20,8 @@ public class ContDoMapa {
 	private Painel painel;
 	private Mapa mapa;
 	private int entidadeAlvo = -1;
-	private HashMap<Integer, Posicao> entidades;
+	
+	public HashMap<Integer, Posicao> entidades;
 
 	/**
 	 * Cria o objeto controlador do mapa dado o mapa

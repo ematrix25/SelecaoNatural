@@ -1,7 +1,9 @@
 package sistema.controlador.jogo.movimento;
 
+import java.util.HashMap;
 import java.util.Random;
 
+import componente.Componente.Posicao;
 import componente.Componente.Velocidade.Direcao;
 
 /**
@@ -11,12 +13,18 @@ import componente.Componente.Velocidade.Direcao;
  */
 public class ContDaIA implements ContDaEntMovel {
 	private Random aleatorio;
+	private Estado estado = Estado.Parado;
+	private HashMap<Integer, Posicao> entidades;
+	private final int ALCANCE = 150;
 
 	/**
 	 * Cria o objeto controlador da IA
+	 * 
+	 * @param entidades
 	 */
-	public ContDaIA() {
+	public ContDaIA(HashMap<Integer, Posicao> entidades) {
 		aleatorio = new Random();
+		this.entidades = entidades;
 	}
 
 	/**
@@ -25,7 +33,14 @@ public class ContDaIA implements ContDaEntMovel {
 	 * @see sistema.controlador.jogo.movimento.ContDaEntMovel#obterMovimentacao(int)
 	 */
 	public int obterMovimentacao(int velocidadeMaxima) {
-		return aleatorio.nextInt(velocidadeMaxima + 1);
+		mudarEstado();
+		switch (estado) {
+		case Parado:
+			return 0;
+		case Vagando:
+			return 1 + aleatorio.nextInt(velocidadeMaxima);
+		}
+		return velocidadeMaxima;
 	}
 
 	/**
@@ -34,6 +49,42 @@ public class ContDaIA implements ContDaEntMovel {
 	 * @see sistema.controlador.jogo.movimento.ContDaEntMovel#obterDirecao()
 	 */
 	public Direcao obterDirecao() {
-		return Direcao.escolhaAleatoria();
+		switch (estado) {
+		case Vagando:
+			return Direcao.escolhaAleatoria();
+		case Seguindo:
+			// TODO Implementar sistema para reduzir a distância de outros
+			// espécimes
+			return null;
+		case Fugindo:
+			// TODO Implementar sistema para aumentar a distância de outros
+			// espécimes
+			return null;
+		}
+		return null;
+	}
+
+	/**
+	 * Muda o estado da ia se necessário
+	 */
+	private void mudarEstado() {
+		// TODO Implementar sistema para alternar os estados da ia
+	}
+
+	/**
+	 * Obtém um alvo para perseguir ou para fugir
+	 */
+	private int buscarAlvo() {
+		// TODO Implementar sistema para buscar alvo
+		return -1;
+	}
+
+	/**
+	 * Define os estados em que a ia pode estar
+	 * 
+	 * @author Emanuel
+	 */
+	private enum Estado {
+		Parado, Vagando, Seguindo, Fugindo;
 	}
 }

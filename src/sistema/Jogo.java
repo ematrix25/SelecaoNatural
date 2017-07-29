@@ -17,7 +17,7 @@ import sistema.utilitario.arquivo.Recurso;
  * Inicia todo o processo do jogo
  * 
  * @author Emanuel
- * @see GP Ep 93
+ * @see GP Ep 95
  */
 public class Jogo {
 

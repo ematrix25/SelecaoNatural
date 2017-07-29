@@ -13,7 +13,6 @@ import componente.Componente.Sprites;
 import componente.Componente.Velocidade;
 import componente.Especime;
 import componente.Especime.Especie;
-import componente.Especime.Especie.Forma;
 import sistema.Jogo.Janela;
 import sistema.controlador.ContDaEntidade;
 import sistema.controlador.ContDoAmbiente;
@@ -193,7 +192,6 @@ public class Painel extends Canvas implements Runnable {
 	 * Move as entidades no mapa
 	 */
 	private void moverEntidades() {
-		// TODO Melhorar os movimentos da inteligência artificial
 		Entidade entidade;
 		int velocidadeMax;
 		for (int id : contDaEntidade.obterTodasEntidadesComOComponente(Especime.class)) {
@@ -382,7 +380,7 @@ public class Painel extends Canvas implements Runnable {
 
 		contAuxDaEnt = new ContAuxDaEnt();
 		contDoJogador = new ContDoJogador();
-		contDaIA = new ContDaIA();
+		contDaIA = new ContDaIA(contDoMapa.entidades);
 
 		rendDaSelecao = new RendDaSelecao(this, contDaEntidade, contDoAmbiente);
 		rendDoJogo = new RendDoJogo(this, contDaEntidade, contDoAmbiente, contDoMapa, contAuxDaEnt, contDoJogador,
