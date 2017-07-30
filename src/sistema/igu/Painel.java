@@ -202,6 +202,8 @@ public class Painel extends Canvas implements Runnable {
 				contDoMapa.moverEntidade(contDoJogador.obterMovimentacao(velocidadeMax), contDoJogador.obterDirecao(),
 						entidade);
 			} else if (tempo % (new Random().nextInt(50) + 30) == 0) {
+				// FIXME Testar novo sistema de movimentação da IA
+				contDaIA.configurarID(id);
 				contDoMapa.moverEntidade(contDaIA.obterMovimentacao(velocidadeMax), contDaIA.obterDirecao(), entidade);
 			}
 		}

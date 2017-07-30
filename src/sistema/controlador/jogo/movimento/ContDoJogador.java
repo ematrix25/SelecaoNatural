@@ -10,27 +10,8 @@ import sistema.utilitario.periferico.Teclado;
  * 
  * @author Emanuel
  */
-public class ContDoJogador implements ContDaEntMovel {
-	private int id;
+public class ContDoJogador extends ContDaEntMovel {
 	private int pontuacao;
-
-	/**
-	 * Obtém a ID da entidade do Jogador
-	 * 
-	 * @return int
-	 */
-	public int obterID() {
-		return id;
-	}
-
-	/**
-	 * Configura qual entidade está associado ao Jogador
-	 * 
-	 * @param id
-	 */
-	public void configurarID(int id) {
-		this.id = id;
-	}
 
 	/**
 	 * Obtém a pontuacao do jogo

@@ -11,11 +11,13 @@ import componente.Componente.Velocidade.Direcao;
  * 
  * @author Emanuel
  */
-public class ContDaIA implements ContDaEntMovel {
+public class ContDaIA extends ContDaEntMovel {
 	private Random aleatorio;
 	private Estado estado = Estado.Parado;
 	private HashMap<Integer, Posicao> entidades;
+
 	private final int ALCANCE = 150;
+	private int idAlvo;
 
 	/**
 	 * Cria o objeto controlador da IA
@@ -39,8 +41,63 @@ public class ContDaIA implements ContDaEntMovel {
 			return 0;
 		case Vagando:
 			return 1 + aleatorio.nextInt(velocidadeMaxima);
+		default:
+			return velocidadeMaxima;
 		}
-		return velocidadeMaxima;
+	}
+
+	/**
+	 * Muda o estado da ia se necessário
+	 */
+	private void mudarEstado() {
+		buscarAlvo();
+		boolean ativo = aleatorio.nextBoolean();
+		if (estado == Estado.Seguindo || estado == Estado.Fugindo) {
+			if (idAlvo == -1) {
+				if (ativo) estado = Estado.Vagando;
+				else estado = Estado.Parado;
+			}
+		} else {
+			if (ativo) {
+				if (idAlvo != -1) estado = Estado.Seguindo;
+				else estado = Estado.Vagando;
+			} else {
+				if (idAlvo != -1) estado = Estado.Fugindo;
+				else estado = Estado.Parado;
+			}
+		}
+	}
+
+	/**
+	 * Obtém a id do alvo para perseguir ou para fugir
+	 */
+	private void buscarAlvo() {
+		idAlvo = -1;
+		Posicao posicao = entidades.get(id), posicaoAux;
+		int dx, dy;
+		double distancia = ALCANCE * 2, distanciaAux;
+		for (int idAux : entidades.keySet()) {
+			if (id == idAux) continue;
+			posicaoAux = entidades.get(idAux);
+			dx = Math.abs(posicaoAux.x - posicao.x);
+			dy = Math.abs(posicaoAux.y - posicao.y);
+			if (dx < ALCANCE && dy < ALCANCE) {
+				distanciaAux = obterDistancia(dx, dy);
+				if (distanciaAux < distancia) {
+					distancia = distanciaAux;
+					idAlvo = idAux;
+				}
+			}
+		}
+	}
+
+	/**
+	 * Obtém a distância dado duas medidas de x e y
+	 * 
+	 * @return double
+	 */
+	private double obterDistancia(int dx, int dy) {
+		return Math.sqrt((dx * dx) + (dy * dy));
 	}
 
 	/**
@@ -53,30 +110,31 @@ public class ContDaIA implements ContDaEntMovel {
 		case Vagando:
 			return Direcao.escolhaAleatoria();
 		case Seguindo:
-			// TODO Implementar sistema para reduzir a distância de outros
-			// espécimes
-			return null;
+			return obterDirDaDistancia(false);
 		case Fugindo:
-			// TODO Implementar sistema para aumentar a distância de outros
-			// espécimes
+			return obterDirDaDistancia(true);
+		default:
 			return null;
 		}
-		return null;
 	}
 
 	/**
-	 * Muda o estado da ia se necessário
+	 * Obtém a direção segundo a diferença entre as entidades
+	 * 
+	 * @param aumenta
+	 * @return Direcao
 	 */
-	private void mudarEstado() {
-		// TODO Implementar sistema para alternar os estados da ia
-	}
-
-	/**
-	 * Obtém um alvo para perseguir ou para fugir
-	 */
-	private int buscarAlvo() {
-		// TODO Implementar sistema para buscar alvo
-		return -1;
+	private Direcao obterDirDaDistancia(boolean aumenta) {
+		Posicao posicao = entidades.get(id), posicaoAlvo = entidades.get(idAlvo);
+		int dx = posicaoAlvo.x - posicao.x;
+		int dy = posicaoAlvo.y - posicao.y;
+		if (Math.abs(dx) > Math.abs(dy)) {
+			if ((!aumenta && dx > 0) || (aumenta && dx < 0)) return Direcao.Direita;
+			else return Direcao.Esquerda;
+		} else {
+			if ((!aumenta && dy > 0) || (aumenta && dy < 0)) return Direcao.Baixo;
+			else return Direcao.Cima;
+		}
 	}
 
 	/**

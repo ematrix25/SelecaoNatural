@@ -8,6 +8,7 @@ import componente.Componente.Velocidade.Direcao;
 import componente.Especime.Especie.Movimento;
 import sistema.controlador.jogo.ContAuxDaEnt.Entidade;
 import sistema.igu.Painel;
+import sistema.igu.renderizador.jogo.base.mapa.Bloco;
 import sistema.igu.renderizador.jogo.base.mapa.Mapa;
 import sistema.utilitario.Opcoes;
 
@@ -20,7 +21,7 @@ public class ContDoMapa {
 	private Painel painel;
 	private Mapa mapa;
 	private int entidadeAlvo = -1;
-	
+
 	public HashMap<Integer, Posicao> entidades;
 
 	/**
@@ -132,7 +133,8 @@ public class ContDoMapa {
 		for (int id : entidades.keySet()) {
 			if (id == entidade.id) continue;
 			posicaoAux = entidades.get(id);
-			if (Math.abs(posicaoAux.x - posicao.x) < 16 && Math.abs(posicaoAux.y - posicao.y) < 16) {
+			if (Math.abs(posicaoAux.x - posicao.x) < Bloco.TAMANHO
+					&& Math.abs(posicaoAux.y - posicao.y) < Bloco.TAMANHO) {
 				entidadeAlvo = id;
 				return true;
 			}
@@ -152,8 +154,8 @@ public class ContDoMapa {
 		int xAux, yAux;
 		boolean colidiu = false;
 		for (int lado = 0; lado < 4; lado++) {
-			xAux = (posicaoAux.x + lado % 2 * 15) / 16;
-			yAux = (posicaoAux.y + lado / 2 * 15) / 16;
+			xAux = (posicaoAux.x + lado % 2 * (Bloco.TAMANHO - 1)) / Bloco.TAMANHO;
+			yAux = (posicaoAux.y + lado / 2 * (Bloco.TAMANHO - 1)) / Bloco.TAMANHO;
 			if (mapa.obterBloco(xAux, yAux).solido) colidiu = true;
 		}
 		return colidiu;
