@@ -27,12 +27,13 @@ public class ContDoMapa {
 	/**
 	 * Cria o objeto controlador do mapa dado o mapa
 	 * 
+	 * @param painel
 	 * @param mapa
 	 */
 	public ContDoMapa(Painel painel, Mapa mapa) {
 		this.painel = painel;
 		this.mapa = mapa;
-		entidades = new HashMap<>();
+		entidades = painel.entidades;
 	}
 
 	/**
@@ -78,6 +79,7 @@ public class ContDoMapa {
 			novaVelocidade.direcao = direcao;
 			mover(entidade, configurarDiferencial(novaVelocidade));
 		}
+		entidades.put(entidade.id, entidade.posicao);
 		return novaVelocidade;
 	}
 
@@ -108,15 +110,13 @@ public class ContDoMapa {
 		boolean move = true;
 		if (conflita(entidade, diferencial)) {
 			move &= painel.resolverConflito(entidade, entidadeAlvo);
+			entidadeAlvo = -1;
 		}
 		move &= !colide(entidade.posicao, diferencial);
 
 		if (move) {
 			entidade.posicao.x += diferencial.x;
 			entidade.posicao.y += diferencial.y;
-			atualizarEntidades(entidade.id, entidade.posicao);
-			entidades.remove(entidadeAlvo);
-			entidadeAlvo = -1;
 		}
 	}
 
@@ -159,18 +159,5 @@ public class ContDoMapa {
 			if (mapa.obterBloco(xAux, yAux).solido) colidiu = true;
 		}
 		return colidiu;
-	}
-
-	/**
-	 * Atualiza as posições das entidades
-	 * 
-	 * @param id
-	 * @param posicao
-	 */
-	private void atualizarEntidades(int id, Posicao posicao) {
-		if (!entidades.isEmpty() && entidades.containsKey(id)) {
-			entidades.remove(id);
-		}
-		entidades.put(id, posicao);
 	}
 }

@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
+import java.util.HashMap;
 import java.util.Random;
 
 import componente.Componente;
@@ -69,6 +70,8 @@ public class Painel extends Canvas implements Runnable {
 	private RendDoQuest rendDoQuest;
 
 	private char telaAtiva = 'M';
+	
+	public HashMap<Integer, Posicao> entidades;
 
 	public boolean ehContinuavel = false;
 
@@ -100,6 +103,9 @@ public class Painel extends Canvas implements Runnable {
 
 		rendDoMenu = new RendDoMenu(this);
 		rendDeOpcoes = new RendDeOpcoes(this);
+		
+		entidades = new HashMap<Integer, Posicao>();
+		
 		thread.start();
 	}
 
@@ -202,7 +208,7 @@ public class Painel extends Canvas implements Runnable {
 				contDoMapa.moverEntidade(contDoJogador.obterMovimentacao(velocidadeMax), contDoJogador.obterDirecao(),
 						entidade);
 			} else if (tempo % (new Random().nextInt(50) + 30) == 0) {
-				// FIXME Testar novo sistema de movimentação da IA
+				// FIXME Melhorar movimentação da IA
 				contDaIA.configurarID(id);
 				contDoMapa.moverEntidade(contDaIA.obterMovimentacao(velocidadeMax), contDaIA.obterDirecao(), entidade);
 			}
@@ -222,10 +228,12 @@ public class Painel extends Canvas implements Runnable {
 		if (especime.massa >= especimeAlvo.massa) {
 			especime.massa = juntarMassa(especime.massa, especimeAlvo.massa);
 			if (contDoJogador.obterID() == entidadeAlvo) ehContinuavel = false;
+			entidades.remove(entidadeAlvo);
 			return contDaEntidade.marcarEntidades(entidadeAlvo);
 		} else {
 			especimeAlvo.massa = juntarMassa(especimeAlvo.massa, especime.massa);
 			if (contDoJogador.obterID() == entidade.id) ehContinuavel = false;
+			entidades.remove(entidade.id);
 			contDaEntidade.marcarEntidades(entidade.id);
 		}
 		return false;
@@ -382,7 +390,7 @@ public class Painel extends Canvas implements Runnable {
 
 		contAuxDaEnt = new ContAuxDaEnt();
 		contDoJogador = new ContDoJogador();
-		contDaIA = new ContDaIA(contDoMapa.entidades);
+		contDaIA = new ContDaIA(this);
 
 		rendDaSelecao = new RendDaSelecao(this, contDaEntidade, contDoAmbiente);
 		rendDoJogo = new RendDoJogo(this, contDaEntidade, contDoAmbiente, contDoMapa, contAuxDaEnt, contDoJogador,

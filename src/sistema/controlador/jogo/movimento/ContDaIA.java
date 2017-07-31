@@ -5,6 +5,7 @@ import java.util.Random;
 
 import componente.Componente.Posicao;
 import componente.Componente.Velocidade.Direcao;
+import sistema.igu.Painel;
 
 /**
  * Classe que controla os dados da IA
@@ -14,19 +15,20 @@ import componente.Componente.Velocidade.Direcao;
 public class ContDaIA extends ContDaEntMovel {
 	private Random aleatorio;
 	private Estado estado = Estado.Parado;
+
 	private HashMap<Integer, Posicao> entidades;
 
 	private final int ALCANCE = 150;
-	private int idAlvo;
+	private int idAlvo = -1;
 
 	/**
 	 * Cria o objeto controlador da IA
 	 * 
-	 * @param entidades
+	 * @param painel
 	 */
-	public ContDaIA(HashMap<Integer, Posicao> entidades) {
+	public ContDaIA(Painel painel) {
 		aleatorio = new Random();
-		this.entidades = entidades;
+		this.entidades = painel.entidades;
 	}
 
 	/**
@@ -50,8 +52,9 @@ public class ContDaIA extends ContDaEntMovel {
 	 * Muda o estado da ia se necessário
 	 */
 	private void mudarEstado() {
-		buscarAlvo();
+		if (entidades.containsKey(id)) buscarAlvo();
 		boolean ativo = aleatorio.nextBoolean();
+		Estado estadoAux = estado;
 		if (estado == Estado.Seguindo || estado == Estado.Fugindo) {
 			if (idAlvo == -1) {
 				if (ativo) estado = Estado.Vagando;
@@ -72,17 +75,21 @@ public class ContDaIA extends ContDaEntMovel {
 	 * Obtém a id do alvo para perseguir ou para fugir
 	 */
 	private void buscarAlvo() {
-		idAlvo = -1;
 		Posicao posicao = entidades.get(id), posicaoAux;
 		int dx, dy;
-		double distancia = ALCANCE * 2, distanciaAux;
+		double distancia, distanciaAux;
+		if (idAlvo != -1) {
+			posicaoAux = entidades.get(idAlvo);
+			distancia = obterDistancia(posicao, posicaoAux);
+		} else distancia = ALCANCE * 2;
+		idAlvo = -1;
 		for (int idAux : entidades.keySet()) {
 			if (id == idAux) continue;
 			posicaoAux = entidades.get(idAux);
 			dx = Math.abs(posicaoAux.x - posicao.x);
 			dy = Math.abs(posicaoAux.y - posicao.y);
 			if (dx < ALCANCE && dy < ALCANCE) {
-				distanciaAux = obterDistancia(dx, dy);
+				distanciaAux = obterDistancia(posicao, posicaoAux);
 				if (distanciaAux < distancia) {
 					distancia = distanciaAux;
 					idAlvo = idAux;
@@ -94,9 +101,13 @@ public class ContDaIA extends ContDaEntMovel {
 	/**
 	 * Obtém a distância dado duas medidas de x e y
 	 * 
+	 * @param posicao
+	 * @param posicaoAux
 	 * @return double
 	 */
-	private double obterDistancia(int dx, int dy) {
+	private double obterDistancia(Posicao posicao, Posicao posicaoAux) {
+		int dx = Math.abs(posicaoAux.x - posicao.x);
+		int dy = Math.abs(posicaoAux.y - posicao.y);
 		return Math.sqrt((dx * dx) + (dy * dy));
 	}
 
