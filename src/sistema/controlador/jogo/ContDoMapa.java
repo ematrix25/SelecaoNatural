@@ -86,7 +86,6 @@ public class ContDoMapa {
 	/**
 	 * Configura a diferença para a posição nova dado a velocidade e a direção
 	 * 
-	 * @param direcao
 	 * @param velocidade
 	 * @return Posicao
 	 */

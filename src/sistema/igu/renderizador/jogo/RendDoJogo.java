@@ -19,6 +19,7 @@ import sistema.igu.Painel;
 import sistema.igu.renderizador.Renderizador;
 import sistema.igu.renderizador.jogo.base.Tela;
 import sistema.igu.renderizador.jogo.base.mapa.Mapa;
+import sistema.utilitario.Opcoes;
 import sistema.utilitario.periferico.Mouse;
 import sistema.utilitario.periferico.Teclado;
 
@@ -147,18 +148,20 @@ public class RendDoJogo extends Renderizador {
 		graficos.drawImage(imagem, 0, 30, painel.getWidth(), painel.getHeight(), null);
 
 		// Mostra posição do mouse e do jogador
-		graficos.setFont(new Font("Verdana", 0, 12));
-		if (Mouse.obterBotao() > -1) {
-			graficos.setColor(Color.green);
-			graficos.fillRect(Mouse.obterDesvioX(), Mouse.obterDesvioY(), 16, 16);
+		if (Opcoes.modoDesenvolvimento) {
+			graficos.setFont(new Font("Verdana", 0, 12));
+			if (Mouse.obterBotao() > -1) {
+				graficos.setColor(Color.green);
+				graficos.fillRect(Mouse.obterDesvioX(), Mouse.obterDesvioY(), 16, 16);
 
-			graficos.setColor(Color.red);
-			graficos.drawString("Button: " + Mouse.obterBotao(), 20, 60);
+				graficos.setColor(Color.red);
+				graficos.drawString("Button: " + Mouse.obterBotao(), 20, 60);
 
-			graficos.setColor(Color.white);
-			graficos.drawString("X: " + Mouse.obterDesvioX() + ", Y: " + Mouse.obterDesvioY(), 20, 100);
-			Posicao posicao = contDaEntidade.obterComponente(contDoJogador.obterID(), Posicao.class);
-			graficos.drawString("X: " + posicao.x + ", Y: " + posicao.y, 20, 120);
+				graficos.setColor(Color.white);
+				graficos.drawString("X: " + Mouse.obterDesvioX() + ", Y: " + Mouse.obterDesvioY(), 20, 100);
+				Posicao posicao = contDaEntidade.obterComponente(contDoJogador.obterID(), Posicao.class);
+				graficos.drawString("X: " + posicao.x + ", Y: " + posicao.y, 20, 120);
+			}
 		}
 	}
 

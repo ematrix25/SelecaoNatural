@@ -70,7 +70,7 @@ public class Painel extends Canvas implements Runnable {
 	private RendDoQuest rendDoQuest;
 
 	private char telaAtiva = 'M';
-	
+
 	public HashMap<Integer, Posicao> entidades;
 
 	public boolean ehContinuavel = false;
@@ -103,9 +103,9 @@ public class Painel extends Canvas implements Runnable {
 
 		rendDoMenu = new RendDoMenu(this);
 		rendDeOpcoes = new RendDeOpcoes(this);
-		
+
 		entidades = new HashMap<Integer, Posicao>();
-		
+
 		thread.start();
 	}
 
@@ -151,7 +151,8 @@ public class Painel extends Canvas implements Runnable {
 			// Mostra APS e QPS a cada segundo
 			if (System.currentTimeMillis() - temporizador > 1000) {
 				temporizador += 1000;
-				janela.setTitle(janela.TITULO + " | " + atualizacoes + " aps com " + quadros + " qps");
+				if (Opcoes.modoDesenvolvimento)
+					janela.setTitle(janela.TITULO + " | " + atualizacoes + " aps com " + quadros + " qps");
 				atualizacoes = 0;
 				quadros = 0;
 
@@ -208,7 +209,6 @@ public class Painel extends Canvas implements Runnable {
 				contDoMapa.moverEntidade(contDoJogador.obterMovimentacao(velocidadeMax), contDoJogador.obterDirecao(),
 						entidade);
 			} else if (tempo % (new Random().nextInt(50) + 30) == 0) {
-				// FIXME Melhorar movimentação da IA
 				contDaIA.configurarID(id);
 				contDoMapa.moverEntidade(contDaIA.obterMovimentacao(velocidadeMax), contDaIA.obterDirecao(), entidade);
 			}
@@ -390,7 +390,7 @@ public class Painel extends Canvas implements Runnable {
 
 		contAuxDaEnt = new ContAuxDaEnt();
 		contDoJogador = new ContDoJogador();
-		contDaIA = new ContDaIA(this);
+		contDaIA = new ContDaIA(this, mapa);
 
 		rendDaSelecao = new RendDaSelecao(this, contDaEntidade, contDoAmbiente);
 		rendDoJogo = new RendDoJogo(this, contDaEntidade, contDoAmbiente, contDoMapa, contAuxDaEnt, contDoJogador,
@@ -421,7 +421,7 @@ public class Painel extends Canvas implements Runnable {
 				coordenada.configurarCoordenada(mapa.largura / 2, mapa.altura / 2 - 1);
 			else {
 				while (contDaEntidade.obterEntidadeComOComponente(new Posicao(coordenada)) != null)
-					coordenada.configurarCoordenada();
+					coordenada.configurarCoordenada(mapa);
 			}
 			System.out.println(coordenada);
 			contDaEntidade.adicionarComponente(entidade, (Componente) new Posicao(coordenada));

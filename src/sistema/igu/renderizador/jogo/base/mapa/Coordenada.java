@@ -11,7 +11,15 @@ public class Coordenada {
 	private final int TAMANHO_DO_BLOCO = Bloco.TAMANHO;
 
 	private int x, y;
-	private Mapa mapa;
+
+	/**
+	 * Cria o objeto coordenada com x e y aleatórias
+	 *
+	 * @param mapa
+	 */
+	public Coordenada(Mapa mapa) {
+		configurarCoordenada(mapa);
+	}
 
 	/**
 	 * Cria o objeto coordenada com x e y
@@ -19,23 +27,14 @@ public class Coordenada {
 	 * @param x
 	 * @param y
 	 */
-	public Coordenada(Mapa mapa, int x, int y) {
-		this.mapa = mapa;
+	public Coordenada(int x, int y) {
 		configurarCoordenada(x, y);
-	}
-
-	/**
-	 * Cria o objeto coordenada com x e y aleatórias
-	 */
-	public Coordenada(Mapa mapa) {
-		this.mapa = mapa;
-		configurarCoordenada();
 	}
 
 	/**
 	 * Obtém x
 	 * 
-	 * @return x
+	 * @return int
 	 */
 	public int obterX() {
 		return x;
@@ -44,7 +43,7 @@ public class Coordenada {
 	/**
 	 * Obtém y
 	 * 
-	 * @return y
+	 * @return int
 	 */
 	public int obterY() {
 		return y;
@@ -62,11 +61,13 @@ public class Coordenada {
 
 	/**
 	 * Configura uma coordenada aleatória afastada da coordenada dada
+	 *
+	 * @param mapa
 	 */
-	public void configurarCoordenada() {
+	public void configurarCoordenada(Mapa mapa) {
 		int x = gerarInteiro(0, mapa.largura);
 		int y = gerarInteiro(0, mapa.altura);
-		if (mapa.obterBloco(x, y).solido) configurarCoordenada();
+		if (mapa.obterBloco(x, y).solido) configurarCoordenada(mapa);
 		else configurarCoordenada(x, y);
 	}
 

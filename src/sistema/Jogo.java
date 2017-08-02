@@ -17,7 +17,7 @@ import sistema.utilitario.arquivo.Recurso;
  * Inicia todo o processo do jogo
  * 
  * @author Emanuel
- * @see GP Ep 95
+ * @see GP Ep 99
  */
 public class Jogo {
 
@@ -31,6 +31,9 @@ public class Jogo {
 		Resolucao.iniciar();
 		// Carrega as configurações de opções
 		Opcoes.carregarConfig();
+		if (args.length > 0 && args[0].toUpperCase().equals("TESTE")) {
+			Opcoes.modoDesenvolvimento = true;
+		}
 
 		// Inicia a tela do jogo
 		EventQueue.invokeLater(new Runnable() {
@@ -55,7 +58,7 @@ public class Jogo {
 		public String TITULO = "Selecao Natural";
 		public final int LARGURA_PADRAO, ALTURA_PADRAO;
 		public Painel painel;
-		
+
 		/**
 		 * Cria a Tela
 		 */
@@ -80,7 +83,7 @@ public class Jogo {
 		/**
 		 * Redimensiona o tamanho da tela trocando a altura
 		 * 
-		 * @param altura
+		 * @param valor
 		 */
 		public void redimensionar(float valor) {
 			if (getHeight() < Resolucao.alturas[1]) setSize((int) (getWidth() * valor), (int) (getHeight() * valor));

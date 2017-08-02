@@ -75,7 +75,7 @@ public class Bloco {
 	private static Bloco[] associarSprites(SpritesDoAmbiente sprites, int inicio, int qtd, boolean solido) {
 		Bloco blocos[] = new Bloco[qtd];
 		for (int i = 0; i < qtd; i++) {
-			blocos[i] = new Bloco(sprites.obterSprite(inicio+i), solido);
+			blocos[i] = new Bloco(sprites.obterSprite(inicio + i), solido);
 		}
 		return blocos;
 	}
@@ -88,7 +88,7 @@ public class Bloco {
 	 * @param tela
 	 */
 	public void renderizar(int x, int y, Tela tela) {
-		tela.renderizarBloco(x << 4, y << 4, this);
+		tela.renderizarBloco(x / TAMANHO, y / TAMANHO, this);
 	}
 
 	/**

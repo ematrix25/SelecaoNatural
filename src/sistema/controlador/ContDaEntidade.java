@@ -167,7 +167,7 @@ public class ContDaEntidade {
 	 * Obtém todos os Componentes da Entidade da ID
 	 * 
 	 * @param ID
-	 * @return List<T>
+	 * @return Lista de Componentes
 	 */
 	@SuppressWarnings("unchecked")
 	public <T extends Componente> List<T> obterComponentes(int ID) {
@@ -188,7 +188,7 @@ public class ContDaEntidade {
 	 * Obtém todos os Componentes do tipo de Componente
 	 * 
 	 * @param tipoDeComponente
-	 * @return List<T>
+	 * @return Lista de Componentes
 	 */
 	@SuppressWarnings("unchecked")
 	public <T extends Componente> List<T> obterTodosOsComponentesDoTipo(Class<T> tipoDeComponente) {

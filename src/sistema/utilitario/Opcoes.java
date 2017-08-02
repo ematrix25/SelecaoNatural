@@ -11,12 +11,14 @@ public class Opcoes {
 	public static int configuracoes[];
 	public static boolean controlePorMouse;
 	public static int larguraPadrao, alturaPadrao;
+	public static boolean modoDesenvolvimento;
 
 	/**
 	 * Carrega as configurações do arquivo
 	 */
 	public static void carregarConfig() {
 		carregarConfig(false, ArquivoDeConfig.ler());
+		modoDesenvolvimento = false;
 	}
 
 	/**

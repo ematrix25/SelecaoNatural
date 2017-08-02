@@ -69,7 +69,7 @@ public class TesteContDoJogo {
 	@Test
 	public void testarCompoentesDaEntidade() {
 		int ID = criarEntidade();
-		Posicao posicao = new Posicao(new Coordenada(mapa, 8, 7));
+		Posicao posicao = new Posicao(new Coordenada(8, 7));
 		assertEquals(contDaEntidade.obterComponente(ID, Posicao.class), posicao);
 		Velocidade velocidade = new Velocidade();
 		assertEquals(contDaEntidade.obterComponente(ID, Velocidade.class), velocidade);
@@ -98,7 +98,7 @@ public class TesteContDoJogo {
 	 */
 	private int criarEntidade() {
 		int ID = contDaEntidade.criarEntidade();
-		Coordenada coordenada = new Coordenada(mapa, 8, 7);
+		Coordenada coordenada = new Coordenada(8, 7);
 		Especie especie = contDoAmbiente.criarEspecie(ID, Forma.Coccus);
 		contDaEntidade.adicionarComponente(ID, (Componente) new Especime(especie));
 		contDaEntidade.adicionarComponente(ID, (Componente) new Posicao(coordenada));
