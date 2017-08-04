@@ -71,7 +71,7 @@ public class Painel extends Canvas implements Runnable {
 
 	private char telaAtiva = 'M';
 
-	public HashMap<Integer, Posicao> entidades;
+	public HashMap<Integer, Posicao> posicoesDasEnt;
 
 	public boolean ehContinuavel = false;
 
@@ -104,7 +104,7 @@ public class Painel extends Canvas implements Runnable {
 		rendDoMenu = new RendDoMenu(this);
 		rendDeOpcoes = new RendDeOpcoes(this);
 
-		entidades = new HashMap<Integer, Posicao>();
+		posicoesDasEnt = new HashMap<Integer, Posicao>();
 
 		thread.start();
 	}
@@ -209,7 +209,9 @@ public class Painel extends Canvas implements Runnable {
 				contDoMapa.moverEntidade(contDoJogador.obterMovimentacao(velocidadeMax), contDoJogador.obterDirecao(),
 						entidade);
 			} else if (tempo % (new Random().nextInt(50) + 30) == 0) {
-				contDaIA.configurarID(id);
+				// FIXME Testar a movimentação da IA por A* [GP Ep. 101-102]
+				contDaIA.configurarIA(entidade);
+				contDaEntidade.obterComponente(id, Posicao.class).proxPos = contDaIA.obterProxPos();
 				contDoMapa.moverEntidade(contDaIA.obterMovimentacao(velocidadeMax), contDaIA.obterDirecao(), entidade);
 			}
 		}
@@ -228,12 +230,12 @@ public class Painel extends Canvas implements Runnable {
 		if (especime.massa >= especimeAlvo.massa) {
 			especime.massa = juntarMassa(especime.massa, especimeAlvo.massa);
 			if (contDoJogador.obterID() == entidadeAlvo) ehContinuavel = false;
-			entidades.remove(entidadeAlvo);
+			posicoesDasEnt.remove(entidadeAlvo);
 			return contDaEntidade.marcarEntidades(entidadeAlvo);
 		} else {
 			especimeAlvo.massa = juntarMassa(especimeAlvo.massa, especime.massa);
 			if (contDoJogador.obterID() == entidade.id) ehContinuavel = false;
-			entidades.remove(entidade.id);
+			posicoesDasEnt.remove(entidade.id);
 			contDaEntidade.marcarEntidades(entidade.id);
 		}
 		return false;

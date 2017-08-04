@@ -9,6 +9,7 @@ import java.util.Random;
 
 import componente.Componente.Posicao;
 import componente.Componente.Velocidade.Direcao;
+import sistema.controlador.jogo.ContAuxDaEnt.Entidade;
 import sistema.igu.Painel;
 import sistema.igu.renderizador.jogo.base.mapa.Bloco;
 import sistema.igu.renderizador.jogo.base.mapa.Coordenada;
@@ -21,13 +22,16 @@ import sistema.igu.renderizador.jogo.base.mapa.Mapa;
  */
 public class ContDaIA extends ContDaEntMovel {
 	private Random aleatorio;
-	private Estado estado = Estado.Parado;
+	private Estado estado;
 	private GestorDeCaminho gestorDeCaminho;
+	private Posicao proxPos;
+	private Direcao direcao;
 
-	private HashMap<Integer, Posicao> entidades;
+	private HashMap<Integer, Posicao> posicoesDasEnt;
 
 	private final int ALCANCE = 150;
-	private int idAlvo = -1;
+
+	private int idAlvo;
 
 	/**
 	 * Cria o objeto controlador da IA
@@ -38,44 +42,58 @@ public class ContDaIA extends ContDaEntMovel {
 	public ContDaIA(Painel painel, Mapa mapa) {
 		aleatorio = new Random();
 		gestorDeCaminho = new GestorDeCaminho(mapa);
-		this.entidades = painel.entidades;
+		posicoesDasEnt = painel.posicoesDasEnt;
+		idAlvo = -1;
 	}
 
 	/**
-	 * Obtém o movimento aleatório dado a velocidade máxima permitida
+	 * Configura o controlador da IA conforme a id
 	 * 
-	 * @see sistema.controlador.jogo.movimento.ContDaEntMovel#obterMovimentacao(int)
+	 * @param entidade
 	 */
-	public int obterMovimentacao(int velocidadeMaxima) {
-		mudarEstado();
-		switch (estado) {
-		case Parado:
-			return 0;
-		case Vagando:
-			return 1 + aleatorio.nextInt(velocidadeMaxima);
-		default:
-			return velocidadeMaxima;
+	public void configurarIA(Entidade entidade) {
+		configurarID(entidade.id);
+		if (posicoesDasEnt.containsKey(entidade.id)) {
+			direcao = entidade.velocidade.direcao;
+			configEstado();
+			if (estado != Estado.Parado) configProxPos();
 		}
 	}
 
 	/**
-	 * Muda o estado da ia se necessário
+	 * Configura o estado da IA se necessário
 	 */
-	private void mudarEstado() {
-		if (entidades.containsKey(id)) buscarAlvo();
-		boolean ativo = aleatorio.nextBoolean();
-		if (estado == Estado.Seguindo || estado == Estado.Fugindo) {
-			if (idAlvo == -1) {
-				if (ativo) estado = Estado.Vagando;
-				else estado = Estado.Parado;
-			}
+	private void configEstado() {
+		buscarAlvo();
+		Posicao posicao = posicoesDasEnt.get(id), posicaoAlvo;
+		int dx, dy;
+		if (posicao.proxPos == null) {
+			if (aleatorio.nextBoolean()) estado = Estado.Vagando;
+			else estado = Estado.Parado;
 		} else {
-			if (ativo) {
-				if (idAlvo != -1) estado = Estado.Seguindo;
-				else estado = Estado.Vagando;
-			} else {
-				if (idAlvo != -1) estado = Estado.Fugindo;
-				else estado = Estado.Parado;
+			if (idAlvo == -1) estado = Estado.Vagando;
+			else {
+				posicaoAlvo = posicoesDasEnt.get(idAlvo);
+				dx = posicao.x - posicaoAlvo.x;
+				dy = posicao.y - posicaoAlvo.y;
+				switch (direcao) {
+				case Cima:
+					if (dy > 0) estado = Estado.Seguindo;
+					else estado = Estado.Fugindo;
+					break;
+				case Baixo:
+					if (dy > 0) estado = Estado.Fugindo;
+					else estado = Estado.Seguindo;
+					break;
+				case Direita:
+					if (dx > 0) estado = Estado.Seguindo;
+					else estado = Estado.Fugindo;
+					break;
+				case Esquerda:
+					if (dx > 0) estado = Estado.Fugindo;
+					else estado = Estado.Seguindo;
+					break;
+				}
 			}
 		}
 	}
@@ -84,17 +102,17 @@ public class ContDaIA extends ContDaEntMovel {
 	 * Obtém a id do alvo para perseguir ou para fugir
 	 */
 	private void buscarAlvo() {
-		Posicao posicao = entidades.get(id), posicaoAux;
+		Posicao posicao = posicoesDasEnt.get(id), posicaoAux;
 		int dx, dy;
 		double distancia, distanciaAux;
 		if (idAlvo != -1) {
-			posicaoAux = entidades.get(idAlvo);
+			posicaoAux = posicoesDasEnt.get(idAlvo);
 			distancia = gestorDeCaminho.obterDistancia(posicao, posicaoAux);
 		} else distancia = ALCANCE * 2;
 		idAlvo = -1;
-		for (int idAux : entidades.keySet()) {
+		for (int idAux : posicoesDasEnt.keySet()) {
 			if (id == idAux) continue;
-			posicaoAux = entidades.get(idAux);
+			posicaoAux = posicoesDasEnt.get(idAux);
 			dx = Math.abs(posicaoAux.x - posicao.x);
 			dy = Math.abs(posicaoAux.y - posicao.y);
 			if (dx < ALCANCE && dy < ALCANCE) {
@@ -108,6 +126,43 @@ public class ContDaIA extends ContDaEntMovel {
 	}
 
 	/**
+	 * Configura as próximas posições
+	 */
+	private void configProxPos() {
+		Posicao posicao = posicoesDasEnt.get(id), posicaoAlvo;
+		if (idAlvo == -1) proxPos = gestorDeCaminho.obterCaminho(posicao, ALCANCE);
+		else {
+			posicaoAlvo = posicoesDasEnt.get(idAlvo);
+			proxPos = gestorDeCaminho.obterCaminho(posicao, posicaoAlvo);
+		}
+	}
+
+	/**
+	 * Obtém a próxima posição
+	 * 
+	 * @return Posicao
+	 */
+	public Posicao obterProxPos() {
+		return proxPos;
+	}
+
+	/**
+	 * Obtém o movimento aleatório dado a velocidade máxima permitida
+	 * 
+	 * @see sistema.controlador.jogo.movimento.ContDaEntMovel#obterMovimentacao(int)
+	 */
+	public int obterMovimentacao(int velocidadeMaxima) {
+		switch (estado) {
+		case Parado:
+			return 0;
+		case Vagando:
+			return 1 + aleatorio.nextInt(velocidadeMaxima);
+		default:
+			return velocidadeMaxima;
+		}
+	}
+
+	/**
 	 * Obtém uma direção aleatória
 	 * 
 	 * @see sistema.controlador.jogo.movimento.ContDaEntMovel#obterDirecao()
@@ -115,7 +170,7 @@ public class ContDaIA extends ContDaEntMovel {
 	public Direcao obterDirecao() {
 		switch (estado) {
 		case Vagando:
-			return Direcao.escolhaAleatoria();
+			return obterDirDaDistancia(false);
 		case Seguindo:
 			return obterDirDaDistancia(false);
 		case Fugindo:
@@ -132,9 +187,9 @@ public class ContDaIA extends ContDaEntMovel {
 	 * @return Direcao
 	 */
 	private Direcao obterDirDaDistancia(boolean aumenta) {
-		Posicao posicao = entidades.get(id), posicaoAlvo = entidades.get(idAlvo);
-		int dx = posicaoAlvo.x - posicao.x;
-		int dy = posicaoAlvo.y - posicao.y;
+		Posicao posicao = posicoesDasEnt.get(id), posDestino = posicao.proxPos;
+		int dx = posDestino.x - posicao.x;
+		int dy = posDestino.y - posicao.y;
 		if (Math.abs(dx) > Math.abs(dy)) {
 			if ((!aumenta && dx > 0) || (aumenta && dx < 0)) return Direcao.Direita;
 			else return Direcao.Esquerda;
@@ -158,7 +213,7 @@ public class ContDaIA extends ContDaEntMovel {
 	 * 
 	 * @author Emanuel
 	 */
-	private class GestorDeCaminho {
+	public class GestorDeCaminho {
 		private Mapa mapa;
 		private Comparator<No> ordenadorDeNos;
 
@@ -173,15 +228,37 @@ public class ContDaIA extends ContDaEntMovel {
 		}
 
 		/**
+		 * Obtém o melhor caminho até uma posição dentro do alcance
+		 * 
+		 * @param posicao
+		 * @param alcance
+		 * @return Posicao
+		 */
+		public Posicao obterCaminho(Posicao posicao, int alcance) {
+			Posicao posicaoAlvo = null, posicaoAux = new Posicao();
+			// XXX Talvez precise ser melhorado
+			while (posicaoAlvo != null) {
+				for (int x = alcance / 2; x < alcance; x += 16) {
+					posicaoAux.x = posicao.x + x;
+					for (int y = alcance / 2; y < alcance; y += 16) {
+						posicaoAux.y = posicao.y + y;
+					}
+				}
+				int x = posicaoAux.x / Bloco.TAMANHO;
+				int y = posicaoAux.y / Bloco.TAMANHO;
+				if (!mapa.obterBloco(x, y).solido) posicaoAlvo = new Posicao(posicaoAux);
+			}
+			return obterCaminho(posicao, posicaoAlvo);
+		}
+
+		/**
 		 * Obtém o melhor caminho de uma posicao para outra
 		 * 
 		 * @param posicao
 		 * @param posicaoAlvo
-		 * @return Lista de Nos
+		 * @return Posicao
 		 */
-		private List<No> obterCaminho(Posicao posicao, Posicao posicaoAlvo) {
-			// FIXME Testar a movimentação da IA por A* [GP Ep. 101-102]
-			List<No> caminho = new ArrayList<No>();
+		public Posicao obterCaminho(Posicao posicao, Posicao posicaoAlvo) {
 			List<No> nos = new ArrayList<No>();
 			List<No> nosAvaliados = new ArrayList<No>();
 			No noAtual = new No(posicao, null, 0, obterDistancia(posicao, posicaoAlvo)), noAux;
@@ -195,12 +272,12 @@ public class ContDaIA extends ContDaEntMovel {
 				noAtual = nos.get(0);
 				if (noAtual.posicao.equals(posicaoAlvo)) {
 					while (noAtual.pai != null) {
-						caminho.add(noAtual);
 						noAtual = noAtual.pai;
 					}
 					nos.clear();
 					nosAvaliados.clear();
-					return caminho;
+					// Precisa ser verificado
+					return noAtual.posicao.proxPos;
 				}
 				nos.remove(noAtual);
 				nosAvaliados.add(noAtual);
@@ -263,10 +340,10 @@ public class ContDaIA extends ContDaEntMovel {
 		 * 
 		 * @author Emanuel
 		 */
-		private class No {
+		public class No {
 			private Posicao posicao;
 			private No pai;
-			private double custoF, custoG, custoH;
+			private double custoF, custoG;
 
 			/**
 			 * Cria o objeto Nó
@@ -277,10 +354,10 @@ public class ContDaIA extends ContDaEntMovel {
 			 * @param custoH
 			 */
 			public No(Posicao posicao, No pai, double custoG, double custoH) {
+				if (pai != null) pai.posicao.proxPos = posicao;
 				this.posicao = posicao;
 				this.pai = pai;
 				this.custoG = custoG;
-				this.custoH = custoH;
 				this.custoF = custoG + custoH;
 			}
 

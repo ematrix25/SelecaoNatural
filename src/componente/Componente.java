@@ -1,7 +1,5 @@
 package componente;
 
-import java.util.Random;
-
 import componente.Componente.Velocidade.Direcao;
 import componente.Especime.Especie.Forma;
 import sistema.igu.renderizador.jogo.base.Sprite;
@@ -16,47 +14,50 @@ import sistema.igu.renderizador.jogo.base.mapa.Coordenada;
 public abstract class Componente {
 
 	/**
-	 * Componente que indica a Posicao da Entidade
+	 * Componente que indica a Posição da Entidade e a próxima Posição, se tiver
 	 * 
 	 * @author Emanuel
 	 */
 	public static class Posicao extends Componente {
 		public int x, y;
+		public Posicao proxPos;
 
 		/**
-		 * Gera o objeto Posicao
+		 * Gera o objeto Posição
 		 */
 		public Posicao() {
-			this(0, 0);
+			this(0, 0, null);
 		}
 
 		/**
-		 * Gera o objeto Posicao com uma Coordenada
+		 * Gera o objeto Posição com uma Coordenada
 		 * 
 		 * @param coordenada
 		 */
 		public Posicao(Coordenada coordenada) {
-			this(coordenada.obterX(), coordenada.obterY());
+			this(coordenada.obterX(), coordenada.obterY(), null);
 		}
 
 		/**
-		 * Gera o objeto Posicao dada uma posicao
+		 * Gera o objeto Posição dada uma posicao
 		 * 
 		 * @param posicao
 		 */
 		public Posicao(Posicao posicao) {
-			this(posicao.x, posicao.y);
+			this(posicao.x, posicao.y, posicao.proxPos);
 		}
 
 		/**
-		 * Gera o objeto Posicao com x e y
+		 * Gera o objeto Posição com x, y e a próxima Posição
 		 * 
 		 * @param x
 		 * @param y
+		 * @param proxPos
 		 */
-		public Posicao(int x, int y) {
+		public Posicao(int x, int y, Posicao proxPos) {
 			this.x = x;
 			this.y = y;
+			this.proxPos = proxPos;
 		}
 
 		/**
@@ -197,15 +198,6 @@ public abstract class Componente {
 		 */
 		public enum Direcao {
 			Cima, Baixo, Direita, Esquerda;
-
-			/**
-			 * Escolhe uma direção aleatória
-			 * 
-			 * @return Direcao
-			 */
-			public static Direcao escolhaAleatoria() {
-				return values()[new Random().nextInt(values().length)];
-			}
 		}
 	}
 

@@ -29,7 +29,7 @@ public class TesteContDeEntidade {
 	public void iniciar() throws Exception {
 		contDaEntidade = new ContDaEntidade();
 		ID = 0;
-		posicao = new Posicao(1, 1);
+		posicao = new Posicao(1, 1, null);
 	}
 
 	/**

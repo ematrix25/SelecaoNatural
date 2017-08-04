@@ -20,7 +20,7 @@ public abstract class ContDaEntMovel {
 	}
 
 	/**
-	 * Configura qual entidade está associado ao Jogador
+	 * Configura qual entidade está associado à entidade móvel
 	 * 
 	 * @param id
 	 */

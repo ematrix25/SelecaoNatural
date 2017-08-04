@@ -22,7 +22,7 @@ public class ContDoMapa {
 	private Mapa mapa;
 	private int entidadeAlvo = -1;
 
-	public HashMap<Integer, Posicao> entidades;
+	public HashMap<Integer, Posicao> posicoesDasEnt;
 
 	/**
 	 * Cria o objeto controlador do mapa dado o mapa
@@ -33,7 +33,7 @@ public class ContDoMapa {
 	public ContDoMapa(Painel painel, Mapa mapa) {
 		this.painel = painel;
 		this.mapa = mapa;
-		entidades = painel.entidades;
+		posicoesDasEnt = painel.posicoesDasEnt;
 	}
 
 	/**
@@ -74,12 +74,17 @@ public class ContDoMapa {
 	 */
 	public Velocidade moverEntidade(int movimentacao, Direcao direcao, Entidade entidade) {
 		Velocidade novaVelocidade = entidade.velocidade;
-		novaVelocidade.valor = movimentacao;
+		novaVelocidade.valor = 1;
+		int valor = movimentacao;
 		if (novaVelocidade.valor != 0) {
 			novaVelocidade.direcao = direcao;
-			mover(entidade, configurarDiferencial(novaVelocidade));
+			for (int i = 0; i < valor; i++) {
+				//Deve impedir que se mova quando não é mais necessário
+				if (!mover(entidade, configurarDiferencial(novaVelocidade))) break;
+			}
 		}
-		entidades.put(entidade.id, entidade.posicao);
+		posicoesDasEnt.put(entidade.id, entidade.posicao);
+		novaVelocidade.valor = valor;
 		return novaVelocidade;
 	}
 
@@ -104,36 +109,44 @@ public class ContDoMapa {
 	 * 
 	 * @param entidade
 	 * @param diferencial
+	 * @return boolean
 	 */
-	private void mover(Entidade entidade, Posicao diferencial) {
+	private boolean mover(Entidade entidade, Posicao diferencial) {
+		Posicao posicaoAux = new Posicao(entidade.posicao.x + diferencial.x, entidade.posicao.y + diferencial.y, null);
 		boolean move = true;
-		if (conflita(entidade, diferencial)) {
+		if (conflita(entidade.id, posicaoAux)) {
 			move &= painel.resolverConflito(entidade, entidadeAlvo);
 			entidadeAlvo = -1;
 		}
-		move &= !colide(entidade.posicao, diferencial);
-
+		move &= !colide(posicaoAux);
 		if (move) {
+			// Deve remover a próxima posição alcançada e parte para a póxima posição
+			if (posicaoAux == entidade.posicao.proxPos) {
+				posicaoAux = entidade.posicao.proxPos;
+				entidade.posicao.proxPos = posicaoAux.proxPos;
+				return false;
+			}
 			entidade.posicao.x += diferencial.x;
 			entidade.posicao.y += diferencial.y;
+			return true;
 		}
+		return false;
 	}
 
 	/**
 	 * Verifica se houve conflito e guarda qual entidade é alvo
 	 * 
-	 * @param entidade
-	 * @param diferencial
+	 * @param ID
+	 * @param posicaoAux
 	 * @return boolean
 	 */
-	private boolean conflita(Entidade entidade, Posicao diferencial) {
-		Posicao posicao = new Posicao(entidade.posicao.x + diferencial.x, entidade.posicao.y + diferencial.y);
-		Posicao posicaoAux;
-		for (int id : entidades.keySet()) {
-			if (id == entidade.id) continue;
-			posicaoAux = entidades.get(id);
-			if (Math.abs(posicaoAux.x - posicao.x) < Bloco.TAMANHO
-					&& Math.abs(posicaoAux.y - posicao.y) < Bloco.TAMANHO) {
+	private boolean conflita(int ID, Posicao posicaoAux) {
+		Posicao posicao;
+		for (int id : posicoesDasEnt.keySet()) {
+			if (id == ID) continue;
+			posicao = posicoesDasEnt.get(id);
+			if (Math.abs(posicao.x - posicaoAux.x) < Bloco.TAMANHO
+					&& Math.abs(posicao.y - posicaoAux.y) < Bloco.TAMANHO) {
 				entidadeAlvo = id;
 				return true;
 			}
@@ -144,12 +157,10 @@ public class ContDoMapa {
 	/**
 	 * Verifica se haverá colisão com blocos sólidos do mapa ao se mover
 	 * 
-	 * @param posicao
-	 * @param diferencial
+	 * @param posicaoAux
 	 * @return boolean
 	 */
-	private boolean colide(Posicao posicao, Posicao diferencial) {
-		Posicao posicaoAux = new Posicao(posicao.x + diferencial.x, posicao.y + diferencial.y);
+	private boolean colide(Posicao posicaoAux) {
 		int xAux, yAux;
 		boolean colidiu = false;
 		for (int lado = 0; lado < 4; lado++) {
