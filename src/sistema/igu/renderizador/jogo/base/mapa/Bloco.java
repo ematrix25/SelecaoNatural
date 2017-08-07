@@ -88,7 +88,7 @@ public class Bloco {
 	 * @param tela
 	 */
 	public void renderizar(int x, int y, Tela tela) {
-		tela.renderizarBloco(x / TAMANHO, y / TAMANHO, this);
+		tela.renderizarBloco(x * TAMANHO, y * TAMANHO, this);
 	}
 
 	/**

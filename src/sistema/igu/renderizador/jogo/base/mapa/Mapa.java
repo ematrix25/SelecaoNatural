@@ -169,7 +169,6 @@ public class Mapa {
 	 * @param tela
 	 */
 	public void renderizar(int desvioX, int desvioY, Tela tela) {
-		// FIXME Descobrir porque renderiza o mapa todo preto
 		tela.configurarDesvio(desvioX, desvioY);
 		int xInicial = desvioX >> 4;
 		int xFinal = (desvioX + tela.largura + 16) >> 4;
