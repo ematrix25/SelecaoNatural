@@ -22,9 +22,8 @@ import sistema.igu.renderizador.jogo.base.mapa.Mapa;
  */
 public class ContDaIA extends ContDaEntMovel {
 	private Random aleatorio;
-	private Estado estado;
 	private GestorDeCaminho gestorDeCaminho;
-	private Posicao proxPos;
+	private Estado estado;
 	private Direcao direcao;
 
 	private HashMap<Integer, Posicao> posicoesDasEnt;
@@ -42,6 +41,7 @@ public class ContDaIA extends ContDaEntMovel {
 	public ContDaIA(Painel painel, Mapa mapa) {
 		aleatorio = new Random();
 		gestorDeCaminho = new GestorDeCaminho(mapa);
+		estado = Estado.Parado;
 		posicoesDasEnt = painel.posicoesDasEnt;
 		idAlvo = -1;
 	}
@@ -53,11 +53,9 @@ public class ContDaIA extends ContDaEntMovel {
 	 */
 	public void configurarIA(Entidade entidade) {
 		configurarID(entidade.id);
-		if (posicoesDasEnt.containsKey(entidade.id)) {
-			direcao = entidade.velocidade.direcao;
-			configEstado();
-			if (estado != Estado.Parado) configProxPos();
-		}
+		direcao = entidade.velocidade.direcao;
+		configEstado();
+		if (estado != Estado.Parado) entidade.posicao.proxPos = configProxPos();
 	}
 
 	/**
@@ -127,22 +125,17 @@ public class ContDaIA extends ContDaEntMovel {
 
 	/**
 	 * Configura as próximas posições
+	 * 
+	 * @return Posicao
 	 */
-	private void configProxPos() {
-		Posicao posicao = posicoesDasEnt.get(id), posicaoAlvo;
+	private Posicao configProxPos() {
+		Posicao posicao = posicoesDasEnt.get(id), posicaoAlvo, proxPos;
 		if (idAlvo == -1) proxPos = gestorDeCaminho.obterCaminho(posicao, ALCANCE);
 		else {
 			posicaoAlvo = posicoesDasEnt.get(idAlvo);
 			proxPos = gestorDeCaminho.obterCaminho(posicao, posicaoAlvo);
 		}
-	}
-
-	/**
-	 * Obtém a próxima posição
-	 * 
-	 * @return Posicao
-	 */
-	public Posicao obterProxPos() {
+		posicao.proxPos = proxPos;
 		return proxPos;
 	}
 
@@ -188,6 +181,7 @@ public class ContDaIA extends ContDaEntMovel {
 	 */
 	private Direcao obterDirDaDistancia(boolean aumenta) {
 		Posicao posicao = posicoesDasEnt.get(id), posDestino = posicao.proxPos;
+		if (posDestino == null) System.out.println(id + " não tem próxima posição");
 		int dx = posDestino.x - posicao.x;
 		int dy = posDestino.y - posicao.y;
 		if (Math.abs(dx) > Math.abs(dy)) {
@@ -235,20 +229,26 @@ public class ContDaIA extends ContDaEntMovel {
 		 * @return Posicao
 		 */
 		public Posicao obterCaminho(Posicao posicao, int alcance) {
-			Posicao posicaoAlvo = null, posicaoAux = new Posicao();
-			// XXX Talvez precise ser melhorado
-			while (posicaoAlvo != null) {
-				for (int x = alcance / 2; x < alcance; x += 16) {
-					posicaoAux.x = posicao.x + x;
-					for (int y = alcance / 2; y < alcance; y += 16) {
-						posicaoAux.y = posicao.y + y;
-					}
+			Posicao posicaoAlvo = null;
+			int x, y;
+			while (posicaoAlvo == null) {
+				x = (posicao.x + gerarValorDoAlcance(alcance)) / Bloco.TAMANHO;
+				y = (posicao.y + gerarValorDoAlcance(alcance)) / Bloco.TAMANHO;
+				if (!mapa.obterBloco(x, y).solido) {
+					posicaoAlvo = new Posicao(new Coordenada(x, y));
 				}
-				int x = posicaoAux.x / Bloco.TAMANHO;
-				int y = posicaoAux.y / Bloco.TAMANHO;
-				if (!mapa.obterBloco(x, y).solido) posicaoAlvo = new Posicao(posicaoAux);
 			}
 			return obterCaminho(posicao, posicaoAlvo);
+		}
+
+		/**
+		 * Gera um valor aleatório dado o alcance
+		 * 
+		 * @param alcance
+		 * @return int
+		 */
+		private int gerarValorDoAlcance(int alcance) {
+			return alcance / 2 + aleatorio.nextInt(alcance / 2);
 		}
 
 		/**
@@ -259,14 +259,16 @@ public class ContDaIA extends ContDaEntMovel {
 		 * @return Posicao
 		 */
 		public Posicao obterCaminho(Posicao posicao, Posicao posicaoAlvo) {
+			// FIXME Descobrir porque está resultando em nulo
 			List<No> nos = new ArrayList<No>();
 			List<No> nosAvaliados = new ArrayList<No>();
 			No noAtual = new No(posicao, null, 0, obterDistancia(posicao, posicaoAlvo)), noAux;
 			Bloco bloco;
 			Posicao posicaoAux;
-			int x, y;
+			int x, y, dx, dy;
 			double custoG, custoH;
 			nos.add(noAtual);
+			if(nos.isEmpty()) System.out.println("Lista vazia antes");
 			while (!nos.isEmpty()) {
 				Collections.sort(nos, ordenadorDeNos);
 				noAtual = nos.get(0);
@@ -281,13 +283,15 @@ public class ContDaIA extends ContDaEntMovel {
 				}
 				nos.remove(noAtual);
 				nosAvaliados.add(noAtual);
+				x = (noAtual.posicao.x / Bloco.TAMANHO);
+				y = (noAtual.posicao.y / Bloco.TAMANHO);
 				for (int i = 0; i < 9; i++) {
-					if (i == 4) continue;
-					x = (noAtual.posicao.x / Bloco.TAMANHO) + (i % 3) - 1;
-					y = (noAtual.posicao.y / Bloco.TAMANHO) + (i / 3) - 1;
-					bloco = mapa.obterBloco(x, y);
+					dx = (i % 3) - 1;
+					dy = (i / 3) - 1;
+					if (Math.abs(dx) == Math.abs(dy)) continue;
+					bloco = mapa.obterBloco(x + dx, y + dy);
 					if (bloco == null || bloco.solido) continue;
-					posicaoAux = new Posicao(new Coordenada(x, y));
+					posicaoAux = new Posicao(new Coordenada(x + dx, y + dy));
 					custoG = noAtual.custoG + obterDistancia(noAtual.posicao, posicaoAux);
 					custoH = obterDistancia(posicaoAux, posicaoAlvo);
 					noAux = new No(posicaoAux, noAtual, custoG, custoH);
@@ -296,6 +300,7 @@ public class ContDaIA extends ContDaEntMovel {
 					if (!nos.contains(noAux) || custoG < noAux.custoG) nos.add(noAux);
 				}
 			}
+			if(nos.isEmpty()) System.out.println("Lista vazia depois");
 			nosAvaliados.clear();
 			return null;
 		}

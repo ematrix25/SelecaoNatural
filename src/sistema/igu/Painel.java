@@ -201,6 +201,7 @@ public class Painel extends Canvas implements Runnable {
 	private void moverEntidades() {
 		Entidade entidade;
 		int velocidadeMax;
+		int taxa = 31, taxaAux;
 		for (int id : contDaEntidade.obterTodasEntidadesComOComponente(Especime.class)) {
 			contAuxDaEnt.configurarEntidade(id, contDaEntidade.obterComponentes(id));
 			entidade = contAuxDaEnt.obterEntidade();
@@ -208,11 +209,13 @@ public class Painel extends Canvas implements Runnable {
 			if (id == contDoJogador.obterID()) {
 				contDoMapa.moverEntidade(contDoJogador.obterMovimentacao(velocidadeMax), contDoJogador.obterDirecao(),
 						entidade);
-			} else if (tempo % (new Random().nextInt(50) + 30) == 0) {
-				// FIXME Testar a movimentação da IA por A* [GP Ep. 101-102]
-				contDaIA.configurarIA(entidade);
-				contDaEntidade.obterComponente(id, Posicao.class).proxPos = contDaIA.obterProxPos();
-				contDoMapa.moverEntidade(contDaIA.obterMovimentacao(velocidadeMax), contDaIA.obterDirecao(), entidade);
+			} else {
+				taxaAux = (entidade.posicao.proxPos != null) ? taxa : taxa + new Random().nextInt(59);
+				if (tempo % taxaAux == 0) {
+					if (!(posicoesDasEnt.size() < contDaEntidade.entidades.size())) contDaIA.configurarIA(entidade);
+					contDoMapa.moverEntidade(contDaIA.obterMovimentacao(velocidadeMax), contDaIA.obterDirecao(),
+							entidade);
+				}
 			}
 		}
 	}
