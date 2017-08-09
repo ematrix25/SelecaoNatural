@@ -14,6 +14,7 @@ import sistema.igu.Painel;
 import sistema.igu.renderizador.jogo.base.mapa.Bloco;
 import sistema.igu.renderizador.jogo.base.mapa.Coordenada;
 import sistema.igu.renderizador.jogo.base.mapa.Mapa;
+import sistema.utilitario.arquivo.Arquivo.ArquivoDeRegistro;
 
 /**
  * Classe que controla os dados da IA
@@ -181,6 +182,7 @@ public class ContDaIA extends ContDaEntMovel {
 	 */
 	private Direcao obterDirDaDistancia(boolean aumenta) {
 		Posicao posicao = posicoesDasEnt.get(id), posDestino = posicao.proxPos;
+		// TODO Remover depois
 		if (posDestino == null) System.out.println(id + " não tem próxima posição");
 		int dx = posDestino.x - posicao.x;
 		int dy = posDestino.y - posicao.y;
@@ -263,22 +265,23 @@ public class ContDaIA extends ContDaEntMovel {
 			List<No> nos = new ArrayList<No>();
 			List<No> nosAvaliados = new ArrayList<No>();
 			No noAtual = new No(posicao, null, 0, obterDistancia(posicao, posicaoAlvo)), noAux;
+			StringBuilder texto = new StringBuilder();
 			Bloco bloco;
 			Posicao posicaoAux;
 			int x, y, dx, dy;
 			double custoG, custoH;
 			nos.add(noAtual);
-			if(nos.isEmpty()) System.out.println("Lista vazia antes");
 			while (!nos.isEmpty()) {
 				Collections.sort(nos, ordenadorDeNos);
 				noAtual = nos.get(0);
+				texto.append(noAtual + " -> ");
 				if (noAtual.posicao.equals(posicaoAlvo)) {
 					while (noAtual.pai != null) {
 						noAtual = noAtual.pai;
 					}
 					nos.clear();
+					texto.append("\n");
 					nosAvaliados.clear();
-					// Precisa ser verificado
 					return noAtual.posicao.proxPos;
 				}
 				nos.remove(noAtual);
@@ -297,10 +300,17 @@ public class ContDaIA extends ContDaEntMovel {
 					noAux = new No(posicaoAux, noAtual, custoG, custoH);
 					// Precisa ser verificado
 					if (nosAvaliados.contains(noAux) && custoG >= noAux.custoG) continue;
-					if (!nos.contains(noAux) || custoG < noAux.custoG) nos.add(noAux);
+					if (!nos.contains(noAux) || custoG < noAux.custoG) {
+						texto.append(noAux + " ");
+						nos.add(noAux);
+					}
 				}
+				texto.append(" -> " + posicaoAlvo + "\n");
 			}
-			if(nos.isEmpty()) System.out.println("Lista vazia depois");
+			if (nos.isEmpty()) {
+				System.out.print("Erro ao obter o caminho da IA no arquivo ");
+				System.out.println(ArquivoDeRegistro.escrever(texto));
+			}
 			nosAvaliados.clear();
 			return null;
 		}
@@ -404,6 +414,16 @@ public class ContDaIA extends ContDaEntMovel {
 					return false;
 				}
 				return true;
+			}
+
+			/**
+			 * Mostra a posição do nó
+			 * 
+			 * @see java.lang.Object#toString()
+			 */
+			@Override
+			public String toString() {
+				return posicao.toString();
 			}
 		}
 	}

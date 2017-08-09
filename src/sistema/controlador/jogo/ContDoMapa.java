@@ -77,9 +77,9 @@ public class ContDoMapa {
 		novaVelocidade.valor = 1;
 		int valor = movimentacao;
 		if (novaVelocidade.valor != 0) {
-			novaVelocidade.direcao = direcao;
+			if (direcao != null) novaVelocidade.direcao = direcao;
 			for (int i = 0; i < valor; i++) {
-				//Deve impedir que se mova quando não é mais necessário
+				// Deve impedir que se mova quando não é mais necessário
 				if (!mover(entidade, configurarDiferencial(novaVelocidade))) break;
 			}
 		}
@@ -120,7 +120,8 @@ public class ContDoMapa {
 		}
 		move &= !colide(posicaoAux);
 		if (move) {
-			// Deve remover a próxima posição alcançada e parte para a póxima posição
+			// Deve remover a próxima posição alcançada e parte para a póxima
+			// posição
 			if (posicaoAux == entidade.posicao.proxPos) {
 				posicaoAux = entidade.posicao.proxPos;
 				entidade.posicao.proxPos = posicaoAux.proxPos;

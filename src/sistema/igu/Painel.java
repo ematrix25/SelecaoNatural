@@ -420,6 +420,7 @@ public class Painel extends Canvas implements Runnable {
 	 * Coloca as entidades no mapa
 	 */
 	private void mapearEntidades() {
+		System.out.println("Mapeado as entidades:");
 		Coordenada coordenada = new Coordenada(mapa);
 		for (int entidade : contDaEntidade.obterTodasEntidadesComOComponente(Especime.class)) {
 			if (entidade == contDoJogador.obterID())
@@ -428,12 +429,13 @@ public class Painel extends Canvas implements Runnable {
 				while (contDaEntidade.obterEntidadeComOComponente(new Posicao(coordenada)) != null)
 					coordenada.configurarCoordenada(mapa);
 			}
-			System.out.println(coordenada);
+			System.out.print(coordenada + " ");
 			contDaEntidade.adicionarComponente(entidade, (Componente) new Posicao(coordenada));
 			contDaEntidade.adicionarComponente(entidade, (Componente) new Velocidade());
 			Especie especie = contDaEntidade.obterComponente(entidade, Especime.class).especie;
 			contDaEntidade.adicionarComponente(entidade, (Componente) new Sprites(especie.tipo.forma, gerarCor()));
 		}
+		System.out.println();
 	}
 
 	/**

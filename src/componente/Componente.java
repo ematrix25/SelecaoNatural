@@ -104,7 +104,7 @@ public abstract class Componente {
 		 */
 		@Override
 		public String toString() {
-			return "Posicao = [" + x + ", " + y + "]";
+			return "(" + x + ", " + y + ")";
 		}
 	}
 
@@ -188,7 +188,7 @@ public abstract class Componente {
 		 */
 		@Override
 		public String toString() {
-			return "Velocidade = " + valor + " e Direcao = " + direcao;
+			return "{" + valor + ", " + direcao+"}";
 		}
 
 		/**

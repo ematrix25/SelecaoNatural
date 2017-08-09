@@ -155,7 +155,7 @@ public abstract class Arquivo {
 			String nome = (saoPerguntas) ? PERGUNTAS : RESPOSTAS;
 			File arquivo = new File(recurso.obterArquivoDoEndereco("/dados_base") + "/" + nome);
 			if (!arquivo.exists()) criar(arquivo);
-			List<String> texto =Arquivo.ler(arquivo);
+			List<String> texto = Arquivo.ler(arquivo);
 			String linha = texto.get(0);
 			texto.set(0, linha.substring(1, linha.length()));
 			return texto;
@@ -173,6 +173,33 @@ public abstract class Arquivo {
 			if (!arquivo.exists()) criar(arquivo);
 			texto.add(Arrays.toString(respostas));
 			escrever(false, arquivo, texto);
+		}
+	}
+
+	/**
+	 * Escreve o arquivo de registro de dados
+	 * 
+	 * @author Emanuel
+	 */
+	public static class ArquivoDeRegistro extends Arquivo {
+		private static final String NOME = "registro.log";
+
+		/**
+		 * Escreve os registros no arquivo
+		 * 
+		 * @param texto
+		 * @return String
+		 */
+		public static String escrever(StringBuilder texto) {
+			String caminho = recurso.obterArquivoDoEndereco("/dados") + "/" + NOME;
+			File arquivo = new File(caminho);
+			List<String> textoRes = new ArrayList<String>();
+			if (!arquivo.exists()) criar(arquivo);
+			for (String linha : texto.toString().split("\n")) {
+				textoRes.add(linha);
+			}
+			escrever(true, arquivo, textoRes);
+			return caminho;
 		}
 	}
 }
