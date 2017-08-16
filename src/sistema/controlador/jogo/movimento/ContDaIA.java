@@ -9,6 +9,7 @@ import java.util.Random;
 
 import componente.Componente.Posicao;
 import componente.Componente.Velocidade.Direcao;
+import componente.Componente.Vetor2i;
 import sistema.controlador.jogo.ContAuxDaEnt.Entidade;
 import sistema.igu.Painel;
 import sistema.igu.renderizador.jogo.base.mapa.Bloco;
@@ -55,20 +56,24 @@ public class ContDaIA extends ContDaEntMovel {
 	public void configurarIA(Entidade entidade) {
 		configurarID(entidade.id);
 		direcao = entidade.velocidade.direcao;
-		configEstado();
-		if (estado != Estado.Parado) entidade.posicao.proxPos = configProxPos();
+		if (configEstado()) entidade.posicao.proxPos = configProxPos();
 	}
 
 	/**
-	 * Configura o estado da IA se necessário
+	 * Configura o estado da IA se necessário e obtêm se precisa configurar
+	 * próxima posição
+	 *
+	 * @return boolean
 	 */
-	private void configEstado() {
+	private boolean configEstado() {
 		buscarAlvo();
 		Posicao posicao = posicoesDasEnt.get(id), posicaoAlvo;
 		int dx, dy;
 		if (posicao.proxPos == null) {
-			if (aleatorio.nextBoolean()) estado = Estado.Vagando;
-			else estado = Estado.Parado;
+			if (aleatorio.nextBoolean()) {
+				estado = Estado.Vagando;
+				return true;
+			} else estado = Estado.Parado;
 		} else {
 			if (idAlvo == -1) estado = Estado.Vagando;
 			else {
@@ -93,8 +98,10 @@ public class ContDaIA extends ContDaEntMovel {
 					else estado = Estado.Seguindo;
 					break;
 				}
+				return true;
 			}
 		}
+		return false;
 	}
 
 	/**
@@ -130,12 +137,20 @@ public class ContDaIA extends ContDaEntMovel {
 	 * @return Posicao
 	 */
 	private Posicao configProxPos() {
-		Posicao posicao = posicoesDasEnt.get(id), posicaoAlvo, proxPos;
-		if (idAlvo == -1) proxPos = gestorDeCaminho.obterCaminho(posicao, ALCANCE);
-		else {
+		Posicao posicao = posicoesDasEnt.get(id), posicaoAlvo, proxPos = null;
+		System.out.print("ID " + id);
+		if (idAlvo == -1) {
+			System.out.print(" está Vagando");
+			// FIXME Verificiar porque às vezes trava
+			proxPos = gestorDeCaminho.obterCaminho(posicao, ALCANCE);
+		} else {
+			System.out.print(" tem alvo " + idAlvo);
 			posicaoAlvo = posicoesDasEnt.get(idAlvo);
-			proxPos = gestorDeCaminho.obterCaminho(posicao, posicaoAlvo);
+			System.out.print(" em " + posicaoAlvo);
+			// TODO Verificiar porque às vezes da null
+			proxPos = gestorDeCaminho.obterProxPos(posicao, posicaoAlvo);
 		}
+		System.out.println(" e a próxima posição é " + proxPos);
 		posicao.proxPos = proxPos;
 		return proxPos;
 	}
@@ -182,8 +197,7 @@ public class ContDaIA extends ContDaEntMovel {
 	 */
 	private Direcao obterDirDaDistancia(boolean aumenta) {
 		Posicao posicao = posicoesDasEnt.get(id), posDestino = posicao.proxPos;
-		// TODO Remover depois
-		if (posDestino == null) System.out.println(id + " não tem próxima posição");
+		if (posDestino == null) return null;
 		int dx = posDestino.x - posicao.x;
 		int dy = posDestino.y - posicao.y;
 		if (Math.abs(dx) > Math.abs(dy)) {
@@ -211,7 +225,7 @@ public class ContDaIA extends ContDaEntMovel {
 	 */
 	public class GestorDeCaminho {
 		private Mapa mapa;
-		private Comparator<No> ordenadorDeNos;
+		private Comparador ordenadorDeNos;
 
 		/**
 		 * Cria o objeto gerenciador de caminhos
@@ -231,16 +245,19 @@ public class ContDaIA extends ContDaEntMovel {
 		 * @return Posicao
 		 */
 		public Posicao obterCaminho(Posicao posicao, int alcance) {
-			Posicao posicaoAlvo = null;
+			Posicao proxPos = null;
 			int x, y;
-			while (posicaoAlvo == null) {
+			System.out.print(".");
+			while (proxPos == null) {
 				x = (posicao.x + gerarValorDoAlcance(alcance)) / Bloco.TAMANHO;
 				y = (posicao.y + gerarValorDoAlcance(alcance)) / Bloco.TAMANHO;
+				if (!(x < mapa.largura && y < mapa.altura)) continue;
 				if (!mapa.obterBloco(x, y).solido) {
-					posicaoAlvo = new Posicao(new Coordenada(x, y));
+					proxPos = obterProxPos(posicao, new Posicao(new Coordenada(x, y)));
 				}
+				System.out.print(".");
 			}
-			return obterCaminho(posicao, posicaoAlvo);
+			return proxPos;
 		}
 
 		/**
@@ -254,64 +271,84 @@ public class ContDaIA extends ContDaEntMovel {
 		}
 
 		/**
-		 * Obtém o melhor caminho de uma posicao para outra
+		 * Obtém a próxima posição de uma posição para outra
 		 * 
 		 * @param posicao
 		 * @param posicaoAlvo
 		 * @return Posicao
 		 */
-		public Posicao obterCaminho(Posicao posicao, Posicao posicaoAlvo) {
-			// FIXME Descobrir porque está resultando em nulo
+		public Posicao obterProxPos(Posicao posicao, Posicao posicaoAlvo) {
+			Posicao proxPos, posicaoAtual, posicaoAux;
+			List<No> caminho = obterCaminho(posicao.obterVetor(), posicaoAlvo.obterVetor());
+			if (caminho == null || caminho.size() == 1) return null;
+			proxPos = new Posicao(caminho.get(1).vetor);
+			posicaoAtual = proxPos;
+			for (int i = 2; i < caminho.size(); i++) {
+				posicaoAtual.proxPos = new Posicao(caminho.get(i).vetor);
+				posicaoAux = posicaoAtual.proxPos;
+				posicaoAtual = posicaoAux;
+			}
+
+			return proxPos;
+		}
+
+		/**
+		 * Obtém o melhor caminho de uma posição para outra
+		 * 
+		 * @param vetor
+		 * @param vetorAlvo
+		 * @return Lista de Nós
+		 */
+		private List<No> obterCaminho(Vetor2i vetor, Vetor2i vetorAlvo) {
 			List<No> nos = new ArrayList<No>();
 			List<No> nosAvaliados = new ArrayList<No>();
-			No noAtual = new No(posicao, null, 0, obterDistancia(posicao, posicaoAlvo)), noAux;
+			List<No> caminho = new ArrayList<No>();
+			No noAtual = new No(vetor, null, 0, obterDistancia(vetor, vetorAlvo)), noAux;
 			StringBuilder texto = new StringBuilder();
 			Bloco bloco;
-			Posicao posicaoAux;
-			int x, y, dx, dy;
+			Vetor2i vetorAux;
+			int x, y, dx, dy, sinal;
 			double custoG, custoH;
 			nos.add(noAtual);
 			while (!nos.isEmpty()) {
 				Collections.sort(nos, ordenadorDeNos);
 				noAtual = nos.get(0);
 				texto.append(noAtual + " -> ");
-				if (noAtual.posicao.equals(posicaoAlvo)) {
+				if (noAtual.vetor.equals(vetorAlvo)) {					
 					while (noAtual.pai != null) {
+						caminho.add(noAtual);
 						noAtual = noAtual.pai;
 					}
 					nos.clear();
-					texto.append("\n");
 					nosAvaliados.clear();
-					return noAtual.posicao.proxPos;
-				}
+					return caminho;
+				}				
 				nos.remove(noAtual);
 				nosAvaliados.add(noAtual);
-				x = (noAtual.posicao.x / Bloco.TAMANHO);
-				y = (noAtual.posicao.y / Bloco.TAMANHO);
-				for (int i = 0; i < 9; i++) {
-					dx = (i % 3) - 1;
-					dy = (i / 3) - 1;
-					if (Math.abs(dx) == Math.abs(dy)) continue;
-					bloco = mapa.obterBloco(x + dx, y + dy);
-					if (bloco == null || bloco.solido) continue;
-					posicaoAux = new Posicao(new Coordenada(x + dx, y + dy));
-					custoG = noAtual.custoG + obterDistancia(noAtual.posicao, posicaoAux);
-					custoH = obterDistancia(posicaoAux, posicaoAlvo);
-					noAux = new No(posicaoAux, noAtual, custoG, custoH);
-					// Precisa ser verificado
-					if (nosAvaliados.contains(noAux) && custoG >= noAux.custoG) continue;
-					if (!nos.contains(noAux) || custoG < noAux.custoG) {
-						texto.append(noAux + " ");
-						nos.add(noAux);
+				x = noAtual.vetor.x;
+				y = noAtual.vetor.y;
+				for (int i = 0; i < 2; i++) {
+					sinal = (int) Math.pow((-1), (i + 1));
+					for (int j = 0; j < 2; j++) {
+						dx = (j % 2) * sinal;
+						dy = (1 - (j % 2)) * sinal;
+						bloco = mapa.obterBloco(x + dx, y + dy);
+						if (bloco == null || bloco.solido) continue;
+						vetorAux = new Vetor2i(x + dx, y + dy);
+						custoG = noAtual.custoG + obterDistancia(noAtual.vetor, vetorAux);
+						custoH = obterDistancia(vetorAux, vetorAlvo);
+						noAux = new No(vetorAux, noAtual, custoG, custoH);
+						if (nosAvaliados.contains(noAux) && custoG >= noAux.custoG) continue;
+						if (!nos.contains(noAux) || custoG < noAux.custoG) {
+							texto.append(noAux + " ");
+							nos.add(noAux);
+						}
 					}
 				}
-				texto.append(" -> " + posicaoAlvo + "\n");
-			}
-			if (nos.isEmpty()) {
-				System.out.print("Erro ao obter o caminho da IA no arquivo ");
-				System.out.println(ArquivoDeRegistro.escrever(texto));
+				texto.append(" -> " + vetorAlvo + "\n");
 			}
 			nosAvaliados.clear();
+			ArquivoDeRegistro.escrever(texto);
 			return null;
 		}
 
@@ -323,8 +360,19 @@ public class ContDaIA extends ContDaEntMovel {
 		 * @return double
 		 */
 		private double obterDistancia(Posicao posicao, Posicao posicaoAlvo) {
-			int dx = Math.abs(posicaoAlvo.x - posicao.x);
-			int dy = Math.abs(posicaoAlvo.y - posicao.y);
+			return obterDistancia(posicao.obterVetor(), posicaoAlvo.obterVetor());
+		}
+
+		/**
+		 * Obtém a distância dado duas medidas de x e y
+		 * 
+		 * @param vetor
+		 * @param vetorAlvo
+		 * @return double
+		 */
+		private double obterDistancia(Vetor2i vetor, Vetor2i vetorAlvo) {
+			int dx = Math.abs(vetorAlvo.x - vetor.x);
+			int dy = Math.abs(vetorAlvo.y - vetor.y);
 			return Math.sqrt((dx * dx) + (dy * dy));
 		}
 
@@ -355,10 +403,11 @@ public class ContDaIA extends ContDaEntMovel {
 		 * 
 		 * @author Emanuel
 		 */
+		@SuppressWarnings("unused")
 		public class No {
-			private Posicao posicao;
+			private Vetor2i vetor;
 			private No pai;
-			private double custoF, custoG;
+			private double custoG, custoH, custoF;
 
 			/**
 			 * Cria o objeto Nó
@@ -368,11 +417,11 @@ public class ContDaIA extends ContDaEntMovel {
 			 * @param custoG
 			 * @param custoH
 			 */
-			public No(Posicao posicao, No pai, double custoG, double custoH) {
-				if (pai != null) pai.posicao.proxPos = posicao;
-				this.posicao = posicao;
+			public No(Vetor2i vetor, No pai, double custoG, double custoH) {
+				this.vetor = vetor;
 				this.pai = pai;
 				this.custoG = custoG;
+				this.custoH = custoH;
 				this.custoF = custoG + custoH;
 			}
 
@@ -385,7 +434,7 @@ public class ContDaIA extends ContDaEntMovel {
 			public int hashCode() {
 				final int prime = 31;
 				int result = 1;
-				result = prime * result + ((posicao == null) ? 0 : posicao.hashCode());
+				result = prime * result + ((vetor == null) ? 0 : vetor.hashCode());
 				return result;
 			}
 
@@ -406,11 +455,11 @@ public class ContDaIA extends ContDaEntMovel {
 					return false;
 				}
 				No other = (No) obj;
-				if (posicao == null) {
-					if (other.posicao != null) {
+				if (vetor == null) {
+					if (other.vetor != null) {
 						return false;
 					}
-				} else if (!posicao.equals(other.posicao)) {
+				} else if (!vetor.equals(other.vetor)) {
 					return false;
 				}
 				return true;
@@ -423,7 +472,7 @@ public class ContDaIA extends ContDaEntMovel {
 			 */
 			@Override
 			public String toString() {
-				return posicao.toString();
+				return vetor.toString();
 			}
 		}
 	}

@@ -4,6 +4,7 @@ import componente.Componente.Velocidade.Direcao;
 import componente.Especime.Especie.Forma;
 import sistema.igu.renderizador.jogo.base.Sprite;
 import sistema.igu.renderizador.jogo.base.SpritesAnimados;
+import sistema.igu.renderizador.jogo.base.mapa.Bloco;
 import sistema.igu.renderizador.jogo.base.mapa.Coordenada;
 
 /**
@@ -14,50 +15,23 @@ import sistema.igu.renderizador.jogo.base.mapa.Coordenada;
 public abstract class Componente {
 
 	/**
-	 * Componente que indica a Posição da Entidade e a próxima Posição, se tiver
+	 * Classe do vetor x e y inteiros
 	 * 
 	 * @author Emanuel
 	 */
-	public static class Posicao extends Componente {
-		public int x, y;
-		public Posicao proxPos;
+	public static class Vetor2i extends Componente {
+		public int x;
+		public int y;
 
 		/**
-		 * Gera o objeto Posição
-		 */
-		public Posicao() {
-			this(0, 0, null);
-		}
-
-		/**
-		 * Gera o objeto Posição com uma Coordenada
-		 * 
-		 * @param coordenada
-		 */
-		public Posicao(Coordenada coordenada) {
-			this(coordenada.obterX(), coordenada.obterY(), null);
-		}
-
-		/**
-		 * Gera o objeto Posição dada uma posicao
-		 * 
-		 * @param posicao
-		 */
-		public Posicao(Posicao posicao) {
-			this(posicao.x, posicao.y, posicao.proxPos);
-		}
-
-		/**
-		 * Gera o objeto Posição com x, y e a próxima Posição
+		 * Cria um vetor x e y
 		 * 
 		 * @param x
 		 * @param y
-		 * @param proxPos
 		 */
-		public Posicao(int x, int y, Posicao proxPos) {
+		public Vetor2i(int x, int y) {
 			this.x = x;
 			this.y = y;
-			this.proxPos = proxPos;
 		}
 
 		/**
@@ -87,10 +61,10 @@ public abstract class Componente {
 			if (obj == null) {
 				return false;
 			}
-			if (!(obj instanceof Posicao)) {
+			if (!(obj instanceof Vetor2i)) {
 				return false;
 			}
-			Posicao other = (Posicao) obj;
+			Vetor2i other = (Vetor2i) obj;
 			if (hashCode() != other.hashCode()) {
 				return false;
 			}
@@ -98,13 +72,77 @@ public abstract class Componente {
 		}
 
 		/**
-		 * Gera texto dos dados da Posicao
+		 * Gera texto dos dados do vetor
 		 * 
 		 * @see java.lang.Object#toString()
 		 */
 		@Override
 		public String toString() {
 			return "(" + x + ", " + y + ")";
+		}
+	}
+
+	/**
+	 * Componente que indica a Posição da Entidade e a próxima Posição, se tiver
+	 * 
+	 * @author Emanuel
+	 */
+	public static class Posicao extends Vetor2i {
+		public Posicao proxPos;
+
+		/**
+		 * Gera o objeto Posição dado um vetor
+		 * 
+		 * @param vetor
+		 */
+		public Posicao(Vetor2i vetor) {
+			this(new Coordenada(vetor.x, vetor.y));
+		}
+
+		/**
+		 * Gera o objeto Posição com uma Coordenada
+		 * 
+		 * @param coordenada
+		 */
+		public Posicao(Coordenada coordenada) {
+			this(coordenada.obterX(), coordenada.obterY(), null);
+		}
+
+		/**
+		 * Gera o objeto Posição
+		 */
+		public Posicao() {
+			this(0, 0, null);
+		}
+
+		/**
+		 * Gera o objeto Posição dada uma posicao
+		 * 
+		 * @param posicao
+		 */
+		public Posicao(Posicao posicao) {
+			this(posicao.x, posicao.y, posicao.proxPos);
+		}
+
+		/**
+		 * Gera o objeto Posição com x, y e a próxima Posição
+		 * 
+		 * @param x
+		 * @param y
+		 * @param proxPos
+		 */
+		public Posicao(int x, int y, Posicao proxPos) {
+			super(x, y);
+			this.proxPos = proxPos;
+		}
+
+		/**
+		 * Obtêm um vetor da posição
+		 * 
+		 * @return Vetor2i
+		 */
+		public Vetor2i obterVetor() {
+			return new Vetor2i(x / Bloco.TAMANHO, y / Bloco.TAMANHO);
 		}
 	}
 
@@ -188,7 +226,7 @@ public abstract class Componente {
 		 */
 		@Override
 		public String toString() {
-			return "{" + valor + ", " + direcao+"}";
+			return "{" + valor + ", " + direcao + "}";
 		}
 
 		/**
