@@ -335,4 +335,31 @@ public abstract class Componente {
 		}
 
 	}
+
+	/**
+	 * Componente que indica o Estado da IA e o alvo caso preciso
+	 * 
+	 * @author Emanuel
+	 */
+	public static class EstadoDaIA extends Componente {
+		public Estado estado;
+		public int idAlvo;
+
+		/**
+		 * Gera o objeto Estado da IA
+		 */
+		public EstadoDaIA() {
+			estado = Estado.Parado;
+			idAlvo = -1;
+		}
+
+		/**
+		 * Define os estados da IA
+		 * 
+		 * @author Emanuel
+		 */
+		public enum Estado {
+			Parado, Vagando, Seguindo, Fugindo;
+		}
+	}
 }

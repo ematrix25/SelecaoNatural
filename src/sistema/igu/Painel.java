@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 import componente.Componente;
+import componente.Componente.EstadoDaIA;
 import componente.Componente.Posicao;
 import componente.Componente.Sprites;
 import componente.Componente.Velocidade;
@@ -434,6 +435,8 @@ public class Painel extends Canvas implements Runnable {
 			contDaEntidade.adicionarComponente(entidade, (Componente) new Velocidade());
 			Especie especie = contDaEntidade.obterComponente(entidade, Especime.class).especie;
 			contDaEntidade.adicionarComponente(entidade, (Componente) new Sprites(especie.tipo.forma, gerarCor()));
+			if (entidade != contDoJogador.obterID())
+				contDaEntidade.adicionarComponente(entidade, (Componente) new EstadoDaIA());
 		}
 		System.out.println();
 	}

@@ -177,8 +177,6 @@ public class ContDaEntidade {
 			HashMap<Integer, ? extends Componente> base = baseDeComponentes.get(tipoDeComponente);
 			if (base == null) continue;
 			T componente = (T) tipoDeComponente.cast(base.get(ID));
-			if (componente == null) throw new IllegalArgumentException(
-					"ERRO: " + ID + " não possui Componente da classe: " + tipoDeComponente);
 			componentes.add(componente);
 		}
 		return componentes;

@@ -127,12 +127,14 @@ public class RendDoJogo extends Renderizador {
 	private void rendTelaDoJogo() {
 		BufferedImage imagem = new BufferedImage(tela.largura, tela.altura, BufferedImage.TYPE_INT_RGB);
 		int pixeis[] = ((DataBufferInt) imagem.getRaster().getDataBuffer()).getData();
+		String texto;
 
 		// Mostra que o jogo terminou
 		if (!painel.ehContinuavel) {
 			graficos.setFont(new Font("Verdana", 0, 32));
 			graficos.setColor(Color.red);
-			graficos.drawString("Extinto! Você perdeu o Jogo", (painel.getWidth() / 4), painel.getHeight() / 2);
+			texto = "Extinto! Você perdeu o Jogo";
+			graficos.drawString(texto, painel.getWidth() / 6, painel.getHeight() / 2);
 			return;
 		}
 

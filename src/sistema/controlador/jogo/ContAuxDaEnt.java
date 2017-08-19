@@ -3,6 +3,7 @@ package sistema.controlador.jogo;
 import java.util.List;
 
 import componente.Componente;
+import componente.Componente.EstadoDaIA;
 import componente.Componente.Posicao;
 import componente.Componente.Velocidade;
 import componente.Especime;
@@ -32,12 +33,15 @@ public class ContAuxDaEnt {
 		Especime especime = null;
 		Posicao posicao = null;
 		Velocidade velocidade = null;
+		EstadoDaIA estadoDaIA = null;
 		for (Componente componente : componentes) {
+			if (componente == null) continue;
 			if (componente.getClass() == Especime.class) especime = (Especime) componente;
 			if (componente.getClass() == Posicao.class) posicao = (Posicao) componente;
 			if (componente.getClass() == Velocidade.class) velocidade = (Velocidade) componente;
+			if (componente.getClass() == EstadoDaIA.class) estadoDaIA = (EstadoDaIA) componente;
 		}
-		this.entidade = new Entidade(id, especime, posicao, velocidade);
+		this.entidade = new Entidade(id, especime, posicao, velocidade, estadoDaIA);
 	}
 
 	/**
@@ -50,6 +54,7 @@ public class ContAuxDaEnt {
 		public Especime especime;
 		public Posicao posicao;
 		public Velocidade velocidade;
+		public EstadoDaIA estadoDaIA;
 
 		/**
 		 * Cria o objeto da entidade
@@ -59,11 +64,12 @@ public class ContAuxDaEnt {
 		 * @param posicao
 		 * @param velocidade
 		 */
-		public Entidade(int id, Especime especime, Posicao posicao, Velocidade velocidade) {
+		public Entidade(int id, Especime especime, Posicao posicao, Velocidade velocidade, EstadoDaIA estadoDaIA) {
 			this.id = id;
 			this.especime = especime;
 			this.posicao = posicao;
 			this.velocidade = velocidade;
+			this.estadoDaIA = estadoDaIA;
 		}
 	}
 }
