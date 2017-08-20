@@ -73,11 +73,11 @@ public class ContDaIA extends ContDaEntMovel {
 		if (idAlvo == -1) {
 			// Parado || Vagando
 			if (posicao.proxPos == null) {
-				if (aleatorio.nextBoolean()) estado = Estado.Vagando;
-				else {
-					estado = Estado.Parado;
-					return false;
-				}
+				if (aleatorio.nextBoolean()) {
+					estado = Estado.Vagando;
+					return true;
+				} else estado = Estado.Parado;
+
 			}
 		} else {
 			// Seguindo || Fugindo
@@ -103,10 +103,10 @@ public class ContDaIA extends ContDaEntMovel {
 					else estado = Estado.Seguindo;
 					break;
 				}
+				return true;
 			}
 		}
-		entidade.estadoDaIA.estado = estado;
-		return true;
+		return false;
 	}
 
 	/**
@@ -154,7 +154,6 @@ public class ContDaIA extends ContDaEntMovel {
 			System.out.print(" em " + posicaoAlvo);
 			proxPos = gestorDeCaminho.obterProxPos(posicao, posicaoAlvo);
 		}
-		System.out.println(" e a próxima posição é " + proxPos);
 		entidade.posicao.proxPos = proxPos;
 	}
 

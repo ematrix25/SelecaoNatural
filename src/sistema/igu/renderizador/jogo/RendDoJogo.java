@@ -126,8 +126,10 @@ public class RendDoJogo extends Renderizador {
 	 */
 	private void rendTelaDoJogo() {
 		BufferedImage imagem = new BufferedImage(tela.largura, tela.altura, BufferedImage.TYPE_INT_RGB);
+		Posicao posicao;
 		int pixeis[] = ((DataBufferInt) imagem.getRaster().getDataBuffer()).getData();
 		String texto;
+		int x, y;
 
 		// Mostra que o jogo terminou
 		if (!painel.ehContinuavel) {
@@ -152,17 +154,18 @@ public class RendDoJogo extends Renderizador {
 		// Mostra posição do mouse e do jogador
 		if (Opcoes.modoDesenvolvimento) {
 			graficos.setFont(new Font("Verdana", 0, 12));
+			graficos.setColor(Color.white);
 			if (Mouse.obterBotao() > -1) {
-				graficos.setColor(Color.green);
-				graficos.fillRect(Mouse.obterDesvioX(), Mouse.obterDesvioY(), 16, 16);
-
-				graficos.setColor(Color.red);
-				graficos.drawString("Button: " + Mouse.obterBotao(), 20, 60);
-
-				graficos.setColor(Color.white);
-				graficos.drawString("X: " + Mouse.obterDesvioX() + ", Y: " + Mouse.obterDesvioY(), 20, 100);
-				Posicao posicao = contDaEntidade.obterComponente(contDoJogador.obterID(), Posicao.class);
-				graficos.drawString("X: " + posicao.x + ", Y: " + posicao.y, 20, 120);
+				x = Mouse.obterDesvioX();
+				y = Mouse.obterDesvioY();
+				graficos.fillRect(x, y, 16, 16);
+				texto = "Mouse " + Mouse.obterBotao() + ": (" + x + ", " + y + ")";
+				graficos.drawString(texto, 20, 40);
+			}
+			for (int i : contDaEntidade.entidades) {
+				posicao = contDaEntidade.obterComponente(i, Posicao.class);
+				texto = "ID " + i + ": " + posicao + " \t-> " + posicao.proxPos;
+				graficos.drawString(texto, 20, (60 + 20 * i));
 			}
 		}
 	}
