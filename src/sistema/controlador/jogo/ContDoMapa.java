@@ -74,9 +74,9 @@ public class ContDoMapa {
 	 */
 	public Velocidade moverEntidade(int movimentacao, Direcao direcao, Entidade entidade) {
 		Velocidade novaVelocidade = entidade.velocidade;
-		novaVelocidade.valor = 1;
 		int valor = movimentacao;
-		if (novaVelocidade.valor != 0) {
+		if (valor > 0) {
+			novaVelocidade.valor = 1;
 			if (direcao != null) novaVelocidade.direcao = direcao;
 			for (int i = 0; i < valor; i++) {
 				// Deve impedir que se mova quando não é mais necessário

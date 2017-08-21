@@ -349,8 +349,15 @@ public abstract class Componente {
 		 * Gera o objeto Estado da IA
 		 */
 		public EstadoDaIA() {
-			estado = Estado.Parado;
-			idAlvo = -1;
+			this(Estado.Parado, -1);
+		}
+
+		/**
+		 * Gera o objeto Estado da IA dado estado e alvo
+		 */
+		public EstadoDaIA(Estado estado, int idAlvo) {
+			this.estado = estado;
+			this.idAlvo = idAlvo;
 		}
 
 		/**

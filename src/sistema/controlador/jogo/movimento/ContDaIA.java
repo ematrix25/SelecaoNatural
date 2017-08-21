@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import componente.Componente.EstadoDaIA;
 import componente.Componente.EstadoDaIA.Estado;
 import componente.Componente.Posicao;
 import componente.Componente.Velocidade.Direcao;
@@ -58,52 +59,34 @@ public class ContDaIA extends ContDaEntMovel {
 	}
 
 	/**
-	 * Configura o estado da IA se necessário e obtêm se vai se mover
+	 * Configura o estado da IA se necessário e obtêm se modifica a proxPos
 	 *
 	 * @param entidade
 	 * @return boolean
 	 */
 	private boolean configEstado(Entidade entidade) {
-		Posicao posicao = posicoesDasEnt.get(id), posicaoAlvo;
-		int dx, dy, idAlvoAnt = entidade.estadoDaIA.idAlvo, idAlvo = obterAlvo(idAlvoAnt);
+		Posicao posicao = posicoesDasEnt.get(id);
+		int idAlvoAnt = entidade.estadoDaIA.idAlvo, idAlvo = obterAlvo(idAlvoAnt);
+		boolean modificaProxPos = false;
 		estado = entidade.estadoDaIA.estado;
 		if (idAlvo == -1) {
 			// Parado || Vagando
 			if (posicao.proxPos == null) {
 				if (aleatorio.nextBoolean()) {
 					estado = Estado.Vagando;
-					return true;
+					modificaProxPos = true;
 				} else estado = Estado.Parado;
-
 			}
 		} else {
 			// Seguindo || Fugindo
 			if (idAlvo != idAlvoAnt) {
-				posicaoAlvo = posicoesDasEnt.get(idAlvo);
-				dx = posicao.x - posicaoAlvo.x;
-				dy = posicao.y - posicaoAlvo.y;
-				switch (entidade.velocidade.direcao) {
-				case Cima:
-					if (dy > 0) estado = Estado.Seguindo;
-					else estado = Estado.Fugindo;
-					break;
-				case Baixo:
-					if (dy > 0) estado = Estado.Fugindo;
-					else estado = Estado.Seguindo;
-					break;
-				case Direita:
-					if (dx > 0) estado = Estado.Seguindo;
-					else estado = Estado.Fugindo;
-					break;
-				case Esquerda:
-					if (dx > 0) estado = Estado.Fugindo;
-					else estado = Estado.Seguindo;
-					break;
-				}
-				return true;
+				if (aleatorio.nextBoolean()) estado = Estado.Seguindo;
+				else estado = Estado.Fugindo;
 			}
+			modificaProxPos = true;
 		}
-		return false;
+		entidade.estadoDaIA = new EstadoDaIA(estado, idAlvo);
+		return modificaProxPos;
 	}
 
 	/**
@@ -144,15 +127,14 @@ public class ContDaIA extends ContDaEntMovel {
 		Posicao posicao = entidade.posicao, posicaoAlvo, proxPos = null;
 		int idAlvo = entidade.estadoDaIA.idAlvo;
 		System.out.print("ID " + id + " está " + entidade.estadoDaIA.estado);
-		// TODO Verificiar porque raramente trava
 		if (idAlvo == -1) proxPos = gestorDeCaminho.obterCaminho(posicao, ALCANCE);
 		else {
-			System.out.print(" e tem alvo " + idAlvo);
+			System.out.print(", tem como alvo " + idAlvo);
 			posicaoAlvo = posicoesDasEnt.get(idAlvo);
 			System.out.print(" em " + posicaoAlvo);
 			proxPos = gestorDeCaminho.obterProxPos(posicao, posicaoAlvo);
 		}
-		System.out.println();
+		System.out.println(" e próxima posição em " + proxPos);
 		entidade.posicao.proxPos = proxPos;
 	}
 
@@ -238,17 +220,18 @@ public class ContDaIA extends ContDaEntMovel {
 		 */
 		public Posicao obterCaminho(Posicao posicao, int alcance) {
 			Posicao proxPos = null;
-			int x, y;
-			System.out.print(".");
+			int x, y, cont = 1;
 			while (proxPos == null) {
+				cont++;
+				if (cont > 100) break;
 				x = (posicao.x + gerarValorDoAlcance(alcance)) / Bloco.TAMANHO;
 				y = (posicao.y + gerarValorDoAlcance(alcance)) / Bloco.TAMANHO;
 				if (!(x < mapa.largura && y < mapa.altura)) continue;
 				if (!mapa.obterBloco(x, y).solido) {
 					proxPos = obterProxPos(posicao, new Posicao(new Coordenada(x, y)));
 				}
-				System.out.print(".");
 			}
+			System.out.print("[" + cont + "]");
 			return proxPos;
 		}
 
