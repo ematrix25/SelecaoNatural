@@ -112,23 +112,28 @@ public class ContDoMapa {
 	 * @return boolean
 	 */
 	private boolean mover(Entidade entidade, Posicao diferencial) {
-		Posicao posicaoAux = new Posicao(entidade.posicao.x + diferencial.x, entidade.posicao.y + diferencial.y, null);
+		Posicao proxPos = entidade.posicao.proxPos;
+		Posicao posicaoAux = new Posicao(entidade.posicao.x + diferencial.x, entidade.posicao.y + diferencial.y,
+				proxPos);
 		boolean move = true;
+		int dx, dy, max;
 		if (conflita(entidade.id, posicaoAux)) {
 			move &= painel.resolverConflito(entidade, entidadeAlvo);
 			entidadeAlvo = -1;
 		}
 		move &= !colide(posicaoAux);
 		if (move) {
-			// Deve remover a próxima posição alcançada e parte para a póxima
-			// posição
-			if (posicaoAux == entidade.posicao.proxPos) {
-				posicaoAux = entidade.posicao.proxPos;
-				entidade.posicao.proxPos = posicaoAux.proxPos;
-				return false;
-			}
 			entidade.posicao.x += diferencial.x;
 			entidade.posicao.y += diferencial.y;
+
+			// Remove a próxima posição alcançada e parte para a póxima posição
+			if (proxPos != null) {
+				dx = Math.abs(posicaoAux.x - proxPos.x);
+				dy = Math.abs(posicaoAux.y - proxPos.y);
+				max = obterVelocidadeMax(entidade.especime.especie.tipo.movimento);
+				if (dx < max && dy < max) 
+					entidade.posicao.proxPos = entidade.posicao.proxPos.proxPos;
+			}
 			return true;
 		}
 		return false;

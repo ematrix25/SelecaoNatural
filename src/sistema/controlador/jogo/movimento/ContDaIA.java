@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import componente.Componente.EstadoDaIA;
 import componente.Componente.EstadoDaIA.Estado;
 import componente.Componente.Posicao;
 import componente.Componente.Velocidade.Direcao;
@@ -66,7 +65,10 @@ public class ContDaIA extends ContDaEntMovel {
 	 */
 	private boolean configEstado(Entidade entidade) {
 		Posicao posicao = posicoesDasEnt.get(id);
-		int idAlvoAnt = entidade.estadoDaIA.idAlvo, idAlvo = obterAlvo(idAlvoAnt);
+		int idAlvoAnt = entidade.estadoDaIA.idAlvo;
+		// TODO Remover depois de arrumar Vagando
+		int idAlvo = idAlvoAnt;
+		// int idAlvo = obterAlvo(idAlvoAnt);
 		boolean modificaProxPos = false;
 		estado = entidade.estadoDaIA.estado;
 		if (idAlvo == -1) {
@@ -85,7 +87,8 @@ public class ContDaIA extends ContDaEntMovel {
 			}
 			modificaProxPos = true;
 		}
-		entidade.estadoDaIA = new EstadoDaIA(estado, idAlvo);
+		entidade.estadoDaIA.estado = estado;
+		entidade.estadoDaIA.idAlvo = idAlvo;
 		return modificaProxPos;
 	}
 
@@ -242,7 +245,9 @@ public class ContDaIA extends ContDaEntMovel {
 		 * @return int
 		 */
 		private int gerarValorDoAlcance(int alcance) {
-			return alcance / 2 + aleatorio.nextInt(alcance / 2);
+			int valor = alcance / 2 + aleatorio.nextInt(alcance / 2);
+			if (aleatorio.nextBoolean()) return valor;
+			else return -valor;
 		}
 
 		/**

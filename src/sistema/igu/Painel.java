@@ -214,7 +214,7 @@ public class Painel extends Canvas implements Runnable {
 				taxaAux = (entidade.posicao.proxPos != null) ? taxa : taxa + new Random().nextInt(59);
 				if (tempo % taxaAux == 0) {
 					if (!(posicoesDasEnt.size() < contDaEntidade.entidades.size())) contDaIA.configurarIA(entidade);
-					// FIXME Verificiar porque vagando não se move
+					// FIXME Arrumar as colisões ao estar Vagando
 					contDoMapa.moverEntidade(contDaIA.obterMovimentacao(velocidadeMax), contDaIA.obterDirecao(),
 							entidade);
 				}
