@@ -118,7 +118,7 @@ public class TesteContDoJogo {
 		Teclado.correr = true;
 
 		contAuxDaEnt.configurarEntidade(ID, contDaEntidade.obterComponentes(ID));
-		int velocidadeMax = contDoMapa.obterVelocidadeMax(contAuxDaEnt.obterEntidade().especime.especie.tipo.movimento);
+		int velocidadeMax = contDoMapa.obterVelocidadeMax(contAuxDaEnt.obterEntidade());
 		contDoMapa.moverEntidade(contDoJogador.obterMovimentacao(velocidadeMax), contDoJogador.obterDirecao(),
 				contAuxDaEnt.obterEntidade());
 	}

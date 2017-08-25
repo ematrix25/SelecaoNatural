@@ -5,7 +5,6 @@ import java.util.HashMap;
 import componente.Componente.Posicao;
 import componente.Componente.Velocidade;
 import componente.Componente.Velocidade.Direcao;
-import componente.Especime.Especie.Movimento;
 import sistema.controlador.jogo.ContAuxDaEnt.Entidade;
 import sistema.igu.Painel;
 import sistema.igu.renderizador.jogo.base.mapa.Bloco;
@@ -48,20 +47,29 @@ public class ContDoMapa {
 	/**
 	 * Obtém a velocidade máxima dado o tipo de movimento da entidade
 	 * 
-	 * @param movimento
+	 * @param entidade
 	 * @return int
 	 */
-	public int obterVelocidadeMax(Movimento movimento) {
-		switch (movimento) {
+	public int obterVelocidadeMax(Entidade entidade) {
+		Posicao proxPos = entidade.posicao.proxPos;
+		int dx, dy, max = 0;
+		switch (entidade.especime.especie.tipo.movimento) {
 		case Deslizamento:
-			return 1;
+			max = 1;
 		case Contracao:
-			return 2;
+			max = 2;
 		case Flagelo:
-			return 4;
-		default:
-			return 0;
+			max = 4;
 		}
+		if (proxPos != null) {
+			dx = Math.abs(entidade.posicao.x - proxPos.x);
+			dy = Math.abs(entidade.posicao.y - proxPos.y);
+			if (dx < max && dy < max) {
+				if (dy == 0 || dy > dx) max = dx;
+				if (dx == 0 || dx > dy) max = dy;
+			}
+		}
+		return max;
 	}
 
 	/**
@@ -116,7 +124,6 @@ public class ContDoMapa {
 		Posicao posicaoAux = new Posicao(entidade.posicao.x + diferencial.x, entidade.posicao.y + diferencial.y,
 				proxPos);
 		boolean move = true;
-		int dx, dy, max;
 		if (conflita(entidade.id, posicaoAux)) {
 			move &= painel.resolverConflito(entidade, entidadeAlvo);
 			entidadeAlvo = -1;
@@ -127,13 +134,7 @@ public class ContDoMapa {
 			entidade.posicao.y += diferencial.y;
 
 			// Remove a próxima posição alcançada e parte para a póxima posição
-			if (proxPos != null) {
-				dx = Math.abs(posicaoAux.x - proxPos.x);
-				dy = Math.abs(posicaoAux.y - proxPos.y);
-				max = obterVelocidadeMax(entidade.especime.especie.tipo.movimento);
-				if (dx < max && dy < max) 
-					entidade.posicao.proxPos = entidade.posicao.proxPos.proxPos;
-			}
+			if (posicaoAux.equals(proxPos)) entidade.posicao.proxPos = proxPos.proxPos;
 			return true;
 		}
 		return false;

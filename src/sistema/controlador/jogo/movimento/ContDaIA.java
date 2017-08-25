@@ -66,9 +66,7 @@ public class ContDaIA extends ContDaEntMovel {
 	private boolean configEstado(Entidade entidade) {
 		Posicao posicao = posicoesDasEnt.get(id);
 		int idAlvoAnt = entidade.estadoDaIA.idAlvo;
-		// TODO Remover depois de arrumar Vagando
-		int idAlvo = idAlvoAnt;
-		// int idAlvo = obterAlvo(idAlvoAnt);
+		int idAlvo = obterAlvo(idAlvoAnt);
 		boolean modificaProxPos = false;
 		estado = entidade.estadoDaIA.estado;
 		if (idAlvo == -1) {
@@ -150,8 +148,6 @@ public class ContDaIA extends ContDaEntMovel {
 		switch (estado) {
 		case Parado:
 			return 0;
-		case Vagando:
-			return 1 + aleatorio.nextInt(velocidadeMaxima);
 		default:
 			return velocidadeMaxima;
 		}

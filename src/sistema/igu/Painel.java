@@ -206,7 +206,7 @@ public class Painel extends Canvas implements Runnable {
 		for (int id : contDaEntidade.obterTodasEntidadesComOComponente(Especime.class)) {
 			contAuxDaEnt.configurarEntidade(id, contDaEntidade.obterComponentes(id));
 			entidade = contAuxDaEnt.obterEntidade();
-			velocidadeMax = contDoMapa.obterVelocidadeMax(entidade.especime.especie.tipo.movimento);
+			velocidadeMax = contDoMapa.obterVelocidadeMax(entidade);
 			if (id == contDoJogador.obterID()) {
 				contDoMapa.moverEntidade(contDoJogador.obterMovimentacao(velocidadeMax), contDoJogador.obterDirecao(),
 						entidade);
@@ -214,7 +214,7 @@ public class Painel extends Canvas implements Runnable {
 				taxaAux = (entidade.posicao.proxPos != null) ? taxa : taxa + new Random().nextInt(59);
 				if (tempo % taxaAux == 0) {
 					if (!(posicoesDasEnt.size() < contDaEntidade.entidades.size())) contDaIA.configurarIA(entidade);
-					// FIXME Arrumar as colisões ao estar Vagando
+					// FIXME Verificar problemas com alvo
 					contDoMapa.moverEntidade(contDaIA.obterMovimentacao(velocidadeMax), contDaIA.obterDirecao(),
 							entidade);
 				}
