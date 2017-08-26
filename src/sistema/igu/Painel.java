@@ -357,7 +357,7 @@ public class Painel extends Canvas implements Runnable {
 			ehContinuavel = true;
 			break;
 		case 'C':
-			if (telaAtiva == 'M') voltarParaJogo();
+			if (telaAtiva == 'M' && ehContinuavel) voltarParaJogo();
 			else if (telaAtiva == 'O') voltarParaMenu();
 			break;
 		case 'O':
