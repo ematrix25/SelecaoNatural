@@ -140,7 +140,7 @@ public class ContDaIA extends ContDaEntMovel {
 			System.out.print(", tem como alvo " + idAlvo);
 			posicaoAlvo = posicoesDasEnt.get(idAlvo);
 			System.out.print(" em " + posicaoAlvo);
-			//TODO Verificar porque não desvia das pedras
+			// TODO Verificar porque não desvia das pedras
 			if (estado == Estado.Fugindo) proxPos = gestorDeCaminho.obterProxPos(posicao, posicaoAlvo, ALCANCE);
 			else proxPos = gestorDeCaminho.obterProxPos(posicao, posicaoAlvo);
 		}
@@ -285,7 +285,8 @@ public class ContDaIA extends ContDaEntMovel {
 		public Posicao obterProxPos(Posicao posicao, Posicao posicaoAlvo) {
 			Posicao proxPos = null, posicaoAtual = null, posicaoAux;
 			List<Vetor2i> caminho = obterCaminho(posicao.obterVetor(), posicaoAlvo.obterVetor());
-			if (caminho == null || caminho.size() == 1) return null;
+			if (caminho == null) return null;
+			if (caminho.size() == 1) return posicaoAlvo;
 			for (Vetor2i vetor : caminho) {
 				posicaoAux = new Posicao(vetor);
 				if (proxPos == null) {
@@ -307,9 +308,13 @@ public class ContDaIA extends ContDaEntMovel {
 		 * @return Lista de vetores
 		 */
 		private List<Vetor2i> obterCaminho(Vetor2i vetor, Vetor2i vetorAlvo) {
+			List<Vetor2i> caminho = new ArrayList<Vetor2i>();
+			if (vetor.equals(vetorAlvo)) {
+				caminho.add(vetor);
+				return caminho;
+			}
 			List<No> nos = new ArrayList<No>();
 			List<No> nosAvaliados = new ArrayList<No>();
-			List<Vetor2i> caminho = new ArrayList<Vetor2i>();
 			No noAtual = new No(vetor, null, 0, obterDistancia(vetor, vetorAlvo)), noAux;
 			StringBuilder texto = new StringBuilder();
 			Bloco bloco;
