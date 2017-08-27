@@ -71,6 +71,10 @@ public class ContDaIA extends ContDaEntMovel {
 		estado = entidade.estadoDaIA.estado;
 		if (idAlvo == -1) {
 			// Parado || Vagando
+			if (idAlvo != idAlvoAnt) {
+				posicao.proxPos = null;
+				entidade.posicao.proxPos = null;
+			}
 			if (posicao.proxPos == null) {
 				if (aleatorio.nextBoolean()) {
 					estado = Estado.Vagando;
@@ -97,12 +101,15 @@ public class ContDaIA extends ContDaEntMovel {
 	 */
 	private int obterAlvo(int idAlvoAnt) {
 		Posicao posicao = posicoesDasEnt.get(id), posicaoAux;
-		int dx, dy, idAlvo = idAlvoAnt;
-		double distancia, distanciaAux;
-		if (idAlvo != -1) {
-			posicaoAux = posicoesDasEnt.get(idAlvo);
-			distancia = gestorDeCaminho.obterDistancia(posicao, posicaoAux);
-		} else distancia = ALCANCE * 2;
+		int dx, dy, idAlvo = -1;
+		double distancia = ALCANCE * 2, distanciaAux;
+		if (idAlvoAnt != -1) {
+			posicaoAux = posicoesDasEnt.get(idAlvoAnt);
+			if (posicaoAux != null) {
+				distancia = gestorDeCaminho.obterDistancia(posicao, posicaoAux);
+				if (distancia < ALCANCE) idAlvo = idAlvoAnt;
+			}
+		}
 		for (int idAux : posicoesDasEnt.keySet()) {
 			if (id == idAux) continue;
 			posicaoAux = posicoesDasEnt.get(idAux);
@@ -127,13 +134,15 @@ public class ContDaIA extends ContDaEntMovel {
 	private void configProxPos(Entidade entidade) {
 		Posicao posicao = entidade.posicao, posicaoAlvo, proxPos = null;
 		int idAlvo = entidade.estadoDaIA.idAlvo;
-		System.out.print("ID " + id + " está " + entidade.estadoDaIA.estado);
-		if (idAlvo == -1) proxPos = gestorDeCaminho.obterCaminho(posicao, ALCANCE);
+		System.out.print("ID " + id + posicao + " está " + entidade.estadoDaIA.estado);
+		if (idAlvo == -1) proxPos = gestorDeCaminho.obterProxPos(posicao, null, ALCANCE);
 		else {
 			System.out.print(", tem como alvo " + idAlvo);
 			posicaoAlvo = posicoesDasEnt.get(idAlvo);
 			System.out.print(" em " + posicaoAlvo);
-			proxPos = gestorDeCaminho.obterProxPos(posicao, posicaoAlvo);
+			//TODO Verificar porque não desvia das pedras
+			if (estado == Estado.Fugindo) proxPos = gestorDeCaminho.obterProxPos(posicao, posicaoAlvo, ALCANCE);
+			else proxPos = gestorDeCaminho.obterProxPos(posicao, posicaoAlvo);
 		}
 		System.out.println(" e próxima posição em " + proxPos);
 		entidade.posicao.proxPos = proxPos;
@@ -211,27 +220,47 @@ public class ContDaIA extends ContDaEntMovel {
 		}
 
 		/**
-		 * Obtém o melhor caminho até uma posição dentro do alcance
+		 * Obtém a próxima posição até uma posição dentro do alcance
 		 * 
 		 * @param posicao
+		 * @param posicaoAlvo
 		 * @param alcance
 		 * @return Posicao
 		 */
-		public Posicao obterCaminho(Posicao posicao, int alcance) {
+		public Posicao obterProxPos(Posicao posicao, Posicao posicaoAlvo, int alcance) {
 			Posicao proxPos = null;
 			int x, y, cont = 1;
 			while (proxPos == null) {
 				cont++;
 				if (cont > 100) break;
-				x = (posicao.x + gerarValorDoAlcance(alcance)) / Bloco.TAMANHO;
-				y = (posicao.y + gerarValorDoAlcance(alcance)) / Bloco.TAMANHO;
-				if (!(x < mapa.largura && y < mapa.altura)) continue;
-				if (!mapa.obterBloco(x, y).solido) {
-					proxPos = obterProxPos(posicao, new Posicao(new Coordenada(x, y)));
+				if (posicaoAlvo != null) {
+					x = posicao.x + gerarValorDoAlcance(posicao.x, posicaoAlvo.x, alcance);
+					y = posicao.y + gerarValorDoAlcance(posicao.y, posicaoAlvo.y, alcance);
+				} else {
+					x = posicao.x + gerarValorDoAlcance(alcance);
+					y = posicao.y + gerarValorDoAlcance(alcance);
 				}
+				x /= Bloco.TAMANHO;
+				y /= Bloco.TAMANHO;
+				if (!(x < mapa.largura && y < mapa.altura)) continue;
+				if (!mapa.obterBloco(x, y).solido) proxPos = obterProxPos(posicao, new Posicao(new Coordenada(x, y)));
 			}
 			System.out.print("[" + cont + "]");
 			return proxPos;
+		}
+
+		/**
+		 * Gera um valor aleatório dado o alcance e as posições
+		 * 
+		 * @param posicao
+		 * @param posicaoAlvo
+		 * @param alcance
+		 * @return int
+		 */
+		private int gerarValorDoAlcance(int posicao, int posicaoAlvo, int alcance) {
+			int sinal = 1, valor = alcance / 2 + aleatorio.nextInt(alcance / 2);
+			if (valor == 0 && posicao < posicaoAlvo) sinal = -1;
+			return sinal * valor;
 		}
 
 		/**
@@ -338,7 +367,7 @@ public class ContDaIA extends ContDaEntMovel {
 		 * @return int
 		 */
 		private int obterDistancia(Posicao posicao, Posicao posicaoAlvo) {
-			return obterDistancia(posicao.obterVetor(), posicaoAlvo.obterVetor());
+			return Math.abs(posicao.x - posicaoAlvo.x) + Math.abs(posicao.y - posicaoAlvo.y);
 		}
 
 		/**

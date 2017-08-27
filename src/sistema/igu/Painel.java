@@ -214,7 +214,6 @@ public class Painel extends Canvas implements Runnable {
 				taxaAux = (entidade.posicao.proxPos != null) ? taxa : taxa + new Random().nextInt(59);
 				if (tempo % taxaAux == 0) {
 					if (!(posicoesDasEnt.size() < contDaEntidade.entidades.size())) contDaIA.configurarIA(entidade);
-					// FIXME Verificar problemas com alvo
 					contDoMapa.moverEntidade(contDaIA.obterMovimentacao(velocidadeMax), contDaIA.obterDirecao(),
 							entidade);
 				}
@@ -424,6 +423,7 @@ public class Painel extends Canvas implements Runnable {
 	private void mapearEntidades() {
 		System.out.println("Mapeado as entidades:");
 		Coordenada coordenada = new Coordenada(mapa);
+		Posicao posicao;
 		for (int entidade : contDaEntidade.obterTodasEntidadesComOComponente(Especime.class)) {
 			if (entidade == contDoJogador.obterID())
 				coordenada.configurarCoordenada(mapa.largura / 2, mapa.altura / 2 - 1);
@@ -432,7 +432,9 @@ public class Painel extends Canvas implements Runnable {
 					coordenada.configurarCoordenada(mapa);
 			}
 			System.out.print(coordenada + " ");
-			contDaEntidade.adicionarComponente(entidade, (Componente) new Posicao(coordenada));
+			posicao = new Posicao(coordenada);
+			posicoesDasEnt.put(entidade, posicao);
+			contDaEntidade.adicionarComponente(entidade, (Componente) posicao);
 			contDaEntidade.adicionarComponente(entidade, (Componente) new Velocidade());
 			Especie especie = contDaEntidade.obterComponente(entidade, Especime.class).especie;
 			contDaEntidade.adicionarComponente(entidade, (Componente) new Sprites(especie.tipo.forma, gerarCor()));
