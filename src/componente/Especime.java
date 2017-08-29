@@ -108,11 +108,11 @@ public class Especime extends Componente {
 		private static Tipo escolherTipo(Forma forma) {
 			switch (forma) {
 			case Coccus:
-				return new Tipo(forma, Movimento.Deslizamento, true);
+				return new Tipo(forma, Movimento.Deslizamento);
 			case Bacillus:
-				return new Tipo(forma, Movimento.Flagelo, false);
+				return new Tipo(forma, Movimento.Flagelo);
 			case Spiral:
-				return new Tipo(forma, Movimento.Contracao, false);
+				return new Tipo(forma, Movimento.Contracao);
 			}
 			return null;
 		}
@@ -185,19 +185,16 @@ public class Especime extends Componente {
 		public static class Tipo {
 			public Forma forma;
 			public Movimento movimento;
-			public boolean ehAutotrofa;
 
 			/**
 			 * Cria o objteto Tipo da Especie
 			 * 
 			 * @param forma
 			 * @param movimento
-			 * @param ehAutotrofa
 			 */
-			public Tipo(Forma forma, Movimento movimento, boolean ehAutotrofa) {
+			public Tipo(Forma forma, Movimento movimento) {
 				this.forma = forma;
 				this.movimento = movimento;
-				this.ehAutotrofa = ehAutotrofa;
 			}
 
 			/**
@@ -209,7 +206,6 @@ public class Especime extends Componente {
 			public int hashCode() {
 				final int prime = 31;
 				int result = 1;
-				result = prime * result + (ehAutotrofa ? 1231 : 1237);
 				result = prime * result + ((forma == null) ? 0 : forma.hashCode());
 				result = prime * result + ((movimento == null) ? 0 : movimento.hashCode());
 				return result;
@@ -244,8 +240,7 @@ public class Especime extends Componente {
 			 */
 			@Override
 			public String toString() {
-				if (ehAutotrofa) return " Autotrofo que se move por " + movimento;
-				else return " Heterotrofo que se move por " + movimento;
+				return forma + " que se move por " + movimento;
 			}
 		}
 

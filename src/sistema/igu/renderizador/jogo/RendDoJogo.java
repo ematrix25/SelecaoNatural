@@ -10,10 +10,7 @@ import componente.Componente.Sprites;
 import componente.Componente.Velocidade;
 import componente.Especime;
 import sistema.controlador.ContDaEntidade;
-import sistema.controlador.ContDoAmbiente;
-import sistema.controlador.jogo.ContAuxDaEnt;
 import sistema.controlador.jogo.ContDoMapa;
-import sistema.controlador.jogo.movimento.ContDaIA;
 import sistema.controlador.jogo.movimento.ContDoJogador;
 import sistema.igu.Painel;
 import sistema.igu.renderizador.Renderizador;
@@ -34,13 +31,10 @@ public class RendDoJogo extends Renderizador {
 	private Tela tela;
 
 	private ContDaEntidade contDaEntidade;
-	private ContDoAmbiente contDoAmbiente;
 
 	private ContDoMapa contDoMapa;
 
-	private ContAuxDaEnt contAuxDaEnt;
 	private ContDoJogador contDoJogador;
-	private ContDaIA contDaIA;
 
 	/**
 	 * Cria o objeto para renderização do jogo
@@ -53,15 +47,12 @@ public class RendDoJogo extends Renderizador {
 	 * @param contDoJogador
 	 * @param contDaIA
 	 */
-	public RendDoJogo(Painel painel, ContDaEntidade contDaEntidade, ContDoAmbiente contDoAmbiente,
-			ContDoMapa contDoMapa, ContAuxDaEnt contAuxDaEnt, ContDoJogador contDoJogador, ContDaIA contDaIA) {
+	public RendDoJogo(Painel painel, ContDaEntidade contDaEntidade, ContDoMapa contDoMapa,
+			ContDoJogador contDoJogador) {
 		super(painel);
 		this.contDaEntidade = contDaEntidade;
-		this.contDoAmbiente = contDoAmbiente;
 		this.contDoMapa = contDoMapa;
-		this.contAuxDaEnt = contAuxDaEnt;
 		this.contDoJogador = contDoJogador;
-		this.contDaIA = contDaIA;
 
 		tela = new Tela(painel.getWidth() / ESCALA, (painel.getHeight() - 30) / ESCALA);
 	}

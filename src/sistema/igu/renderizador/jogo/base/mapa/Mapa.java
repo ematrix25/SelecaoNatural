@@ -182,6 +182,28 @@ public class Mapa {
 	}
 
 	/**
+	 * Obtém a cor do bloco do mapa
+	 * 
+	 * @param x
+	 * @param y
+	 * @return int
+	 */
+	public int obterCorDoBloco(int x, int y) {
+		return blocos[x + y * largura] - 0xFF000000;
+	}
+
+	/**
+	 * Configura a cor do bloco do mapa
+	 * 
+	 * @param x
+	 * @param y
+	 * @param cor
+	 */
+	public void configurarCorDoBloco(int x, int y, int cor) {
+		blocos[x + y * largura] = cor + 0xFF000000;
+	}
+
+	/**
 	 * Obtém o bloco a ser renderizado no mapa
 	 * 
 	 * @param x

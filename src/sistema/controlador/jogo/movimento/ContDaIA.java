@@ -140,7 +140,7 @@ public class ContDaIA extends ContDaEntMovel {
 			System.out.print(", tem como alvo " + idAlvo);
 			posicaoAlvo = posicoesDasEnt.get(idAlvo);
 			System.out.print(" em " + posicaoAlvo);
-			// TODO Verificar porque não desvia das pedras
+			// XXX Verificar porque não desvia das pedras
 			if (estado == Estado.Fugindo) proxPos = gestorDeCaminho.obterProxPos(posicao, posicaoAlvo, ALCANCE);
 			else proxPos = gestorDeCaminho.obterProxPos(posicao, posicaoAlvo);
 		}

@@ -189,7 +189,12 @@ public class Painel extends Canvas implements Runnable {
 		massaCelular = contDaEntidade.obterComponente(jogador, Especime.class).massa;
 		qtdCelulas = contDoAmbiente.obterEspecimesPorEspecime(jogador).size();
 		pontuacao = contDoJogador.obterPontuacao();
-
+		
+		if (tempo % 101 == 0) contDoMapa.atualizarBlocos();
+		// FIXME Implementar ingestão dos compostos orgânicos
+		// TODO Implementar gasto de massa da entidade
+		// TODO Implementar reprodução das bacterias
+		
 		moverEntidades();
 
 		// Remove todas as entidades marcadas na movimentação
@@ -202,7 +207,7 @@ public class Painel extends Canvas implements Runnable {
 	private void moverEntidades() {
 		Entidade entidade;
 		int velocidadeMax;
-		int taxa = 31, taxaAux;
+		int taxa = 7, taxaAux;
 		for (int id : contDaEntidade.obterTodasEntidadesComOComponente(Especime.class)) {
 			contAuxDaEnt.configurarEntidade(id, contDaEntidade.obterComponentes(id));
 			entidade = contAuxDaEnt.obterEntidade();
@@ -231,6 +236,7 @@ public class Painel extends Canvas implements Runnable {
 	public boolean resolverConflito(Entidade entidade, int entidadeAlvo) {
 		Especime especimeAlvo = contDaEntidade.obterComponente(entidadeAlvo, Especime.class);
 		Especime especime = entidade.especime;
+		if (especimeAlvo == null) return true;
 		if (especime.massa >= especimeAlvo.massa) {
 			especime.massa = juntarMassa(especime.massa, especimeAlvo.massa);
 			if (contDoJogador.obterID() == entidadeAlvo) ehContinuavel = false;
@@ -399,8 +405,7 @@ public class Painel extends Canvas implements Runnable {
 		contDaIA = new ContDaIA(this, mapa);
 
 		rendDaSelecao = new RendDaSelecao(this, contDaEntidade, contDoAmbiente);
-		rendDoJogo = new RendDoJogo(this, contDaEntidade, contDoAmbiente, contDoMapa, contAuxDaEnt, contDoJogador,
-				contDaIA);
+		rendDoJogo = new RendDoJogo(this, contDaEntidade, contDoMapa, contDoJogador);
 	}
 
 	/**

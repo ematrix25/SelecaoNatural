@@ -1,6 +1,7 @@
 package sistema.controlador.jogo;
 
 import java.util.HashMap;
+import java.util.Random;
 
 import componente.Componente.Posicao;
 import componente.Componente.Velocidade;
@@ -42,6 +43,34 @@ public class ContDoMapa {
 	 */
 	public Mapa obterMapa() {
 		return mapa;
+	}
+
+	/**
+	 * Atualiza os blocos do mapa
+	 */
+	public void atualizarBlocos() {
+		for (int x = 0; x < mapa.largura; x++) {
+			for (int y = 0; y < mapa.altura; y++) {
+				int cor = mapa.obterCorDoBloco(x, y);
+				if (cor <= 0xFF00 && cor > 0xFF) {
+					if (y > 0) atualizarBloco(x, y - 1, cor);
+					if (x > 0) atualizarBloco(x - 1, y, cor);
+					if (y < mapa.altura - 1) atualizarBloco(x, y + 1, cor);
+					if (x < mapa.largura - 1) atualizarBloco(x + 1, y, cor);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Atualiza o bloco do mapa
+	 * 
+	 * @param x
+	 * @param y
+	 * @param cor
+	 */
+	private void atualizarBloco(int x, int y, int cor) {
+		if (new Random().nextInt(1000) == 1 && mapa.obterCorDoBloco(x, y) <= 0xFF) mapa.configurarCorDoBloco(x, y, cor);
 	}
 
 	/**
