@@ -119,7 +119,7 @@ public class TesteContDeEntidade {
 
 		// Avaliação em si
 		assertFalse(contDaEntidade.entidades.isEmpty());
-		contDaEntidade.marcarEntidades(ID);
+		contDaEntidade.marcarEntidades(ID, true);
 		assertTrue(contDaEntidade.removerEntidades());
 		assertTrue(contDaEntidade.entidades.isEmpty());
 	}
@@ -129,7 +129,7 @@ public class TesteContDeEntidade {
 	 */
 	private void removerEntidade() {
 		adicionarComponente();
-		contDaEntidade.marcarEntidades(ID);
+		contDaEntidade.marcarEntidades(ID, true);
 		contDaEntidade.removerEntidades();
 	}
 

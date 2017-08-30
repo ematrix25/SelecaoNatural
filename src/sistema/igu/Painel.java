@@ -13,6 +13,7 @@ import componente.Componente.EstadoDaIA;
 import componente.Componente.Posicao;
 import componente.Componente.Sprites;
 import componente.Componente.Velocidade;
+import componente.Componente.Vetor2i;
 import componente.Especime;
 import componente.Especime.Especie;
 import sistema.Jogo.Janela;
@@ -191,18 +192,19 @@ public class Painel extends Canvas implements Runnable {
 		pontuacao = contDoJogador.obterPontuacao();
 
 		if (tempo % 101 == 0) contDoMapa.atualizarBlocos();
-
-		moverEntidades();
 		atualizarEntidades();
+
+		// Cria as entidades marcadas no contDaEntidade
+		criarEntidades();
 
 		// Remove todas as entidades marcadas na movimentação
 		contDaEntidade.removerEntidades();
 	}
 
 	/**
-	 * Move as entidades no mapa
+	 * Atualiza as entidades no mapa
 	 */
-	private void moverEntidades() {
+	private void atualizarEntidades() {
 		Entidade entidade;
 		int velocidadeMax;
 		int taxa = 7, taxaAux;
@@ -221,30 +223,92 @@ public class Painel extends Canvas implements Runnable {
 							entidade);
 				}
 			}
+			if (entidade.especime.massa == 100) {
+				// FIXME Testar reprodução das bacterias
+				System.out.println("ID " + id + " reproduziu");
+				marcarEntidade(id, false);
+				entidade.especime.massa = 50;
+			} else {
+				// Consome a massa da entidade conforme o tempo passa
+				if (tempo % 107 == 0) entidade.especime.massa--;
+				if (entidade.especime.massa == 0) {
+					System.out.println("ID " + id + " morreu de fome");
+					marcarEntidade(id, true);
+				}
+			}
 		}
 	}
 
 	/**
-	 * Atualiza as entidades
+	 * Cria as entidades que foram guardadas no contDaEntidade
 	 */
-	private void atualizarEntidades() {
-		Especime especime;
-		for (int id : contDaEntidade.obterTodasEntidadesComOComponente(Especime.class)) {
-			especime = contDaEntidade.obterComponente(id, Especime.class);
-			if (especime.massa == 100) {
-				// TODO Implementar reprodução das bacterias
-				System.out.println("ID " + id+" reproduziu");
-				especime.massa = 50;
-			} else {
-				// Consome a massa da entidade conforme o tempo passa
-				if (tempo % 107 == 0) especime.massa--;
-				if (especime.massa == 0) {
-					System.out.println("ID " + id+" morreu de fome");
-					if (contDoJogador.obterID() == id) ehContinuavel = false;
-					posicoesDasEnt.remove(id);
-					contDaEntidade.marcarEntidades(id);
-				}
+	private void criarEntidades() {
+		Entidade entidade;
+		for (int id : contDaEntidade.idsParaClonar) {
+			contAuxDaEnt.configurarEntidade(id, contDaEntidade.obterComponentes(id));
+			entidade = contAuxDaEnt.obterEntidade();
+			criarEntidade(entidade);
+		}
+	}
+
+	/**
+	 * Cria uma nova entidade dada uma entidade base
+	 */
+	private void criarEntidade(Entidade entidade) {
+		int id = contDaEntidade.criarEntidade(), x, y, sinal;
+		Vetor2i vetor, vetorAux = null;
+		Posicao posicao;
+		Sprites sprites;
+		contDaEntidade.adicionarComponente(id, new Especime(entidade.especime.especie));
+		// Escolhe uma posição válida ao redor da entidade
+		vetor = entidade.posicao.obterVetor();
+		for (int i = 0; i < 2; i++) {
+			sinal = (int) Math.pow((-1), (i + 1));
+			for (int j = 0; j < 2; j++) {
+				x = vetor.x + (j % 2) * sinal;
+				y = vetor.y + (1 - (j % 2)) * sinal;
+				vetorAux = obterVetorValido(x, y);
+				if (vetorAux != null) break;
 			}
+			if (vetorAux != null) break;
+		}
+		posicao = new Posicao(vetorAux);
+		posicoesDasEnt.put(entidade.id, posicao);
+		contDaEntidade.adicionarComponente(id, posicao);
+		contDaEntidade.adicionarComponente(id, new Velocidade());
+		sprites = new Sprites(contDaEntidade.obterComponente(entidade.id, Sprites.class));
+		contDaEntidade.adicionarComponente(id, sprites);
+		contDaEntidade.adicionarComponente(id, new EstadoDaIA());
+	}
+
+	/**
+	 * Obtém um vetor válido
+	 * 
+	 * @param x
+	 * @param y
+	 * @return Vetor2i
+	 */
+	private Vetor2i obterVetorValido(int x, int y) {
+		Vetor2i vetorAux = null;
+		if (!(x < 0 || x > mapa.largura - 1) && !(y < 0 || y > mapa.altura - 1))
+			if (!mapa.obterBloco(x, y).solido) vetorAux = new Vetor2i(x, y);
+		return vetorAux;
+	}
+
+	/**
+	 * Marca a entidade para adição ou remoção
+	 * 
+	 * @param id
+	 * @param remover
+	 * @return boolean
+	 */
+	private boolean marcarEntidade(int id, boolean remover) {
+		if (remover) {
+			if (contDoJogador.obterID() == id) ehContinuavel = false;
+			posicoesDasEnt.remove(id);
+			return contDaEntidade.marcarEntidades(id, true);
+		} else {
+			return contDaEntidade.marcarEntidades(id, false);
 		}
 	}
 
@@ -261,14 +325,10 @@ public class Painel extends Canvas implements Runnable {
 		if (especimeAlvo == null) return true;
 		if (especime.massa >= especimeAlvo.massa) {
 			especime.massa = juntarMassa(especime.massa, especimeAlvo.massa);
-			if (contDoJogador.obterID() == entidadeAlvo) ehContinuavel = false;
-			posicoesDasEnt.remove(entidadeAlvo);
-			return contDaEntidade.marcarEntidades(entidadeAlvo);
+			return marcarEntidade(entidadeAlvo, true);
 		} else {
 			especimeAlvo.massa = juntarMassa(especimeAlvo.massa, especime.massa);
-			if (contDoJogador.obterID() == entidade.id) ehContinuavel = false;
-			posicoesDasEnt.remove(entidade.id);
-			contDaEntidade.marcarEntidades(entidade.id);
+			marcarEntidade(entidade.id, true);
 		}
 		return false;
 	}
@@ -451,6 +511,7 @@ public class Painel extends Canvas implements Runnable {
 		System.out.println("Mapeado as entidades:");
 		Coordenada coordenada = new Coordenada(mapa);
 		Posicao posicao;
+		Especie especie;
 		for (int entidade : contDaEntidade.obterTodasEntidadesComOComponente(Especime.class)) {
 			if (entidade == contDoJogador.obterID())
 				coordenada.configurarCoordenada(mapa.largura / 2, mapa.altura / 2 - 1);
@@ -461,12 +522,11 @@ public class Painel extends Canvas implements Runnable {
 			System.out.print(coordenada + " ");
 			posicao = new Posicao(coordenada);
 			posicoesDasEnt.put(entidade, posicao);
-			contDaEntidade.adicionarComponente(entidade, (Componente) posicao);
-			contDaEntidade.adicionarComponente(entidade, (Componente) new Velocidade());
-			Especie especie = contDaEntidade.obterComponente(entidade, Especime.class).especie;
-			contDaEntidade.adicionarComponente(entidade, (Componente) new Sprites(especie.tipo.forma, gerarCor()));
-			if (entidade != contDoJogador.obterID())
-				contDaEntidade.adicionarComponente(entidade, (Componente) new EstadoDaIA());
+			contDaEntidade.adicionarComponente(entidade, posicao);
+			contDaEntidade.adicionarComponente(entidade, new Velocidade());
+			especie = contDaEntidade.obterComponente(entidade, Especime.class).especie;
+			contDaEntidade.adicionarComponente(entidade, new Sprites(especie.tipo.forma, gerarCor()));
+			if (entidade != contDoJogador.obterID()) contDaEntidade.adicionarComponente(entidade, new EstadoDaIA());
 		}
 		System.out.println();
 	}

@@ -246,8 +246,27 @@ public abstract class Componente {
 	 */
 	public static class Sprites extends Componente {
 		private SpritesAnimados spritesAnim;
-
 		private int cor = 0xffffffff;
+
+		/**
+		 * Cria o objeto Sprites com os dados de outro objeto Sprites
+		 * 
+		 * @param sprites
+		 */
+		public Sprites(Sprites sprites) {
+			this.spritesAnim = sprites.spritesAnim;
+			this.cor = sprites.cor;
+		}
+		
+		/**
+		 * Cria o objeto Sprites com os sprites da forma da Entidade e com a cor
+		 * 
+		 * @param sprites
+		 */
+		public Sprites(Forma forma, int cor) {
+			this(forma);
+			this.cor = cor;
+		}
 
 		/**
 		 * Cria o objeto Sprites com os sprites da forma da Entidade
@@ -267,17 +286,7 @@ public abstract class Componente {
 				break;
 			}
 		}
-
-		/**
-		 * Cria o objeto Sprites com os sprites da forma da Entidade e com a cor
-		 * 
-		 * @param sprites
-		 */
-		public Sprites(Forma forma, int cor) {
-			this(forma);
-			this.cor = cor;
-		}
-
+		
 		/**
 		 * Obtém a sprite dada a direção e a velocidade
 		 * 

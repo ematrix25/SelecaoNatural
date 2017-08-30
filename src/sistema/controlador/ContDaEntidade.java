@@ -16,7 +16,7 @@ import componente.Componente;
  */
 public class ContDaEntidade {
 	public int menorIDNaoAssociada = 1;
-	public List<Integer> entidades, idsParaRemocao;
+	public List<Integer> entidades, idsParaClonar, idsParaRemocao;
 	public HashMap<Class<?>, HashMap<Integer, ? extends Componente>> baseDeComponentes;
 
 	/**
@@ -24,6 +24,7 @@ public class ContDaEntidade {
 	 */
 	public ContDaEntidade() {
 		entidades = new LinkedList<Integer>();
+		idsParaClonar = new ArrayList<Integer>();
 		idsParaRemocao = new ArrayList<Integer>();
 		baseDeComponentes = new HashMap<Class<?>, HashMap<Integer, ? extends Componente>>();
 	}
@@ -51,13 +52,15 @@ public class ContDaEntidade {
 	}
 
 	/**
-	 * Marca uma entidade para posterior remoção
+	 * Marca uma entidade para posterior criação ou remoção
 	 * 
 	 * @param ID
+	 * @param remover
 	 * @return boolean
 	 */
-	public boolean marcarEntidades(Integer ID) {
-		return idsParaRemocao.add(ID);
+	public boolean marcarEntidades(Integer ID, boolean remover) {
+		if (remover) return idsParaRemocao.add(ID);
+		else return idsParaClonar.add(ID);
 	}
 
 	/**
