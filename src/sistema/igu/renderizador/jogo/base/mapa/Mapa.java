@@ -193,6 +193,17 @@ public class Mapa {
 	}
 
 	/**
+	 * Configura a cor do bloco do mapa para uma cor de água
+	 * 
+	 * @param x
+	 * @param y
+	 */
+	public void configurarCorDoBloco(int x, int y) {
+		int cor = coresDeAgua[new Random().nextInt(coresDeAgua.length)];
+		blocos[x + y * largura] = cor;
+	}
+	
+	/**
 	 * Configura a cor do bloco do mapa
 	 * 
 	 * @param x

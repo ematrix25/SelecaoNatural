@@ -191,11 +191,10 @@ public class Painel extends Canvas implements Runnable {
 		pontuacao = contDoJogador.obterPontuacao();
 		
 		if (tempo % 101 == 0) contDoMapa.atualizarBlocos();
-		// FIXME Implementar ingestão dos compostos orgânicos
-		// TODO Implementar gasto de massa da entidade
-		// TODO Implementar reprodução das bacterias
 		
 		moverEntidades();
+		// TODO Implementar gasto de massa da entidade
+		// TODO Implementar reprodução das bacterias
 
 		// Remove todas as entidades marcadas na movimentação
 		contDaEntidade.removerEntidades();

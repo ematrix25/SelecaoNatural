@@ -49,9 +49,10 @@ public class ContDoMapa {
 	 * Atualiza os blocos do mapa
 	 */
 	public void atualizarBlocos() {
+		int cor;
 		for (int x = 0; x < mapa.largura; x++) {
 			for (int y = 0; y < mapa.altura; y++) {
-				int cor = mapa.obterCorDoBloco(x, y);
+				cor = mapa.obterCorDoBloco(x, y);
 				if (cor <= 0xFF00 && cor > 0xFF) {
 					if (y > 0) atualizarBloco(x, y - 1, cor);
 					if (x > 0) atualizarBloco(x - 1, y, cor);
@@ -164,6 +165,9 @@ public class ContDoMapa {
 
 			// Remove a próxima posição alcançada e parte para a póxima posição
 			if (posicaoAux.equals(proxPos)) entidade.posicao.proxPos = proxPos.proxPos;
+			
+			// Ingere os compostos orgânicos
+			comerCompostoOrganico(entidade);
 			return true;
 		}
 		return false;
@@ -205,5 +209,25 @@ public class ContDoMapa {
 			if (mapa.obterBloco(xAux, yAux).solido) colidiu = true;
 		}
 		return colidiu;
+	}
+
+	/**
+	 * Come os compostos orgânicos caso esteja próximo
+	 * 
+	 * @param entidade
+	 */
+	private void comerCompostoOrganico(Entidade entidade) {
+		int xAux, yAux, cor, massa;
+		for (int lado = 0; lado < 4; lado++) {
+			xAux = (entidade.posicao.x + lado % 2 * (Bloco.TAMANHO - 1)) / Bloco.TAMANHO;
+			yAux = (entidade.posicao.y + lado / 2 * (Bloco.TAMANHO - 1)) / Bloco.TAMANHO;
+			cor = mapa.obterCorDoBloco(xAux, yAux);
+			if (cor <= 0xFF00 && cor > 0xFF) {
+				mapa.configurarCorDoBloco(xAux, yAux);
+				massa = entidade.especime.massa;
+				if (massa > 95) entidade.especime.massa = 100;
+				else entidade.especime.massa += 5;
+			}
+		}
 	}
 }
