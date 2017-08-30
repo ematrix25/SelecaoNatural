@@ -225,8 +225,8 @@ public class ContDoMapa {
 			if (cor <= 0xFF00 && cor > 0xFF) {
 				mapa.configurarCorDoBloco(xAux, yAux);
 				massa = entidade.especime.massa;
-				if (massa > 95) entidade.especime.massa = 100;
-				else entidade.especime.massa += 5;
+				if (massa > 99) entidade.especime.massa = 100;
+				else entidade.especime.massa++;
 			}
 		}
 	}

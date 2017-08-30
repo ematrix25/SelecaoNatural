@@ -189,12 +189,11 @@ public class Painel extends Canvas implements Runnable {
 		massaCelular = contDaEntidade.obterComponente(jogador, Especime.class).massa;
 		qtdCelulas = contDoAmbiente.obterEspecimesPorEspecime(jogador).size();
 		pontuacao = contDoJogador.obterPontuacao();
-		
+
 		if (tempo % 101 == 0) contDoMapa.atualizarBlocos();
-		
+
 		moverEntidades();
-		// TODO Implementar gasto de massa da entidade
-		// TODO Implementar reprodução das bacterias
+		atualizarEntidades();
 
 		// Remove todas as entidades marcadas na movimentação
 		contDaEntidade.removerEntidades();
@@ -220,6 +219,30 @@ public class Painel extends Canvas implements Runnable {
 					if (!(posicoesDasEnt.size() < contDaEntidade.entidades.size())) contDaIA.configurarIA(entidade);
 					contDoMapa.moverEntidade(contDaIA.obterMovimentacao(velocidadeMax), contDaIA.obterDirecao(),
 							entidade);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Atualiza as entidades
+	 */
+	private void atualizarEntidades() {
+		Especime especime;
+		for (int id : contDaEntidade.obterTodasEntidadesComOComponente(Especime.class)) {
+			especime = contDaEntidade.obterComponente(id, Especime.class);
+			if (especime.massa == 100) {
+				// TODO Implementar reprodução das bacterias
+				System.out.println("ID " + id+" reproduziu");
+				especime.massa = 50;
+			} else {
+				// Consome a massa da entidade conforme o tempo passa
+				if (tempo % 107 == 0) especime.massa--;
+				if (especime.massa == 0) {
+					System.out.println("ID " + id+" morreu de fome");
+					if (contDoJogador.obterID() == id) ehContinuavel = false;
+					posicoesDasEnt.remove(id);
+					contDaEntidade.marcarEntidades(id);
 				}
 			}
 		}
