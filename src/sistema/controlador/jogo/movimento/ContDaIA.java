@@ -113,6 +113,9 @@ public class ContDaIA extends ContDaEntMovel {
 		for (int idAux : posicoesDasEnt.keySet()) {
 			if (id == idAux) continue;
 			posicaoAux = posicoesDasEnt.get(idAux);
+			if (posicaoAux == null) {
+				System.out.println();
+			}
 			dx = Math.abs(posicaoAux.x - posicao.x);
 			dy = Math.abs(posicaoAux.y - posicao.y);
 			if (dx < ALCANCE && dy < ALCANCE) {

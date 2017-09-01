@@ -76,12 +76,9 @@ public class Painel extends Canvas implements Runnable {
 	public HashMap<Integer, Posicao> posicoesDasEnt;
 
 	public boolean ehContinuavel = false;
-
-	public int massaCelular = 0, qtdCelulas = 0, pontuacao = 0;
-	public final float MASSA_CELULAR_MAX = 100.0f;
+	public int massaCelular, qtdCelulas, pontuacao;
 
 	public int contDeSegundos = 0;
-
 	public static int tempo = 0;
 
 	/**
@@ -158,6 +155,9 @@ public class Painel extends Canvas implements Runnable {
 				atualizacoes = 0;
 				quadros = 0;
 
+				// TODO Implementar avanço para o próximo ambiente caso passado
+				// tempo ou limite de entidades
+
 				// Conta os segundos para abrir o painel do questionarios
 				if (telaAtiva == 'S' || telaAtiva == 'J') {
 					if (!ehContinuavel) {
@@ -224,10 +224,11 @@ public class Painel extends Canvas implements Runnable {
 				}
 			}
 			if (entidade.especime.massa == 100) {
-				// FIXME Testar reprodução das bacterias
+				// Reproduz as bacterias
 				System.out.println("ID " + id + " reproduziu");
 				marcarEntidade(id, false);
 				entidade.especime.massa = 50;
+				if (id == contDoJogador.obterID()) contDoJogador.incrementarPontuacao(10);
 			} else {
 				// Consome a massa da entidade conforme o tempo passa
 				if (tempo % 107 == 0) entidade.especime.massa--;
@@ -249,17 +250,22 @@ public class Painel extends Canvas implements Runnable {
 			entidade = contAuxDaEnt.obterEntidade();
 			criarEntidade(entidade);
 		}
+		contDaEntidade.idsParaClonar.clear();
 	}
 
 	/**
 	 * Cria uma nova entidade dada uma entidade base
+	 *
+	 * @param entidade
 	 */
 	private void criarEntidade(Entidade entidade) {
-		int id = contDaEntidade.criarEntidade(), x, y, sinal;
+		int id, x, y, sinal;
 		Vetor2i vetor, vetorAux = null;
 		Posicao posicao;
 		Sprites sprites;
+		id = contDaEntidade.criarEntidade();
 		contDaEntidade.adicionarComponente(id, new Especime(entidade.especime.especie));
+		contDoAmbiente.atualizarEspecie(id, true, entidade.especime.especie.obterCodigo());
 		// Escolhe uma posição válida ao redor da entidade
 		vetor = entidade.posicao.obterVetor();
 		for (int i = 0; i < 2; i++) {
@@ -304,8 +310,16 @@ public class Painel extends Canvas implements Runnable {
 	 */
 	private boolean marcarEntidade(int id, boolean remover) {
 		if (remover) {
-			if (contDoJogador.obterID() == id) ehContinuavel = false;
+			if (contDoJogador.obterID() == id) {
+				if (qtdCelulas > 1) {
+					// FIXME Testar a troca para outro espécime vivo da espécie
+					for (int idAux : contDoAmbiente.obterEspecimesPorEspecime(id)) {
+						if (idAux != id) contDoJogador.configurarID(idAux);
+					}
+				} else ehContinuavel = false;
+			}
 			posicoesDasEnt.remove(id);
+			contDoAmbiente.atualizarEspecie(id, false, contDoAmbiente.obterEspecie(id));
 			return contDaEntidade.marcarEntidades(id, true);
 		} else {
 			return contDaEntidade.marcarEntidades(id, false);
@@ -323,6 +337,8 @@ public class Painel extends Canvas implements Runnable {
 		Especime especimeAlvo = contDaEntidade.obterComponente(entidadeAlvo, Especime.class);
 		Especime especime = entidade.especime;
 		if (especimeAlvo == null) return true;
+		// Evita que haja canibalismo
+		if (contDoAmbiente.obterEspecie(entidade.id) == contDoAmbiente.obterEspecie(entidadeAlvo)) return false;
 		if (especime.massa >= especimeAlvo.massa) {
 			especime.massa = juntarMassa(especime.massa, especimeAlvo.massa);
 			return marcarEntidade(entidadeAlvo, true);
@@ -474,6 +490,9 @@ public class Painel extends Canvas implements Runnable {
 	 * Inicia o jogo
 	 */
 	private void iniciarJogo() {
+		massaCelular = 0;
+		qtdCelulas = 0;
+		pontuacao = 0;
 		contDaEntidade = new ContDaEntidade();
 		contDoAmbiente = new ContDoAmbiente();
 		gerarAmbiente();

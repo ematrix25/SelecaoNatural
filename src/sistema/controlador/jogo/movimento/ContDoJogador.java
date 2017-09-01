@@ -23,12 +23,12 @@ public class ContDoJogador extends ContDaEntMovel {
 	}
 
 	/**
-	 * Configura a pontuação do jogador
+	 * Incrementa a pontuação do jogador
 	 * 
 	 * @param pontuacao
 	 */
-	public void configurarPontuacao(int pontuacao) {
-		this.pontuacao = pontuacao;
+	public void incrementarPontuacao(int pontuacao) {
+		this.pontuacao += pontuacao;
 	}
 
 	/**

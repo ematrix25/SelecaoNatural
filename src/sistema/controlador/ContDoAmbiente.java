@@ -102,6 +102,21 @@ public class ContDoAmbiente {
 	}
 
 	/**
+	 * Cria uma Especie com Forma
+	 * 
+	 * @param ID
+	 * @param forma
+	 * @param tempMax
+	 * @param tempMin
+	 * @return Especie
+	 */
+	private Especie criarEspecie(int ID, Forma forma, int tempMax, int tempMin) {
+		Especie especie = new Especie(forma, gerarTempAleatoria(true, tempMax), gerarTempAleatoria(false, tempMin));
+		guardarEspecie(especie.obterCodigo(), ID);
+		return especie;
+	}
+
+	/**
 	 * Cria uma Especie aleatoria
 	 * 
 	 * @param ID
@@ -115,21 +130,6 @@ public class ContDoAmbiente {
 			especie = new Especie(gerarTempAleatoria(true, tempMax), gerarTempAleatoria(false, tempMin));
 			if (guardarEspecie(especie.obterCodigo(), ID)) break;
 		}
-		return especie;
-	}
-
-	/**
-	 * Cria uma Especie com Forma
-	 * 
-	 * @param ID
-	 * @param forma
-	 * @param tempMax
-	 * @param tempMin
-	 * @return Especie
-	 */
-	private Especie criarEspecie(int ID, Forma forma, int tempMax, int tempMin) {
-		Especie especie = new Especie(forma, gerarTempAleatoria(true, tempMax), gerarTempAleatoria(false, tempMin));
-		guardarEspecie(especie.obterCodigo(), ID);
 		return especie;
 	}
 
@@ -149,7 +149,7 @@ public class ContDoAmbiente {
 	}
 
 	/**
-	 * Obte a Especie do Especime do Ambiente
+	 * Obtém a Especie do Especime do Ambiente
 	 * 
 	 * @param especime
 	 * @return Integer
@@ -196,7 +196,8 @@ public class ContDoAmbiente {
 		} else {
 			especimes.remove(new Integer(ID));
 		}
-		ambiente.especies.replace(especie, especimes);
+		if(especimes.isEmpty()) ambiente.especies.remove(especie);
+		else ambiente.especies.replace(especie, especimes);
 	}
 
 	/**
