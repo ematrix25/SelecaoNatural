@@ -1,6 +1,5 @@
 package sistema.controlador.jogo;
 
-import java.util.HashMap;
 import java.util.Random;
 
 import componente.Componente.Posicao;
@@ -22,8 +21,6 @@ public class ContDoMapa {
 	private Mapa mapa;
 	private int entidadeAlvo = -1;
 
-	public HashMap<Integer, Posicao> posicoesDasEnt;
-
 	/**
 	 * Cria o objeto controlador do mapa dado o mapa
 	 * 
@@ -33,7 +30,6 @@ public class ContDoMapa {
 	public ContDoMapa(Painel painel, Mapa mapa) {
 		this.painel = painel;
 		this.mapa = mapa;
-		posicoesDasEnt = painel.posicoesDasEnt;
 	}
 
 	/**
@@ -121,7 +117,7 @@ public class ContDoMapa {
 				if (!mover(entidade, configurarDiferencial(novaVelocidade))) break;
 			}
 		}
-		posicoesDasEnt.put(entidade.id, entidade.posicao);
+		painel.posicoesDasEnt.put(entidade.id, entidade.posicao);
 		novaVelocidade.valor = valor;
 		return novaVelocidade;
 	}
@@ -182,9 +178,9 @@ public class ContDoMapa {
 	 */
 	private boolean conflita(int ID, Posicao posicaoAux) {
 		Posicao posicao;
-		for (int id : posicoesDasEnt.keySet()) {
+		for (int id : painel.posicoesDasEnt.keySet()) {
 			if (id == ID) continue;
-			posicao = posicoesDasEnt.get(id);
+			posicao = painel.posicoesDasEnt.get(id);
 			if (Math.abs(posicao.x - posicaoAux.x) < Bloco.TAMANHO
 					&& Math.abs(posicao.y - posicaoAux.y) < Bloco.TAMANHO) {
 				entidadeAlvo = id;

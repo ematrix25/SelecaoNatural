@@ -3,7 +3,6 @@ package sistema.controlador.jogo.movimento;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -24,11 +23,10 @@ import sistema.utilitario.arquivo.Arquivo.ArquivoDeRegistro;
  * @author Emanuel
  */
 public class ContDaIA extends ContDaEntMovel {
+	private Painel painel;
 	private Random aleatorio;
 	private GestorDeCaminho gestorDeCaminho;
 	private Estado estado;
-
-	private HashMap<Integer, Posicao> posicoesDasEnt;
 
 	private final int ALCANCE = 150;
 
@@ -42,7 +40,7 @@ public class ContDaIA extends ContDaEntMovel {
 		aleatorio = new Random();
 		gestorDeCaminho = new GestorDeCaminho(mapa);
 		estado = Estado.Parado;
-		posicoesDasEnt = painel.posicoesDasEnt;
+		this.painel = painel;
 	}
 
 	/**
@@ -64,7 +62,7 @@ public class ContDaIA extends ContDaEntMovel {
 	 * @return boolean
 	 */
 	private boolean configEstado(Entidade entidade) {
-		Posicao posicao = posicoesDasEnt.get(id);
+		Posicao posicao = painel.posicoesDasEnt.get(id);
 		int idAlvoAnt = entidade.estadoDaIA.idAlvo;
 		int idAlvo = obterAlvo(idAlvoAnt);
 		boolean modificaProxPos = false;
@@ -100,19 +98,19 @@ public class ContDaIA extends ContDaEntMovel {
 	 * @return int
 	 */
 	private int obterAlvo(int idAlvoAnt) {
-		Posicao posicao = posicoesDasEnt.get(id), posicaoAux;
+		Posicao posicao = painel.posicoesDasEnt.get(id), posicaoAux;
 		int dx, dy, idAlvo = -1;
 		double distancia = ALCANCE * 2, distanciaAux;
 		if (idAlvoAnt != -1) {
-			posicaoAux = posicoesDasEnt.get(idAlvoAnt);
+			posicaoAux = painel.posicoesDasEnt.get(idAlvoAnt);
 			if (posicaoAux != null) {
 				distancia = gestorDeCaminho.obterDistancia(posicao, posicaoAux);
 				if (distancia < ALCANCE) idAlvo = idAlvoAnt;
 			}
 		}
-		for (int idAux : posicoesDasEnt.keySet()) {
-			if (id == idAux) continue;
-			posicaoAux = posicoesDasEnt.get(idAux);
+		for (int idAux : painel.posicoesDasEnt.keySet()) {
+			if (id == idAux || painel.ehDaMesmaEspecie(id, idAux)) continue;
+			posicaoAux = painel.posicoesDasEnt.get(idAux);
 			if (posicaoAux == null) {
 				System.out.println();
 			}
@@ -141,7 +139,7 @@ public class ContDaIA extends ContDaEntMovel {
 		if (idAlvo == -1) proxPos = gestorDeCaminho.obterProxPos(posicao, null, ALCANCE);
 		else {
 			System.out.print(", tem como alvo " + idAlvo);
-			posicaoAlvo = posicoesDasEnt.get(idAlvo);
+			posicaoAlvo = painel.posicoesDasEnt.get(idAlvo);
 			System.out.print(" em " + posicaoAlvo);
 			// XXX Verificar porque não desvia das pedras
 			if (estado == Estado.Fugindo) proxPos = gestorDeCaminho.obterProxPos(posicao, posicaoAlvo, ALCANCE);
@@ -190,7 +188,8 @@ public class ContDaIA extends ContDaEntMovel {
 	 * @return Direcao
 	 */
 	private Direcao obterDirDaDistancia(boolean aumenta) {
-		Posicao posicao = posicoesDasEnt.get(id), posDestino = posicao.proxPos;
+		Posicao posicao = painel.posicoesDasEnt.get(id), posDestino = null;
+		if (posicao != null) posDestino = posicao.proxPos;
 		if (posDestino == null) return null;
 		int dx = posDestino.x - posicao.x;
 		int dy = posDestino.y - posicao.y;

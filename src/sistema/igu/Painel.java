@@ -184,19 +184,20 @@ public class Painel extends Canvas implements Runnable {
 	 * Atualiza todos os dados do jogo
 	 */
 	private void atualizar() {
+		int jogador;
 		Teclado.atualizar();
 		Mouse.atualizar(getWidth(), getHeight());
-		int jogador = contDoJogador.obterID();
-		massaCelular = contDaEntidade.obterComponente(jogador, Especime.class).massa;
-		qtdCelulas = contDoAmbiente.obterEspecimesPorEspecime(jogador).size();
-		pontuacao = contDoJogador.obterPontuacao();
-
+		jogador = contDoJogador.obterID();
+		if (contDoAmbiente.obterEspecie(jogador) != null) {
+			massaCelular = contDaEntidade.obterComponente(jogador, Especime.class).massa;
+			qtdCelulas = contDoAmbiente.obterEspecimesPorEspecime(jogador).size();
+			pontuacao = contDoJogador.obterPontuacao();
+		}
 		if (tempo % 101 == 0) contDoMapa.atualizarBlocos();
 		atualizarEntidades();
 
 		// Cria as entidades marcadas no contDaEntidade
 		criarEntidades();
-
 		// Remove todas as entidades marcadas na movimentação
 		contDaEntidade.removerEntidades();
 	}
@@ -309,21 +310,29 @@ public class Painel extends Canvas implements Runnable {
 	 * @return boolean
 	 */
 	private boolean marcarEntidade(int id, boolean remover) {
+		int especie = 0;
 		if (remover) {
 			if (contDoJogador.obterID() == id) {
 				if (qtdCelulas > 1) {
-					// FIXME Testar a troca para outro espécime vivo da espécie
+					// FIXME Testar movimento após troca para outro espécime vivo da espécie
 					for (int idAux : contDoAmbiente.obterEspecimesPorEspecime(id)) {
-						if (idAux != id) contDoJogador.configurarID(idAux);
+						if (idAux != id) {
+							contDoJogador.configurarID(idAux);
+							break;
+						}
 					}
 				} else ehContinuavel = false;
 			}
-			posicoesDasEnt.remove(id);
-			contDoAmbiente.atualizarEspecie(id, false, contDoAmbiente.obterEspecie(id));
-			return contDaEntidade.marcarEntidades(id, true);
+			if (posicoesDasEnt.containsKey(id)) {
+				posicoesDasEnt.remove(id);
+				especie = contDoAmbiente.obterEspecie(id);
+				contDoAmbiente.atualizarEspecie(id, false, especie);
+				return contDaEntidade.marcarEntidades(id, true);
+			}
 		} else {
 			return contDaEntidade.marcarEntidades(id, false);
 		}
+		return false;
 	}
 
 	/**
@@ -558,5 +567,16 @@ public class Painel extends Canvas implements Runnable {
 		int verde = new Random().nextInt(0x3f);
 		int azul = new Random().nextInt(0x3f);
 		return 0xff000000 + vermelho * 10000 + verde * 100 + azul;
+	}
+
+	/**
+	 * Verifica se as ids são da mesma especie
+	 * 
+	 * @param id
+	 * @param idAlvo
+	 * @return boolean
+	 */
+	public boolean ehDaMesmaEspecie(int id, int idAlvo) {
+		return contDoAmbiente.obterEspecie(id) == contDoAmbiente.obterEspecie(idAlvo);
 	}
 }
