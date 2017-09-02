@@ -155,7 +155,7 @@ public class Painel extends Canvas implements Runnable {
 				atualizacoes = 0;
 				quadros = 0;
 
-				// TODO Implementar avanço para o próximo ambiente caso passado
+				// FIXME Implementar avanço para o próximo ambiente caso passado
 				// tempo ou limite de entidades
 
 				// Conta os segundos para abrir o painel do questionarios
@@ -314,9 +314,11 @@ public class Painel extends Canvas implements Runnable {
 		if (remover) {
 			if (contDoJogador.obterID() == id) {
 				if (qtdCelulas > 1) {
-					// FIXME Testar movimento após troca para outro espécime vivo da espécie
+					// Troca para outro espécime da espécie do jogador
 					for (int idAux : contDoAmbiente.obterEspecimesPorEspecime(id)) {
 						if (idAux != id) {
+							posicoesDasEnt.get(idAux).proxPos = null;
+							contDaEntidade.obterComponente(idAux, Posicao.class).proxPos = null;
 							contDoJogador.configurarID(idAux);
 							break;
 						}
@@ -346,8 +348,7 @@ public class Painel extends Canvas implements Runnable {
 		Especime especimeAlvo = contDaEntidade.obterComponente(entidadeAlvo, Especime.class);
 		Especime especime = entidade.especime;
 		if (especimeAlvo == null) return true;
-		// Evita que haja canibalismo
-		if (contDoAmbiente.obterEspecie(entidade.id) == contDoAmbiente.obterEspecie(entidadeAlvo)) return false;
+		if (contDoAmbiente.obterEspecie(entidade.id) == contDoAmbiente.obterEspecie(entidadeAlvo)) return true;
 		if (especime.massa >= especimeAlvo.massa) {
 			especime.massa = juntarMassa(especime.massa, especimeAlvo.massa);
 			return marcarEntidade(entidadeAlvo, true);
