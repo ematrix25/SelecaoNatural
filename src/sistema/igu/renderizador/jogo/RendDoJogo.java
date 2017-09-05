@@ -10,6 +10,7 @@ import componente.Componente.Sprites;
 import componente.Componente.Velocidade;
 import componente.Especime;
 import sistema.controlador.ContDaEntidade;
+import sistema.controlador.ContDoAmbiente;
 import sistema.controlador.jogo.ContDoMapa;
 import sistema.controlador.jogo.movimento.ContDoJogador;
 import sistema.igu.Painel;
@@ -31,9 +32,8 @@ public class RendDoJogo extends Renderizador {
 	private Tela tela;
 
 	private ContDaEntidade contDaEntidade;
-
+	private ContDoAmbiente contDoAmbiente;
 	private ContDoMapa contDoMapa;
-
 	private ContDoJogador contDoJogador;
 
 	/**
@@ -47,10 +47,11 @@ public class RendDoJogo extends Renderizador {
 	 * @param contDoJogador
 	 * @param contDaIA
 	 */
-	public RendDoJogo(Painel painel, ContDaEntidade contDaEntidade, ContDoMapa contDoMapa,
-			ContDoJogador contDoJogador) {
+	public RendDoJogo(Painel painel, ContDaEntidade contDaEntidade, ContDoAmbiente contDoAmbiente,
+			ContDoMapa contDoMapa, ContDoJogador contDoJogador) {
 		super(painel);
 		this.contDaEntidade = contDaEntidade;
+		this.contDoAmbiente = contDoAmbiente;
 		this.contDoMapa = contDoMapa;
 		this.contDoJogador = contDoJogador;
 
@@ -158,6 +159,12 @@ public class RendDoJogo extends Renderizador {
 				texto = "ID " + i + ": " + posicao + " \t-> " + posicao.proxPos;
 				graficos.drawString(texto, 20, (60 + 20 * i));
 			}
+			texto = "Tempo: " + Painel.tempo;
+			graficos.drawString(texto, painel.getWidth() - 100, 40);
+			texto = "Dificuldade: " + contDoAmbiente.dificuldade;
+			graficos.drawString(texto, painel.getWidth() - 100, 60);
+			texto = "Temperatura: " + contDoAmbiente.ambiente.obterTemp();
+			graficos.drawString(texto, painel.getWidth() - 120, 80);
 		}
 	}
 

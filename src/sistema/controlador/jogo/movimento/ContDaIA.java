@@ -66,6 +66,7 @@ public class ContDaIA extends ContDaEntMovel {
 		int idAlvoAnt = entidade.estadoDaIA.idAlvo;
 		int idAlvo = obterAlvo(idAlvoAnt);
 		boolean modificaProxPos = false;
+		if (posicao == null) return false;
 		estado = entidade.estadoDaIA.estado;
 		if (idAlvo == -1) {
 			// Parado || Vagando
@@ -101,6 +102,7 @@ public class ContDaIA extends ContDaEntMovel {
 		Posicao posicao = painel.posicoesDasEnt.get(id), posicaoAux;
 		int dx, dy, idAlvo = -1;
 		double distancia = ALCANCE * 2, distanciaAux;
+		if (posicao == null) return idAlvo;
 		if (idAlvoAnt != -1) {
 			posicaoAux = painel.posicoesDasEnt.get(idAlvoAnt);
 			if (posicaoAux != null) {
@@ -111,9 +113,7 @@ public class ContDaIA extends ContDaEntMovel {
 		for (int idAux : painel.posicoesDasEnt.keySet()) {
 			if (id == idAux || painel.ehDaMesmaEspecie(id, idAux)) continue;
 			posicaoAux = painel.posicoesDasEnt.get(idAux);
-			if (posicaoAux == null) {
-				System.out.println();
-			}
+			if (posicaoAux == null) continue;
 			dx = Math.abs(posicaoAux.x - posicao.x);
 			dy = Math.abs(posicaoAux.y - posicao.y);
 			if (dx < ALCANCE && dy < ALCANCE) {

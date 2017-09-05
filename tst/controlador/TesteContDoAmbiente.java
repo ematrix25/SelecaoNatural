@@ -39,7 +39,7 @@ public class TesteContDoAmbiente {
 	 */
 	@Test
 	public void testarCriarAmbiente() {
-		assertTrue(contDoAmbiente.obterAmbiente() != null);
+		assertTrue(contDoAmbiente.ambiente != null);
 	}
 
 	/**
@@ -47,13 +47,13 @@ public class TesteContDoAmbiente {
 	 */
 	@Test
 	public void testarAtualizarAmbiente() {
-		assertTrue(contDoAmbiente.obterAmbiente() != null);
-		int tempMax = contDoAmbiente.obterAmbiente().obterTempMax();
-		int tempMin = contDoAmbiente.obterAmbiente().obterTempMin();
+		assertTrue(contDoAmbiente.ambiente != null);
+		int tempMax = contDoAmbiente.ambiente.obterTempMax();
+		int tempMin = contDoAmbiente.ambiente.obterTempMin();
 		assertTrue(tempMax == 400 && tempMin == 350);
-		contDoAmbiente.atualizarAmbiente(450, 400);
-		tempMax = contDoAmbiente.obterAmbiente().obterTempMax();
-		tempMin = contDoAmbiente.obterAmbiente().obterTempMin();
+		contDoAmbiente.atualizarAmbiente(50);
+		tempMax = contDoAmbiente.ambiente.obterTempMax();
+		tempMin = contDoAmbiente.ambiente.obterTempMin();
 		assertFalse(tempMax == 400 && tempMin == 350);
 	}
 
@@ -62,11 +62,11 @@ public class TesteContDoAmbiente {
 	 */
 	@Test
 	public void testarAtualizarTemp() {
-		assertTrue(contDoAmbiente.obterAmbiente() != null);
-		int temp = contDoAmbiente.obterAmbiente().obterTemp();
+		assertTrue(contDoAmbiente.ambiente != null);
+		int temp = contDoAmbiente.ambiente.obterTemp();
 		assertEquals(temp, 375);
-		contDoAmbiente.atualizarTemp(false, 25);
-		temp = contDoAmbiente.obterAmbiente().obterTemp();
+		contDoAmbiente.atualizarTemp(-25);
+		temp = contDoAmbiente.ambiente.obterTemp();
 		assertEquals(temp, 350);
 	}
 
@@ -89,10 +89,10 @@ public class TesteContDoAmbiente {
 	 */
 	@Test
 	public void testarCriarEspecies() {
-		assertEquals(contDoAmbiente.obterAmbiente().obterQTD(), 0);
+		assertEquals(contDoAmbiente.ambiente.obterQTD(), 0);
 		criarEspecies();
 		assertFalse(contDaEntidade.obterTodasEntidadesComOComponente(Especime.class).isEmpty());
-		assertEquals(contDoAmbiente.obterAmbiente().obterQTD(), 7);
+		assertEquals(contDoAmbiente.ambiente.obterQTD(), 7);
 	}
 
 	/**
@@ -118,13 +118,13 @@ public class TesteContDoAmbiente {
 	@Test
 	public void testarRemoverEspecie() {
 		criarEspecies();
-		assertEquals(contDoAmbiente.obterAmbiente().obterQTD(), 7);
+		assertEquals(contDoAmbiente.ambiente.obterQTD(), 7);
 		for (Integer ID : contDoAmbiente.obterEspecimesPorEspecie(especies[5].obterCodigo())) {
 			contDaEntidade.marcarEntidades(ID, true);
 		}
 		contDaEntidade.removerEntidades();
 		contDoAmbiente.removerEspecie(especies[5].obterCodigo());
 		assertFalse(contDoAmbiente.obterEspecimesPorEspecie(especies[5].obterCodigo()) != null);
-		assertEquals(contDoAmbiente.obterAmbiente().obterQTD(), 6);
+		assertEquals(contDoAmbiente.ambiente.obterQTD(), 6);
 	}
 }

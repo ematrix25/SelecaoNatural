@@ -158,11 +158,8 @@ public class ContDaEntidade {
 	public <T extends Componente> T obterComponente(int ID, Class<T> tipoDeComponente) {
 		if (!entidades.contains(ID)) return null;
 		HashMap<Integer, ? extends Componente> base = baseDeComponentes.get(tipoDeComponente);
-		if (base == null) throw new IllegalArgumentException(
-				"ERRO: Não existem Entidades com essa classe de Componente: " + tipoDeComponente);
+		if (base == null) return null;
 		T componente = tipoDeComponente.cast(base.get(ID));
-		if (componente == null)
-			throw new IllegalArgumentException("ERRO: " + ID + " não possui Componente da classe: " + tipoDeComponente);
 		return componente;
 	}
 

@@ -20,6 +20,7 @@ import sistema.igu.renderizador.Renderizador;
 public class RendDaSelecao extends Renderizador {
 	private ContDaEntidade contDaEntidade;
 	private ContDoAmbiente contDoAmbiente;
+	private int entidades[];
 
 	private int selecao = -1;
 
@@ -46,6 +47,15 @@ public class RendDaSelecao extends Renderizador {
 	}
 
 	/**
+	 * Configura as entidades
+	 * 
+	 * @param entidades
+	 */
+	public void configurarEntidades(int entidades[]) {
+		this.entidades = entidades;
+	}
+
+	/**
 	 * Renderiza a tela de seleção
 	 *
 	 * @see sistema.igu.renderizador.Renderizador#renderizar()
@@ -53,7 +63,7 @@ public class RendDaSelecao extends Renderizador {
 	public BufferedImage renderizar() {
 		carregarGraficos("/imagens/selecao.jpg");
 
-		Ambiente ambiente = contDoAmbiente.obterAmbiente();
+		Ambiente ambiente = contDoAmbiente.ambiente;
 		String dados[] = { "Temperatura Máx. = " + ambiente.obterTempMax(),
 				"Temperatura Mínima = " + ambiente.obterTempMin() };
 		renderizarDados("Ambiente", dados, 50);
@@ -61,10 +71,10 @@ public class RendDaSelecao extends Renderizador {
 		String opcoes[] = new String[3];
 		Integer especime;
 		Especie especie;
-		for (int i = 1; i <= 3; i++) {
-			especime = contDoAmbiente.obterEspecimesPorEspecie(ambiente.obterEspecieID(i * 2)).get(0);
+		for (int i = 0; i < 3; i++) {
+			especime = contDoAmbiente.obterEspecimesPorEspecie(ambiente.obterEspecieID(entidades[i])).get(0);
 			especie = contDaEntidade.obterComponente(especime, Especime.class).especie;
-			opcoes[i - 1] = "Nome = " + especie.nome + ":Tipo = " + especie.tipo + ":Temperatura Máx. = "
+			opcoes[i] = "Nome = " + especie.nome + ":Tipo = " + especie.tipo + ":Temperatura Máx. = "
 					+ especie.tempMaxSup + ":Temperatura Mínima = " + especie.tempMinSup;
 		}
 		int selecao = renderizarSelecao("Selecione uma espécie: ", opcoes, 100);

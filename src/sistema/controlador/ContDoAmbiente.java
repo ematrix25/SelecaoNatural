@@ -9,38 +9,32 @@ import componente.Especime.Especie;
 import componente.Especime.Especie.Forma;
 
 /**
- * Gerencia o Ambiente e suas Especies
+ * Gerencia o Ambiente e suas Espécies
  * 
  * @author Emanuel
  */
 public class ContDoAmbiente {
-	private Ambiente ambiente;
+	public Ambiente ambiente;
+	public int dificuldade;
+	public List<Integer> idsParaRemocao;
 
 	/**
 	 * Cria o objeto Controlador Do Ambiente
 	 */
 	public ContDoAmbiente() {
 		ambiente = new Ambiente(400, 350);
-	}
-
-	/**
-	 * Obtém o Ambiente
-	 * 
-	 * @return Ambiente
-	 */
-	public Ambiente obterAmbiente() {
-		return ambiente;
+		dificuldade = 0;
+		idsParaRemocao = new ArrayList<Integer>();
 	}
 
 	/**
 	 * Recria o Ambiente com temperatura menos quente
 	 * 
-	 * @param tempMax
-	 * @param tempMin
+	 * @param temp
 	 */
-	public void atualizarAmbiente(int tempMax, int tempMin) {
-		ambiente.tempMax = gerarTempAleatoria(false, ambiente.tempMax);
-		ambiente.tempMin = gerarTempAleatoria(false, ambiente.tempMin);
+	public void atualizarAmbiente(int temp) {
+		ambiente.tempMax = gerarTempAleatoria(false, ambiente.tempMax - temp);
+		ambiente.tempMin = gerarTempAleatoria(false, ambiente.tempMin - temp);
 	}
 
 	/**
@@ -51,58 +45,71 @@ public class ContDoAmbiente {
 	 * @return int
 	 */
 	private int gerarTempAleatoria(boolean ehSoma, int tempBase) {
-		final int aux = new Random().nextInt(tempBase / 10);
+		int aux = new Random().nextInt(tempBase / 10);
 		if (ehSoma) return tempBase + aux;
 		else return tempBase - aux;
 	}
 
 	/**
-	 * Atualiza a temperatura do Ambiente
-	 * 
-	 * @param ehSoma
-	 * @param temp
-	 * @return boolean
+	 * Atualiza a temperatura do Ambiente aleatoriamente
 	 */
-	public boolean atualizarTemp(boolean ehSoma, int temp) {
-		int tempAux = ambiente.temp;
-		if (ehSoma) tempAux += temp;
-		else tempAux -= temp;
-		if (tempAux > ambiente.tempMax || tempAux < ambiente.tempMin) return false;
-		ambiente.temp = tempAux;
-		return true;
+	public void atualizarTemp() {
+		int aux = new Random().nextInt(10);
+		if (new Random().nextBoolean()) atualizarTemp(aux);
+		else atualizarTemp(-aux);
 	}
 
 	/**
-	 * Cria uma Especie do Ambiente
+	 * Atualiza a temperatura do Ambiente
+	 * 
+	 * @param temp
+	 */
+	public void atualizarTemp(int temp) {
+		int tempAux = ambiente.temp;
+		tempAux += temp;
+		if (tempAux > ambiente.tempMax) tempAux = ambiente.tempMax;
+		if (tempAux < ambiente.tempMin) tempAux = ambiente.tempMin;
+		ambiente.temp = tempAux;
+	}
+
+	/**
+	 * Cria uma Espécie do Ambiente
 	 * 
 	 * @param ID
 	 * @return Especie
 	 */
 	public Especie criarEspecie(int ID, Forma forma) {
-		if (forma != null)
-			return criarEspecie(ID, forma, ambiente.tempMax, ambiente.tempMin);
-		else
-			return criarEspecie(ID, ambiente.tempMax, ambiente.tempMin);
+		if (forma != null) return criarEspecie(ID, forma, ambiente.tempMax, ambiente.tempMin);
+		else return criarEspecie(ID, ambiente.tempMax, ambiente.tempMin);
 	}
 
 	/**
-	 * Cria as Especies do Ambiente
+	 * Cria as Espécies do Ambiente
 	 * 
 	 * @param IDs
 	 * @return Especie[]
 	 */
 	public Especie[] criarEspecies(int[] IDs) {
-		Especie especies[] = new Especie[7];
-		especies[0] = criarEspecie(IDs[0], Forma.Coccus, ambiente.tempMax, ambiente.tempMin);
-		for (int i = 1; i <= 3; i++) {
-			especies[i * 2 - 1] = criarEspecie(IDs[i * 2 - 1], Forma.Bacillus, ambiente.tempMax, ambiente.tempMin);
-			especies[i * 2] = criarEspecie(IDs[i * 2], ambiente.tempMax, ambiente.tempMin);
+		int tam = IDs.length, valor;
+		Especie especies[] = new Especie[tam];
+		if (tam > 2) {
+			especies[0] = criarEspecie(IDs[0], Forma.Coccus, ambiente.tempMax, ambiente.tempMin);
+			for (int i = 1; i <= tam / 2; i++) {
+				especies[i * 2 - 1] = criarEspecie(IDs[i * 2 - 1], Forma.Bacillus, ambiente.tempMax, ambiente.tempMin);
+				especies[i * 2] = criarEspecie(IDs[i * 2], ambiente.tempMax, ambiente.tempMin);
+			}
+		} else {
+			valor = new Random().nextInt(10);
+			especies[0] = criarEspecie(IDs[0], Forma.Bacillus, ambiente.tempMax - valor * dificuldade,
+					ambiente.tempMin + valor * dificuldade / 2);
+			especies[1] = criarEspecie(IDs[1], Forma.Bacillus, ambiente.tempMax - valor * dificuldade / 3,
+					ambiente.tempMin + valor * dificuldade / 4);
 		}
 		return especies;
 	}
 
 	/**
-	 * Cria uma Especie com Forma
+	 * Cria uma Espécie com Forma
 	 * 
 	 * @param ID
 	 * @param forma
@@ -117,7 +124,7 @@ public class ContDoAmbiente {
 	}
 
 	/**
-	 * Cria uma Especie aleatoria
+	 * Cria uma Espécie aleatoria
 	 * 
 	 * @param ID
 	 * @param tempMax
@@ -134,7 +141,7 @@ public class ContDoAmbiente {
 	}
 
 	/**
-	 * Armazena os dados da Especie
+	 * Armazena os dados da Espécie
 	 * 
 	 * @param especie
 	 * @param ID
@@ -149,7 +156,7 @@ public class ContDoAmbiente {
 	}
 
 	/**
-	 * Obtém a Especie do Especime do Ambiente
+	 * Obtém a Espécie do Especime do Ambiente
 	 * 
 	 * @param especime
 	 * @return Integer
@@ -162,7 +169,7 @@ public class ContDoAmbiente {
 	}
 
 	/**
-	 * Obtém os Especimes da Especie do Ambiente por um Especime
+	 * Obtém os Especimes da Espécie do Ambiente por um Especime
 	 * 
 	 * @param especime
 	 * @return Lista de Integer
@@ -172,7 +179,7 @@ public class ContDoAmbiente {
 	}
 
 	/**
-	 * Obtém os Especimes da Especie do Ambiente por Especie
+	 * Obtém os Especimes da Espécie do Ambiente por Espécie
 	 * 
 	 * @param especie
 	 * @return Lista de Integer
@@ -182,7 +189,7 @@ public class ContDoAmbiente {
 	}
 
 	/**
-	 * Atualiza a Especie com adição ou remoção de Especimes
+	 * Atualiza a Espécie com adição ou remoção de Especimes
 	 * 
 	 * @param ID
 	 * @param ehAdicao
@@ -190,18 +197,48 @@ public class ContDoAmbiente {
 	 */
 	public void atualizarEspecie(int ID, boolean ehAdicao, int especie) {
 		List<Integer> especimes = ambiente.especies.get(especie);
-		if (ehAdicao) {
+		if (especimes == null) {
+			especimes = new ArrayList<Integer>();
 			especimes.add(ID);
-			ambiente.especies.replace(especie, especimes);
+			ambiente.especies.put(especie, especimes);
 		} else {
-			especimes.remove(new Integer(ID));
+			if (ehAdicao) {
+				especimes.add(ID);
+				ambiente.especies.replace(especie, especimes);
+			} else {
+				especimes.remove(new Integer(ID));
+				if (especimes.isEmpty()) ambiente.especies.remove(especie);
+				else ambiente.especies.replace(especie, especimes);
+			}
 		}
-		if(especimes.isEmpty()) ambiente.especies.remove(especie);
-		else ambiente.especies.replace(especie, especimes);
 	}
 
 	/**
-	 * Remove a Especie e seus especimes
+	 * Remove os espécimes para reconfigurar a espécie
+	 *
+	 * @param jogador
+	 */
+	public void removerEspecimesExtra(int jogador) {
+		List<Integer> elementos;
+		int id, qtd, i;
+		for (int especie : ambiente.especies.keySet()) {
+			elementos = ambiente.especies.get(especie);
+			qtd = elementos.size() - 1;
+			i = 0;
+			while (qtd > 0) {
+				id = elementos.get(i);
+				if (id != jogador) {
+					idsParaRemocao.add(id);
+					qtd--;
+				}
+			}
+			for (int j = 0; j < qtd; j++) {
+			}
+		}
+	}
+
+	/**
+	 * Remove a Espécie e seus especimes
 	 * 
 	 * @param especie
 	 */
@@ -259,7 +296,7 @@ public class ContDoAmbiente {
 		}
 
 		/**
-		 * Obtém a IDs da Especie
+		 * Obtém a IDs da Espécie
 		 * 
 		 * @param especime
 		 * @return Integer
@@ -272,7 +309,7 @@ public class ContDoAmbiente {
 		}
 
 		/**
-		 * Obtém a QTD de Especies
+		 * Obtém a QTD de Espécies
 		 * 
 		 * @return int
 		 */

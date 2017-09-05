@@ -30,6 +30,7 @@ import sistema.igu.renderizador.RendDoMenu;
 import sistema.igu.renderizador.RendDoQuest;
 import sistema.igu.renderizador.jogo.RendDaSelecao;
 import sistema.igu.renderizador.jogo.RendDoJogo;
+import sistema.igu.renderizador.jogo.base.mapa.Bloco;
 import sistema.igu.renderizador.jogo.base.mapa.Coordenada;
 import sistema.igu.renderizador.jogo.base.mapa.Mapa;
 import sistema.utilitario.Opcoes;
@@ -78,8 +79,8 @@ public class Painel extends Canvas implements Runnable {
 	public boolean ehContinuavel = false;
 	public int massaCelular, qtdCelulas, pontuacao;
 
-	public int contDeSegundos = 0;
-	public static int tempo = 0;
+	public int contDeSegundos = 0, temperatura = 4;
+	public static int tempo;
 
 	/**
 	 * Inicializa o painel
@@ -139,7 +140,20 @@ public class Painel extends Canvas implements Runnable {
 					atualizar();
 					atualizacoes++;
 					deltaTempo--;
-					tempo++;
+					if (System.currentTimeMillis() - temporizador > 1) {
+						temporizador++;
+						tempo++;
+					}
+				}
+
+				// FIXME Testar avanço para o próximo ambiente
+				// Avança para outro ambiente após um tempo ou 20 entidades criadas
+				if (tempo > 20000 || contDaEntidade.entidades.size() > 20) {
+					temperatura--;
+					Bloco.associarTemperatura(temperatura);
+					contDoAmbiente.atualizarAmbiente(10);
+					repovoarAmbiente();
+					telaAtiva = 'S';
 				}
 			}
 
@@ -154,9 +168,6 @@ public class Painel extends Canvas implements Runnable {
 					janela.setTitle(janela.TITULO + " | " + atualizacoes + " aps com " + quadros + " qps");
 				atualizacoes = 0;
 				quadros = 0;
-
-				// FIXME Implementar avanço para o próximo ambiente caso passado
-				// tempo ou limite de entidades
 
 				// Conta os segundos para abrir o painel do questionarios
 				if (telaAtiva == 'S' || telaAtiva == 'J') {
@@ -193,7 +204,10 @@ public class Painel extends Canvas implements Runnable {
 			qtdCelulas = contDoAmbiente.obterEspecimesPorEspecime(jogador).size();
 			pontuacao = contDoJogador.obterPontuacao();
 		}
-		if (tempo % 101 == 0) contDoMapa.atualizarBlocos();
+		if (tempo % 1000 == 0) {
+			contDoMapa.atualizarBlocos();
+			contDoAmbiente.atualizarTemp();
+		}
 		atualizarEntidades();
 
 		// Cria as entidades marcadas no contDaEntidade
@@ -208,7 +222,7 @@ public class Painel extends Canvas implements Runnable {
 	private void atualizarEntidades() {
 		Entidade entidade;
 		int velocidadeMax;
-		int taxa = 7, taxaAux;
+		int taxa = 7, taxaAux, temp;
 		for (int id : contDaEntidade.obterTodasEntidadesComOComponente(Especime.class)) {
 			contAuxDaEnt.configurarEntidade(id, contDaEntidade.obterComponentes(id));
 			entidade = contAuxDaEnt.obterEntidade();
@@ -232,9 +246,14 @@ public class Painel extends Canvas implements Runnable {
 				if (id == contDoJogador.obterID()) contDoJogador.incrementarPontuacao(10);
 			} else {
 				// Consome a massa da entidade conforme o tempo passa
-				if (tempo % 107 == 0) entidade.especime.massa--;
+				if (tempo % 1000 == 0) {
+					entidade.especime.massa--;
+					temp = contDoAmbiente.ambiente.obterTemp();
+					if (temp < entidade.especime.especie.tempMinSup || temp > entidade.especime.especie.tempMaxSup)
+						entidade.especime.massa -= 4;
+				}
 				if (entidade.especime.massa == 0) {
-					System.out.println("ID " + id + " morreu de fome");
+					System.out.println("ID " + id + " morreu de fome ou não suportou a temperatura");
 					marcarEntidade(id, true);
 				}
 			}
@@ -492,6 +511,7 @@ public class Painel extends Canvas implements Runnable {
 	 * Volta para a tela do jogo
 	 */
 	private void voltarParaJogo() {
+		tempo = 0;
 		janela.redimensionar(1.1f);
 		telaAtiva = 'J';
 	}
@@ -500,15 +520,16 @@ public class Painel extends Canvas implements Runnable {
 	 * Inicia o jogo
 	 */
 	private void iniciarJogo() {
+		int entidades[] = { 2, 4, 6 };
 		massaCelular = 0;
 		qtdCelulas = 0;
 		pontuacao = 0;
 		contDaEntidade = new ContDaEntidade();
 		contDoAmbiente = new ContDoAmbiente();
-		gerarAmbiente();
+		gerarAmbiente(7);
 
-		mapa = new Mapa("/mapas/caverna.png", 0);
-		// mapa = new Mapa(128, 128, 0);
+		mapa = new Mapa("/mapas/caverna.png", temperatura);
+		// mapa = new Mapa(128, 128, temperatura);
 		contDoMapa = new ContDoMapa(this, mapa);
 
 		contAuxDaEnt = new ContAuxDaEnt();
@@ -516,20 +537,39 @@ public class Painel extends Canvas implements Runnable {
 		contDaIA = new ContDaIA(this, mapa);
 
 		rendDaSelecao = new RendDaSelecao(this, contDaEntidade, contDoAmbiente);
-		rendDoJogo = new RendDoJogo(this, contDaEntidade, contDoMapa, contDoJogador);
+		rendDaSelecao.configurarEntidades(entidades);
+		rendDoJogo = new RendDoJogo(this, contDaEntidade, contDoAmbiente, contDoMapa, contDoJogador);
 	}
 
 	/**
-	 * Gera ambiente
+	 * Repovoa as entidades do ambiente
 	 */
-	private void gerarAmbiente() {
-		int entidades[] = new int[7];
-		for (int i = 0; i < 7; i++) {
+	private void repovoarAmbiente() {
+		contDoAmbiente.removerEspecimesExtra(contDoJogador.obterID());
+		contDoAmbiente.dificuldade++;
+		for (int id : contDoAmbiente.idsParaRemocao)
+			marcarEntidade(id, true);
+		gerarAmbiente(2);
+	}
+
+	/**
+	 * Gera as entidades no ambiente
+	 * 
+	 * @param qtd
+	 */
+	private void gerarAmbiente(int qtd) {
+		int entidades[];
+		Especie especies[];
+		if (qtd < 3) entidades = new int[3];
+		else entidades = new int[qtd];
+		for (int i = 0; i < qtd; i++)
 			entidades[i] = contDaEntidade.criarEntidade();
-		}
-		Especie[] especies = contDoAmbiente.criarEspecies(entidades);
-		for (int i = 0; i < 7; i++) {
+		especies = contDoAmbiente.criarEspecies(entidades);
+		for (int i = 0; i < qtd; i++)
 			contDaEntidade.adicionarComponente(entidades[i], (Componente) new Especime(especies[i]));
+		if (qtd < 3) {
+			entidades[2] = contDoJogador.obterID();
+			rendDaSelecao.configurarEntidades(entidades);
 		}
 	}
 
@@ -554,7 +594,8 @@ public class Painel extends Canvas implements Runnable {
 			contDaEntidade.adicionarComponente(entidade, posicao);
 			contDaEntidade.adicionarComponente(entidade, new Velocidade());
 			especie = contDaEntidade.obterComponente(entidade, Especime.class).especie;
-			contDaEntidade.adicionarComponente(entidade, new Sprites(especie.tipo.forma, gerarCor()));
+			if (contDaEntidade.obterComponente(entidade, Sprites.class) == null)
+				contDaEntidade.adicionarComponente(entidade, new Sprites(especie.tipo.forma, gerarCor()));
 			if (entidade != contDoJogador.obterID()) contDaEntidade.adicionarComponente(entidade, new EstadoDaIA());
 		}
 		System.out.println();
