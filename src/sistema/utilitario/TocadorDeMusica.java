@@ -94,7 +94,7 @@ public class TocadorDeMusica implements Runnable {
 		while (true) {
 			tocar();
 
-			if (faixa < musicas.size()) faixa++;
+			if (faixa < musicas.size() - 1) faixa++;
 			else faixa = 0;
 		}
 	}

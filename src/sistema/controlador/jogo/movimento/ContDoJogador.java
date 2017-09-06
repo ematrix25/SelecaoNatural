@@ -41,7 +41,7 @@ public class ContDoJogador extends ContDaEntMovel {
 			return Mouse.obterDiferenca(velocidadeMaxima);
 		} else {
 			if (Teclado.cima || Teclado.baixo || Teclado.direita || Teclado.esquerda) {
-				if (Teclado.correr) return velocidadeMaxima;
+				if (Opcoes.modoDesenvolvimento && Teclado.correr) return velocidadeMaxima;
 				else return velocidadeMaxima / 2;
 			} else return 0;
 		}

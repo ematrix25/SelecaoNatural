@@ -116,7 +116,8 @@ public class Painel extends Canvas implements Runnable {
 	 */
 	@Override
 	public void run() {
-		long tempoAgora = System.nanoTime(), tempoAntes;
+		long nanoTempoAgora = System.nanoTime(), nanoTempoAntes;
+		long miliTempoAgora = System.currentTimeMillis(), miliTempoAntes;
 		long temporizador = System.currentTimeMillis();
 		final double NANOSEGUNDOS = 1000000000.0;
 		double deltaTempo = 0.0;
@@ -133,27 +134,13 @@ public class Painel extends Canvas implements Runnable {
 
 			// Atualiza os dados do jogo
 			if (telaAtiva == 'J') {
-				tempoAntes = tempoAgora;
-				tempoAgora = System.nanoTime();
-				deltaTempo += (tempoAgora - tempoAntes) / (NANOSEGUNDOS / 60.0);
+				nanoTempoAntes = nanoTempoAgora;
+				nanoTempoAgora = System.nanoTime();
+				deltaTempo += (nanoTempoAgora - nanoTempoAntes) / (NANOSEGUNDOS / 60.0);
 				while (deltaTempo >= 1 && ehContinuavel) {
 					atualizar();
 					atualizacoes++;
 					deltaTempo--;
-					if (System.currentTimeMillis() - temporizador > 1) {
-						temporizador++;
-						tempo++;
-					}
-				}
-
-				// FIXME Testar avanço para o próximo ambiente
-				// Avança para outro ambiente após um tempo ou 20 entidades criadas
-				if (tempo > 20000 || contDaEntidade.entidades.size() > 20) {
-					temperatura--;
-					Bloco.associarTemperatura(temperatura);
-					contDoAmbiente.atualizarAmbiente(10);
-					repovoarAmbiente();
-					telaAtiva = 'S';
 				}
 			}
 
@@ -186,6 +173,22 @@ public class Painel extends Canvas implements Runnable {
 						rendDoQuest = new RendDoQuest(this, controladorDoQuest);
 						telaAtiva = 'Q';
 					}
+				}
+			}
+
+			// FIXME Testar avanço para o próximo ambienteç
+			// Avança para outro ambiente após tempo ou entidades criadas
+			miliTempoAntes = miliTempoAgora;
+			miliTempoAgora = System.currentTimeMillis();
+			if (miliTempoAgora - miliTempoAntes > 1) tempo++;
+			if (telaAtiva == 'J') {
+				if (tempo > 20000 || contDaEntidade.entidades.size() > 20) {
+					Bloco.associarTemperatura(--temperatura);
+					contDoAmbiente.atualizarAmbiente(10);
+					repovoarAmbiente();
+					contDaEntidade.removerEntidades();
+					telaAtiva = 'S';
+					pontuacao += 1000;
 				}
 			}
 		}
@@ -346,8 +349,10 @@ public class Painel extends Canvas implements Runnable {
 			}
 			if (posicoesDasEnt.containsKey(id)) {
 				posicoesDasEnt.remove(id);
-				especie = contDoAmbiente.obterEspecie(id);
-				contDoAmbiente.atualizarEspecie(id, false, especie);
+				if (contDoAmbiente.temEspecie(id)) {
+					especie = contDoAmbiente.obterEspecie(id);
+					contDoAmbiente.atualizarEspecie(id, false, especie);
+				}
 				return contDaEntidade.marcarEntidades(id, true);
 			}
 		} else {

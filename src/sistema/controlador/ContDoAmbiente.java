@@ -161,6 +161,19 @@ public class ContDoAmbiente {
 	 * @param especime
 	 * @return Integer
 	 */
+	public boolean temEspecie(int especime) {
+		for (Integer especie : ambiente.especies.keySet()) {
+			if (ambiente.especies.get(especie).contains(especime)) return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Obtém a Espécie do Especime do Ambiente
+	 * 
+	 * @param especime
+	 * @return Integer
+	 */
 	public Integer obterEspecie(int especime) {
 		for (Integer especie : ambiente.especies.keySet()) {
 			if (ambiente.especies.get(especie).contains(especime)) return especie;
@@ -226,13 +239,11 @@ public class ContDoAmbiente {
 			qtd = elementos.size() - 1;
 			i = 0;
 			while (qtd > 0) {
-				id = elementos.get(i);
+				id = elementos.get(i++);
 				if (id != jogador) {
 					idsParaRemocao.add(id);
 					qtd--;
 				}
-			}
-			for (int j = 0; j < qtd; j++) {
 			}
 		}
 	}

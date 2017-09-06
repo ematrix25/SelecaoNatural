@@ -159,12 +159,14 @@ public class RendDoJogo extends Renderizador {
 				texto = "ID " + i + ": " + posicao + " \t-> " + posicao.proxPos;
 				graficos.drawString(texto, 20, (60 + 20 * i));
 			}
-			texto = "Tempo: " + Painel.tempo;
-			graficos.drawString(texto, painel.getWidth() - 100, 40);
-			texto = "Dificuldade: " + contDoAmbiente.dificuldade;
-			graficos.drawString(texto, painel.getWidth() - 100, 60);
-			texto = "Temperatura: " + contDoAmbiente.ambiente.obterTemp();
+			texto = "Entidades: "+contDaEntidade.entidades.size();
 			graficos.drawString(texto, painel.getWidth() - 120, 80);
+			texto = "Tempo: " + Painel.tempo;
+			graficos.drawString(texto, painel.getWidth() - 120, 100);
+			texto = "Dificuldade: " + contDoAmbiente.dificuldade;
+			graficos.drawString(texto, painel.getWidth() - 120, 120);
+			texto = "Temperatura: " + contDoAmbiente.ambiente.obterTemp();
+			graficos.drawString(texto, painel.getWidth() - 120, 140);
 		}
 	}
 
