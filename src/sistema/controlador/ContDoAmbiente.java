@@ -89,8 +89,8 @@ public class ContDoAmbiente {
 	 * @param IDs
 	 * @return Especie[]
 	 */
-	public Especie[] criarEspecies(int[] IDs) {
-		int tam = IDs.length, valor;
+	public Especie[] criarEspecies(int[] IDs, int tam) {
+		int valor;
 		Especie especies[] = new Especie[tam];
 		if (tam > 2) {
 			especies[0] = criarEspecie(IDs[0], Forma.Coccus, ambiente.tempMax, ambiente.tempMin);

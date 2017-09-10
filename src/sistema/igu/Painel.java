@@ -396,11 +396,11 @@ public class Painel extends Canvas implements Runnable {
 		System.out.print("ID ");
 		if (especime.massa >= especimeAlvo.massa) {
 			especime.massa = juntarMassa(especime.massa, especimeAlvo.massa);
-			System.out.println(entidadeAlvo+" faleceu");
+			System.out.println(entidadeAlvo + " faleceu");
 			return marcarEntidade(entidadeAlvo, true);
 		} else {
 			especimeAlvo.massa = juntarMassa(especimeAlvo.massa, especime.massa);
-			System.out.println(entidade.id+" faleceu");
+			System.out.println(entidade.id + " faleceu");
 			marcarEntidade(entidade.id, true);
 		}
 		return false;
@@ -583,6 +583,7 @@ public class Painel extends Canvas implements Runnable {
 		contDoAmbiente.dificuldade++;
 		for (int id : contDoAmbiente.idsParaRemocao)
 			marcarEntidade(id, true);
+		contDaEntidade.removerEntidades();
 		gerarAmbiente(2);
 	}
 
@@ -600,7 +601,10 @@ public class Painel extends Canvas implements Runnable {
 			entidades = new int[qtd];
 		for (int i = 0; i < qtd; i++)
 			entidades[i] = contDaEntidade.criarEntidade();
-		especies = contDoAmbiente.criarEspecies(entidades);
+		if (qtd < 3)
+			especies = contDoAmbiente.criarEspecies(entidades, 2);
+		else
+			especies = contDoAmbiente.criarEspecies(entidades, qtd);
 		for (int i = 0; i < qtd; i++)
 			contDaEntidade.adicionarComponente(entidades[i], (Componente) new Especime(especies[i]));
 		if (qtd < 3) {

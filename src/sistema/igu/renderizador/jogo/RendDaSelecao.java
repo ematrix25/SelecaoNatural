@@ -71,11 +71,9 @@ public class RendDaSelecao extends Renderizador {
 		renderizarDados("Ambiente", dados, 50);
 
 		String opcoes[] = new String[3];
-		Integer especime;
 		Especie especie;
 		for (int i = 0; i < 3; i++) {
-			especime = contDoAmbiente.obterEspecimesPorEspecie(ambiente.obterEspecieID(entidades[i])).get(0);
-			especie = contDaEntidade.obterComponente(especime, Especime.class).especie;
+			especie = contDaEntidade.obterComponente(entidades[i], Especime.class).especie;
 			opcoes[i] = "Nome = " + especie.nome + ":Tipo = " + especie.tipo + ":Temperatura Máx. = "
 					+ especie.tempMaxSup + ":Temperatura Mínima = " + especie.tempMinSup;
 		}

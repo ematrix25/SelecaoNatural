@@ -78,7 +78,7 @@ public class TesteContDoAmbiente {
 		for (int i = 0; i < 7; i++) {
 			entidades[i] = contDaEntidade.criarEntidade();
 		}
-		especies = contDoAmbiente.criarEspecies(entidades);
+		especies = contDoAmbiente.criarEspecies(entidades, 7);
 		for (int i = 0; i < 7; i++) {
 			contDaEntidade.adicionarComponente(entidades[i], (Componente) new Especime(especies[i]));
 		}
