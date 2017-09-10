@@ -43,7 +43,9 @@ public class RendDaSelecao extends Renderizador {
 	 * @return int
 	 */
 	public int obterSelecao() {
-		return selecao * 2;
+		int index = selecao -1;
+		selecao = -1;
+		return entidades[index];
 	}
 
 	/**

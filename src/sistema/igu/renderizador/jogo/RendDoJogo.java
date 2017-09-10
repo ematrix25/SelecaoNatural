@@ -130,6 +130,12 @@ public class RendDoJogo extends Renderizador {
 			texto = "Extinto! Você perdeu o Jogo";
 			graficos.drawString(texto, painel.getWidth() / 6, painel.getHeight() / 2);
 			return;
+		} 
+		if(painel.emTransicao) {
+			graficos.setFont(new Font("Verdana", 0, 32));
+			graficos.setColor(Color.yellow);
+			texto = "Morreu! Trocando para outro";
+			graficos.drawString(texto, painel.getWidth() / 6, painel.getHeight() / 2);
 		}
 
 		tela.limpar();

@@ -76,7 +76,7 @@ public class Painel extends Canvas implements Runnable {
 
 	public HashMap<Integer, Posicao> posicoesDasEnt;
 
-	public boolean ehContinuavel = false;
+	public boolean ehContinuavel = false, emTransicao = false;
 	public int massaCelular, qtdCelulas, pontuacao;
 
 	public int contDeSegundos = 0, temperatura = 4;
@@ -126,8 +126,10 @@ public class Painel extends Canvas implements Runnable {
 		while (true) {
 			requestFocusInWindow();
 			try {
-				if (telaAtiva == 'J') Thread.sleep(20);
-				else Thread.sleep(60);
+				if (telaAtiva == 'J')
+					Thread.sleep(20);
+				else
+					Thread.sleep(60);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -166,8 +168,16 @@ public class Painel extends Canvas implements Runnable {
 						}
 						telaAtiva = 'M';
 					}
+					if (emTransicao) {
+						try {
+							Thread.sleep(3000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						emTransicao = false;
+					}
 					contDeSegundos++;
-					if (contDeSegundos > 600) {
+					if (contDeSegundos > 360) {
 						janela.redimensionar(1.5f);
 						controladorDoQuest = new ContDoQuestionario();
 						rendDoQuest = new RendDoQuest(this, controladorDoQuest);
@@ -176,19 +186,20 @@ public class Painel extends Canvas implements Runnable {
 				}
 			}
 
-			// FIXME Testar avanço para o próximo ambienteç
+			// FIXME Testar avanço para o próximo ambiente
 			// Avança para outro ambiente após tempo ou entidades criadas
 			miliTempoAntes = miliTempoAgora;
 			miliTempoAgora = System.currentTimeMillis();
-			if (miliTempoAgora - miliTempoAntes > 1) tempo++;
+			if (miliTempoAgora - miliTempoAntes > 1)
+				tempo++;
 			if (telaAtiva == 'J') {
-				if (tempo > 20000 || contDaEntidade.entidades.size() > 20) {
+				if (tempo > 3000 || contDaEntidade.entidades.size() > 20) {
 					Bloco.associarTemperatura(--temperatura);
 					contDoAmbiente.atualizarAmbiente(10);
 					repovoarAmbiente();
 					contDaEntidade.removerEntidades();
 					telaAtiva = 'S';
-					pontuacao += 1000;
+					contDoJogador.incrementarPontuacao(1000);
 				}
 			}
 		}
@@ -236,7 +247,8 @@ public class Painel extends Canvas implements Runnable {
 			} else {
 				taxaAux = (entidade.posicao.proxPos != null) ? taxa : taxa + new Random().nextInt(59);
 				if (tempo % taxaAux == 0) {
-					if (!(posicoesDasEnt.size() < contDaEntidade.entidades.size())) contDaIA.configurarIA(entidade);
+					if (!(posicoesDasEnt.size() < contDaEntidade.entidades.size()))
+						contDaIA.configurarIA(entidade);
 					contDoMapa.moverEntidade(contDaIA.obterMovimentacao(velocidadeMax), contDaIA.obterDirecao(),
 							entidade);
 				}
@@ -246,7 +258,8 @@ public class Painel extends Canvas implements Runnable {
 				System.out.println("ID " + id + " reproduziu");
 				marcarEntidade(id, false);
 				entidade.especime.massa = 50;
-				if (id == contDoJogador.obterID()) contDoJogador.incrementarPontuacao(10);
+				if (id == contDoJogador.obterID())
+					contDoJogador.incrementarPontuacao(10);
 			} else {
 				// Consome a massa da entidade conforme o tempo passa
 				if (tempo % 1000 == 0) {
@@ -297,9 +310,11 @@ public class Painel extends Canvas implements Runnable {
 				x = vetor.x + (j % 2) * sinal;
 				y = vetor.y + (1 - (j % 2)) * sinal;
 				vetorAux = obterVetorValido(x, y);
-				if (vetorAux != null) break;
+				if (vetorAux != null)
+					break;
 			}
-			if (vetorAux != null) break;
+			if (vetorAux != null)
+				break;
 		}
 		posicao = new Posicao(vetorAux);
 		posicoesDasEnt.put(entidade.id, posicao);
@@ -320,7 +335,8 @@ public class Painel extends Canvas implements Runnable {
 	private Vetor2i obterVetorValido(int x, int y) {
 		Vetor2i vetorAux = null;
 		if (!(x < 0 || x > mapa.largura - 1) && !(y < 0 || y > mapa.altura - 1))
-			if (!mapa.obterBloco(x, y).solido) vetorAux = new Vetor2i(x, y);
+			if (!mapa.obterBloco(x, y).solido)
+				vetorAux = new Vetor2i(x, y);
 		return vetorAux;
 	}
 
@@ -345,7 +361,9 @@ public class Painel extends Canvas implements Runnable {
 							break;
 						}
 					}
-				} else ehContinuavel = false;
+					emTransicao = true;
+				} else
+					ehContinuavel = false;
 			}
 			if (posicoesDasEnt.containsKey(id)) {
 				posicoesDasEnt.remove(id);
@@ -371,13 +389,18 @@ public class Painel extends Canvas implements Runnable {
 	public boolean resolverConflito(Entidade entidade, int entidadeAlvo) {
 		Especime especimeAlvo = contDaEntidade.obterComponente(entidadeAlvo, Especime.class);
 		Especime especime = entidade.especime;
-		if (especimeAlvo == null) return true;
-		if (contDoAmbiente.obterEspecie(entidade.id) == contDoAmbiente.obterEspecie(entidadeAlvo)) return true;
+		if (especimeAlvo == null)
+			return true;
+		if (contDoAmbiente.obterEspecie(entidade.id) == contDoAmbiente.obterEspecie(entidadeAlvo))
+			return true;
+		System.out.print("ID ");
 		if (especime.massa >= especimeAlvo.massa) {
 			especime.massa = juntarMassa(especime.massa, especimeAlvo.massa);
+			System.out.println(entidadeAlvo+" faleceu");
 			return marcarEntidade(entidadeAlvo, true);
 		} else {
 			especimeAlvo.massa = juntarMassa(especimeAlvo.massa, especime.massa);
+			System.out.println(entidade.id+" faleceu");
 			marcarEntidade(entidade.id, true);
 		}
 		return false;
@@ -393,7 +416,8 @@ public class Painel extends Canvas implements Runnable {
 	private int juntarMassa(int massa, int acrescimo) {
 		// 20% não são integrados a massa
 		acrescimo = (int) (acrescimo * 0.8);
-		if (massa + acrescimo > 100) return 100;
+		if (massa + acrescimo > 100)
+			return 100;
 		return massa += acrescimo;
 	}
 
@@ -457,7 +481,9 @@ public class Painel extends Canvas implements Runnable {
 	 */
 	public boolean mouseEstaNoBotao(int x, int y, int largura, int altura) {
 		int mouseX = Mouse.obterX(), mouseY = Mouse.obterY();
-		if (mouseX >= x && mouseX <= x + largura) if (mouseY >= y && mouseY <= y + altura) return true;
+		if (mouseX >= x && mouseX <= x + largura)
+			if (mouseY >= y && mouseY <= y + altura)
+				return true;
 		return false;
 	}
 
@@ -484,7 +510,8 @@ public class Painel extends Canvas implements Runnable {
 				if (!rendDoQuest.temPagina()) {
 					ArquivoDoQuest.escrever(rendDoQuest.obterRespostas());
 					janela.dispatchEvent(new WindowEvent(janela, WindowEvent.WINDOW_CLOSING));
-				} else rendDoQuest.proxPagina();
+				} else
+					rendDoQuest.proxPagina();
 			}
 			break;
 		case 'N':
@@ -494,8 +521,10 @@ public class Painel extends Canvas implements Runnable {
 			ehContinuavel = true;
 			break;
 		case 'C':
-			if (telaAtiva == 'M' && ehContinuavel) voltarParaJogo();
-			else if (telaAtiva == 'O') voltarParaMenu();
+			if (telaAtiva == 'M' && ehContinuavel)
+				voltarParaJogo();
+			else if (telaAtiva == 'O')
+				voltarParaMenu();
 			break;
 		case 'O':
 			janela.redimensionar(1.1f);
@@ -565,8 +594,10 @@ public class Painel extends Canvas implements Runnable {
 	private void gerarAmbiente(int qtd) {
 		int entidades[];
 		Especie especies[];
-		if (qtd < 3) entidades = new int[3];
-		else entidades = new int[qtd];
+		if (qtd < 3)
+			entidades = new int[3];
+		else
+			entidades = new int[qtd];
 		for (int i = 0; i < qtd; i++)
 			entidades[i] = contDaEntidade.criarEntidade();
 		especies = contDoAmbiente.criarEspecies(entidades);
@@ -601,7 +632,8 @@ public class Painel extends Canvas implements Runnable {
 			especie = contDaEntidade.obterComponente(entidade, Especime.class).especie;
 			if (contDaEntidade.obterComponente(entidade, Sprites.class) == null)
 				contDaEntidade.adicionarComponente(entidade, new Sprites(especie.tipo.forma, gerarCor()));
-			if (entidade != contDoJogador.obterID()) contDaEntidade.adicionarComponente(entidade, new EstadoDaIA());
+			if (entidade != contDoJogador.obterID())
+				contDaEntidade.adicionarComponente(entidade, new EstadoDaIA());
 		}
 		System.out.println();
 	}
